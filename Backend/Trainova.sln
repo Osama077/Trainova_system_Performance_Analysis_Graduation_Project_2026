@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11222.15 d18.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trainova.Api", "Trainova.Api\Trainova.Api.csproj", "{6877AC49-3BC2-4919-9A84-AA1DE16FD955}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trainova.Infrastructure.DataAccess", "Trainova.Infrastructure.DataAccess\Trainova.Infrastructure.DataAccess.csproj", "{E7A7FDA0-6D54-4ECB-BEBA-82DBF8718A1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trainova.Infrastructure.Authorization", "Trainova.Infrastructure.Authorization\Trainova.Infrastructure.Authorization.csproj", "{C2CFE146-E1A2-4C82-AA94-BC4A9B85313F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trainova.Domain", "Trainova.Domain\Trainova.Domain.csproj", "{6F52BE3D-300F-48A7-9ADE-9E81439FEFFB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trainova.Application", "Trainova.Application\Trainova.Application.csproj", "{D6039B5E-1542-4F7A-B923-85FEF96C9E8F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trainova.Bootstrapper", "Trainova.Bootstrapper\Trainova.Bootstrapper.csproj", "{91AA3F40-841B-44A4-B259-28113912CAD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trainova.Common", "Trainova.Common\Trainova.Common.csproj", "{2D363378-03B3-4612-834A-D218A984597B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6877AC49-3BC2-4919-9A84-AA1DE16FD955}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6877AC49-3BC2-4919-9A84-AA1DE16FD955}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6877AC49-3BC2-4919-9A84-AA1DE16FD955}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6877AC49-3BC2-4919-9A84-AA1DE16FD955}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7A7FDA0-6D54-4ECB-BEBA-82DBF8718A1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7A7FDA0-6D54-4ECB-BEBA-82DBF8718A1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7A7FDA0-6D54-4ECB-BEBA-82DBF8718A1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7A7FDA0-6D54-4ECB-BEBA-82DBF8718A1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2CFE146-E1A2-4C82-AA94-BC4A9B85313F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2CFE146-E1A2-4C82-AA94-BC4A9B85313F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2CFE146-E1A2-4C82-AA94-BC4A9B85313F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2CFE146-E1A2-4C82-AA94-BC4A9B85313F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F52BE3D-300F-48A7-9ADE-9E81439FEFFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F52BE3D-300F-48A7-9ADE-9E81439FEFFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F52BE3D-300F-48A7-9ADE-9E81439FEFFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F52BE3D-300F-48A7-9ADE-9E81439FEFFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6039B5E-1542-4F7A-B923-85FEF96C9E8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6039B5E-1542-4F7A-B923-85FEF96C9E8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6039B5E-1542-4F7A-B923-85FEF96C9E8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6039B5E-1542-4F7A-B923-85FEF96C9E8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91AA3F40-841B-44A4-B259-28113912CAD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91AA3F40-841B-44A4-B259-28113912CAD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91AA3F40-841B-44A4-B259-28113912CAD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91AA3F40-841B-44A4-B259-28113912CAD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D363378-03B3-4612-834A-D218A984597B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D363378-03B3-4612-834A-D218A984597B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D363378-03B3-4612-834A-D218A984597B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D363378-03B3-4612-834A-D218A984597B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {81629297-844B-4B76-B6CA-B1DE9C550EDE}
+	EndGlobalSection
+EndGlobal

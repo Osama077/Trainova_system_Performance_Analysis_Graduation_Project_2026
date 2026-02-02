@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Trainova.Infrastructure.Authorization\Trainova.Infrastructure.Authorization.csproj" />
+    <ProjectReference Include="..\Trainova.Infrastructure.DataAccess\Trainova.Infrastructure.DataAccess.csproj" />
+  </ItemGroup>
+
+</Project>
