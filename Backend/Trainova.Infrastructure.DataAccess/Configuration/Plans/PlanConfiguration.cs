@@ -27,8 +27,9 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.Plans
             // ManageableBy is a [Flags] enum - leave numeric
             builder.Property(p => p.ManageableBy);
 
-            // PlanState enum - leave numeric unless annotated
-            builder.Property(p => p.State);
+            // PlanState enum - store as string for readability
+            builder.Property(p => p.State)
+                .HasConversion<string>();
         }
     }
 }

@@ -19,7 +19,10 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.PlayerInjuries
                 .WithMany()
                 .HasForeignKey(pi => pi.PlayerId);
 
-            builder.Property(pi => pi.Status);
+            // Store status as string 
+            builder.Property(pi => pi.Status)
+                .HasConversion<string>();
+
             builder.Property(pi => pi.HappendAt).IsRequired();
             builder.Property(pi => pi.CreatedAt).IsRequired();
         }

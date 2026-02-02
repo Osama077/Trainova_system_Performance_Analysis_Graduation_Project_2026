@@ -17,7 +17,9 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.Coaches
                 .WithMany()
                 .HasForeignKey(c => c.UserId);
 
-            builder.Property(c => c.Role);
+            // Store coach role as string for readability
+            builder.Property(c => c.Role)
+                .HasConversion<string>();
         }
     }
 }

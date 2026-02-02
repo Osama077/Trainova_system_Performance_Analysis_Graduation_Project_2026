@@ -24,9 +24,14 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.Activities
                 .HasForeignKey(a => a.EventId)
                 .IsRequired(false);
 
-            // Enums and additional properties
-            builder.Property(a => a.Type).IsRequired();
-            builder.Property(a => a.HowToBeDone);
+            // Enums and additional properties: store ActivityType and TaskMethod as strings for readability
+            builder.Property(a => a.Type)
+                .HasConversion<string>()
+                .IsRequired();
+
+            builder.Property(a => a.HowToBeDone)
+                .HasConversion<string>();
+
             builder.Property(a => a.ManageableBy).IsRequired();
 
             // Optional task details

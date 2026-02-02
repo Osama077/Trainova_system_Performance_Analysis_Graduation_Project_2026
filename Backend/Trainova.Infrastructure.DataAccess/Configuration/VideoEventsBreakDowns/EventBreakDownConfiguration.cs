@@ -13,7 +13,9 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.VideoEventsBreakDowns
             // Composite key PlayerId + EventId
             builder.HasKey(eb => new { eb.PlayerId, eb.EventId });
 
-            builder.Property(eb => eb.EventType).IsRequired();
+            builder.Property(eb => eb.EventType)
+                .HasConversion<string>()
+                .IsRequired();
 
             // MicroEventContent is [Owned] so EF will map it as owned type (no explicit HasKey)
         }

@@ -68,6 +68,13 @@ namespace Trainova.Infrastructure.DataAccess
         {
             throw new NotImplementedException();
         }
+//ahmed remove the following shit if you wany
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Apply all IEntityTypeConfiguration implementations from this assembly
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(TrainovaWriteDbContext).Assembly);
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }
-

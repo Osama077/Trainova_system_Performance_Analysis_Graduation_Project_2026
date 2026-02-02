@@ -19,9 +19,14 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.Players
             builder.Property(p => p.PlayerNumber).IsRequired();
             builder.Property(p => p.TShirtName).IsRequired().HasMaxLength(100);
 
-            // MedecalStatus and Position are enums
-            builder.Property(p => p.MedecalStatus);
-            builder.Property(p => p.CurrentPosition).HasMaxLength(50);
+            // Store MedecalStatus and Position as strings for readability and stability
+            builder.Property(p => p.MedecalStatus)
+                .HasConversion<string>()
+                .HasMaxLength(50);
+
+            builder.Property(p => p.CurrentPosition)
+                .HasConversion<string>()
+                .HasMaxLength(50);
 
             builder.Property(p => p.PerformanceScore);
             builder.Property(p => p.InjuryRisk);
