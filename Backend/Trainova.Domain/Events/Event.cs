@@ -18,7 +18,6 @@ namespace Trainova.Domain.Events
         public ManageableBy ManageableBy { get; private set; }= ManageableBy.Owner;
 
         public ICollection<EventPrediction> Predictions { get; private set; } = [];
-        public ICollection<Activity> ActivityEvents { get; private set; } = [];
         public ICollection<MatchVideo> MatchVideos { get; private set; } = [];
         public DateTime CreatedAt { get; private set; }
         public DateTime? LastUpdate { get; private set; }
