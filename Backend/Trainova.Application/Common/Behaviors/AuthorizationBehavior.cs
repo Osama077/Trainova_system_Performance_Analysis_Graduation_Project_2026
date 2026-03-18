@@ -1,13 +1,13 @@
 using System.Reflection;
 using Trainova.Application.Common.Authorization;
 using MediatR;
-using Trainova.Application.Common.Interfaces.Service;
 using Trainova.Common.ResultOf;
 using Trainova.Common.Errors;
+using Trainova.Application.Common.Models;
 
 namespace Trainova.Application.Common.Behaviors;
 
-public class AuthorizationBehavior<TRequest, TResponse>(ICurrentUserProvider _currentUserProvider)
+public class AuthorizationBehavior<TRequest, TResponse>(CurrentUser? _currentUser)
     : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
         where TResponse : IResultOf
@@ -26,18 +26,16 @@ public class AuthorizationBehavior<TRequest, TResponse>(ICurrentUserProvider _cu
             return await next();
         }
 
-        var currentUserRuselt = _currentUserProvider.GetCurrentUser();
-        if (currentUserRuselt.IsFailure)
+        if (_currentUser == null)
         {
-            return (dynamic)currentUserRuselt.Errors.First();
+            return (dynamic)Error.Unauthorized(description: "User is not loged Id");
         }
-        var currentUser = currentUserRuselt.Value;
 
         var requiredRoles = authorizationAttributes
             .SelectMany(authorizationAttribute => authorizationAttribute.Role?.Split(',') ?? [])
             .ToList();
 
-        if (requiredRoles.Except(currentUser.Roles).Any())
+        if (requiredRoles.Except(_currentUser.Roles).Any())
         {
             return (dynamic)Error.Unauthorized(description: "User is forbidden from taking this action");
         }

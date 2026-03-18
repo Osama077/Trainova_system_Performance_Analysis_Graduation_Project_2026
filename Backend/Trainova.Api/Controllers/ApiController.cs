@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Collections;
+using Trainova.Api.Models;
+using Trainova.Application.Common.Models;
 using Trainova.Common.Errors;
 using Trainova.Common.ResultOf;
 
@@ -7,7 +10,7 @@ namespace Trainova.Api.Controllers;
 
 [ApiController]
 public class ApiController(
-    LinkGenerator _linkGenerator)
+    CurrentUser? currentUser)
     : ControllerBase
 {
 
@@ -24,38 +27,56 @@ public class ApiController(
         };
     }
 
-    protected IActionResult CreatedWithGetById<T>(
-        string actionName,
-        object routeValues,
-        T value)
-    {
-        var url = _linkGenerator.GetPathByAction(
-            HttpContext,
-            actionName,
-            values: routeValues
-        );
 
-        return Created(url!, value);
-    }
+
 
     protected IActionResult Success<T>(
-        T value,
-        DoneStatus status,
-        object? routeValues = null,
-        string getMethod = "GetById")
+    T value,
+    DoneStatus status)
     {
         return status switch
         {
-            DoneStatus.Created when routeValues is not null
-                => CreatedWithGetById(getMethod, routeValues, value),
-            DoneStatus.Created => StatusCode(201, value),
-            DoneStatus.Done => Ok(value),
-            DoneStatus.Accepted => Accepted(value),
-            DoneStatus.Partial => StatusCode(206, value),
-            DoneStatus.NoContent => NoContent(),
+            DoneStatus.Partial when value is IEnumerable enumerable
+                => StatusCode(206, CreateResponse(
+                    value,
+                    "Partial content",
+                    206,
+                    enumerable.Cast<object>().Count()
+                )),
 
-            _ => Ok(value)
+            DoneStatus.Created
+                => StatusCode(201, CreateResponse(value, "Created successfully", 201)),
+
+            DoneStatus.Done
+                => Ok(CreateResponse(value, "Success", 200)),
+
+            DoneStatus.Accepted
+                => Accepted(CreateResponse(value, "Accepted", 202)),
+
+            DoneStatus.Partial
+                => StatusCode(206, CreateResponse(value, "Partial content", 206)),
+
+            DoneStatus.NoContent
+                => NoContent(),
+
+            _ => Ok(CreateResponse(value, "Success", 200))
         };
+    }
+
+    private ApiResponse<T> CreateResponse<T>(
+    T? data,
+    string? message,
+    int statusCode,
+    int? totalCount = null)
+    {
+        return new ApiResponse<T>(
+            Data: data,
+            Message: message,
+            StatusCode: statusCode,
+            ResponseTime: DateTime.UtcNow,
+            TotalCount: totalCount,
+            UserId: currentUser.Id
+        );
     }
 
 
@@ -109,6 +130,7 @@ public class ApiController(
             errors => Problem(errors)
         );
     }
+
 
 
 

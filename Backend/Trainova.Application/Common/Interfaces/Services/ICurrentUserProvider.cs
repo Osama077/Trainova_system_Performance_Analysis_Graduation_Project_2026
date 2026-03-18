@@ -1,9 +1,9 @@
 using Trainova.Application.Common.Models;
 using Trainova.Common.ResultOf;
 
-namespace Trainova.Application.Common.Interfaces.Service;
+namespace Trainova.Application.Common.Interfaces.Services;
 
 public interface ICurrentUserProvider
 {
-    ResultOf<CurrentUser> GetCurrentUser();
+    CurrentUser? GetCurrentUser();
 }

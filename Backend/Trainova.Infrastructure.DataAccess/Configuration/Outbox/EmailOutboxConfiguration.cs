@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Trainova.Domain.Outbox;
+using Trainova.Domain.Common.Outbox;
 
 namespace Trainova.Infrastructure.DataAccess.Configuration.Outbox
 {

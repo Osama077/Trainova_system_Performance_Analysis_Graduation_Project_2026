@@ -1,4 +1,4 @@
-﻿using Trainova.Domain.Outbox;
+﻿using Trainova.Domain.Common.Outbox;
 
 namespace Trainova.Application.Common.Models
 {

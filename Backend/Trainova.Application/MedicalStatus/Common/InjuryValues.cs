@@ -1,0 +1,15 @@
+﻿namespace Trainova.Application.MedicalStatus.Common
+{
+    public static class InjuryValues
+    {
+        public static readonly string[] AllowedInjuryTypes = new[] { "Muscular", "Bone" };
+
+        public static readonly string MsgAllowedInjuryTypes = "AllowedInjuryTypes is [ \"Muscular\", \"Bone\" ]";
+
+
+
+        public static readonly string[] AllowedTimeTypes = new[] { "Days", "Weeks", "Months" };
+
+        public static readonly string MsgAllowedTimeTypes = "TimeType must be either 'Days', 'Weeks', or 'Months'.";
+    }
+}

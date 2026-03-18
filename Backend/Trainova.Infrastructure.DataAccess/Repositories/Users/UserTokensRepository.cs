@@ -1,5 +1,5 @@
-﻿using Trainova.Application.Common.Interfaces.Repositories;
-using Trainova.Domain.Users;
+﻿using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
+using Trainova.Domain.UserAuth.UserTokens;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.Users
 {

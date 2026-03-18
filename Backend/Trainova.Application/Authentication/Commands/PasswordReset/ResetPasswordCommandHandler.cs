@@ -1,11 +1,11 @@
-﻿using Trainova.Application.Common.Interfaces.Repositories;
-using Trainova.Application.Common.Interfaces.Service;
+﻿using Trainova.Application.Common.Interfaces.Service;
 using Trainova.Application.Authentication.Common;
-using Trainova.Domain.Common;
 using MediatR;
 using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Common.ResultOf;
 using Trainova.Common.Errors;
+using Trainova.Domain.Common.Services;
+using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
 
 
 namespace Trainova.Application.Authentication.Commands.PasswordReset

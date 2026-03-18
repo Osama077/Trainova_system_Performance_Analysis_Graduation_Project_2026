@@ -1,8 +1,8 @@
 ﻿using MediatR;
-using Trainova.Application.Common.Interfaces.Repositories;
+using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
 using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Common.ResultOf;
-using Trainova.Domain.Users;
+using Trainova.Domain.UserAuth.Users;
 
 namespace Trainova.Application.Authentication.Commands.UpdateUserData
 {

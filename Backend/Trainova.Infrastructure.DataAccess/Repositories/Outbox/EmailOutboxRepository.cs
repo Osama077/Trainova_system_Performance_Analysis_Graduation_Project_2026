@@ -1,8 +1,8 @@
 ﻿using Dapper;
 using System.Data;
-using Trainova.Application.Common.Interfaces.Repositories;
+using Trainova.Application.Common.Interfaces.Repositories.CommonRepos;
 using Trainova.Application.Common.Models;
-using Trainova.Domain.Outbox;
+using Trainova.Domain.Common.Outbox;
 using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.Outbox

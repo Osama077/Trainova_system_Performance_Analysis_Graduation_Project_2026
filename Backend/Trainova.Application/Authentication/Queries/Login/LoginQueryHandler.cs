@@ -3,8 +3,8 @@ using Trainova.Application.Authentication.Common;
 using Trainova.Application.Authentication.Queries.Login;
 using Trainova.Common.ResultOf;
 using Trainova.Application.Common.Interfaces.Service;
-using Trainova.Application.Common.Interfaces.Repositories;
-using Trainova.Domain.Common;
+using Trainova.Domain.Common.Services;
+using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
 
 namespace Trainova.Application.Authentication.Queries.Login;
 

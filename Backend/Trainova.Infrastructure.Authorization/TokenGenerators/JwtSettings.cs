@@ -7,6 +7,6 @@
         public string Audience { get; set; } = null!;
         public string Key { get; set; } = null!;
 
-        public int TokenExpirationInDays { get; set; }
+        public int TokenExpirationInMinutes { get; set; }
     }
 }

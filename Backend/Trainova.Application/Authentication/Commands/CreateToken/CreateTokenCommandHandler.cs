@@ -1,11 +1,11 @@
-﻿using Trainova.Application.Common.Interfaces.Repositories;
-using Trainova.Application.Common.Interfaces.Service;
+﻿using Trainova.Application.Common.Interfaces.Service;
 using MediatR;
 using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Common.ResultOf;
 using Trainova.Common.Errors;
-using Trainova.Domain.Users;
 using Trainova.Application.Common.Helpers;
+using Trainova.Domain.UserAuth.UserTokens;
+using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
 
 
 namespace Trainova.Application.Authentication.Commands.CreateToken

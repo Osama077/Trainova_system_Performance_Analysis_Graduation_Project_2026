@@ -1,8 +1,7 @@
 ﻿using Dapper;
 using System.Data;
-using Trainova.Common.SmartEnums;
-using Trainova.Domain.AccessPolicies;
 using Trainova.Domain.Common;
+using Trainova.Domain.Common.Helpers;
 
 namespace Trainova.Infrastructure.DataAccess.DbSettingsObjects
 {
@@ -12,7 +11,7 @@ namespace Trainova.Infrastructure.DataAccess.DbSettingsObjects
         {
             var enumTypes = typeof(DomainMarker).Assembly
                 .GetTypes()
-                .Where(t => t.IsEnum)
+                .Where(t => t.IsEnum && t.IsDefined(typeof(StoreAsStringAttribute),false))
                 .ToList();
 
             foreach (var type in enumTypes)

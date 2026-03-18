@@ -1,9 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Trainova.Application.Common.Interfaces.Repositories;
+using Trainova.Application.Common.Interfaces.Repositories.CommonRepos;
+using Trainova.Application.Common.Interfaces.Repositories.MedicalStatus;
+using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
 using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
+using Trainova.Infrastructure.DataAccess.Repositories.Audits;
+using Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus;
 using Trainova.Infrastructure.DataAccess.Repositories.Outbox;
 using Trainova.Infrastructure.DataAccess.Repositories.Users;
 
@@ -37,9 +41,11 @@ public static class DependencyInjection
         services.AddScoped<IUserTokensRepository, UserTokensRepository>();
         services.AddScoped<IUserRolesRepository, UserRolesRepository>();
 
-
-
-
+        //medical
+        services.AddScoped<IInjuryRepository, InjuryRepository>();
+        services.AddScoped<IPlayerInjuryRepository, PlayerInjuryRepository>();
+        //audit
+        services.AddScoped<IAuditRepository,AuditRepository>();
         // Outbox
         services.AddScoped<IEmailOutboxRepository, EmailOutboxRepository>();
 

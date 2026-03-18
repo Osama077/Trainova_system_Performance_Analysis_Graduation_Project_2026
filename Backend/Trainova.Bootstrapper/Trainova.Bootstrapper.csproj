@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MailKit" Version="4.15.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Trainova.Infrastructure.Authorization\Trainova.Infrastructure.Authorization.csproj" />
     <ProjectReference Include="..\Trainova.Infrastructure.DataAccess\Trainova.Infrastructure.DataAccess.csproj" />
   </ItemGroup>

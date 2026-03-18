@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Trainova.Application.Common.Interfaces.Repositories;
-using Trainova.Domain.Users;
+﻿using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
+using Trainova.Domain.UserAuth.UserRoles;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.Users
 {

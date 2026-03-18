@@ -1,10 +1,10 @@
 using MediatR;
 using Trainova.Application.Authentication.Common;
-using Trainova.Domain.Common;
 using Trainova.Application.Common.Interfaces.Service;
-using Trainova.Application.Common.Interfaces.Repositories;
 using Trainova.Common.ResultOf;
 using Trainova.Application.Common.Interfaces.Services;
+using Trainova.Domain.Common.Services;
+using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
 
 namespace Trainova.Application.Authentication.Commands.Register;
 

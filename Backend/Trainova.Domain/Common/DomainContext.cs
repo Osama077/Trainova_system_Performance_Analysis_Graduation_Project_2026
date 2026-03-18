@@ -2,20 +2,20 @@
 {
 ///<summary>
     /// *** Exercises and fitness training ***
-    /// Exercises should be in our system as a entity in a one to many relations with the Training sessions(trining event).
+    /// Exercises should be in our system as a entity in a one to many relations with the Training sessions(trining TrainingSession).
 ///</summary>
 
 ///<summary>
-    /// *** Plans and Events ***
+    /// *** Plans and TrainingSessions ***
         /// Plans are made due to a specific goal.
-        /// Plans can contain many events in.
-        /// Events Can Be Plannless (not assigned to a plan).
+        /// Plans can contain many TrainingSessions in.
+        /// TrainingSessions Can Be Plannless (not assigned to a plan).
         /// 
     /// <Canciled>
-        /// *** Plans and Events ***
+        /// *** Plans and TrainingSessions ***
         /// Plans are made due to a specific goal.
-        /// Plans can contain many events in and there may many plannable events but not assigned to a plan.
-        /// events can be plannable(can be assigned to a plan ) or unplannable (can't be assigned to a plan ).
+        /// Plans can contain many TrainingSessions in and there may many plannable TrainingSessions but not assigned to a plan.
+        /// TrainingSessions can be plannable(can be assigned to a plan ) or unplannable (can't be assigned to a plan ).
     /// </Canciled>
 ///</summary>
 

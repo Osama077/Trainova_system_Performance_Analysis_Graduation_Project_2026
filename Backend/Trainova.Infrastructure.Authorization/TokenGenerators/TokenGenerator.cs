@@ -1,10 +1,13 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using Trainova.Application.Common.Interfaces.Service;
-using Trainova.Domain.Users;
+using Trainova.Domain.UserAuth.Roles;
+using Trainova.Domain.UserAuth.Users;
+using Trainova.Domain.UserAuth.UserTokens;
 
 namespace Trainova.Infrastructure.Authorization.TokenGenerators
 {
@@ -12,9 +15,9 @@ namespace Trainova.Infrastructure.Authorization.TokenGenerators
     {
         public readonly JwtSettings _jwtSettings;
 
-        public TokenGenerator(JwtSettings jwtSettings)
+        public TokenGenerator(IOptions<JwtSettings> options)
         {
-            _jwtSettings = jwtSettings;
+            _jwtSettings = options.Value;
         }
 
         public string GenerateJwtToken(User user, List<Role>? roles = null)
@@ -42,7 +45,7 @@ namespace Trainova.Infrastructure.Authorization.TokenGenerators
                 issuer: _jwtSettings.Issuer,
                 audience: _jwtSettings.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddDays(_jwtSettings.TokenExpirationInDays),
+                expires: DateTime.UtcNow.AddDays(_jwtSettings.TokenExpirationInMinutes),
                 signingCredentials: credentials
             );
             return new JwtSecurityTokenHandler().WriteToken(token);

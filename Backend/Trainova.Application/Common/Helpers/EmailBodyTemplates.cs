@@ -1,4 +1,4 @@
-﻿using Trainova.Domain.Users;
+﻿using Trainova.Domain.UserAuth.UserTokens;
 
 namespace Trainova.Application.Common.Helpers
 {

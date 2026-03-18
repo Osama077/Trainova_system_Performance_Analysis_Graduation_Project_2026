@@ -14,4 +14,13 @@
     <ProjectReference Include="..\Trainova.Common\Trainova.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="MatchsManagement\Lineups\" />
+    <Folder Include="MatchsManagement\Events\" />
+    <Folder Include="MatchsManagement\ComputedFeatures\" />
+    <Folder Include="MatchsManagement\ModelScores\" />
+    <Folder Include="SeasonsAnalyses\PositionBenchmarks\" />
+    <Folder Include="SeasonsAnalyses\Seasons\" />
+  </ItemGroup>
+
 </Project>

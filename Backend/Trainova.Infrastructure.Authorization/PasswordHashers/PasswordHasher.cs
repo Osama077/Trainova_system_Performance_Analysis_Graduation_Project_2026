@@ -1,6 +1,6 @@
 ﻿using Trainova.Common.Errors;
 using Trainova.Common.ResultOf;
-using Trainova.Domain.Common;
+using Trainova.Domain.Common.Services;
 namespace Trainova.Infrastructure.Authorization.PasswordHashers
 {
     public class PasswordHasher : IPasswordHasher

@@ -1,5 +1,7 @@
 using Trainova.Application.Authentication.Common;
-using Trainova.Domain.Users;
+using Trainova.Domain.UserAuth.Roles;
+using Trainova.Domain.UserAuth.Users;
+using Trainova.Domain.UserAuth.UserTokens;
 
 namespace Trainova.Application.Common.Interfaces.Service;
 
