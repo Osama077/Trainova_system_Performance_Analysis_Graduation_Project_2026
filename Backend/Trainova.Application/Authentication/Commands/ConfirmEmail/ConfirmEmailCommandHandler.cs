@@ -20,31 +20,39 @@ namespace Trainova.Application.Authentication.Commands.ConfirmEmail
         {
             try
             {
-
-
                 var Token = await _tokenRepsitory.GetByTokenAndTypeAsync(request.Token, TokenType.EmailConfirmation);
                 if(Token is null)
                 {
-                    return Error.Custom(code: "NotFound", description: "Some Thing Went Worng", type: 3);
+                    return Error.NotFound(code: "NotFound", description: "token is null");
                 }
 
-                var user = await _usersRepository.GetByIdAsync(Token.UserId);
+                var user = await _usersRepository.GetByEmailAsync(request.Email);
 
-                if (user is null
-                    || !(user.Id == Token.UserId))
+                if (user is null)
                 {
-                    return Error.Custom(code: "NotFound", description: "Some Thing Went Worng", type: 3);
+                    return Error.NotFound(code: "NotFound", description: "user is null");
                 }
 
+                if (user.Id != Token.UserId)
+                {
+                    Token.Revoke(RevokeCause.UserNotMatch);
+                    await _unitOfWork.SaveChangesAsync(cancellationToken);
+                    return Error.Conflict(
+                        code: "ConfirmEmailCommandHandler.Handle_Conflict",
+                        description: "the user email cant match the the user Id related to the tokens");
+                }
                 if (Token.IsExpired)
-                    return Error.Custom(code: "Expired", description: "The token has expired.", type: 3);
+                    return Error.Conflict(code: "Expired", description: "The token has expired.");
 
                 user.ConfirmEmail();
                 Token.MarkUsed();
 
                 await _unitOfWork.StartTransactionAsync();
+
                 _tokenRepsitory.Update(Token);
                 _usersRepository.Update(user);
+
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
                 await _unitOfWork.CommitTransactionAsync();
 
 

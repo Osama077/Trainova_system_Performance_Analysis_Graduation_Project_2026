@@ -1,13 +1,13 @@
 ﻿using Trainova.Domain.Common.AuditLogs;
+using Trainova.Domain.Common.BaseEntity;
 using Trainova.Domain.Common.Enums;
 using Trainova.Domain.SeasonsAnalyses.Teams;
 using Trainova.Domain.UserAuth.Users;
 
 namespace Trainova.Domain.Profiles.Players
 {
-    public class Player : IAuditable<Guid>
+    public class Player : AuditableEntity<Guid>
     {
-        public Guid Id { get; private set; }
         public User User { get; private set; }
         public Guid CurrentTeamId { get; private set; }
         public Team CurrentTeam { get; private set; }
@@ -16,15 +16,33 @@ namespace Trainova.Domain.Profiles.Players
         public PlayerMedecalStatus MedecalStatus { get; private set; } = PlayerMedecalStatus.Fit;
         public Position CurrentMainPosition { get; private set; }
         public Position OtherAvailablePositions { get; private set; }
-        public float PerformanceLevel { get; private set; }
+        public decimal PerformanceLevel { get; private set; }
 
         public DateOnly DateOfEnrolment { get; private set; }
-        public DateTime CreatedAt { get; private set; }
-        public DateTime? LastUpdate { get; private set; }
-        public Guid? CreatedBy { get; private set; }
-        object IAuditable.Id => Id;
 
-        private Player() { }
 
+        private Player() : base()
+        {
+        }
+
+        public Player(
+            Guid currentTeamId,
+            int playerNumber,
+            string tShirtName,
+            PlayerMedecalStatus medecalStatus,
+            Position currentMainPosition,
+            Position otherAvailablePositions,
+            decimal performanceLevel,
+            DateOnly dateOfEnrolment)
+        {
+            CurrentTeamId = currentTeamId;
+            PlayerNumber = playerNumber;
+            TShirtName = tShirtName;
+            MedecalStatus = medecalStatus;
+            CurrentMainPosition = currentMainPosition;
+            OtherAvailablePositions = otherAvailablePositions;
+            PerformanceLevel = performanceLevel;
+            DateOfEnrolment = dateOfEnrolment;
+        }
     }
 }

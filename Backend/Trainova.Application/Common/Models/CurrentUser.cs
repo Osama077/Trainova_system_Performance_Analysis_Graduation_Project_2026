@@ -8,6 +8,7 @@ public record CurrentUser(
     Guid? Id,
     string? FullName,
     string? Email,
+    UserIP? UserIP,
     IReadOnlyList<string> Roles,
     IReadOnlyList<Claim> Claims
 )
@@ -29,4 +30,23 @@ public record CurrentUser(
     public IReadOnlyList<Claim> GetClaims() =>
         Claims.ToArray();
 }
+public record UserIP(byte O1,byte O2,byte O3,byte O4)
+{
+    public override string ToString()
+    {
+        return $"{O1}.{O2}.{O3}.{O4}";
+    }
+    public static UserIP FromString(string value)
+    {
+        var bytes = value.Split('.',
+            options: StringSplitOptions.RemoveEmptyEntries);
 
+        return new UserIP(
+            Byte.Parse(bytes[0]),
+            Byte.Parse(bytes[1]),
+            Byte.Parse(bytes[2]),
+            Byte.Parse(bytes[3])
+        );
+    }
+
+}

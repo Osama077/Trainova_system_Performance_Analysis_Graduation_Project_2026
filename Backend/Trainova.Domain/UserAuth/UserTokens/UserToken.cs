@@ -26,6 +26,7 @@ namespace Trainova.Domain.UserAuth.UserTokens
         public bool IsUsed { get; private set; }
         public DateTime? UsedAt { get; private set; }
         public bool IsRevoked { get; private set; }
+        public RevokeCause RevokeCause { get; private set; }
         public DateTime? RevokedAt { get; private set; }
         public DateTime CreatedAt { get; private set; }
 
@@ -38,6 +39,15 @@ namespace Trainova.Domain.UserAuth.UserTokens
         {
             IsUsed = true;
             UsedAt = DateTime.UtcNow;
+        }
+
+        public void Revoke(RevokeCause cause = RevokeCause.NotDetermine)
+        {
+            RevokeCause = cause;
+            IsUsed = false;
+            UsedAt = null;
+            IsRevoked = true;
+            RevokedAt = DateTime.UtcNow;
         }
     }
 }

@@ -8,6 +8,7 @@
         Guid? CreatedBy { get; }
     }
 
+
     public interface IAuditable<TId> : IAuditable
     {
         new TId Id { get; }

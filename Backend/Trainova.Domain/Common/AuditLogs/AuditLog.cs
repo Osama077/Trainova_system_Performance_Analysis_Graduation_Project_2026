@@ -15,15 +15,13 @@ namespace Trainova.Domain.Common.AuditLogs
         public AuditActionType Action { get; private set; } = default!;
         // old values before the action (as JSON string)
         public string? OldValues { get; private set; }
+        public Guid? UserId { get; private set; }
 
         public DateTime From { get; private set; }
         public DateTime ChangedAt { get; private set; }
         public bool IsRecovered { get; private set; } = false;
         public DateTime? RecoveredAt { get; private set; }
-        public Guid? UserId { get; private set; }
-
-        //public Guid? DependencyAuditId { get; }
-        //public string? DependencyType { get; }
+        public Guid? RecoveredByUserId { get; private set; }
 
 
 
@@ -32,31 +30,18 @@ namespace Trainova.Domain.Common.AuditLogs
         {
             UserId = userId;
         }
-
-
-
-        private AuditLog() { }
-
-        public AuditLog(string entityName, string entityId, AuditActionType action, string? oldValues)
+        public void SetRecoverdUser(Guid userId)
         {
-            Id = Guid.NewGuid();
-            EntityName = entityName;
-            EntityId = entityId;
-            Action = action;
-            OldValues = oldValues;
+            RecoveredByUserId = userId;
         }
-        public AuditLog(IAuditable<Guid> auditable, AuditActionType action)
+
+
+
+        private AuditLog()
         {
-            Id = Guid.NewGuid();
-            EntityName = auditable.GetType().Name;
-            EntityId = auditable.Id.ToString("N");
-            Action = action;
-            OldValues = auditable.Serialize();
-            From = auditable.LastUpdate ?? auditable.CreatedAt;
-            ChangedAt = DateTime.UtcNow;
-            IsRecovered = false;
-            RecoveredAt = null;
         }
+
+
 
 
 
@@ -68,11 +53,12 @@ namespace Trainova.Domain.Common.AuditLogs
                 EntityName = auditable.GetType().Name,
                 EntityId = auditable.Id.ToString(),
                 Action = action,
-                OldValues = JsonSerializer.Serialize(auditable),
+                OldValues = auditable.Serialize(),
                 From = auditable.LastUpdate ?? auditable.CreatedAt,
                 ChangedAt = DateTime.UtcNow,
                 IsRecovered = false,
-                RecoveredAt = null
+                RecoveredAt = null,
+                RecoveredByUserId = null
             };
         }
 

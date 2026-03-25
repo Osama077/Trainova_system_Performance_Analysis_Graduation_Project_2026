@@ -25,7 +25,7 @@ namespace Trainova.Application.Authentication.Commands.CreateToken
 
             if (user is null)
             {
-                return Error.Custom(code: "NotFound", description: "No, Account With this Email.", type: 4);
+                return Error.Conflict(code: "CreateTokenCommandHandler.Handle_NotFound", description: "No, Account With this Email.");
             }
 
             var tokenType = TokenType.FromName(request.Type);
@@ -43,7 +43,7 @@ namespace Trainova.Application.Authentication.Commands.CreateToken
                 EmailBodyTemplates.GenerateTemplate(user.Email, token.Token, token.TokenType)
             );
 
-            return new Done();
+            return Done.NoContent.AsNoContent();
 
         }
     }
