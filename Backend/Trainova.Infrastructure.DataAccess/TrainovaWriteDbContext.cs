@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Security.AccessControl;
 using Trainova.Application.Common.Interfaces.Services;
@@ -50,6 +50,7 @@ namespace Trainova.Infrastructure.DataAccess
 
         //medical
         public DbSet<PlayerInjury> PlayerInjuries { get; set; }
+        public DbSet<Trainova.Domain.MedicalStatus.Injuries.Injury> Injuries { get; set; }
 
         //profiles
         public DbSet<Player> Players { get; set; }
@@ -153,6 +154,7 @@ namespace Trainova.Infrastructure.DataAccess
 
             return result;
         }
+        
 
     }
 }

@@ -1,28 +1,77 @@
 ﻿using Trainova.Application.Common.Interfaces.Repositories.MedicalStatus;
 using Trainova.Domain.MedicalStatus.PlayerInjuries;
+using Microsoft.EntityFrameworkCore;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus
 {
     public class PlayerInjuryRepository : IPlayerInjuryRepository
     {
-        public Task AddAsync(PlayerInjury playerInjury)
+        private readonly TrainovaWriteDbContext _db;
+
+        public PlayerInjuryRepository(TrainovaWriteDbContext db)
         {
-            throw new NotImplementedException();
+            _db = db;
         }
 
-        public Task DeleteRangeAsync(IEnumerable<PlayerInjury> playerInjuries)
+        public async Task AddAsync(PlayerInjury playerInjury)
         {
-            throw new NotImplementedException();
+            await _db.PlayerInjuries.AddAsync(playerInjury);
+            await _db.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<PlayerInjury>> GetAllAsync(Guid? playerInjuryId = null, Guid? playerId = null, Guid? injuryId = null, InjuryStatus? status = null, InjuryCause? cause = null, bool? isNew = null, DateTime? happendBefore = null, DateTime? happendAfter = null, DateTime? expectedReturnBefore = null, DateTime? expectedReturnAfter = null, DateTime? returnedBefore = null, DateTime? returnedAfter = null)
+        public async Task DeleteRangeAsync(IEnumerable<PlayerInjury> playerInjuries)
         {
-            throw new NotImplementedException();
+            _db.PlayerInjuries.RemoveRange(playerInjuries);
+            await _db.SaveChangesAsync();
         }
 
-        public Task UpdateAsync(PlayerInjury playerInjury)
+        public async Task<IEnumerable<PlayerInjury>> GetAllAsync(Guid? playerInjuryId = null, Guid? playerId = null, Guid? injuryId = null, InjuryStatus? status = null, InjuryCause? cause = null, bool? isNew = null, DateTime? happendBefore = null, DateTime? happendAfter = null, DateTime? expectedReturnBefore = null, DateTime? expectedReturnAfter = null, DateTime? returnedBefore = null, DateTime? returnedAfter = null)
         {
-            throw new NotImplementedException();
+            IQueryable<PlayerInjury> query = _db.PlayerInjuries.AsQueryable();
+
+            if (playerInjuryId.HasValue)
+                query = query.Where(pi => pi.Id == playerInjuryId.Value);
+
+            if (playerId.HasValue)
+                query = query.Where(pi => pi.PlayerId == playerId.Value);
+
+            if (injuryId.HasValue)
+                query = query.Where(pi => pi.InjuryId == injuryId.Value);
+
+            if (status.HasValue)
+                query = query.Where(pi => pi.Status == status.Value);
+
+            if (cause.HasValue)
+                query = query.Where(pi => pi.Cause == cause.Value);
+
+            if (isNew.HasValue)
+                query = query.Where(pi => pi.IsNew == isNew.Value);
+
+            if (happendBefore.HasValue)
+                query = query.Where(pi => pi.HappendAt <= happendBefore.Value);
+
+            if (happendAfter.HasValue)
+                query = query.Where(pi => pi.HappendAt >= happendAfter.Value);
+
+            if (expectedReturnBefore.HasValue)
+                query = query.Where(pi => pi.ExpectedReturnDate <= expectedReturnBefore.Value);
+
+            if (expectedReturnAfter.HasValue)
+                query = query.Where(pi => pi.ExpectedReturnDate >= expectedReturnAfter.Value);
+
+            if (returnedBefore.HasValue)
+                query = query.Where(pi => pi.ReturnedAt <= returnedBefore.Value);
+
+            if (returnedAfter.HasValue)
+                query = query.Where(pi => pi.ReturnedAt >= returnedAfter.Value);
+
+            return await query.ToListAsync();
+        }
+
+        public async Task UpdateAsync(PlayerInjury playerInjury)
+        {
+            _db.PlayerInjuries.Update(playerInjury);
+            await _db.SaveChangesAsync();
         }
     }
 }

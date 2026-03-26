@@ -1,33 +1,58 @@
 ﻿using Trainova.Application.Common.Interfaces.Repositories.MedicalStatus;
 using Trainova.Domain.MedicalStatus.Injuries;
+using Microsoft.EntityFrameworkCore;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus
 {
     public class InjuryRepository : IInjuryRepository
     {
-        public Task AddAsync(Injury injury)
+        private readonly TrainovaWriteDbContext _db;
+
+        public InjuryRepository(TrainovaWriteDbContext db)
         {
-            throw new NotImplementedException();
+            _db = db;
         }
 
-        public Task DeleteAsync(Injury injury)
+        public async Task AddAsync(Injury injury)
         {
-            throw new NotImplementedException();
+            await _db.Injuries.AddAsync(injury);
+            await _db.SaveChangesAsync();
         }
 
-        public Task<Injury> GetByIdAsync(Guid id)
+        public async Task DeleteAsync(Injury injury)
         {
-            throw new NotImplementedException();
+            _db.Injuries.Remove(injury);
+            await _db.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<Injury>> GetInjuriesAsync(Guid? id, string? injuryType, int page, int pageSize)
+        public async Task<Injury> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var injury = await _db.Injuries.FindAsync(id);
+            if (injury == null)
+                throw new KeyNotFoundException($"Injury with id {id} not found");
+            return injury;
         }
 
-        public Task UpdateAsync(Injury injury)
+        public async Task<IEnumerable<Injury>> GetInjuriesAsync(Guid? id, string? injuryType, int page, int pageSize)
         {
-            throw new NotImplementedException();
+            var query = _db.Injuries.AsQueryable();
+
+            if (id.HasValue)
+                query = query.Where(i => i.Id == id.Value);
+
+            if (!string.IsNullOrWhiteSpace(injuryType))
+                query = query.Where(i => i.InjuryType != null && i.InjuryType.ToString() == injuryType);
+
+            // paging
+            var skip = (Math.Max(page, 1) - 1) * Math.Max(pageSize, 1);
+
+            return await query.Skip(skip).Take(pageSize).ToListAsync();
+        }
+
+        public async Task UpdateAsync(Injury injury)
+        {
+            _db.Injuries.Update(injury);
+            await _db.SaveChangesAsync();
         }
     }
 }
