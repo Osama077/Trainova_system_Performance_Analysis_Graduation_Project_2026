@@ -109,7 +109,7 @@ namespace Trainova.Domain.MatchsManagement.Events
             double? pressureDuration = null,
             bool? underPressure = null,
             bool? counterPress = null,
-            Guid? createdBy = null) : base(Guid.NewGuid(), createdBy)
+            Guid? createdBy = null) : base(createdBy)
         {
 
             MatchId = matchId;

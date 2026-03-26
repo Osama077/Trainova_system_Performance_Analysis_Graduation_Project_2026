@@ -35,7 +35,7 @@ namespace Trainova.Domain.MatchsManagement.Lineups
             Position? startingPosition,
             bool isStarter,
             int minutesPlayed,
-            Guid? createdBy = null) : base(Guid.NewGuid(), createdBy)
+            Guid? createdBy = null) : base(createdBy)
         {
             MatchId = matchId;
             PlayerId = playerId;

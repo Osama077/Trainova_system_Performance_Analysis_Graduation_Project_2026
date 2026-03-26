@@ -1,24 +1,19 @@
 ﻿using Trainova.Domain.Common.AuditLogs;
+using Trainova.Domain.Common.BaseEntity;
 
 namespace Trainova.Domain.TrainingSessionsAccessibility.AccessPolicies
 {
-    public class AccessPolicy : IAuditable<Guid>
+    public class AccessPolicy : AuditableEntity<Guid>
     {
-        public Guid Id { get; private set; }
         public string? PolicyName { get; private set; } = null;
 
-        public DateTime CreatedAt { get; private set; } = DateTime.Now;
 
-        public DateTime? LastUpdate { get; private set; } = null;
 
-        public Guid? CreatedBy { get; private set; }
-        object IAuditable.Id => Id;
-
-        public ICollection<PolicyUser> PolicyUsers { get; private set; } = [];
-
-        public AccessPolicy(string? policyName = null)
+        public ICollection<UserAccessPolicy> PolicyUsers { get; private set; } = [];
+        private AccessPolicy() : base(){ }
+        public AccessPolicy(string? policyName = null, Guid? createdBy = null)
+            : base(createdBy)
         {
-            Id = Guid.NewGuid();
             PolicyName = policyName;
         }
     }

@@ -1,15 +1,13 @@
 ﻿using Trainova.Common.Errors;
 using Trainova.Common.ResultOf;
-using Trainova.Domain.Common.AuditLogs;
+using Trainova.Domain.Common.BaseEntity;
 using Trainova.Domain.Common.Services;
 using Trainova.Domain.UserAuth.UserRoles;
 
 namespace Trainova.Domain.UserAuth.Users
 {
-    public class User :IAuditable<Guid>
+    public class User :AuditableEntity<Guid>
     {
-        public Guid Id { get; private set; }
-
         public string ShowName { get; private set; } = null!;
         public string FullName { get; private set; } = null!;
         public string PhotoPath { get; private set; } = null!;
@@ -22,13 +20,8 @@ namespace Trainova.Domain.UserAuth.Users
 
         public ICollection<UserRole> Roles { get; private set; } = new List<UserRole>();
 
-        public DateTime CreatedAt { get; private set; }
 
-        public DateTime? LastUpdate { get; private set; }
 
-        public Guid? CreatedBy { get; private set; }
-
-        object IAuditable.Id => Id;
 
         private User() { }
 
@@ -60,14 +53,15 @@ namespace Trainova.Domain.UserAuth.Users
             ConfirmedAt = DateTime.UtcNow;
         }
 
-        public void UpdateUserData(string? showName, string? fullName, string? photoPath, string? email)
+        public void UpdateUserData(
+            string? showName = null,
+            string? fullName = null,
+            string? photoPath = null,
+            string? email = null)
         {
-            if (showName is not null)
-                ShowName = showName;
-            if (fullName is not null)
-                FullName = fullName;
-            if (photoPath is not null)
-                PhotoPath = photoPath;
+            ShowName = showName?? ShowName;
+            FullName = fullName?? FullName;
+            PhotoPath = photoPath?? PhotoPath;
             if (email is not null)
             {
                 Email = email;

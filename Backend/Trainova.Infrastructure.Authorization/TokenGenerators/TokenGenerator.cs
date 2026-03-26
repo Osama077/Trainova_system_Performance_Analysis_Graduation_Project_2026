@@ -2,12 +2,10 @@
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
-using Trainova.Application.Common.Interfaces.Service;
+using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Domain.UserAuth.Roles;
 using Trainova.Domain.UserAuth.Users;
-using Trainova.Domain.UserAuth.UserTokens;
 
 namespace Trainova.Infrastructure.Authorization.TokenGenerators
 {
@@ -52,59 +50,7 @@ namespace Trainova.Infrastructure.Authorization.TokenGenerators
 
         }
 
-        public UserToken GenerateUserTokens(User user, TokenType tokenType)
-        {
-            string token;
 
-            switch (tokenType.Value)
-            {
-                case 4: // RefreshToken
-                    token = GenerateSecureRandomString(128);
-                    break;
-
-                case 1: // EmailConfirmation
-                case 2: // PasswordReset
-                    token = GenerateSecureRandomString(6);
-                    break;
-
-                case 3: // TwoFactorAuthentication
-                    token = GenerateNumericCode(6);
-                    break;
-
-                default:
-                    throw new ArgumentException("Unsupported token type");
-            }
-
-
-            return new UserToken(user.Id, token, tokenType);
-
-        }
-
-
-
-        public static string GenerateSecureRandomString(int length)
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            var data = new byte[length];
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(data);
-            }
-
-            var result = new StringBuilder(length);
-            foreach (byte b in data)
-            {
-                result.Append(chars[b % chars.Length]);
-            }
-
-            return result.ToString();
-        }
-
-        private string GenerateNumericCode(int length)
-        {
-            var rng = new Random();
-            return rng.Next((int)Math.Pow(10, length - 1), (int)Math.Pow(10, length)).ToString();
-        }
 
     }
 }

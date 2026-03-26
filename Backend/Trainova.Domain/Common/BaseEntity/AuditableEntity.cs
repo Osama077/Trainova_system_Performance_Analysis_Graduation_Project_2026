@@ -13,6 +13,10 @@ namespace Trainova.Domain.Common.BaseEntity
         {
             LastUpdate = null;
         }
+        protected AuditableEntity(Guid? createdBy = null) : base(createdBy)
+        {
+            LastUpdate = null;
+        }
         protected AuditableEntity()
             : base()
         {

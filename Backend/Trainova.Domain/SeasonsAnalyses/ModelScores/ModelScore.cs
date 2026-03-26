@@ -2,7 +2,7 @@
 using Trainova.Domain.MatchsManagement.Matches;
 using Trainova.Domain.Profiles.Players;
 
-namespace Trainova.Domain.SeasonsManagement.ModelScores
+namespace Trainova.Domain.SeasonsAnalyses.ModelScores
 {
     public class ModelScore : Entity<Guid>
     {
@@ -62,7 +62,7 @@ namespace Trainova.Domain.SeasonsManagement.ModelScores
             double percentileInPosition,
             string? playerCluster,
             string? performanceTrend,
-            Guid? createdBy = null) : base(Guid.NewGuid(), createdBy)
+            Guid? createdBy = null) : base(createdBy)
         {
             PlayerId = playerId;
             MatchId = matchId;

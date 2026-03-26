@@ -26,7 +26,7 @@ namespace Trainova.Domain.MatchsManagement.Matches
 
 
 
-        private Match() { } // For ORM
+        private Match() :base() { } // For ORM
 
         public Match(
             Guid competitionId,
@@ -36,7 +36,7 @@ namespace Trainova.Domain.MatchsManagement.Matches
             string stadium,
             string referee,
             int matchWeek,
-            Guid? createdBy = null) : base(Guid.NewGuid(), createdBy)
+            Guid? createdBy = null) : base(createdBy)
         {
             Id = Guid.NewGuid();
             CompetitionId = competitionId;

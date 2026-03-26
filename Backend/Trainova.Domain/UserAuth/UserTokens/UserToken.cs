@@ -4,19 +4,6 @@ namespace Trainova.Domain.UserAuth.UserTokens
 {
     public class UserToken
     {
-        public UserToken(Guid userId, string token, TokenType tokenType)
-        {
-            Id = Guid.NewGuid();
-            Token = token;
-            UserId = userId;
-            TokenType = tokenType;
-            IsUsed = false;
-            UsedAt = null;
-            IsRevoked = false;
-            RevokedAt = null;
-            CreatedAt = DateTime.UtcNow;
-        }
-
         public Guid Id { get; private set; }
         public string Token { get; private set; }
 
@@ -26,12 +13,26 @@ namespace Trainova.Domain.UserAuth.UserTokens
         public bool IsUsed { get; private set; }
         public DateTime? UsedAt { get; private set; }
         public bool IsRevoked { get; private set; }
-        public RevokeCause RevokeCause { get; private set; }
+        public RevokeCause? RevokeCause { get; private set; }
         public DateTime? RevokedAt { get; private set; }
         public DateTime CreatedAt { get; private set; }
 
-
-
+        private UserToken() { }
+        public UserToken(
+            Guid userId,
+            TokenType tokenType)
+        {
+            Id = Guid.NewGuid();
+            Token = TokenType.Create();
+            UserId = userId;
+            TokenType = tokenType;
+            IsUsed= false;
+            UsedAt = null;
+            IsRevoked= false;
+            RevokeCause = null;
+            RevokedAt = null;
+            CreatedAt= DateTime.UtcNow;
+        }
         public bool IsExpired => CreatedAt.Add(TokenType.Expiration) < DateTime.UtcNow;
 
 
@@ -41,7 +42,7 @@ namespace Trainova.Domain.UserAuth.UserTokens
             UsedAt = DateTime.UtcNow;
         }
 
-        public void Revoke(RevokeCause cause = RevokeCause.NotDetermine)
+        public void Revoke(RevokeCause cause = UserTokens.RevokeCause.NotDetermine)
         {
             RevokeCause = cause;
             IsUsed = false;

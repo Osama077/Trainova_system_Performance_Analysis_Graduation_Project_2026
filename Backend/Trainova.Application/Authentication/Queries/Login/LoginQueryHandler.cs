@@ -2,9 +2,9 @@ using MediatR;
 using Trainova.Application.Authentication.Common;
 using Trainova.Application.Authentication.Queries.Login;
 using Trainova.Common.ResultOf;
-using Trainova.Application.Common.Interfaces.Service;
 using Trainova.Domain.Common.Services;
 using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
+using Trainova.Application.Common.Interfaces.Services;
 
 namespace Trainova.Application.Authentication.Queries.Login;
 

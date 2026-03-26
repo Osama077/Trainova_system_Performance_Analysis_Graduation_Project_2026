@@ -17,7 +17,7 @@ namespace Trainova.Domain.MatchsManagement.Videos
             string objectStoregeProviderId = null,
             string providerName = null,
             Guid? relatedTrainingSessionId = null,
-            Guid? createdBy = null) : base(Guid.NewGuid(), createdBy)
+            Guid? createdBy = null) : base(createdBy)
         {
             VideoUrl = videoUrl;
             ObjectStoregeProviderId = objectStoregeProviderId;

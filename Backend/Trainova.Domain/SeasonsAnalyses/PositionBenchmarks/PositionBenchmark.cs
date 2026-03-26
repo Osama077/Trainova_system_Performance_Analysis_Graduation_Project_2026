@@ -1,6 +1,6 @@
 ﻿using Trainova.Domain.Common.BaseEntity;
 
-namespace Trainova.Domain.SeasonsManagement.PositionBenchmarkes
+namespace Trainova.Domain.SeasonsAnalyses.PositionBenchmarks
 {
     public class PositionBenchmark : Entity<Guid>
     {
@@ -32,12 +32,12 @@ namespace Trainova.Domain.SeasonsManagement.PositionBenchmarkes
 
         public double? WeightBehavioral { get; private set; }
 
-        public Guid SeasonId { get; private set; }
+        public int SeasonId { get; private set; }
 
-        public Guid CompetitionId { get; private set; }
+        public int CompetitionId { get; private set; }
 
 
-        private PositionBenchmark() { }
+        private PositionBenchmark() :base() { }
 
         public PositionBenchmark(
             string? positionGroup,
@@ -54,11 +54,10 @@ namespace Trainova.Domain.SeasonsManagement.PositionBenchmarkes
             double? weightMovement,
             double? weightPhysical,
             double? weightBehavioral,
-            Guid seasonId,
-            Guid competitionId,
-            Guid? createdBy = null) : base(Guid.NewGuid(), createdBy)
+            int seasonId,
+            int competitionId,
+            Guid?createdBy = null) :base (createdBy)
         {
-
             PositionGroup = positionGroup;
             AvgPassAccuracy = avgPassAccuracy;
             AvgProgressivePasses = avgProgressivePasses;
@@ -79,47 +78,46 @@ namespace Trainova.Domain.SeasonsManagement.PositionBenchmarkes
             CompetitionId = competitionId;
 
         }
+        /*
+        public void Update(
+            string? positionGroup = null,
+            double? avgPassAccuracy = null,
+            double? avgProgressivePasses = null,
+            double? avgPressures = null,
+            double? avgDistanceCovered = null,
+            double? avgXg = null,
+            double? avgVaep = null,
+            double? weightPassing = null,
+            double? weightShooting = null,
+            double? weightPositioning = null,
+            double? weightPressing = null,
+            double? weightMovement = null,
+            double? weightPhysical = null,
+            double? weightBehavioral = null,
+            int? seasonId = null,
+            int? competitionId = null)
+        {
+            PositionGroup = positionGroup ?? PositionGroup;
 
-        //public void Update(
-        //    string? positionGroup = null,
-        //    double? avgPassAccuracy = null,
-        //    double? avgProgressivePasses = null,
-        //    double? avgPressures = null,
-        //    double? avgDistanceCovered = null,
-        //    double? avgXg = null,
-        //    double? avgVaep = null,
-        //    double? weightPassing = null,
-        //    double? weightShooting = null,
-        //    double? weightPositioning = null,
-        //    double? weightPressing = null,
-        //    double? weightMovement = null,
-        //    double? weightPhysical = null,
-        //    double? weightBehavioral = null,
-        //    int? seasonId = null,
-        //    int? competitionId = null)
-        //{
-        //    PositionGroup = positionGroup ?? PositionGroup;
+            AvgPassAccuracy = avgPassAccuracy ?? AvgPassAccuracy;
+            AvgProgressivePasses = avgProgressivePasses ?? AvgProgressivePasses;
+            AvgPressures = avgPressures ?? AvgPressures;
+            AvgDistanceCovered = avgDistanceCovered ?? AvgDistanceCovered;
+            AvgXg = avgXg ?? AvgXg;
+            AvgVaep = avgVaep ?? AvgVaep;
 
-        //    AvgPassAccuracy = avgPassAccuracy ?? AvgPassAccuracy;
-        //    AvgProgressivePasses = avgProgressivePasses ?? AvgProgressivePasses;
-        //    AvgPressures = avgPressures ?? AvgPressures;
-        //    AvgDistanceCovered = avgDistanceCovered ?? AvgDistanceCovered;
-        //    AvgXg = avgXg ?? AvgXg;
-        //    AvgVaep = avgVaep ?? AvgVaep;
+            WeightPassing = weightPassing ?? WeightPassing;
+            WeightShooting = weightShooting ?? WeightShooting;
+            WeightPositioning = weightPositioning ?? WeightPositioning;
+            WeightPressing = weightPressing ?? WeightPressing;
+            WeightMovement = weightMovement ?? WeightMovement;
+            WeightPhysical = weightPhysical ?? WeightPhysical;
+            WeightBehavioral = weightBehavioral ?? WeightBehavioral;
 
-        //    WeightPassing = weightPassing ?? WeightPassing;
-        //    WeightShooting = weightShooting ?? WeightShooting;
-        //    WeightPositioning = weightPositioning ?? WeightPositioning;
-        //    WeightPressing = weightPressing ?? WeightPressing;
-        //    WeightMovement = weightMovement ?? WeightMovement;
-        //    WeightPhysical = weightPhysical ?? WeightPhysical;
-        //    WeightBehavioral = weightBehavioral ?? WeightBehavioral;
-
-        //    SeasonId = seasonId ?? SeasonId;
-        //    CompetitionId = competitionId ?? CompetitionId;
-
-            
-        //}
+            SeasonId = seasonId ?? SeasonId;
+            CompetitionId = competitionId ?? CompetitionId;
+        }
+        */
     }
 
 }

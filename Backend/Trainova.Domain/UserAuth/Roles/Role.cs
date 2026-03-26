@@ -1,4 +1,5 @@
-﻿using Trainova.Domain.UserAuth.UserRoles;
+﻿using Trainova.Domain.Common.BaseEntity;
+using Trainova.Domain.UserAuth.UserRoles;
 
 namespace Trainova.Domain.UserAuth.Roles
 {
@@ -15,5 +16,6 @@ namespace Trainova.Domain.UserAuth.Roles
             Name = name;
             NormalizedName = name.ToLowerInvariant();
         }
+
     }
 }

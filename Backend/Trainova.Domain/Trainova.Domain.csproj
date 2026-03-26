@@ -14,9 +14,4 @@
     <ProjectReference Include="..\Trainova.Common\Trainova.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="SeasonsAnalyses\PositionBenchmarks\" />
-    <Folder Include="SeasonsAnalyses\Seasons\" />
-  </ItemGroup>
-
 </Project>

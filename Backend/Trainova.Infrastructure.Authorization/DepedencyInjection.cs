@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Trainova.Application.Common.Interfaces.Service;
+using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Domain.Common.Services;
 using Trainova.Infrastructure.Authorization.AuthEmailSenders;
 using Trainova.Infrastructure.Authorization.PasswordHashers;

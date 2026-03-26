@@ -12,12 +12,9 @@ namespace Trainova.Domain.MedicalStatus.Injuries
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public InjuryType? InjuryType { get; private set; }
         public TimeSpan? AverageRecoveryTime { get; private set; }
-        public Guid? CreatedBy { get; private set; }
 
-        public DateTime CreatedAt { get; private set; }
-        public DateTime? LastUpdate { get; private set; }
         public ICollection<PlayerInjury> PlayerInjuries { get; private set; } = new List<PlayerInjury>();
-        private Injury() { }
+        private Injury() :base() { }
 
         public void Update(
             string? name = null,
@@ -37,7 +34,7 @@ namespace Trainova.Domain.MedicalStatus.Injuries
             string? description,
             InjuryType? injuryType = null,
             TimeSpan? averageRecoveryTime = null,
-            Guid? createdBy = null) : base(Guid.NewGuid(), createdBy)
+            Guid? createdBy = null) : base(createdBy)
         {
             Name = name;
             Description = description;

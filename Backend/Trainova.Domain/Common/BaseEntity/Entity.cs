@@ -7,6 +7,11 @@
         public Guid? CreatedBy { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
 
+        protected Entity(Guid? createdBy = null)
+        {
+            CreatedBy = createdBy;
+            CreatedAt = DateTime.Now;
+        }
         protected Entity(TId id, Guid? createdBy = null)
         {
             Id = id;

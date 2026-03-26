@@ -12,7 +12,6 @@ namespace Trainova.Application.Authentication.Commands.CreateToken
 {
     public class CreateTokenCommandHandler(
         IUsersRepository _usersRepository,
-        ITokenGenerator _tokenGenerator,
         IUserTokensRepository _tokenRepsitory,
         IEmailSender _emailService)
         : IRequestHandler<CreateTokenCommand, ResultOf<Done>>
@@ -31,7 +30,7 @@ namespace Trainova.Application.Authentication.Commands.CreateToken
             var tokenType = TokenType.FromName(request.Type);
 
 
-            var token =  _tokenGenerator.GenerateUserTokens(user,tokenType);
+            var token =  new UserToken(user.Id,tokenType);
 
             
 

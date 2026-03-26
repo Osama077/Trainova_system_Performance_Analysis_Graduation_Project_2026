@@ -9,6 +9,6 @@ namespace Trainova.Domain.Profiles.TeamsStaff
         fitnessCoach = 1,
         assistantCoach = 2,
         headCoach = 3,
-        Doctore = 4
+        Doctor = 4
     }
 }

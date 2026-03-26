@@ -1,6 +1,5 @@
 using MediatR;
 using Trainova.Application.Authentication.Common;
-using Trainova.Application.Common.Interfaces.Service;
 using Trainova.Common.ResultOf;
 using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Domain.Common.Services;

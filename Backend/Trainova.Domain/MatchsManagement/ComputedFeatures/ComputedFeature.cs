@@ -117,7 +117,7 @@ namespace Trainova.Domain.MatchsManagement.ComputedFeatures
             double vaepRating,
             double offensiveValue,
             double defensiveValue,
-            Guid? createdBy = null) : base(Guid.NewGuid(), createdBy)
+            Guid? createdBy = null) : base(createdBy)
         {
             PlayerId = playerId;
             MatchId = matchId;
