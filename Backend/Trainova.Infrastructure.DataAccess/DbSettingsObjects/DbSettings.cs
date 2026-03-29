@@ -12,10 +12,10 @@ namespace Trainova.Infrastructure.DataAccess.DbSettingsObjects
         public DbSettings(string? writeCs, string? readCs)
         {
             WriteConnectionString = writeCs
-                ?? throw new ArgumentNullException(nameof(writeCs));
+                                    ?? throw new ArgumentNullException(nameof(writeCs));
 
             ReadConnectionString = readCs
-                ?? throw new ArgumentNullException(nameof(readCs));
+                                   ?? throw new ArgumentNullException(nameof(readCs));
         }
         public IDbConnection CreateReadingConnection()
         {
