@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Trainova.Domain.Common.BaseEntity;
+using Trainova.Domain.MatchsManagement.Matches;
 
 namespace Trainova.Domain.SeasonsAnalyses.Seasons
 {
@@ -15,6 +16,8 @@ namespace Trainova.Domain.SeasonsAnalyses.Seasons
         public string? SeasonName { get; private set; }
 
         public string? CountryName { get; private set; }
+
+        public ICollection<Match> Matches { get; private set; } = new List<Match>();
 
 
         private Competition() :base() { } // For ORM

@@ -1,5 +1,5 @@
 ﻿using Trainova.Domain.Common.BaseEntity;
-using Trainova.Domain.TrainingSessionsAccessibility.TrainingSessions;
+using Trainova.Domain.MatchsManagement.Matches;
 
 namespace Trainova.Domain.MatchsManagement.Videos
 {
@@ -9,8 +9,8 @@ namespace Trainova.Domain.MatchsManagement.Videos
         public string VideoUrl { get; private set; }
         public string ObjectStoregeProviderId { get; private set; }
         public string ProviderName { get; private set; }
-        public Guid? RelatedTrainingSessionId { get; private set; }
-        public TrainingSession? RelatedTrainingSession { get; private set; }
+        public Guid? RelatedMatchId { get; private set; }
+        public Match? RelatedMatch { get; private set; }
         private MatchVideo() : base() { }
         public MatchVideo(
             string videoUrl,
@@ -22,7 +22,7 @@ namespace Trainova.Domain.MatchsManagement.Videos
             VideoUrl = videoUrl;
             ObjectStoregeProviderId = objectStoregeProviderId;
             ProviderName = providerName;
-            RelatedTrainingSessionId = relatedTrainingSessionId;
+            RelatedMatchId = relatedTrainingSessionId;
         }
 
         public void Update(
@@ -34,7 +34,7 @@ namespace Trainova.Domain.MatchsManagement.Videos
             VideoUrl = videoUrl ?? VideoUrl;
             ObjectStoregeProviderId = objectStoregeProviderId ?? ObjectStoregeProviderId;
             ProviderName = providerName ?? ProviderName;
-            RelatedTrainingSessionId = relatedTrainingSessionId ?? RelatedTrainingSessionId;
+            RelatedMatchId = relatedTrainingSessionId ?? RelatedMatchId;
         }
     }
 }

@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Trainova.Domain.Common.Outbox;
 
-namespace Trainova.Infrastructure.DataAccess.Configuration.Outbox
+namespace Trainova.Infrastructure.DataAccess.Configuration.Common
 {
     public class EmailOutboxConfiguration : IEntityTypeConfiguration<EmailOutbox>
     {

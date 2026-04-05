@@ -20,6 +20,7 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.Common
         }
 
         // Override in derived classes to add entity-specific configuration
+
         protected virtual void ConfigureEntity(EntityTypeBuilder<T> builder,
            bool valueGeneratedOnAdd = true)
         {
