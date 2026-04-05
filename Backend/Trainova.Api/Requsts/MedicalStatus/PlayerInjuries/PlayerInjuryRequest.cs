@@ -14,12 +14,12 @@ namespace Trainova.Api.Requsts.MedicalStatus.PlayerInjuries
         public CreatePlayerInjuryCommand ToCommand()
         {
             return new CreatePlayerInjuryCommand(
-);
+                );
         }
         public UpdatePlayerInjuryCommand ToUpdateCommand(Guid id)
         {
             return new UpdatePlayerInjuryCommand(
-);
+                );
         }
     }
 

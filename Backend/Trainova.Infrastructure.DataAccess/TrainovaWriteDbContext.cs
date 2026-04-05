@@ -1,5 +1,6 @@
 ﻿﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Logging;
 using System.Security.AccessControl;
 using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Application.Common.Models;
@@ -21,6 +22,8 @@ namespace Trainova.Infrastructure.DataAccess
     {
         private readonly CurrentUser _currentUser;
         private IDbContextTransaction _dbTransaction;
+        private static readonly string logFilePath = @"D:\EFCoreDebugLog.txt";
+
 
         public TrainovaWriteDbContext(
             DbContextOptions<TrainovaWriteDbContext> options,
@@ -100,6 +103,21 @@ namespace Trainova.Infrastructure.DataAccess
             base.OnModelCreating(modelBuilder);
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            // Logging في ملف
+            optionsBuilder.LogTo(logMessage =>
+            {
+                try
+                {
+                    File.AppendAllText(logFilePath, logMessage + Environment.NewLine);
+                }
+                catch
+                {
+                    // ignore errors في الكتابة عشان ما توقفش EF Core
+                }
+            }, LogLevel.Debug);
+        }
 
 
 

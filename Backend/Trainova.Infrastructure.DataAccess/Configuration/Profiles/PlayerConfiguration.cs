@@ -1,16 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Trainova.Domain.Profiles.Players;
-using Trainova.Infrastructure.DataAccess.Common;
+using Trainova.Infrastructure.DataAccess.Configuration.Common;
 
-namespace Trainova.Infrastructure.DataAccess.Profiles.Players
+namespace Trainova.Infrastructure.DataAccess.Configuration.Profiles
 {
     public class PlayerConfiguration : BaseEntityConfiguration<Player>
     {
-        protected override void ConfigureEntity(EntityTypeBuilder<Player> builder)
+        protected override void ConfigureEntity(EntityTypeBuilder<Player> builder, bool valueGenratedOnAdd = false)
         {
-            builder.HasKey(p => p.Id);
-            builder.Property(p => p.Id).ValueGeneratedOnAdd();
+            base.ConfigureEntity(builder, valueGenratedOnAdd);
 
             builder.Property(p => p.TShirtName).HasMaxLength(NameLength);
             builder.Property(p => p.PlayerNumber).IsRequired();

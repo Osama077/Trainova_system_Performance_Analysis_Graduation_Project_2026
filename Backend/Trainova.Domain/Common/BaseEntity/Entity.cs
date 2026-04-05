@@ -1,6 +1,6 @@
 ﻿namespace Trainova.Domain.Common.BaseEntity
 {
-    public abstract class Entity<TId>
+    public abstract class Entity<TId> : ILogableCreator
     {
 
         public TId Id { get; protected set; } = default!;

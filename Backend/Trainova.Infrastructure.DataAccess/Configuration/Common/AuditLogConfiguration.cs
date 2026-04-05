@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Trainova.Domain.Common.AuditLogs;
 
-namespace Trainova.Infrastructure.DataAccess.Common
+namespace Trainova.Infrastructure.DataAccess.Configuration.Common
 {
     public class AuditLogConfiguration : IEntityTypeConfiguration<AuditLog>
     {
@@ -20,6 +20,7 @@ namespace Trainova.Infrastructure.DataAccess.Common
                 .HasMaxLength(200);
 
             builder.Property(a => a.Action)
+                .HasConversion<string>()
                 .IsRequired();
 
             builder.Property(a => a.OldValues)
@@ -34,10 +35,13 @@ namespace Trainova.Infrastructure.DataAccess.Common
                 .IsRequired();
 
             builder.Property(a => a.IsRecovered)
-                .IsRequired();
+                .IsRequired()
+                .HasDefaultValue(false);
 
-            builder.Property(a => a.RecoveredAt);
-            builder.Property(a => a.RecoveredByUserId);
+            builder.Property(a => a.RecoveredAt)
+                .IsRequired(false);
+            builder.Property(a => a.RecoveredByUserId)
+                .IsRequired(false);
 
             builder.ToTable("AuditLogs");
         }

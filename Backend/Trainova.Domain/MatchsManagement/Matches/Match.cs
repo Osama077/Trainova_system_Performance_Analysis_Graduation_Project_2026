@@ -2,10 +2,8 @@
 
 namespace Trainova.Domain.MatchsManagement.Matches
 {
-
     public class Match : AuditableEntity<Guid>
     {
-
         public Guid CompetitionId { get; private set; }
 
         public DateOnly MatchDate { get; private set; }

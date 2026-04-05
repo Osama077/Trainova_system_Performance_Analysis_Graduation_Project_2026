@@ -13,16 +13,15 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.UserAuth
 
             builder.Property(ut => ut.Token)
                 .IsRequired()
-                .HasMaxLength(1000);
+                .HasMaxLength(128);
 
             builder.Property(ut => ut.UserId)
                 .IsRequired();
 
-            // Configure TokenType as a value object with conversion to store as int (Value)
             builder.Property(ut => ut.TokenType)
                 .HasConversion(
-                    v => v.Value,  // Store the integer value
-                    v => TokenType.FromValue(v)!  // Retrieve from value - will not return null for valid values
+                    v => v.Name,
+                    v => TokenType.FromName(v)!
                 )
                 .IsRequired();
 
