@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 from functools import lru_cache
-from config import DATA_DIR, MODELS_DIR
+from MLServices.config import DATA_DIR, MODELS_DIR
 
 @lru_cache(maxsize=1)
 def _load_data():

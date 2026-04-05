@@ -22,7 +22,7 @@ try:
 except ImportError:
     HAS_MPLSOCCER = False
 
-from config import DATA_DIR, VIZ_COLORS
+from MLServices.config import DATA_DIR, VIZ_COLORS
 
 # ── Load Data (once) ──────────────────────────────────────────────────────────
 _cache = {}

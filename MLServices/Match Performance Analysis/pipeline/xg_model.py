@@ -11,9 +11,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_auc_score, brier_score_loss
 from statsbombpy import sb
 
-from config import DATA_DIR, MODELS_DIR
-from utils.uuid_manager import add_uuid_column
-from utils.helpers import ensure_dirs
+from MLServices.config import DATA_DIR, MODELS_DIR
+from MLServices.utils.uuid_manager import add_uuid_column
+from MLServices.utils.helpers import ensure_dirs
 
 FEATURE_COLS = [
     "x", "y", "distance_to_goal", "dist_squared",

@@ -9,12 +9,12 @@ import warnings
 from pathlib import Path
 from statsbombpy import sb
 
-from config import (
+from MLServices.config import (
     COMPETITION_ID, SEASON_ID, TARGET_TEAM,
     ACTION_TYPE_MAP, DATA_DIR
 )
-from utils.uuid_manager import add_uuid_column, add_uuids_to_all
-from utils.helpers import ensure_dirs
+from MLServices.utils.uuid_manager import add_uuid_column, add_uuids_to_all
+from MLServices.utils.helpers import ensure_dirs
 
 warnings.filterwarnings("ignore")
 

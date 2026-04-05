@@ -6,9 +6,9 @@ pipeline/feature_engineering.py — Feature Engineering
 import pandas as pd
 import numpy as np
 import warnings
-from config import DATA_DIR
-from utils.uuid_manager import add_uuid_column
-from utils.helpers import normalize_to_score, ensure_dirs
+from MLServices.config import DATA_DIR
+from MLServices.utils.uuid_manager import add_uuid_column
+from MLServices.utils.helpers import normalize_to_score, ensure_dirs
 
 warnings.filterwarnings("ignore")
 

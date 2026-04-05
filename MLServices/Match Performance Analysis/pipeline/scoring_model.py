@@ -10,9 +10,9 @@ import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.cluster import KMeans
 
-from config import DATA_DIR, MODELS_DIR, POSITION_WEIGHTS, POSITION_MAP, CLUSTER_NAMES
-from utils.uuid_manager import add_uuid_column
-from utils.helpers import normalize_to_score, ensure_dirs
+from MLServices.config import DATA_DIR, MODELS_DIR, POSITION_WEIGHTS, POSITION_MAP, CLUSTER_NAMES
+from MLServices.utils.uuid_manager import add_uuid_column
+from MLServices.utils.helpers import normalize_to_score, ensure_dirs
 
 SCORE_COLS = [
     "passing_score","shooting_score","positioning_score","pressing_score",

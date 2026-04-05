@@ -10,9 +10,9 @@ import xgboost as xgb
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_auc_score, brier_score_loss
 
-from config import DATA_DIR, MODELS_DIR, VAEP_WINDOW, VAEP_N_CONTEXT
-from utils.uuid_manager import add_uuid_column
-from utils.helpers import ensure_dirs
+from MLServices.config import DATA_DIR, MODELS_DIR, VAEP_WINDOW, VAEP_N_CONTEXT
+from MLServices.utils.uuid_manager import add_uuid_column
+from MLServices.utils.helpers import ensure_dirs
 
 ACTION_TYPES   = ["pass","shot","dribble","carry","tackle","foul",
                   "clearance","interception","shot_block","keeper_save","receival","bad_touch"]

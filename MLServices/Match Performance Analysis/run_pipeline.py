@@ -16,23 +16,23 @@ def run_full_pipeline():
     print("=" * 60)
 
     # Step 1: Data Loading
-    from pipeline.data_loader import run as run_loader
+    from MLServices.pipeline.data_loader import run as run_loader
     run_loader()
 
     # Step 2: Feature Engineering
-    from pipeline.feature_engineering import run as run_features
+    from MLServices.pipeline.feature_engineering import run as run_features
     run_features()
 
     # Step 3: xG Model
-    from pipeline.xg_model import run as run_xg
+    from MLServices.pipeline.xg_model import run as run_xg
     run_xg()
 
     # Step 4: VAEP Model
-    from pipeline.vaep_model import run as run_vaep
+    from MLServices.pipeline.vaep_model import run as run_vaep
     run_vaep()
 
     # Step 5: Scoring Model
-    from pipeline.scoring_model import run as run_scoring
+    from MLServices.pipeline.scoring_model import run as run_scoring
     run_scoring()
 
     print("\n" + "=" * 60)

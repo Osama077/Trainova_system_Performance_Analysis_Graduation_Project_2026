@@ -2,7 +2,7 @@
 from fastapi import APIRouter, HTTPException, Query
 from typing import Optional
 from api.routes._shared import _load_data, _sf, _si, _to_records
-from visualizations.player_dashboard import generate_all_charts, get_player_list, get_player_chart_data
+from MLServices.visualizations.player_dashboard import generate_all_charts, get_player_list, get_player_chart_data
 
 router = APIRouter()
 
