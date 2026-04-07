@@ -1,6 +1,8 @@
 ﻿using Trainova.Domain.Common.BaseEntity;
 using Trainova.Domain.MatchsManagement.Events;
 using Trainova.Domain.MatchsManagement.Lineups;
+using Trainova.Domain.Profiles.ScoutingCandidates;
+using Trainova.Domain.Profiles.TeamsStaff;
 
 namespace Trainova.Domain.SeasonsAnalyses.Teams
 {
@@ -13,7 +15,9 @@ namespace Trainova.Domain.SeasonsAnalyses.Teams
 
         public ICollection<Event> Events { get; private set; } = new List<Event>();
         public ICollection<Lineup> Lineups { get; private set; } = new List<Lineup>();
-        private Team():base() { } 
+        public ICollection<ScoutingCandidate> ScoutingCandidates { get; private set; } = new List<ScoutingCandidate>();
+        public ICollection<TeamStaff> TeamStaffs { get; private set; } = new List<TeamStaff>();
+        private Team():base() { }
 
         public Team(
             string? teamName,

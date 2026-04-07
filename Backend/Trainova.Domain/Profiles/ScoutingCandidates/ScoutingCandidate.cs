@@ -8,8 +8,6 @@ namespace Trainova.Domain.Profiles.ScoutingCandidates
 {
     public class ScoutingCandidate : AuditableEntity<Guid>
     {
-
-
         public string FullName { get; private set; } = string.Empty;
         public int Age { get; private set; }
         public Position Position { get; private set; }

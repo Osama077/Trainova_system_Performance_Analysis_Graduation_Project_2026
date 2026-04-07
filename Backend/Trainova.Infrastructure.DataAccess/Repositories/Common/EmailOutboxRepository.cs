@@ -5,7 +5,7 @@ using Trainova.Application.Common.Models;
 using Trainova.Domain.Common.Outbox;
 using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
 
-namespace Trainova.Infrastructure.DataAccess.Repositories.Outbox
+namespace Trainova.Infrastructure.DataAccess.Repositories.Common
 {
     public class EmailOutboxRepository : IEmailOutboxRepository
     {
@@ -42,7 +42,7 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.Outbox
             _dbContext.EmailOutboxes.Update(email);
         }
 
-        Task<IEnumerable<Application.Common.Models.PendingEmail>> IEmailOutboxRepository.GetPendingAsync(int take)
+        Task<IEnumerable<PendingEmail>> IEmailOutboxRepository.GetPendingAsync(int take)
         {
             throw new NotImplementedException();
         }

@@ -2,6 +2,8 @@
 using Trainova.Domain.MatchsManagement.ComputedFeatures;
 using Trainova.Domain.MatchsManagement.Events;
 using Trainova.Domain.MatchsManagement.Lineups;
+using Trainova.Domain.MatchsManagement.Videos;
+using Trainova.Domain.SeasonsAnalyses.ModelScores;
 using Trainova.Domain.SeasonsAnalyses.Seasons;
 using Trainova.Domain.TrainingSessionsAccessibility.TrainingSessions;
 
@@ -32,6 +34,8 @@ namespace Trainova.Domain.MatchsManagement.Matches
         public ICollection<ComputedFeature> ComputedFeatures { get; private set; } = new List<ComputedFeature>();
         public ICollection<Event> Events { get; private set; } = new List<Event>();
         public ICollection<Lineup> Lineups { get; private set; } = new List<Lineup>();
+        public ICollection<MatchVideo> MatchVideos { get; private set; } = new List<MatchVideo>();
+        public ICollection<ModelScore> ModelScores { get; private set; } = new List<ModelScore>();
 
         private Match() :base() { } // For ORM
 

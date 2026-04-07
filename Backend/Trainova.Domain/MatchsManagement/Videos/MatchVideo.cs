@@ -5,7 +5,6 @@ namespace Trainova.Domain.MatchsManagement.Videos
 {
     public class MatchVideo : AuditableEntity<Guid>
     {
-
         public string VideoUrl { get; private set; }
         public string ObjectStoregeProviderId { get; private set; }
         public string ProviderName { get; private set; }

@@ -1,5 +1,4 @@
-﻿using Trainova.Domain.Common.AuditLogs;
-using Trainova.Domain.Common.BaseEntity;
+﻿using Trainova.Domain.Common.BaseEntity;
 using Trainova.Domain.Common.Enums;
 using Trainova.Domain.MatchsManagement.Matches;
 using Trainova.Domain.TrainingSessionsAccessibility.AccessPolicies;
@@ -12,6 +11,8 @@ namespace Trainova.Domain.TrainingSessionsAccessibility.TrainingSessions
         public string TrainingSessionName { get; private set; }
         public Guid? PlanId { get; private set; }
         public Plan? Plan { get; private set; }
+        public Guid? UserAccessPolicyId { get; private set; }
+        public UserAccessPolicy? UserAccessPolicy { get; private set; }
         public PlanState SessionState { get; private set; }
         public string? Place { get; private set; }
         public Match? Match { get; private set; }
@@ -19,6 +20,7 @@ namespace Trainova.Domain.TrainingSessionsAccessibility.TrainingSessions
         public TrainingSession(
             string trainingSessionName,
             Guid? planId,
+            Guid? userAccessPolicyId,
             PlanState sessionState,
             string? place,
             DateTime? happenedAt,
@@ -26,6 +28,7 @@ namespace Trainova.Domain.TrainingSessionsAccessibility.TrainingSessions
         {
             TrainingSessionName = trainingSessionName;
             PlanId = planId;
+            UserAccessPolicyId = userAccessPolicyId;
             SessionState = sessionState;
             Place = place;
             HappenedAt = happenedAt;

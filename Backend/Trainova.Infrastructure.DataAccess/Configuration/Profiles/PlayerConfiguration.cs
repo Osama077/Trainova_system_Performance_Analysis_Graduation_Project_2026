@@ -17,15 +17,21 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.Profiles
             // Positions are enums - BaseEntityConfiguration will attempt to map them to strings if non-flag
             // For Position enum we assume Flags (multiple positions), so keep numeric mapping.
 
-            // DateOnly support: map to DateTime using strongly typed Property lambda so HasConversion accepts lambdas
             builder.Property(p => p.DateOfEnrolment)
-                .HasConversion(
-                    d => d == default ? DateTime.MinValue : d.ToDateTime(TimeOnly.MinValue),
-                    dt => DateOnly.FromDateTime(dt));
+                .HasDefaultValue("CAST(GETDATE() AS DATE)");
 
             // Relationships
-            builder.HasOne(p => p.User).WithOne().HasForeignKey<Player>("UserId");
-            builder.HasMany(p => p.PlayerInjuries).WithOne(pi => pi.Player).HasForeignKey("PlayerId");
+            builder
+                .HasOne(p => p.User)
+                .WithOne()
+                .HasForeignKey<Player>(p=>p.Id)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .HasMany(p => p.PlayerInjuries)
+                .WithOne(pi => pi.Player)
+                .HasForeignKey(pi => pi.PlayerId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.ToTable("Players");
         }

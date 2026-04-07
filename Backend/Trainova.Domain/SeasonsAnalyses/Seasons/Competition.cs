@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Trainova.Domain.Common.BaseEntity;
+﻿using Trainova.Domain.Common.BaseEntity;
 using Trainova.Domain.MatchsManagement.Matches;
 
 namespace Trainova.Domain.SeasonsAnalyses.Seasons

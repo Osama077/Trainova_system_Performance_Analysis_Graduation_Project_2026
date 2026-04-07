@@ -6,8 +6,8 @@ namespace Trainova.Domain.Profiles.TeamsStaff
     [StoreAsString]
     public enum TeamStaffRole
     {
-        fitnessCoach = 1,
-        assistantCoach = 2,
+        FitnessCoach = 1,
+        AssistantCoach = 2,
         headCoach = 3,
         Doctor = 4
     }

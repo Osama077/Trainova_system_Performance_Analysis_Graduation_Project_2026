@@ -22,8 +22,7 @@ namespace Trainova.Domain.Profiles.Players
         public Position CurrentMainPosition { get; private set; }
         public Position OtherAvailablePositions { get; private set; }
         public decimal PerformanceLevel { get; private set; }
-        public DateOnly DateOfEnrolment { get; private set; }
-
+        public DateOnly DateOfEnrolment { get; set; } = DateOnly.FromDateTime(DateTime.Now);
 
         public ICollection<Lineup> Lineups { get; private set; } = [];
         public ICollection<ModelScore> ModelScores {  get; private set; } = [];

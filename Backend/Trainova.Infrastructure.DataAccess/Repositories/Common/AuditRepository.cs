@@ -4,7 +4,7 @@ using System.Text;
 using Trainova.Application.Common.Interfaces.Repositories.CommonRepos;
 using Trainova.Domain.Common.AuditLogs;
 
-namespace Trainova.Infrastructure.DataAccess.Repositories.Audits
+namespace Trainova.Infrastructure.DataAccess.Repositories.Common
 {
     internal class AuditRepository : IAuditRepository
     {

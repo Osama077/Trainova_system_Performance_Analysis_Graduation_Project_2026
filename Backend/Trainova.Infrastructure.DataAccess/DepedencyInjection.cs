@@ -6,9 +6,8 @@ using Trainova.Application.Common.Interfaces.Repositories.MedicalStatus;
 using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
 using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
-using Trainova.Infrastructure.DataAccess.Repositories.Audits;
+using Trainova.Infrastructure.DataAccess.Repositories.Common;
 using Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus;
-using Trainova.Infrastructure.DataAccess.Repositories.Outbox;
 using Trainova.Infrastructure.DataAccess.Repositories.Users;
 
 

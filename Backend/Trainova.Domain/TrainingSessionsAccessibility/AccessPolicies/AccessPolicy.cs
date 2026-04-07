@@ -1,13 +1,10 @@
-﻿using Trainova.Domain.Common.AuditLogs;
-using Trainova.Domain.Common.BaseEntity;
+﻿using Trainova.Domain.Common.BaseEntity;
 
 namespace Trainova.Domain.TrainingSessionsAccessibility.AccessPolicies
 {
     public class AccessPolicy : AuditableEntity<Guid>
     {
         public string? PolicyName { get; private set; } = null;
-
-
 
         public ICollection<UserAccessPolicy> PolicyUsers { get; private set; } = [];
         private AccessPolicy() : base(){ }
