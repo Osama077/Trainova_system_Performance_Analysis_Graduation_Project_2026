@@ -12,9 +12,9 @@ public class RegisterCommandHandler(
     IPasswordHasher _passwordHasher,
     IUsersRepository _usersRepository,
     IUnitOfWork _unitOfWork)
-        : IRequestHandler<RegisterCommand, ResultOf<AuthenticationResult>>
+        : IRequestHandler<RegisterCommand, ResultOf<FullAuthenticationResult>>
 {
-    public async Task<ResultOf<AuthenticationResult>> Handle(RegisterCommand command, CancellationToken cancellationToken)
+    public async Task<ResultOf<FullAuthenticationResult>> Handle(RegisterCommand command, CancellationToken cancellationToken)
     {
 
 

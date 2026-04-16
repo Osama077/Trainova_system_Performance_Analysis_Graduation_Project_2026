@@ -14,6 +14,8 @@ namespace Trainova.Domain.MedicalStatus.PlayerInjuries
         public Player Player { get; private set; }
         public InjuryStatus Status { get; private set; } = InjuryStatus.InHealing;
         public InjuryCause Cause { get; private set; }
+        public SevertiyGrade SevertiyGrade { get; private set; }
+        public string BodyPart { get; private set; }
         public string? Notes { get; private set; }
         public bool IsNew { get; private set; }
 
@@ -29,6 +31,8 @@ namespace Trainova.Domain.MedicalStatus.PlayerInjuries
             InjuryStatus status,
             DateTime? happendAt = null,
             InjuryCause cause = default,
+            SevertiyGrade severtiyGrade = default,
+            string bodyPart = null,
             string notes = null,
             bool isNew = false,
             Guid? createdBy = null) : base(createdBy)
@@ -38,8 +42,44 @@ namespace Trainova.Domain.MedicalStatus.PlayerInjuries
             Status = status;
             HappendAt = happendAt ?? DateTime.UtcNow;
             Cause = cause;
+            SevertiyGrade = severtiyGrade;
+            BodyPart = bodyPart;
             Notes = notes;
             IsNew = isNew;
+        }
+
+        public void Update(
+            DateTime? happendAt = null,
+            InjuryCause? cause = null,
+            SevertiyGrade? severtiyGrade = null,
+            string bodyPart = null,
+            string notes = null,
+            bool? isNew = null,
+            InjuryStatus? newStatus = null,
+            DateTime? returnedAt = null,
+            DateTime? expectedReturnDate = null)
+        {
+            MarkUpdatedNow();
+            HappendAt = happendAt ?? HappendAt;
+            Cause = cause ?? Cause;
+            SevertiyGrade = severtiyGrade ?? SevertiyGrade;
+            BodyPart = bodyPart ?? BodyPart;
+            Notes = notes ?? Notes;
+            IsNew = isNew ?? IsNew;
+            ExpectedReturnDate = expectedReturnDate ?? ExpectedReturnDate;
+            if (newStatus.HasValue)
+            {
+                Status = newStatus.Value;
+                if (newStatus == InjuryStatus.Ended)
+                {
+                    ReturnedAt = returnedAt ?? DateTime.UtcNow;
+                }
+            }
+        }
+
+        public void UpdateStatus()
+        {
+
         }
         private PlayerInjury() : base() { }
 

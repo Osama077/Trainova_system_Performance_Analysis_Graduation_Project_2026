@@ -6,6 +6,9 @@
         DateTime CreatedAt { get; }
         DateTime? LastUpdate { get; }
         Guid? CreatedBy { get; }
+        AuditLog UpdatedAudit { get;}
+        AuditLog AddedAudit { get;}
+
     }
 
 

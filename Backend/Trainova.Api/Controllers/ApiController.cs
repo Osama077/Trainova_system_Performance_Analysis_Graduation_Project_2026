@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Collections;
 using Trainova.Api.Models;
+using Trainova.Application.Common.Interfaces.MarkUps;
 using Trainova.Application.Common.Models;
 using Trainova.Common.Errors;
 using Trainova.Common.ResultOf;
@@ -36,13 +37,6 @@ public class ApiController(
     {
         return status switch
         {
-            DoneStatus.Partial when value is IEnumerable enumerable
-                => StatusCode(206, CreateResponse(
-                    value,
-                    "Partial content",
-                    206,
-                    enumerable.Cast<object>().Count()
-                )),
 
             DoneStatus.Created
                 => StatusCode(201, CreateResponse(value, "Created successfully", 201)),
@@ -54,10 +48,30 @@ public class ApiController(
                 => Accepted(CreateResponse(value, "Accepted", 202)),
 
             DoneStatus.Partial
-                => StatusCode(206, CreateResponse(value, "Partial content", 206)),
+            when value is IEnumerable<ITotalCountIncluded> countIncludeds
+                => StatusCode(
+                    206,
+                    CreateResponse(
+                        value,
+                        "Partial content",
+                        206,
+                        countIncludeds.Count(),
+                        countIncludeds.FirstOrDefault().TotalCount
+                    )
+                ),
+            DoneStatus.Partial when value is IEnumerable enumerable
+                => StatusCode(
+                    206,
+                    CreateResponse(
+                        value,
+                        "Partial content",
+                        206,
+                        enumerable.Cast<object>().Count()
+                    )
+                ),
 
             DoneStatus.NoContent
-                => NoContent(),
+                => StatusCode(204),
 
             _ => Ok(CreateResponse(value, "Success", 200))
         };
@@ -67,6 +81,7 @@ public class ApiController(
     T? data,
     string? message,
     int statusCode,
+    int? count = null,
     int? totalCount = null)
     {
         return new ApiResponse<T>(
@@ -74,13 +89,14 @@ public class ApiController(
             Message: message,
             StatusCode: statusCode,
             ResponseTime: DateTime.UtcNow,
+            Count: count,
             TotalCount: totalCount,
             UserId: currentUser.Id
         );
     }
 
 
-    protected IActionResult Problem(List<Error> errors)
+    protected IActionResult ErrorsPassed(List<Error> errors)
     {
         if (errors.Count is 0)
         {
@@ -89,13 +105,13 @@ public class ApiController(
 
         if (errors.All(error => error.Type == ErrorType.Validation))
         {
-            return ValidationProblem(errors);
+            return ValidationError(errors);
         }
 
-        return Problem(errors[0]);
+        return ErrorPassed(errors[0]);
     }
 
-    protected IActionResult Problem(Error error)
+    protected IActionResult ErrorPassed(Error error)
     {
         var statusCode = error.Type switch
         {
@@ -109,7 +125,7 @@ public class ApiController(
         return Problem(statusCode: statusCode, detail: error.Description);
     }
 
-    protected IActionResult ValidationProblem(List<Error> errors)
+    protected IActionResult ValidationError(List<Error> errors)
     {
         var modelStateDictionary = new ModelStateDictionary();
 
@@ -127,7 +143,7 @@ public class ApiController(
     {
         return result.Match(
             (value, status) => Success(value, status),
-            errors => Problem(errors)
+            errors => ErrorsPassed(errors)
         );
     }
 

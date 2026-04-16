@@ -23,6 +23,7 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.UserAuth
                     v => v.Name,
                     v => TokenType.FromName(v)!
                 )
+                .HasMaxLength(50)
                 .IsRequired();
 
             builder.Property(ut => ut.IsUsed)

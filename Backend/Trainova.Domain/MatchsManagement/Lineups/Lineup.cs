@@ -43,7 +43,6 @@ namespace Trainova.Domain.MatchsManagement.Lineups
             StartingPosition = startingPosition;
             IsStarter = isStarter;
             MinutesPlayed = minutesPlayed;
-            LastUpdate = DateTime.UtcNow;
         }
 
         public void Update(
@@ -54,6 +53,8 @@ namespace Trainova.Domain.MatchsManagement.Lineups
             bool? isStarter = null,
             int? minutesPlayed = null)
         {
+            MarkUpdatedNow();
+
             if (matchId.HasValue)
                 MatchId = matchId.Value;
 
@@ -72,7 +73,6 @@ namespace Trainova.Domain.MatchsManagement.Lineups
             if (minutesPlayed.HasValue)
                 MinutesPlayed = minutesPlayed.Value;
 
-            MarkUpdatedNow();
         }
     }
 

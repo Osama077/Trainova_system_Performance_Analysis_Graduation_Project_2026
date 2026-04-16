@@ -17,8 +17,23 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.Profiles
             // Positions are enums - BaseEntityConfiguration will attempt to map them to strings if non-flag
             // For Position enum we assume Flags (multiple positions), so keep numeric mapping.
 
-            builder.Property(p => p.DateOfEnrolment)
-                .HasDefaultValue("CAST(GETDATE() AS DATE)");
+            builder.Property(p => p.MedicalStatus)
+                .HasConversion<string>()
+                .HasMaxLength(20)
+                .IsRequired();
+
+
+
+
+            builder
+                .Property(p => p.DateOfEnrolment)
+                .HasConversion(
+                    v => v.ToDateTime(TimeOnly.MinValue),
+                    v => DateOnly.FromDateTime(v))
+                .HasColumnType("date")
+                .HasDefaultValueSql("GETDATE()");
+
+
 
             // Relationships
             builder

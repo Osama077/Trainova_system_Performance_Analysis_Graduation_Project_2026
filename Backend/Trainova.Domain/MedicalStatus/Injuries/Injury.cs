@@ -22,11 +22,12 @@ namespace Trainova.Domain.MedicalStatus.Injuries
             InjuryType? injuryType = null,
             TimeSpan? averageRecoveryTime = null)
         {
+            MarkUpdatedNow();
+
             Name = name ?? Name;
             Description = description ?? Description;
             InjuryType = injuryType ?? InjuryType;
             AverageRecoveryTime = averageRecoveryTime ?? AverageRecoveryTime;
-            MarkUpdatedNow();
         }
 
         public Injury(

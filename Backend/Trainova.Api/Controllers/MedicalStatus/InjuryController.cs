@@ -23,9 +23,8 @@ namespace Trainova.Api.Controllers.MedicalStatus
         {
             var command = request.ToCommand();
             var result = await _sender.Send(command);
-            return result.Match(
-                onValue: (injury, status) =>Success(injury, status),
-                onError: errors => Problem(errors));
+            return MapResult(result);
+
         }
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> UpdateInjury(
@@ -34,9 +33,8 @@ namespace Trainova.Api.Controllers.MedicalStatus
         {
             var command = request.ToUpdateCommand(id);
             var result = await _sender.Send(command);
-            return result.Match(
-                onValue: (injury, status) =>Success(injury, status),
-                onError: errors => Problem(errors));
+            return MapResult(result);
+
         }
         [HttpGet("{id:guid?}")]
         public async Task<IActionResult> GetInjuries(
@@ -46,9 +44,8 @@ namespace Trainova.Api.Controllers.MedicalStatus
         {
             var query = request.ToQuery(id);
             var result = await _sender.Send(query);
-            return result.Match(
-                onValue: (injury, status) =>Success(injury, status),
-                onError: errors => Problem(errors));
+            return MapResult(result);
+
         }
         [HttpGet("history")]
         public async Task<IActionResult> GetInjuriesHistory(
@@ -64,9 +61,8 @@ namespace Trainova.Api.Controllers.MedicalStatus
                 pagennator.IncludeDeleted,
                 pagennator.IncludeUpdated);
             var result = await _sender.Send(query);
-            return result.Match(
-                onValue: (injury, status) =>Success(injury, status),
-                onError: errors => Problem(errors));
+            return MapResult(result);
+
         }
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> DeleteInjuries([FromRoute] Guid id)
@@ -75,7 +71,7 @@ namespace Trainova.Api.Controllers.MedicalStatus
             var result = await _sender.Send(query);
             return result.Match(
                 onValue: (injury, status) =>Success(injury, status),
-                onError: errors => Problem(errors));
+                onError: errors => ErrorsPassed(errors));
         }
 
     }

@@ -6,5 +6,6 @@ namespace Trainova.Application.Common.Interfaces.Repositories.UserAuth
     public interface IUserRolesRepository
     {
         Task AddAsync(UserRole userRole);
+        Task<IEnumerable<UserRole>> GetAllAsync(Guid id);
     }
 }

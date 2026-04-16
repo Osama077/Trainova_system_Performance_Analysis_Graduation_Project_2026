@@ -1,7 +1,9 @@
 ﻿using MediatR;
+using Trainova.Application.Common.Authorization;
 using Trainova.Common.ResultOf;
 
 namespace Trainova.Application.Authentication.Commands.ConfirmEmail;
 
-public record ConfirmEmailCommand (string Email,string Token,Guid UserId) : IRequest<ResultOf<Done>>;
+[Authorize]
+public record ConfirmEmailCommand (string Token) : IRequest<ResultOf<Done>>;
 

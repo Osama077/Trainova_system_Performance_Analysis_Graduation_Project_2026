@@ -13,7 +13,7 @@ namespace Trainova.Domain.Profiles.ScoutingCandidates
         public Position Position { get; private set; }
         public float PerformanceScore { get; private set; }
         public float InjuryRisk { get; private set; }
-        public PlayerMedecalStatus MedecalStatus { get; private set; } = PlayerMedecalStatus.Fit;
+        public PlayerMedicalStatus MedecalStatus { get; private set; } = PlayerMedicalStatus.Fit;
         public Position CurrentMainPosition { get; private set; }
         public Position OtherAvailablePositions { get; private set; }
         public decimal PerformanceLevel { get; private set; }
@@ -26,7 +26,7 @@ namespace Trainova.Domain.Profiles.ScoutingCandidates
             Position position,
             float performanceScore,
             float injuryRisk,
-            PlayerMedecalStatus medecalStatus,
+            PlayerMedicalStatus medecalStatus,
             Position currentMainPosition,
             Position otherAvailablePositions,
             decimal performanceLevel,
@@ -52,11 +52,13 @@ namespace Trainova.Domain.Profiles.ScoutingCandidates
         public void Update(
             string? fullName= null,
             int? age= null,
-            PlayerMedecalStatus? medecalStatus = null,
+            PlayerMedicalStatus? medecalStatus = null,
             Position? currentMainPosition = null,
             Position? otherAvailablePositions = null,
             decimal? performanceLevel = null)
         {
+            MarkUpdatedNow();
+
             if (currentMainPosition.HasValue)
             {
                 if (!currentMainPosition.Value.HasSingleFlag())
@@ -71,7 +73,6 @@ namespace Trainova.Domain.Profiles.ScoutingCandidates
             CurrentMainPosition = currentMainPosition ?? CurrentMainPosition;
             OtherAvailablePositions = otherAvailablePositions ?? OtherAvailablePositions;
             PerformanceLevel = performanceLevel ?? PerformanceLevel;
-            MarkUpdatedNow();
         }
 
     }

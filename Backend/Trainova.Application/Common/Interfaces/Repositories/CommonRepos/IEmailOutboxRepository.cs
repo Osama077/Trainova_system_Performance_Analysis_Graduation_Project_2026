@@ -7,7 +7,7 @@ namespace Trainova.Application.Common.Interfaces.Repositories.CommonRepos
     {
         Task AddAsync(EmailOutbox email);
         Task<IEnumerable<PendingEmail>> GetPendingAsync(int take = 50);
-        void UpdateAsync(EmailOutbox email);
+        Task UpdateAsync(EmailOutbox email);
 
     }
 

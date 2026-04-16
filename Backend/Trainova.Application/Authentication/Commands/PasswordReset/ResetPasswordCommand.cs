@@ -9,6 +9,6 @@ public partial record ResetPasswordCommand(
     string Email,
     string Token,
     string NewPassword
-) : IRequest<ResultOf<AuthenticationResult>>;
+) : IRequest<ResultOf<FullAuthenticationResult>>;
 
 

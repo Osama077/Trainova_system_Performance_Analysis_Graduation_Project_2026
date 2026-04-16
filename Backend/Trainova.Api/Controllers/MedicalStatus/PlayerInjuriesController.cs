@@ -25,9 +25,8 @@ namespace Trainova.Api.Controllers.MedicalStatus
         {
             var command = request.ToCommand();
             var result = await _sender.Send(command);
-            return result.Match(
-                onValue: (injury, status) =>Success(injury, status),
-                onError: errors => Problem(errors));
+            return MapResult(result);
+
         }
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> UpdatePlayerInjury(
@@ -36,9 +35,8 @@ namespace Trainova.Api.Controllers.MedicalStatus
         {
             var command = request.ToUpdateCommand(id);
             var result = await _sender.Send(command);
-            return result.Match(
-                onValue: (injury, status) =>Success(injury, status),
-                onError: errors => Problem(errors));
+            return MapResult(result);
+
         }
         [HttpGet("{injuryId:guid?}")]
         public async Task<IActionResult> GetPlayerInjuries(
@@ -48,9 +46,8 @@ namespace Trainova.Api.Controllers.MedicalStatus
         {
             var query = request.ToQuery(injuryId);
             var result = await _sender.Send(query);
-            return result.Match(
-                onValue: (injury, status) =>Success(injury, status),
-                onError: errors => Problem(errors));
+            return MapResult(result);
+
         }
         [HttpGet("history")]
         public async Task<IActionResult> GetPlayerInjuriesHistory(
@@ -65,10 +62,10 @@ namespace Trainova.Api.Controllers.MedicalStatus
                 pagennator.IncludeAdded,
                 pagennator.IncludeDeleted,
                 pagennator.IncludeUpdated);
+
             var result = await _sender.Send(query);
-            return result.Match(
-                onValue: (injury, status) =>Success(injury, status),
-                onError: errors => Problem(errors));
+            return MapResult(result);
+
         }
 
 

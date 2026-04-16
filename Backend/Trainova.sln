@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.0.11222.15 d18.0
+VisualStudioVersion = 18.0.11222.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trainova.Api", "Trainova.Api\Trainova.Api.csproj", "{6877AC49-3BC2-4919-9A84-AA1DE16FD955}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trainova.Bootstrapper", "Trainova.Bootstrapper\Trainova.Bootstrapper.csproj", "{91AA3F40-841B-44A4-B259-28113912CAD3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trainova.Common", "Trainova.Common\Trainova.Common.csproj", "{2D363378-03B3-4612-834A-D218A984597B}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Trainova.Database", "Trainova.Database\Trainova.Database.shproj", "{478AF27B-19AF-4DB9-A304-8C4AA7968AFE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,5 +59,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81629297-844B-4B76-B6CA-B1DE9C550EDE}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Trainova.Database\Trainova.Database.projitems*{478af27b-19af-4db9-a304-8c4aa7968afe}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal

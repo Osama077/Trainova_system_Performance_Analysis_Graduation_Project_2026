@@ -14,9 +14,9 @@ namespace Trainova.Application.Authentication.Commands.PasswordReset
         ITokenGenerator _tokenGenerator,
         IUserTokensRepository _tokenRepsitory,
         IPasswordHasher _pawwwordHasher
-        ) : IRequestHandler<ResetPasswordCommand, ResultOf<AuthenticationResult>>
+        ) : IRequestHandler<ResetPasswordCommand, ResultOf<FullAuthenticationResult>>
     {
-        public async Task<ResultOf<AuthenticationResult>> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
+        public async Task<ResultOf<FullAuthenticationResult>> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
 

@@ -1,7 +1,7 @@
 ﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
 using System.Data;
 using Trainova.Application.Common.Interfaces.Repositories.CommonRepos;
-using Trainova.Application.Common.Models;
 using Trainova.Domain.Common.Outbox;
 using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
 
@@ -26,25 +26,49 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.Common
 
         public async Task<IEnumerable<PendingEmail>> GetPendingAsync(int take = 50)
         {
-            using var _dbConnection = _dbSettings.CreateReadingConnection();
-            return await _dbConnection.QueryAsync<PendingEmail>(
-                "[Reading.UserData].[GetPendingEmails]",
-                new { Take = take },
-                commandType: CommandType.StoredProcedure
-            );
+            return await _dbContext.EmailOutboxes.Select(
+                e => new PendingEmail
+                {
+                    Id = e.Id,
+                    UserEmail = e.UserEmail,
+                    UserId = e.UserId,
+                    UserName = e.UserName,
+                    Token = e.Token,
+                    RetryCount = e.RetryCount,
+                    IsSent = e.IsSent,
+                    EmailType = e.EmailType,
+                    CreatedAt = e.CreatedAt,
+                })
+                .Where(p => !p.IsSent && p.RetryCount <6)
+                .Take(take)
+                .OrderByDescending(p=>p.CreatedAt)
+                .ToListAsync();
         }
 
 
 
 
-        public void UpdateAsync(EmailOutbox email)
+        // Obsolete
+        //public async Task<IEnumerable<PendingEmail>> GetPendingAsync(int take = 50)
+        //{
+        //    using var _dbConnection = _dbSettings.CreateReadingConnection();
+        //    return await _dbConnection.QueryAsync<PendingEmail>(
+        //        "[Reading.UserData].[GetPendingEmails]",
+        //        new { Take = take },
+        //        commandType: CommandType.StoredProcedure
+        //    );
+        //}
+
+
+
+
+        public Task UpdateAsync(EmailOutbox email)
         {
             _dbContext.EmailOutboxes.Update(email);
+            return Task.CompletedTask;
         }
 
-        Task<IEnumerable<PendingEmail>> IEmailOutboxRepository.GetPendingAsync(int take)
-        {
-            throw new NotImplementedException();
-        }
+
+
     }
 }

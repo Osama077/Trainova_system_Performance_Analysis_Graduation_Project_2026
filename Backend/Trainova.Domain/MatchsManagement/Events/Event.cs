@@ -172,6 +172,8 @@ namespace Trainova.Domain.MatchsManagement.Events
             bool? underPressure = null,
             bool? counterPress = null)
         {
+            MarkUpdatedNow();
+
             LocationX = locationX ?? LocationX;
             LocationY = locationY ?? LocationY;
             PassLength = passLength ?? PassLength;
@@ -196,7 +198,6 @@ namespace Trainova.Domain.MatchsManagement.Events
             UnderPressure = underPressure ?? UnderPressure;
             CounterPress = counterPress ?? CounterPress;
 
-            MarkUpdatedNow();
         }
 
     }

@@ -1,10 +1,21 @@
-﻿using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
+﻿using Microsoft.EntityFrameworkCore;
+using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
 using Trainova.Domain.UserAuth.Users;
+using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.Users
 {
     public class UsersRepository : IUsersRepository
     {
+        public readonly TrainovaWriteDbContext _dbContext;
+        private readonly IDbSettings _dbSettings;
+
+        public UsersRepository(TrainovaWriteDbContext dbContext, IDbSettings dbSettings)
+        {
+            _dbContext = dbContext;
+            _dbSettings = dbSettings;
+        }
+
         public Task AddUserAsync(User user)
         {
             throw new NotImplementedException();
@@ -15,9 +26,9 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.Users
             throw new NotImplementedException();
         }
 
-        public Task<User?> GetByEmailAsync(string email)
+        public async Task<User?> GetByEmailAsync(string email)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
         public Task<User?> GetByIdAsync(Guid userId)

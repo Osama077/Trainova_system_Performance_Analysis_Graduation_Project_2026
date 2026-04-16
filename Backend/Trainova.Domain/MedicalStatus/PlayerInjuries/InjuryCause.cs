@@ -4,7 +4,7 @@
     {
         Training = 1,
         Match,
-        Overload,
+        OverUse,
         Collision,
         Unknown
     }

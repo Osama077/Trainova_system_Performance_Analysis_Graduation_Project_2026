@@ -16,13 +16,12 @@ namespace Trainova.Domain.SeasonsAnalyses.Teams
         public ICollection<Event> Events { get; private set; } = new List<Event>();
         public ICollection<Lineup> Lineups { get; private set; } = new List<Lineup>();
         public ICollection<ScoutingCandidate> ScoutingCandidates { get; private set; } = new List<ScoutingCandidate>();
-        public ICollection<TeamStaff> TeamStaffs { get; private set; } = new List<TeamStaff>();
         private Team():base() { }
 
         public Team(
             string? teamName,
             string? country,
-            Guid? createdBy = null) : base(createdBy)
+            Guid? createdBy = null) : base(Guid.NewGuid(),createdBy)
         {
             TeamName = teamName;
             Country = country;
@@ -33,9 +32,9 @@ namespace Trainova.Domain.SeasonsAnalyses.Teams
             string? teamName = null,
             string? country = null)
         {
+            MarkUpdatedNow();
             TeamName = teamName ?? TeamName;
             Country = country ?? Country;
-            MarkUpdatedNow();
         }
     }
 

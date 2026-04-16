@@ -1,11 +1,11 @@
 ﻿﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
-using System.Security.AccessControl;
 using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Application.Common.Models;
 using Trainova.Domain.Common.AuditLogs;
 using Trainova.Domain.Common.Outbox;
+using Trainova.Domain.MedicalStatus.Injuries;
 using Trainova.Domain.MedicalStatus.PlayerInjuries;
 using Trainova.Domain.Profiles.Players;
 using Trainova.Domain.Profiles.TeamsStaff;
@@ -23,7 +23,6 @@ namespace Trainova.Infrastructure.DataAccess
         private readonly CurrentUser _currentUser;
         private IDbContextTransaction _dbTransaction;
         private static readonly string logFilePath = @"D:\EFCoreDebugLog.txt";
-
 
         public TrainovaWriteDbContext(
             DbContextOptions<TrainovaWriteDbContext> options,
@@ -53,7 +52,7 @@ namespace Trainova.Infrastructure.DataAccess
 
         //medical
         public DbSet<PlayerInjury> PlayerInjuries { get; set; }
-        public DbSet<Trainova.Domain.MedicalStatus.Injuries.Injury> Injuries { get; set; }
+        public DbSet<Injury> Injuries { get; set; }
 
         //profiles
         public DbSet<Player> Players { get; set; }
@@ -128,31 +127,34 @@ namespace Trainova.Infrastructure.DataAccess
             var logs = new List<AuditLog>();
 
             var entries = ChangeTracker
-                .Entries()
+                .Entries<IAuditable>()
                 .Where(e =>
                     e.Entity is IAuditable &&
-                    e.Entity is not AuditLog &&
                     (e.State == EntityState.Added ||
                      e.State == EntityState.Modified ||
                      e.State == EntityState.Deleted));
 
             foreach (var entry in entries)
             {
-                var action = entry.State switch
+                if(entry.State == EntityState.Deleted)
                 {
-                    EntityState.Added => AuditActionType.Create,
-                    EntityState.Modified => AuditActionType.Update,
-                    EntityState.Deleted => AuditActionType.Delete,
-                    _ => throw new Exception("Unsupported state")
-                };
+                    var deletedLog = entry.Entity.CreateDeletionAudit();
+                    deletedLog.SetUser(_currentUser?.Id??Guid.Empty);
+                    logs.Add(deletedLog);
+                }
 
-                var auditable = (IAuditable)entry.Entity;
-
-                var log = AuditLog.Create(auditable, action);
-
-                log.SetUser(_currentUser?.Id ?? Guid.Empty);
-
-                logs.Add(log);
+                else if(entry.State == EntityState.Added)
+                {
+                    var createdLog = entry.Entity.AddedAudit;
+                    createdLog.SetUser(_currentUser?.Id ?? Guid.Empty);
+                    logs.Add(createdLog);
+                }
+                else if(entry.State == EntityState.Modified)
+                {
+                    var updatedLog = entry.Entity.UpdatedAudit;
+                    updatedLog.SetUser(_currentUser?.Id ?? Guid.Empty);
+                    logs.Add(updatedLog);
+                }
             }
 
             return logs;

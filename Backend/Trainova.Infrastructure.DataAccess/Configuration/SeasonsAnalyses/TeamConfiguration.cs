@@ -10,7 +10,7 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.SeasonsAnalyses
     {
         protected override void ConfigureEntity(
             EntityTypeBuilder<Team> builder,
-            bool valueGeneratedOnAdd = true)
+            bool valueGeneratedOnAdd = false)
         {
             base.ConfigureEntity(builder, valueGeneratedOnAdd);
 

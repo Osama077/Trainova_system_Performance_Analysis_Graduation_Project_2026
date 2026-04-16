@@ -32,7 +32,7 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.MatchsManagement
                 .HasOne(l => l.Team)
                 .WithMany(t => t.Lineups)
                 .HasForeignKey(l => l.TeamId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(l => l.StartingPosition)
                 .HasConversion<int>()

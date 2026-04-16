@@ -23,7 +23,7 @@ namespace Trainova.Domain.UserAuth.UserTokens
             TokenType tokenType)
         {
             Id = Guid.NewGuid();
-            Token = TokenType.Create();
+            Token = tokenType.Create();
             UserId = userId;
             TokenType = tokenType;
             IsUsed= false;

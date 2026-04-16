@@ -3,11 +3,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Trainova.Application.Common.Interfaces.Repositories.CommonRepos;
 using Trainova.Application.Common.Interfaces.Repositories.MedicalStatus;
+using Trainova.Application.Common.Interfaces.Repositories.Profiles.Players;
 using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
 using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
 using Trainova.Infrastructure.DataAccess.Repositories.Common;
 using Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus;
+using Trainova.Infrastructure.DataAccess.Repositories.Profiles;
 using Trainova.Infrastructure.DataAccess.Repositories.Users;
 
 
@@ -49,6 +51,8 @@ public static class DependencyInjection
         services.AddScoped<IEmailOutboxRepository, EmailOutboxRepository>();
 
 
+        // Profiles
+        services.AddScoped<IPlayerRepository,PlayerRepository>();
         // Register Dapper type handlers for enums
         DapperTypeHandlerConfiguration.Register();
 

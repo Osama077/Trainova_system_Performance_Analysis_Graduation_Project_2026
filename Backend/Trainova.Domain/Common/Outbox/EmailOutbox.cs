@@ -17,7 +17,53 @@
         public string? ErrorMessage { get; set; }
         public int RetryCount { get; set; }
 
+        private EmailOutbox() { }
+        public EmailOutbox(Guid userId, string userName, string userEmail, string emailType, string? token = null)
+        {
+            Id = Guid.NewGuid();
+            UserId = userId;
+            UserName = userName;
+            UserEmail = userEmail;
+            EmailType = emailType;
+            Token = token;
+        }
 
+        public static EmailOutbox MarkSent(PendingEmail pending)
+        {
+            return new EmailOutbox
+            {
+                Id = pending.Id,
+                UserId = pending.UserId,
+                UserName = pending.UserName,
+                UserEmail = pending.UserEmail,
+                EmailType = pending.EmailType,
+                Token = pending.Token,
+                CreatedAt = pending.CreatedAt,
+                RetryCount = pending.RetryCount,
+                IsSent = true,
+                SentAt = DateTime.UtcNow,
+                ErrorMessage = null
+            };
+        }
+
+        public static EmailOutbox MarkFailed(PendingEmail pending, string errorMessage)
+        {
+
+            return new EmailOutbox
+            {
+                Id = pending.Id,
+                UserId = pending.UserId,
+                UserName = pending.UserName,
+                UserEmail = pending.UserEmail,
+                EmailType = pending.EmailType,
+                Token = pending.Token,
+                CreatedAt = pending.CreatedAt,
+                RetryCount = pending.RetryCount + 1,
+                IsSent = false,
+                SentAt = null,
+                ErrorMessage = errorMessage
+            };
+        }
 
     }
 

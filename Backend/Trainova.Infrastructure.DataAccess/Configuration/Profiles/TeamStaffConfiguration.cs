@@ -17,11 +17,7 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.Profiles
 
             builder.ToTable("TeamStaffs");
 
-            builder
-                .HasOne(ts => ts.Team)
-                .WithMany(t => t.TeamStaffs)
-                .HasForeignKey(ts => ts.TeamId)
-                .OnDelete(DeleteBehavior.Cascade);
+
 
             builder
                 .HasOne(ts => ts.User)
@@ -34,7 +30,6 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.Profiles
                 .HasConversion<string>()
                 .HasMaxLength(40);
 
-            builder.HasIndex(ts => ts.TeamId);
         }
     }
 

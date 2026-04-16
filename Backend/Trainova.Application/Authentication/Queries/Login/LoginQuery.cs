@@ -6,4 +6,5 @@ namespace Trainova.Application.Authentication.Queries.Login;
 
 public record LoginQuery(
     string Email,
-    string Password) : IRequest<ResultOf<AuthenticationResult>>;
+    string Password)
+    : IRequest<ResultOf<AuthenticationResultBase>>;

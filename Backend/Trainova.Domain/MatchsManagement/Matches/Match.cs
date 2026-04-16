@@ -48,7 +48,7 @@ namespace Trainova.Domain.MatchsManagement.Matches
             string stadium,
             string referee,
             int matchWeek,
-            Guid? createdBy = null) : base(createdBy)
+            Guid? createdBy = null) : base(Guid.NewGuid(),createdBy)
         {
             Id = matchId;
             CompetitionId = competitionId;
@@ -75,6 +75,7 @@ namespace Trainova.Domain.MatchsManagement.Matches
             string? referee = null,
             int? matchWeek = null)
         {
+            MarkUpdatedNow();
 
             CompetitionId = competitionId ?? CompetitionId;
             MatchDate = matchDate ?? MatchDate;
@@ -85,7 +86,6 @@ namespace Trainova.Domain.MatchsManagement.Matches
             Stadium = stadium ?? Stadium;
             Referee = referee ?? Referee;
             MatchWeek = matchWeek ?? MatchWeek;
-            MarkUpdatedNow();
 
         }
 

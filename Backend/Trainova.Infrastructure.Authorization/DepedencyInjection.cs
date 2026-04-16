@@ -4,10 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using Trainova.Application.Common.Interfaces.Service;
 using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Domain.Common.Services;
-using Trainova.Infrastructure.Authorization.AuthEmailSenders;
 using Trainova.Infrastructure.Authorization.PasswordHashers;
 using Trainova.Infrastructure.Authorization.TokenGenerators;
 
@@ -27,7 +25,6 @@ public static class DependencyInjection
 
         services.AddSingleton<ITokenGenerator, TokenGenerator>();
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
-        services.AddScoped<IEmailSender, AuthEmailSender>();
 
         services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>

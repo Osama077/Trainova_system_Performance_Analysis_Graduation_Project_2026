@@ -1,4 +1,6 @@
 
+using Trainova.Common.ResultOf;
+
 namespace Trainova.Common.Errors;
 
 /// <summary>
@@ -79,7 +81,10 @@ public readonly record struct Error
             new(code, description, (ErrorType)type, metadata);
 
 
-
+    public ResultOf<T> AsError<T>()
+    {
+        return ResultOf<T>.FromError(this);
+    }
 
 
 }

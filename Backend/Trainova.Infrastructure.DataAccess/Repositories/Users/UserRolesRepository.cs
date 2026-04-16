@@ -1,4 +1,5 @@
-﻿using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
+﻿using Microsoft.EntityFrameworkCore;
+using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
 using Trainova.Domain.UserAuth.UserRoles;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.Users
@@ -15,6 +16,13 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.Users
         public async Task AddAsync(UserRole userRole)
         {
             await _dbContext.UserRoles.AddAsync(userRole);
+        }
+
+        public async Task<IEnumerable<UserRole>> GetAllAsync(Guid userId)
+        {
+            return await _dbContext.UserRoles.Where(ur=>ur.UserId ==  userId)
+                .Include(ur=>ur.Role)
+                .ToListAsync();
         }
     }
 }

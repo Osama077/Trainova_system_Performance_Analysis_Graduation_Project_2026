@@ -2,7 +2,7 @@
 
 public class DomainException :Exception
 {
-    public DomainException(string massage,string code = "DomainError"): base(massage)
+    public DomainException(string message = "Domain Error Happend", string code = "DomainError"): base(message)
     {
         Code = code;
     }

@@ -8,7 +8,6 @@ using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Application.Common.Models;
 using Trainova.Infrastructure.DataAccess;
 using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
-using Trainova.Infrastructure.DataAccess.Repositories.Outbox;
 using Trainova.Infrastructure.DataAccess.Repositories.Users;
 
 

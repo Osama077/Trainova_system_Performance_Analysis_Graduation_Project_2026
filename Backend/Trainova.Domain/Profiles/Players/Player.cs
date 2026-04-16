@@ -14,11 +14,10 @@ namespace Trainova.Domain.Profiles.Players
     public class Player : AuditableEntity<Guid>
     {
         public User User { get; private set; }
-        public Guid CurrentTeamId { get; private set; }
-        public Team CurrentTeam { get; private set; }
+
         public int PlayerNumber { get; private set; }
         public string TShirtName { get; private set; }
-        public PlayerMedecalStatus MedecalStatus { get; private set; } = PlayerMedecalStatus.Fit;
+        public PlayerMedicalStatus MedicalStatus { get; private set; } = PlayerMedicalStatus.Fit;
         public Position CurrentMainPosition { get; private set; }
         public Position OtherAvailablePositions { get; private set; }
         public decimal PerformanceLevel { get; private set; }
@@ -38,10 +37,9 @@ namespace Trainova.Domain.Profiles.Players
 
         public Player(
             Guid id,
-            Guid currentTeamId,
             int playerNumber,
             string tShirtName,
-            PlayerMedecalStatus medecalStatus,
+            PlayerMedicalStatus medecalStatus,
             Position currentMainPosition,
             Position otherAvailablePositions,
             decimal performanceLevel,
@@ -54,10 +52,9 @@ namespace Trainova.Domain.Profiles.Players
                     "Player must have exactly one main position.",
                     "DomainError_MainPositionDontFit");
 
-            CurrentTeamId = currentTeamId;
             PlayerNumber = playerNumber;
             TShirtName = tShirtName;
-            MedecalStatus = medecalStatus;
+            MedicalStatus = medecalStatus;
             CurrentMainPosition = currentMainPosition;
             OtherAvailablePositions = otherAvailablePositions;
             PerformanceLevel = performanceLevel;
@@ -67,11 +64,13 @@ namespace Trainova.Domain.Profiles.Players
         public void Update(
             int? playerNumber = null,
             string? tShirtName = null,
-            PlayerMedecalStatus? medecalStatus = null,
+            PlayerMedicalStatus? medecalStatus = null,
             Position? currentMainPosition = null,
             Position? otherAvailablePositions = null,
             decimal? performanceLevel = null)
         {
+            MarkUpdatedNow();
+
             if (currentMainPosition.HasValue)
             {
                 if (!currentMainPosition.Value.HasSingleFlag())
@@ -82,11 +81,10 @@ namespace Trainova.Domain.Profiles.Players
 
             PlayerNumber = playerNumber?? PlayerNumber;
             TShirtName = tShirtName ?? TShirtName;
-            MedecalStatus = medecalStatus?? MedecalStatus;
+            MedicalStatus = medecalStatus?? MedicalStatus;
             CurrentMainPosition = currentMainPosition ?? CurrentMainPosition;
             OtherAvailablePositions = otherAvailablePositions ?? OtherAvailablePositions;
             PerformanceLevel = performanceLevel ?? PerformanceLevel;
-            MarkUpdatedNow();
         }
 
 

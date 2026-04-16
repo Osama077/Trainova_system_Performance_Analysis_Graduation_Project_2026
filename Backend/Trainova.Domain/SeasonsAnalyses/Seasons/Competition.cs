@@ -39,11 +39,12 @@ namespace Trainova.Domain.SeasonsAnalyses.Seasons
             string? seasonName = null,
             string? countryName = null)
         {
+            MarkUpdatedNow();
+
             CompetitionName = competitionName ?? CompetitionName;
             SeasonId = seasonId ?? SeasonId;
             SeasonName = seasonName ?? SeasonName;
             CountryName = countryName ?? CountryName;
-            MarkUpdatedNow();
         }
     }
 
