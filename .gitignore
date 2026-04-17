@@ -84,6 +84,7 @@ bld/
 .vs/
 bin/
 obj/
+appsettings
 
 # User-specific files
 *.user
