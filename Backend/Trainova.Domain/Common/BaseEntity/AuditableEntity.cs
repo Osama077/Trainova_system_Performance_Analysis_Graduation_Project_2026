@@ -1,4 +1,5 @@
-﻿using Trainova.Domain.Common.AuditLogs;
+﻿using System.Text.Json.Serialization;
+using Trainova.Domain.Common.AuditLogs;
 using Trainova.Domain.Common.Helpers;
 
 namespace Trainova.Domain.Common.BaseEntity
@@ -10,7 +11,7 @@ namespace Trainova.Domain.Common.BaseEntity
         protected AuditLog _audit;
 
         object IAuditable.Id => Id!;
-
+        [JsonIgnore]
         AuditLog IAuditable.UpdatedAudit
         {
             get {
@@ -18,7 +19,7 @@ namespace Trainova.Domain.Common.BaseEntity
                     throw new DomainException(
                         code: "AuditNullReference",
                         message: $"Audit hasn't Created or has been disposed");
-                if (_audit.Action == AuditActionType.Update)
+                if (_audit.Action != AuditActionType.Update)
                     throw new DomainException(
                         code: "AuditTypeMissMatch",
                         message:$"cant get update Audit from Audit with state {_audit.Action.ToString()}");
@@ -26,6 +27,7 @@ namespace Trainova.Domain.Common.BaseEntity
 
                 }
         }
+        [JsonIgnore]
         AuditLog IAuditable.AddedAudit
         {
             get {
@@ -33,7 +35,7 @@ namespace Trainova.Domain.Common.BaseEntity
                     throw new DomainException(
                         code: "AuditNullReference",
                         message:$"Audit hasn't Created or has been disposed");
-                if (_audit.Action == AuditActionType.Create)
+                if (_audit.Action != AuditActionType.Create)
                     throw new DomainException(
                         code: "AuditTypeMissMatch",
                         message:$"cant get Create Audit from Audit with state {_audit.Action.ToString()}");

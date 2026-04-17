@@ -25,9 +25,10 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.Users
                 .FirstOrDefaultAsync();
         }
 
-        public void Update(UserToken token)
+        public Task UpdateAsync(UserToken token)
         {
-            throw new NotImplementedException();
+            _context.Update(token);
+            return Task.CompletedTask;
         }
     }
 }

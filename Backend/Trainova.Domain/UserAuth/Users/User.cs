@@ -57,6 +57,7 @@ namespace Trainova.Domain.UserAuth.Users
 
         public ResultOf<Done> SetNewPassword(string password, IPasswordHasher passwordHasher)
         {
+            MarkUpdatedNow();
             if (string.IsNullOrWhiteSpace(password))
             {
                 return Error.Conflict(description:"can't change password to nothing");

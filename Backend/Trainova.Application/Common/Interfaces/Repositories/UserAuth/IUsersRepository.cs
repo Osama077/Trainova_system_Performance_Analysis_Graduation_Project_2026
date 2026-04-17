@@ -11,6 +11,5 @@ public interface IUsersRepository
 
     // Writing operations
     Task AddUserAsync(User user);
-    void Update(User user);
-
+    Task UpdateAsync(User user);
 }

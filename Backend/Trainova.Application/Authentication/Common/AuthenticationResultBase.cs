@@ -4,6 +4,7 @@ namespace Trainova.Application.Authentication.Common;
 
 public abstract class AuthenticationResultBase
 {
+    public Guid UserId { get; init; }
     public bool Is2FARequired { get; init; }
     public string Name { get; init; }
     public string ShowName { get; init; }
@@ -11,6 +12,7 @@ public abstract class AuthenticationResultBase
     public bool IsActive { get; init; }
     public AuthenticationResultBase(User user)
     {
+        UserId = user.Id;
         Is2FARequired = user.IsTFAEnabled;
         Name = user.FullName;
         ShowName = user.ShowName;

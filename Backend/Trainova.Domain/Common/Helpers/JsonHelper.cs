@@ -1,5 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using Trainova.Domain.Common.AuditLogs;
+using Trainova.Domain.Common.BaseEntity;
 using Trainova.Domain.Common.DataConvrters;
 using Trainova.Domain.UserAuth.UserTokens;
 
@@ -11,20 +13,32 @@ namespace Trainova.Domain.Common.Helpers
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+            ReferenceHandler = ReferenceHandler.IgnoreCycles,
             WriteIndented = false,
             Converters =
             {
+
                 new JsonStringEnumConverter(),              // Enums العادية
                 new SmartEnumJsonConverter<TokenType>(),  // SmartEnums اللي محتاجها
             }
+
         };
 
 
         // Serialize any object
         public static string Serialize<T>(this T value)
+            where T : IAuditable
         {
-            return JsonSerializer.Serialize(value, _options);
+            if (value is null)
+                return string.Empty;
+
+            return JsonSerializer.Serialize(
+                value,
+                value.GetType(),
+                _options
+            );
         }
+
 
         // Deserialize into any type
         public static T? Deserialize<T>(this string? json)

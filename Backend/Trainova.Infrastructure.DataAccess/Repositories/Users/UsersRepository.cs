@@ -16,14 +16,14 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.Users
             _dbSettings = dbSettings;
         }
 
-        public Task AddUserAsync(User user)
+        public async Task AddUserAsync(User user)
         {
-            throw new NotImplementedException();
+            await _dbContext.AddAsync(user);
         }
 
-        public Task<bool> ExistsByEmailAsync(string email)
+        public async Task<bool> ExistsByEmailAsync(string email)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Users.AnyAsync(u => u.Email == email);
         }
 
         public async Task<User?> GetByEmailAsync(string email)
@@ -33,15 +33,14 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.Users
 
         public Task<User?> GetByIdAsync(Guid userId)
         {
-            throw new NotImplementedException();
+            return _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
         }
 
 
-        public void Update(User user)
+        public Task UpdateAsync(User user)
         {
-            throw new NotImplementedException();
+            _dbContext.Update(user);
+            return Task.CompletedTask;
         }
-
-
     }
 }

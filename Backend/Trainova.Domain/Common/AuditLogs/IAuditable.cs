@@ -1,4 +1,6 @@
-﻿namespace Trainova.Domain.Common.AuditLogs
+﻿using System.Text.Json.Serialization;
+
+namespace Trainova.Domain.Common.AuditLogs
 {
     public interface IAuditable
     {
@@ -6,7 +8,9 @@
         DateTime CreatedAt { get; }
         DateTime? LastUpdate { get; }
         Guid? CreatedBy { get; }
+        [JsonIgnore]
         AuditLog UpdatedAudit { get;}
+        [JsonIgnore]
         AuditLog AddedAudit { get;}
 
     }
