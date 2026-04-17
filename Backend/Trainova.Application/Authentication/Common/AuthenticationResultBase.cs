@@ -1,7 +1,11 @@
+using System.Text.Json.Serialization;
 using Trainova.Domain.UserAuth.Users;
 
 namespace Trainova.Application.Authentication.Common;
 
+[JsonPolymorphic]
+[JsonDerivedType(typeof(TFANeededAuthenticationResult), "tfa")]
+[JsonDerivedType(typeof(FullAuthenticationResult), "full")]
 public abstract class AuthenticationResultBase
 {
     public Guid UserId { get; init; }

@@ -1,5 +1,10 @@
-﻿namespace Trainova.Application.Authentication.Common
+﻿using System.Text.Json.Serialization;
+
+namespace Trainova.Application.Authentication.Common
 {
+    [JsonPolymorphic]
+    [JsonDerivedType(typeof(TFANeededAuthenticationResult), "tfa")]
+    [JsonDerivedType(typeof(FullAuthenticationResult), "full")]
     public abstract class BaseTokenCreationResult
     {
         protected BaseTokenCreationResult(string tokenType)
