@@ -25,7 +25,19 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus
             await _db.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<PlayerInjury>> GetAllAsync(Guid? playerInjuryId = null, Guid? playerId = null, Guid? injuryId = null, InjuryStatus? status = null, InjuryCause? cause = null, bool? isNew = null, DateTime? happendBefore = null, DateTime? happendAfter = null, DateTime? expectedReturnBefore = null, DateTime? expectedReturnAfter = null, DateTime? returnedBefore = null, DateTime? returnedAfter = null)
+        public async Task<IEnumerable<PlayerInjury>> GetAllAsync(
+            Guid? playerInjuryId = null
+            , Guid? playerId = null,
+            Guid? injuryId = null, 
+            InjuryStatus? status = null, 
+            InjuryCause? cause = null,
+            bool? isNew = null, 
+            DateTime? happendBefore = null,
+            DateTime? happendAfter = null, 
+            DateTime? expectedReturnBefore = null,
+            DateTime? expectedReturnAfter = null,
+            DateTime? returnedBefore = null,
+            DateTime? returnedAfter = null)
         {
             IQueryable<PlayerInjury> query = _db.PlayerInjuries.AsQueryable();
 

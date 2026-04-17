@@ -1,4 +1,6 @@
-﻿using Trainova.Domain.MedicalStatus.PlayerInjuries;
+﻿using MediatR;
+using Trainova.Common.ResultOf;
+using Trainova.Domain.MedicalStatus.PlayerInjuries;
 
 namespace Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInjuries
 {
@@ -17,6 +19,6 @@ namespace Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInj
             DateTime? ReturnedAfter = null,
             int Page = 0,
             int PageSize = 12
-            );
+            ) : IRequest<ResultOf<IEnumerable<PlayerInjury>>>;
 
 }

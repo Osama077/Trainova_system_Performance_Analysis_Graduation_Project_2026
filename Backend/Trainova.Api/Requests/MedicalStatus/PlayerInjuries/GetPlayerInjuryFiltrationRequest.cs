@@ -3,7 +3,7 @@ using Trainova.Application.MedicalStatus.Injuries.Queries.GetInjuries;
 using Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInjuries;
 using Trainova.Domain.MedicalStatus.PlayerInjuries;
 
-namespace Trainova.Api.Requsts.MedicalStatus.PlayerInjuries
+namespace Trainova.Api.Requests.MedicalStatus.PlayerInjuries
 {
     public class GetPlayerInjuryFiltrationRequest : Paginator
     {

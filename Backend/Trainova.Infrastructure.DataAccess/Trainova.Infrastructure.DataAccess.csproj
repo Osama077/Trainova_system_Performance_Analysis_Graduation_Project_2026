@@ -28,4 +28,8 @@
     <ProjectReference Include="..\Trainova.Application\Trainova.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Configuration\Injuries\" />
+  </ItemGroup>
+
 </Project>
