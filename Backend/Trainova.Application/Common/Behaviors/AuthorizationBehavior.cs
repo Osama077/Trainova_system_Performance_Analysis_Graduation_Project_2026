@@ -30,6 +30,11 @@ public class AuthorizationBehavior<TRequest, TResponse>(CurrentUser? _currentUse
         {
             return (dynamic)Error.Unauthorized(description: "User is not loged Id");
         }
+        if (_currentUser.IsAuthenticated && _currentUser.Roles.Contains("SystemOwner"))
+        {
+            return await next();
+        }
+
 
         var requiredRoles = authorizationAttributes
             .SelectMany(authorizationAttribute => authorizationAttribute.Role?.Split(',') ?? [])
