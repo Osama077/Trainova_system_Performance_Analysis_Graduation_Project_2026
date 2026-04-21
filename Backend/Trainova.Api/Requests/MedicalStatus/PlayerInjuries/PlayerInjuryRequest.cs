@@ -1,12 +1,11 @@
-﻿using Trainova.Api.Models;
-using Trainova.Application.Common.Helpers.TimeConverterHelpers;
+﻿using Trainova.Application.Common.Helpers.TimeConverterHelpers;
 using Trainova.Application.MedicalStatus.PlayerInjuries.Commands.CreatePlayerInjury;
 using Trainova.Application.MedicalStatus.PlayerInjuries.Commands.UpdatePlayerInjury;
 using Trainova.Domain.MedicalStatus.PlayerInjuries;
 
 namespace Trainova.Api.Requests.MedicalStatus.PlayerInjuries
 {
-    public class PlayerInjuryRequest : Paginator
+    public class PlayerInjuryRequest
     {
         // Required for creating a player injury
         public Guid InjuryId { get; set; }
@@ -38,7 +37,8 @@ namespace Trainova.Api.Requests.MedicalStatus.PlayerInjuries
                 SevertiyGrade,
                 BodyPart,
                 Notes,
-                IsNew
+                IsNew,
+                ExpectedReturnDate
             );
         }
 

@@ -28,15 +28,15 @@ namespace Trainova.Infrastructure.Authorization.TokenGenerators
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var claims = new List<Claim>
             {
-                new Claim("id", user.Id.ToString("N")),
-                new Claim("email", user.Email),
-                new Claim("showName", user.ShowName)
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString("N")),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Name, user.ShowName)
             };
             if (roles is not null)
             {
                 foreach (var role in roles)
                 {
-                    claims.Add(new Claim("roles", role.Name));
+                    claims.Add(new Claim(ClaimTypes.Role, role.Name));
                 }
             }
             var token = new JwtSecurityToken(

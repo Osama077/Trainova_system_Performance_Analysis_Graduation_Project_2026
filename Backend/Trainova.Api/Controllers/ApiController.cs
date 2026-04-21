@@ -14,6 +14,7 @@ public class ApiController(
     CurrentUser? currentUser)
     : ControllerBase
 {
+    protected readonly CurrentUser? _currentUser = currentUser;
 
     protected IActionResult Success(DoneStatus status)
     {

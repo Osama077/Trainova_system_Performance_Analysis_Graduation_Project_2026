@@ -35,7 +35,7 @@ public class AuthorizationBehavior<TRequest, TResponse>(CurrentUser? _currentUse
             .SelectMany(authorizationAttribute => authorizationAttribute.Role?.Split(',') ?? [])
             .ToList();
 
-        if (requiredRoles.Except(_currentUser.Roles).Any())
+        if (!requiredRoles.Intersect(_currentUser.Roles).Any())
         {
             return (dynamic)Error.Unauthorized(description: "User is forbidden from taking this action");
         }

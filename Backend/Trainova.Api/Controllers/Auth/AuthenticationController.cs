@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Trainova.Api.Requests.Auth;
 using Trainova.Application.Authentication.Commands.ConfirmEmail;
 using Trainova.Application.Authentication.Commands.CreateToken;
-using Trainova.Application.Authentication.Commands.PasswordReset;
-using Trainova.Application.Authentication.Queries.Login;
 using Trainova.Application.Common.Models;
 
 namespace Trainova.Api.Controllers.Auth
@@ -56,5 +54,7 @@ namespace Trainova.Api.Controllers.Auth
             var result = await _mediator.Send(command);
             return MapResult(result);
         }
+
+
     }
 }

@@ -31,8 +31,7 @@ namespace Trainova.Application.MedicalStatus.Injuries.Commands.CreateInjury
                     request.Name,
                     request.Description,
                     injuryType,
-                    timeAttacher.ToTimeSpan(),
-                    _currentUser.Id
+                    timeAttacher.ToTimeSpan()
                     );
                 await _injuryrepository.AddAsync(injury);
                 return injury.AsCreated();

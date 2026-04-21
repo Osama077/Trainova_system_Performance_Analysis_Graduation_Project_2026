@@ -7,10 +7,10 @@ using Trainova.Common.Errors;
 using Trainova.Domain.MedicalStatus.PlayerInjuries;
 using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Domain.Common.Helpers;
+using Trainova.Application.Common.Authorization;
 
 namespace Trainova.Application.MedicalStatus.PlayerInjuries.Commands.CreatePlayerInjury
 {
-    [Trainova.Application.Common.Authorization.Authorize(Role = "Doctor")]
     public class CreatePlayerInjuryCommandHandler(
         IPlayerInjuryRepository playerInjuryRepository,
         IUnitOfWork unitOfWork,
@@ -22,8 +22,8 @@ namespace Trainova.Application.MedicalStatus.PlayerInjuries.Commands.CreatePlaye
             try
             {
                 var playerInjury = new PlayerInjury(
-                    request.InjuryId,
                     request.PlayerId,
+                    request.InjuryId,
                     request.Status,
                     request.HappendAt,
                     request.Cause,
@@ -31,6 +31,7 @@ namespace Trainova.Application.MedicalStatus.PlayerInjuries.Commands.CreatePlaye
                     request.BodyPart,
                     request.Notes,
                     request.IsNew,
+                    request.ExpectedReturnDate,
                     currentUser.Id
                 );
 

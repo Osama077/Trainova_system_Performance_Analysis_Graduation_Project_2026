@@ -1,11 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Trainova.Domain.Common.BaseEntity;
+﻿using Trainova.Domain.Common.BaseEntity;
 using Trainova.Domain.UserAuth.Roles;
 using Trainova.Domain.UserAuth.Users;
 
 namespace Trainova.Domain.UserAuth.UserRoles
 {
-    public class UserRole :ILogableCreator
+    public class UserRole :ICreatorLogable
     {
         public byte RoleId { get; private set; }
         public Guid UserId { get; private set; }
@@ -16,7 +15,7 @@ namespace Trainova.Domain.UserAuth.UserRoles
         public User User { get; private set; }
         private UserRole() { }
 
-        public UserRole(byte roleId, Guid userId,Guid? createdBy = null)
+        public UserRole(byte roleId, Guid userId,Guid createdBy = default)
         {
             RoleId = roleId;
             UserId = userId;

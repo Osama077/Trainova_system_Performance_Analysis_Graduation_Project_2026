@@ -71,7 +71,7 @@ namespace Trainova.Api.Services
 
             Guid? id = null;
 
-            var idClaim = user.FindFirst("UserId")?.Value;
+            var idClaim = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (!string.IsNullOrEmpty(idClaim) &&
                 Guid.TryParse(idClaim, out var parsedId))

@@ -13,6 +13,10 @@ public record CurrentUser(
     IReadOnlyList<Claim> Claims
 )
 {
+    public override string ToString()
+    {
+        return $"ID: {Id}, Name: {FullName}, Email: {Email}, Roles: [{string.Join(", ", Roles)}]";
+    }
     public bool IsAuthenticated => Id.HasValue;
 
     public bool IsInRole(string role) =>

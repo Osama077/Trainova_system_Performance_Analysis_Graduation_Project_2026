@@ -1,4 +1,3 @@
-// ...existing code...
 using MediatR;
 using Trainova.Application.Common.Interfaces.Repositories.MedicalStatus;
 using Trainova.Application.Common.Models;
@@ -10,7 +9,6 @@ using Trainova.Domain.Common.Helpers;
 
 namespace Trainova.Application.MedicalStatus.PlayerInjuries.Commands.UpdatePlayerInjury
 {
-    [Trainova.Application.Common.Authorization.Authorize(Role = "Doctor")]
     public class UpdatePlayerInjuryCommandHandler(
         IPlayerInjuryRepository playerInjuryRepository,
         IUnitOfWork unitOfWork,

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.Design;
-using Trainova.Domain.Common.AuditLogs;
-using Trainova.Domain.Common.BaseEntity;
+﻿using Trainova.Domain.Common.BaseEntity;
 using Trainova.Domain.MedicalStatus.Injuries;
 using Trainova.Domain.Profiles.Players;
 
@@ -26,8 +24,8 @@ namespace Trainova.Domain.MedicalStatus.PlayerInjuries
 
 
         public PlayerInjury(
-            Guid injuryId,
             Guid playerId,
+            Guid injuryId,
             InjuryStatus status,
             DateTime? happendAt = null,
             InjuryCause cause = default,
@@ -35,10 +33,11 @@ namespace Trainova.Domain.MedicalStatus.PlayerInjuries
             string bodyPart = null,
             string notes = null,
             bool isNew = false,
+            DateTime? expectedReturnDate = null,
             Guid? createdBy = null) : base(createdBy)
         {
-            InjuryId = injuryId;
             PlayerId = playerId;
+            InjuryId = injuryId;
             Status = status;
             HappendAt = happendAt ?? DateTime.UtcNow;
             Cause = cause;
@@ -46,6 +45,7 @@ namespace Trainova.Domain.MedicalStatus.PlayerInjuries
             BodyPart = bodyPart;
             Notes = notes;
             IsNew = isNew;
+            ExpectedReturnDate = expectedReturnDate;
         }
 
         public void Update(
@@ -77,10 +77,7 @@ namespace Trainova.Domain.MedicalStatus.PlayerInjuries
             }
         }
 
-        public void UpdateStatus()
-        {
 
-        }
         private PlayerInjury() : base() { }
 
     }

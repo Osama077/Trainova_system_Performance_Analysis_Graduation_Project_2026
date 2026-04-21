@@ -1,9 +1,11 @@
 ﻿using MediatR;
+using Trainova.Application.Common.Authorization;
 using Trainova.Application.Profiles.Players.Common;
 using Trainova.Common.ResultOf;
 
 namespace Trainova.Application.Profiles.Players.Queries.GetPlayersProfiles
 {
+    [Authorize(Role ="Doctor,SystemOwner")]
     public record GetPlayersProfileQuery(
             Guid? PlayerId = null,
             string SearchTerm = null,

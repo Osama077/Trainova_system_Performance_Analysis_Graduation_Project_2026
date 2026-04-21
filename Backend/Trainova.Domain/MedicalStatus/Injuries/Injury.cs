@@ -9,7 +9,6 @@ namespace Trainova.Domain.MedicalStatus.Injuries
     {
         public string Name { get; private set; }
         public string? Description { get; private set; }
-        [JsonConverter(typeof(JsonStringEnumConverter))]
         public InjuryType? InjuryType { get; private set; }
         public TimeSpan? AverageRecoveryTime { get; private set; }
 
@@ -35,7 +34,7 @@ namespace Trainova.Domain.MedicalStatus.Injuries
             string? description,
             InjuryType? injuryType = null,
             TimeSpan? averageRecoveryTime = null,
-            Guid? createdBy = null) : base(createdBy)
+            Guid createdBy = default) : base(createdBy)
         {
             Name = name;
             Description = description;
