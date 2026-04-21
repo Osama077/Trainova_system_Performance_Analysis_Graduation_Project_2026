@@ -1,9 +1,11 @@
 ﻿using MediatR;
+using Trainova.Application.Common.Authorization;
 using Trainova.Common.ResultOf;
 using Trainova.Domain.Common.AuditLogs;
 
 namespace Trainova.Application.MedicalStatus.Injuries.Queries.GetInjuriesHistory
 {
+    [Authorize(Role = "Doctor,SystemAdmin")]
     public record GetInjuriesHistoryQuery(
         Guid? Id,
         int Page = 0,

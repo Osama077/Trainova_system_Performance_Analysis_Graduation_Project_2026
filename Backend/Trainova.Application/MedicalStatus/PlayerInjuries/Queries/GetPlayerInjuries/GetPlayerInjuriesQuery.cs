@@ -1,9 +1,11 @@
 ﻿using MediatR;
+using Trainova.Application.Common.Authorization;
 using Trainova.Common.ResultOf;
 using Trainova.Domain.MedicalStatus.PlayerInjuries;
 
 namespace Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInjuries
 {
+    [Authorize(Role = "Doctor,Player,SystemAdmin,HeadCoach,AssistantCoach")]
     public record GetPlayerInjuriesQuery(
             Guid? PlayerInjuryId = null,
             Guid? PlayerId = null,

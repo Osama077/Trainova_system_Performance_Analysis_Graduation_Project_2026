@@ -3,8 +3,9 @@
 namespace Trainova.Application.Authentication.Common
 {
     [JsonPolymorphic]
-    [JsonDerivedType(typeof(TFANeededAuthenticationResult), "tfa")]
-    [JsonDerivedType(typeof(FullAuthenticationResult), "full")]
+    [JsonDerivedType(typeof(ConfirmEmailTokenCreationResult), "confirmEmail")]
+    [JsonDerivedType(typeof(RefreshTokenCreationResult), "refreshToken")]
+    [JsonDerivedType(typeof(PassWordResetTokenCreationResult), "passwordReset")]
     public abstract class BaseTokenCreationResult
     {
         protected BaseTokenCreationResult(string tokenType)

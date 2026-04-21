@@ -5,7 +5,7 @@ using Trainova.Common.ResultOf;
 
 namespace Trainova.Application.Profiles.Players.Queries.GetPlayersProfiles
 {
-    [Authorize(Role ="Doctor,SystemOwner")]
+    [Authorize]
     public record GetPlayersProfileQuery(
             Guid? PlayerId = null,
             string SearchTerm = null,
