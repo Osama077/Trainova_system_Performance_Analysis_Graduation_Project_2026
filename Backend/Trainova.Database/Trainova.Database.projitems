@@ -11,5 +11,26 @@
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Profiles\Procedures\" />
     <Folder Include="$(MSBuildThisFileDirectory)Profiles\Views\" />
+    <Folder Include="$(MSBuildThisFileDirectory)MedicalStats\Procedures\" />
+    <Folder Include="$(MSBuildThisFileDirectory)MedicalStats\Views\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Profiles\Procedures\**\*.sql">
+      <Link>Profiles\Procedures\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Profiles\Views\**\*.sql">
+      <Link>Profiles\Views\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MedicalStats\Procedures\**\*.sql">
+      <Link>MedicalStats\Procedures\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MedicalStats\Views\**\*.sql">
+      <Link>MedicalStats\Views\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

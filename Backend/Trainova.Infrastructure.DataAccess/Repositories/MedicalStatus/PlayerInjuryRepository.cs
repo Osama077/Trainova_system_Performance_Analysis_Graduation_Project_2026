@@ -1,16 +1,21 @@
 ﻿using Trainova.Application.Common.Interfaces.Repositories.MedicalStatus;
 using Trainova.Domain.MedicalStatus.PlayerInjuries;
 using Microsoft.EntityFrameworkCore;
+using Dapper;
+using Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInjuries;
+using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus
 {
     public class PlayerInjuryRepository : IPlayerInjuryRepository
     {
         private readonly TrainovaWriteDbContext _db;
+        private readonly IDbSettings _dbSettings;
 
-        public PlayerInjuryRepository(TrainovaWriteDbContext db)
+        public PlayerInjuryRepository(TrainovaWriteDbContext db, IDbSettings dbSettings)
         {
             _db = db;
+            _dbSettings = dbSettings;
         }
 
         public async Task AddAsync(PlayerInjury playerInjury)
@@ -84,6 +89,57 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus
         {
             _db.PlayerInjuries.Update(playerInjury);
             await _db.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<PlayerInjuryReadModel>> GetReadModelsAsync(
+            Guid? playerInjuryId = null,
+            Guid? playerId = null,
+            Guid? injuryId = null,
+            string? status = null,
+            string? cause = null,
+            bool? isNew = null,
+            DateTime? happendBefore = null,
+            DateTime? happendAfter = null,
+            DateTime? expectedReturnBefore = null,
+            DateTime? expectedReturnAfter = null,
+            DateTime? returnedBefore = null,
+            DateTime? returnedAfter = null,
+            int pageNumber = 1,
+            int pageSize = 20,
+            string? sortColumn = null,
+            string? sortDirection = null
+            )
+        {
+            var sql = "dbo.GetPlayerInjuries"; // Name of the stored procedure
+           
+
+            var parameters = new {
+                 PlayerInjuryId = playerInjuryId,
+                 PlayerId = playerId,
+                 InjuryId = injuryId,
+                 Status = status,
+                 Cause = cause,
+                 IsNew = isNew,
+                 HappendBefore = happendBefore,
+                 HappendAfter = happendAfter,
+                 ExpectedReturnBefore = expectedReturnBefore,
+                 ExpectedReturnAfter = expectedReturnAfter,
+                 ReturnedBefore = returnedBefore,
+                 ReturnedAfter = returnedAfter,
+                 PageNumber = pageNumber,
+                 PageSize = pageSize,
+                 SortColumn = sortColumn,
+                 SortDirection = sortDirection
+            };
+            using var conn = _dbSettings.CreateReadingConnection();
+
+
+            var result = await conn.QueryAsync<PlayerInjuryReadModel>(
+                sql,
+                parameters,
+                commandType: System.Data.CommandType.StoredProcedure);
+
+            return result;
         }
     }
 }

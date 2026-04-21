@@ -20,7 +20,9 @@ namespace Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInj
             DateTime? ReturnedBefore = null,
             DateTime? ReturnedAfter = null,
             int Page = 0,
-            int PageSize = 12
-            ) : IRequest<ResultOf<IEnumerable<PlayerInjury>>>;
+            int PageSize = 12,
+            string? SortColumn = null,
+            string? SortDirection = null
+            ) : IRequest<ResultOf<IEnumerable<PlayerInjuryReadModel>>>;
 
 }

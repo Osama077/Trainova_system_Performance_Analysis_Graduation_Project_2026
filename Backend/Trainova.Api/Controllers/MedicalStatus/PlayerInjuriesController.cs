@@ -35,15 +35,16 @@ namespace Trainova.Api.Controllers.MedicalStatus
             return MapResult(result);
 
         }
-        [HttpGet("{injuryId:guid?}")]
+        [HttpGet]
         public async Task<IActionResult> GetPlayerInjuries(
-            [FromQuery] GetPlayerInjuryFiltrationRequest request,
-            [FromRoute] Guid? injuryId = null
+            [FromQuery] GetPlayerInjuryFiltrationRequest request
             )
         {
-            var query = request.ToQuery(injuryId);
+            var query = request.ToQuery();
             var result = await sender.Send(query);
-            return MapResult(result);
+            return result.Match(
+                onValue: (injury, status) =>Success(injury, status),
+                onError: errors => ErrorsPassed(errors));
 
         }
         [HttpGet("history")]
