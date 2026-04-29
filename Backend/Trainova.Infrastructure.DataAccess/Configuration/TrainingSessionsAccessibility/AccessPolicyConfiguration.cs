@@ -13,9 +13,16 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.TrainingSessionsAcces
             bool valueGeneratedOnAdd = true)
         {
             base.ConfigureEntity(builder, valueGeneratedOnAdd);
+            builder.HasOne(x => x.Plan)
+                .WithOne()
+                .HasForeignKey<AccessPolicy>(a => a.PlanId);
+            builder.HasOne(x => x.TrainingSession)
+                .WithOne()
+                .HasForeignKey<AccessPolicy>(a => a.TrainingSessionId);
 
             builder.ToTable("AccessPolicies");
         }
+        
     }
 
 }

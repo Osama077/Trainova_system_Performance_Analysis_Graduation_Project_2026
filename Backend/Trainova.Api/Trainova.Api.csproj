@@ -26,4 +26,8 @@
     <ProjectReference Include="..\Trainova.Bootstrapper\Trainova.Bootstrapper.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\TrainingSessionAccessablity\" />
+  </ItemGroup>
+
 </Project>
