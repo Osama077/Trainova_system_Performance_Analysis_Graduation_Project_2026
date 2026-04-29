@@ -23,11 +23,7 @@ namespace Trainova.Domain.Profiles.Players
         public decimal PerformanceLevel { get; private set; }
         public DateOnly DateOfEnrolment { get; set; } = DateOnly.FromDateTime(DateTime.Now);
 
-        public ICollection<Lineup> Lineups { get; private set; } = [];
-        public ICollection<ModelScore> ModelScores {  get; private set; } = [];
         public ICollection<PlayerInjury> PlayerInjuries { get; private set; } = [];
-        public ICollection<ComputedFeature> ComputedFeatures { get; private set; } = [];
-        public ICollection<Event> Events { get; private set; } = [];
 
 
 

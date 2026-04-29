@@ -84,8 +84,8 @@ bld/
 .vs/
 bin/
 obj/
-appsettings
-
+appsettings.json
+appsettings.Development.json
 # User-specific files
 *.user
 *.suo

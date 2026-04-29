@@ -4,7 +4,6 @@ using Trainova.Api.Models;
 using Trainova.Api.Requsts.MedicalStatus.Injuries;
 using Trainova.Application.Common.Models;
 using Trainova.Application.MedicalStatus.Injuries.Commands.DeleteInjury;
-using Trainova.Application.MedicalStatus.Injuries.Queries.GetInjuriesHistory;
 
 namespace Trainova.Api.Controllers.MedicalStatus
 {
@@ -15,8 +14,6 @@ namespace Trainova.Api.Controllers.MedicalStatus
         ISender _sender)
         : ApiController (currentUser)
     {
-
-
         [HttpPost]
         public async Task<IActionResult> CreateInjury(
             [FromBody] InjuryRequest request)
@@ -24,28 +21,24 @@ namespace Trainova.Api.Controllers.MedicalStatus
             var command = request.ToCommand();
             var result = await _sender.Send(command);
             return MapResult(result);
-
         }
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> UpdateInjury(
             [FromRoute] Guid id,
-            [FromBody] InjuryRequest request)
+            [FromBody] UpdateInjuryRequest request)
         {
-            var command = request.ToUpdateCommand(id);
+            var command = request.ToCommand(id);
             var result = await _sender.Send(command);
             return MapResult(result);
-
         }
-        [HttpGet("{id:guid?}")]
+        [HttpGet]
         public async Task<IActionResult> GetInjuries(
-            [FromQuery] GetInjuryFiltrationRequest request,
-            [FromRoute] Guid? id = null
+            [FromQuery] GetInjuryFiltrationRequest request
             )
         {
-            var query = request.ToQuery(id);
+            var query = request.ToQuery();
             var result = await _sender.Send(query);
             return MapResult(result);
-
         }
         [HttpGet("history")]
         public async Task<IActionResult> GetInjuriesHistory(
@@ -53,16 +46,9 @@ namespace Trainova.Api.Controllers.MedicalStatus
             [FromQuery] Guid? id = null
             )
         {
-            var query = new GetInjuriesHistoryQuery(
-                id,
-                pagennator.Page,
-                pagennator.PageSize,
-                pagennator.IncludeAdded,
-                pagennator.IncludeDeleted,
-                pagennator.IncludeUpdated);
+            var query = pagennator.ToInjuriesHistoryQuery(id);
             var result = await _sender.Send(query);
             return MapResult(result);
-
         }
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> DeleteInjuries([FromRoute] Guid id)
@@ -70,7 +56,7 @@ namespace Trainova.Api.Controllers.MedicalStatus
             var query = new DeleteInjuryCommand(id);
             var result = await _sender.Send(query);
             return result.Match(
-                onValue: (injury, status) =>Success(injury, status),
+                onValue: (done, status) =>Success(done, status),
                 onError: errors => ErrorsPassed(errors));
         }
 

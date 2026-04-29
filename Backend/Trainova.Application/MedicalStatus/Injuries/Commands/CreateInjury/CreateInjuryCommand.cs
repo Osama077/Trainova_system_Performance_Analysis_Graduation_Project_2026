@@ -9,7 +9,7 @@ namespace Trainova.Application.MedicalStatus.Injuries.Commands.CreateInjury
     public record CreateInjuryCommand(
         string Name,
         string Description,
-        string InjuryType,
+        InjuryType InjuryType,
         string TimeType,
         decimal TimeAmount)
         : IRequest<ResultOf<Injury>>;

@@ -141,5 +141,13 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus
 
             return result;
         }
+
+        public async Task<bool> ExistesAsync(Guid? playerInjuryId = null, Guid? playerId = null, Guid? injuryId = null)
+        {
+            return await _db.PlayerInjuries.AnyAsync(
+                pi => (!playerInjuryId.HasValue || pi.Id == playerInjuryId.Value) &&
+                      (!playerId.HasValue || pi.PlayerId == playerId.Value) &&
+                      (!injuryId.HasValue || pi.InjuryId == injuryId.Value));
+        }
     }
 }

@@ -10,17 +10,13 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.Profiles
     {
         protected override void ConfigureEntity(
             EntityTypeBuilder<ScoutingCandidate> builder,
-            bool valueGeneratedOnAdd = true)
+            bool valueGeneratedOnAdd = false)
         {
             base.ConfigureEntity(builder, valueGeneratedOnAdd);
 
             builder.ToTable("ScoutingCandidates");
 
-            builder
-                .HasOne(sc => sc.CurrentTeam)
-                .WithMany(t => t.ScoutingCandidates)
-                .HasForeignKey(sc => sc.CurrentTeamId)
-                .OnDelete(DeleteBehavior.Cascade);
+
 
             builder.HasIndex(sc => sc.CurrentTeamId);
         }

@@ -33,7 +33,7 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus
             return injury;
         }
 
-        public async Task<IEnumerable<Injury>> GetInjuriesAsync(Guid? id, string? injuryType, int page, int pageSize)
+        public async Task<IEnumerable<Injury>> GetInjuriesAsync(Guid? id, string? injuryType)
         {
             var query = _db.Injuries.AsQueryable();
 
@@ -43,10 +43,8 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus
             if (!string.IsNullOrWhiteSpace(injuryType))
                 query = query.Where(i => i.InjuryType != null && i.InjuryType.ToString() == injuryType);
 
-            // paging
-            var skip = (Math.Max(page, 1) - 1) * Math.Max(pageSize, 1);
 
-            return await query.Skip(skip).Take(pageSize).ToListAsync();
+            return await query.ToListAsync();
         }
 
         public async Task UpdateAsync(Injury injury)

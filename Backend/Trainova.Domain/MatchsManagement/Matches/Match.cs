@@ -11,9 +11,7 @@ namespace Trainova.Domain.MatchsManagement.Matches
 {
     public class Match : AuditableEntity<Guid>
     {
-        public TrainingSession TrainingSession { get; private set; }
         public Guid CompetitionId { get; private set; }
-        public Competition Competition { get; private set; }
 
         public DateOnly MatchDate { get; private set; }
 
@@ -31,11 +29,7 @@ namespace Trainova.Domain.MatchsManagement.Matches
 
         public int MatchWeek { get; private set; }
 
-        public ICollection<ComputedFeature> ComputedFeatures { get; private set; } = new List<ComputedFeature>();
-        public ICollection<Event> Events { get; private set; } = new List<Event>();
-        public ICollection<Lineup> Lineups { get; private set; } = new List<Lineup>();
-        public ICollection<MatchVideo> MatchVideos { get; private set; } = new List<MatchVideo>();
-        public ICollection<ModelScore> ModelScores { get; private set; } = new List<ModelScore>();
+        public TrainingSession TrainingSession { get; private set; }
 
         private Match() :base() { } // For ORM
 
@@ -48,9 +42,8 @@ namespace Trainova.Domain.MatchsManagement.Matches
             string stadium,
             string referee,
             int matchWeek,
-            Guid? createdBy = null) : base(Guid.NewGuid(),createdBy)
+            Guid? createdBy = null) : base(matchId,createdBy)
         {
-            Id = matchId;
             CompetitionId = competitionId;
             MatchDate = matchDate;
             HomeTeamId = homeTeamId;

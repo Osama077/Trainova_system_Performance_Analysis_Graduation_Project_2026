@@ -12,11 +12,7 @@ namespace Trainova.Application.MedicalStatus.Injuries.Commands.UpdateInjury
                 .MaximumLength(100).When(x=>x.Name is not null);
             RuleFor(x => x.Description)
                 .MaximumLength(500).When(x => x.Description is not null);
-            RuleFor(x => x.InjuryType)
-                .NotEmpty()
-                .Must(type => InjuryValues.AllowedInjuryTypes.Contains(type))
-                .WithMessage("InjuryType must be either 'Muscular' or 'Bone'.")
-                .When(x => x.InjuryType is not null);
+
             RuleFor(x => x.TimeType)
                 .NotEmpty()
                 .Must(timeType => InjuryValues.AllowedTimeTypes.Contains(timeType))

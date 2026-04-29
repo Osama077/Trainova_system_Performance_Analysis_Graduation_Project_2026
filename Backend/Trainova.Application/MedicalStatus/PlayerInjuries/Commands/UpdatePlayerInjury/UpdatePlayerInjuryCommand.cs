@@ -9,10 +9,11 @@ namespace Trainova.Application.MedicalStatus.PlayerInjuries.Commands.UpdatePlaye
     [Authorize(Role = "Doctor")]
     public record UpdatePlayerInjuryCommand(
         Guid Id,
+        InjuryStatus? Status,
         DateTime? HappendAt = null,
         InjuryCause? Cause = null,
         SevertiyGrade? SevertiyGrade = null,
-        string? BodyPart = null,
+        BodyPart? BodyPart = null,
         string? Notes = null,
         bool? IsNew = null,
         InjuryStatus? NewStatus = null,

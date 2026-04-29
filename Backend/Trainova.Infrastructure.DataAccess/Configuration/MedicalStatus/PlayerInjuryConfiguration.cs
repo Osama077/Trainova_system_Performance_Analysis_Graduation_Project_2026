@@ -10,7 +10,7 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.MedicalStatus
     {
         protected override void ConfigureEntity(
             EntityTypeBuilder<PlayerInjury> builder,
-            bool valueGeneratedOnAdd = true)
+            bool valueGeneratedOnAdd = false)
         {
             // Always call base first
             base.ConfigureEntity(builder, valueGeneratedOnAdd);
@@ -51,6 +51,9 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.MedicalStatus
                 .HasConversion<string>()
                 .HasMaxLength(30);
 
+            builder.Property(p => p.BodyPart)
+                .HasConversion<string>()
+                .HasMaxLength(400);
             //----------------------------------------
             // Defaults
             //----------------------------------------

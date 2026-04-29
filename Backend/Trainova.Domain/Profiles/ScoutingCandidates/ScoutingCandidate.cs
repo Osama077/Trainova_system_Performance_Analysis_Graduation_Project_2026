@@ -18,7 +18,6 @@ namespace Trainova.Domain.Profiles.ScoutingCandidates
         public Position OtherAvailablePositions { get; private set; }
         public decimal PerformanceLevel { get; private set; }
         public Guid? CurrentTeamId { get; private set; }
-        public Team CurrentTeam { get; private set; }
         private ScoutingCandidate() : base() { }
         public ScoutingCandidate(
             string fullName,
@@ -32,7 +31,7 @@ namespace Trainova.Domain.Profiles.ScoutingCandidates
             decimal performanceLevel,
             Guid? currentTeamId,
             Guid? createdBy = null)
-            : base(createdBy)
+            : base(Guid.NewGuid(), createdBy)
         {
             if (!currentMainPosition.HasSingleFlag())
                 throw new DomainException(

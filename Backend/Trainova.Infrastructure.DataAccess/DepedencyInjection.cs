@@ -36,7 +36,7 @@ public static class DependencyInjection
         );
 
 
-        //User Related Repos
+        //User and Auth Related Repos
         services.AddScoped<IUsersRepository, UsersRepository>();
         services.AddScoped<IRolesRepository, RolesRepository>();
         services.AddScoped<IUserTokensRepository, UserTokensRepository>();
@@ -45,7 +45,8 @@ public static class DependencyInjection
         //medical
         services.AddScoped<IInjuryRepository, InjuryRepository>();
         services.AddScoped<IPlayerInjuryRepository, PlayerInjuryRepository>();
-        //audit
+        services.AddScoped<IRecoveryPlanPhasesRepository, RecoveryPlanPhasesRepository>();
+        // Audit
         services.AddScoped<IAuditRepository,AuditRepository>();
         // Outbox
         services.AddScoped<IEmailOutboxRepository, EmailOutboxRepository>();

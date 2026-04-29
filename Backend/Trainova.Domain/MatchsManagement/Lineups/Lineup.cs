@@ -9,13 +9,10 @@ namespace Trainova.Domain.MatchsManagement.Lineups
     public class Lineup : AuditableEntity<Guid>
     {
         public Guid MatchId { get; private set; }
-        public Match Match { get; private set; }
 
         public Guid PlayerId { get; private set; }
-        public Player Player { get; private set; }
 
         public Guid TeamId { get; private set; }
-        public Team Team { get; private set; }
 
         public Position? StartingPosition { get; private set; }
 

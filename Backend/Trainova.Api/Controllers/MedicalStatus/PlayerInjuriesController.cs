@@ -15,7 +15,6 @@ namespace Trainova.Api.Controllers.MedicalStatus
         : ApiController (currentUser)
     {
 
-        
         [HttpPost]
         public async Task<IActionResult> CreatePlayerInjury(
             [FromBody] PlayerInjuryRequest request)
@@ -28,7 +27,7 @@ namespace Trainova.Api.Controllers.MedicalStatus
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> UpdatePlayerInjury(
             [FromRoute] Guid id,
-            [FromBody] PlayerInjuryRequest request)
+            [FromBody] PlayerInjuryUpdateRequet request)
         {
             var command = request.ToUpdateCommand(id);
             var result = await sender.Send(command);
@@ -53,14 +52,7 @@ namespace Trainova.Api.Controllers.MedicalStatus
             [FromQuery] Guid? playerInjuryId = null
             )
         {
-            var query = new GetPlayerInjuryHistoryQuery(
-                playerInjuryId,
-                pagennator.Page,
-                pagennator.PageSize,
-                pagennator.IncludeAdded,
-                pagennator.IncludeDeleted,
-                pagennator.IncludeUpdated);
-
+            var query = pagennator.ToPlayerInjuriesHistoryQuery(playerInjuryId);
             var result = await sender.Send(query);
             return MapResult(result);
 

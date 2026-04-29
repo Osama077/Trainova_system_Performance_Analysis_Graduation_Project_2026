@@ -8,13 +8,10 @@ namespace Trainova.Domain.MatchsManagement.Events
     public class Event : AuditableEntity<Guid>
     {
         public Guid MatchId { get; private set; }
-        public Match Match { get; private set; }
 
         public Guid? PlayerId { get; private set; }
-        public Player Player { get; private set; }
 
         public Guid? TeamId { get; private set; }
-        public Team Team { get; private set; }
 
         public int Period { get; private set; }
 

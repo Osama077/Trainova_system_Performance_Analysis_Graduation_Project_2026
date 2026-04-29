@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Trainova.Domain.Common.BaseEntity;
 
-namespace Trainova.Domain.MedicalStatus.PhysicalCapacityTests
+namespace Trainova.Domain.FitnessStatus.PhysicalCapacityTests
 {
     public class PhysicalCapacityTest : Entity<Guid>
     {

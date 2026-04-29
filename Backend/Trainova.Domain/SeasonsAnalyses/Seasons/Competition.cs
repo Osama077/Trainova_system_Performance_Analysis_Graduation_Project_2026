@@ -14,7 +14,6 @@ namespace Trainova.Domain.SeasonsAnalyses.Seasons
 
         public string? CountryName { get; private set; }
 
-        public ICollection<Match> Matches { get; private set; } = new List<Match>();
 
 
         private Competition() :base() { } // For ORM

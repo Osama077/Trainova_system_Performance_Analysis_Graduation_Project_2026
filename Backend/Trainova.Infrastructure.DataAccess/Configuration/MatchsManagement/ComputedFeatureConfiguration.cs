@@ -16,17 +16,7 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.MatchsManagement
 
             builder.ToTable("ComputedFeatures");
 
-            builder
-                .HasOne(cf => cf.Player)
-                .WithMany(p => p.ComputedFeatures)
-                .HasForeignKey(cf => cf.PlayerId)
-                .OnDelete(DeleteBehavior.Cascade);
 
-            builder
-                .HasOne(cf => cf.Match)
-                .WithMany(m => m.ComputedFeatures)
-                .HasForeignKey(cf => cf.MatchId)
-                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasIndex(cf => cf.PlayerId);
             builder.HasIndex(cf => cf.MatchId);

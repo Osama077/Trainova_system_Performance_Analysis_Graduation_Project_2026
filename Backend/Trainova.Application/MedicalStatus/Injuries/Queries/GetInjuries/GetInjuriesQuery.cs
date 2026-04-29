@@ -7,10 +7,7 @@ namespace Trainova.Application.MedicalStatus.Injuries.Queries.GetInjuries
 {
     [Authorize]
     public record GetInjuriesQuery(
-        Guid? Id,
-        string? InjuryType,
-        int Page = 0,
-        int PageSize = 12)
+        string? InjuryType)
         : IRequest<ResultOf<IEnumerable<Injury>>>;
 
 

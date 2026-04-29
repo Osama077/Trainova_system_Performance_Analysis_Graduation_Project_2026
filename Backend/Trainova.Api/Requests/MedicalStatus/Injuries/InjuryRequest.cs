@@ -1,6 +1,7 @@
 ﻿using Trainova.Application.Common.Helpers.TimeConverterHelpers;
 using Trainova.Application.MedicalStatus.Injuries.Commands.CreateInjury;
 using Trainova.Application.MedicalStatus.Injuries.Commands.UpdateInjury;
+using Trainova.Domain.MedicalStatus.Injuries;
 
 namespace Trainova.Api.Requsts.MedicalStatus.Injuries
 {
@@ -8,7 +9,7 @@ namespace Trainova.Api.Requsts.MedicalStatus.Injuries
     {
         public string Name { get; set; }
         public string? Description { get; set; } = "no Data";
-        public string? InjuryType { get; set; } = "Muscular";
+        public InjuryType InjuryType { get; set; }
         public TimeConverterHelper? AverageRecoveryTime { get; set; }
         public CreateInjuryCommand ToCommand()
         {
@@ -19,7 +20,15 @@ namespace Trainova.Api.Requsts.MedicalStatus.Injuries
                 AverageRecoveryTime.TimeType,
                 AverageRecoveryTime.Amount);
         }
-        public UpdateInjuryCommand ToUpdateCommand(Guid id)
+
+    }
+    public class UpdateInjuryRequest
+    {
+        public string? Name { get; set; }
+        public string? Description { get; set; } = "no Data";
+        public InjuryType InjuryType { get; set; }
+        public TimeConverterHelper? AverageRecoveryTime { get; set; }
+        public UpdateInjuryCommand ToCommand(Guid id)
         {
             return new UpdateInjuryCommand(
                 id,

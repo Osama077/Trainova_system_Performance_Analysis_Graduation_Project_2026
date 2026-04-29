@@ -2,9 +2,7 @@
 {
     public static class InjuryValues
     {
-        public static readonly string[] AllowedInjuryTypes = new[] { "Muscular", "Bone" };
 
-        public static readonly string MsgAllowedInjuryTypes = "AllowedInjuryTypes is [ \"Muscular\", \"Bone\" ]";
 
 
 

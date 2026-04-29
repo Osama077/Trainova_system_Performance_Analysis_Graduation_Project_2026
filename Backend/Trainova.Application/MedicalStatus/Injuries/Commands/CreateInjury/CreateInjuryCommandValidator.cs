@@ -12,10 +12,7 @@ namespace Trainova.Application.MedicalStatus.Injuries.Commands.CreateInjury
                 .MaximumLength(100);
             RuleFor(x => x.Description)
                 .MaximumLength(500);
-            RuleFor(x => x.InjuryType)
-                .NotEmpty()
-                .Must(type => InjuryValues.AllowedInjuryTypes.Contains(type))
-                .WithMessage("InjuryType must be either 'Muscular' or 'Bone'.");
+
             RuleFor(x => x.TimeType)
                 .NotEmpty()
                 .Must(timeType => InjuryValues.AllowedTimeTypes.Contains(timeType))

@@ -10,7 +10,7 @@ namespace Trainova.Application.MedicalStatus.Injuries.Commands.UpdateInjury
         Guid Id,
         string? Name = null,
         string? Description = null,
-        string? InjuryType = null,
+        InjuryType? InjuryType = null,
         string? TimeType = null,
         decimal? TimeAmount = null)
         : IRequest<ResultOf<Injury>>;

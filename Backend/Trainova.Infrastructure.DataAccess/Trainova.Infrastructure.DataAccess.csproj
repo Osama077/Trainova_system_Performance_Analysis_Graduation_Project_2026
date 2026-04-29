@@ -9,6 +9,11 @@
   	<NoWarn>$(NoWarn);NU1901</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Configuration\Injuries\**" />
+    <EmbeddedResource Remove="Configuration\Injuries\**" />
+    <None Remove="Configuration\Injuries\**" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Dapper" Version="2.1.66" />
     <PackageReference Include="MailKit" Version="4.16.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
@@ -26,10 +31,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Trainova.Application\Trainova.Application.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Configuration\Injuries\" />
   </ItemGroup>
 
 </Project>

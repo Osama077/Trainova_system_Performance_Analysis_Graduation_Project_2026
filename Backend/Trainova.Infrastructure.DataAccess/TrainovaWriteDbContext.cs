@@ -5,8 +5,11 @@ using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Application.Common.Models;
 using Trainova.Domain.Common.AuditLogs;
 using Trainova.Domain.Common.Outbox;
+using Trainova.Domain.FitnessStatus.MovementDistances;
+using Trainova.Domain.FitnessStatus.PhysicalCapacityTests;
 using Trainova.Domain.MedicalStatus.Injuries;
 using Trainova.Domain.MedicalStatus.PlayerInjuries;
+using Trainova.Domain.MedicalStatus.RecoveryPlans;
 using Trainova.Domain.Profiles.Players;
 using Trainova.Domain.Profiles.TeamsStaff;
 using Trainova.Domain.TrainingSessionsAccessibility.Plans;
@@ -49,10 +52,15 @@ namespace Trainova.Infrastructure.DataAccess
         public DbSet<Plan> Plans { get; set; }
         public DbSet<TrainingSession> TrainingSessions { get; set; }
 
+        // Fitness 
+        public DbSet<PhysicalCapacityTest> CapacityTests { get; set; }
+        public DbSet<SessionMovement> SessionMovements { get; set; }
+
 
         //medical
         public DbSet<PlayerInjury> PlayerInjuries { get; set; }
         public DbSet<Injury> Injuries { get; set; }
+        public DbSet<RecoveryPlanPhase> PlanPhases { get; set; }
 
         //profiles
         public DbSet<Player> Players { get; set; }

@@ -34,7 +34,7 @@ namespace Trainova.Domain.MedicalStatus.Injuries
             string? description,
             InjuryType? injuryType = null,
             TimeSpan? averageRecoveryTime = null,
-            Guid createdBy = default) : base(createdBy)
+            Guid? createdBy = null) : base(Guid.NewGuid(), createdBy)
         {
             Name = name;
             Description = description;

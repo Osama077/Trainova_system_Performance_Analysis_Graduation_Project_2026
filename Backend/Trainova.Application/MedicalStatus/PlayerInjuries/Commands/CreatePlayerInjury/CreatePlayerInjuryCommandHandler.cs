@@ -1,4 +1,3 @@
-// ...existing code...
 using MediatR;
 using Trainova.Application.Common.Interfaces.Repositories.MedicalStatus;
 using Trainova.Application.Common.Models;
@@ -7,7 +6,6 @@ using Trainova.Common.Errors;
 using Trainova.Domain.MedicalStatus.PlayerInjuries;
 using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Domain.Common.Helpers;
-using Trainova.Application.Common.Authorization;
 
 namespace Trainova.Application.MedicalStatus.PlayerInjuries.Commands.CreatePlayerInjury
 {
@@ -24,11 +22,11 @@ namespace Trainova.Application.MedicalStatus.PlayerInjuries.Commands.CreatePlaye
                 var playerInjury = new PlayerInjury(
                     request.PlayerId,
                     request.InjuryId,
-                    request.Status,
+                    (InjuryStatus)request.Status,
                     request.HappendAt,
-                    request.Cause,
-                    request.SevertiyGrade,
-                    request.BodyPart,
+                    (InjuryCause)request.Cause,
+                    (SevertiyGrade)request.SevertiyGrade,
+                    (BodyPart)request.BodyPart,
                     request.Notes,
                     request.IsNew,
                     request.ExpectedReturnDate,

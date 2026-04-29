@@ -42,5 +42,9 @@ namespace Trainova.Application.Common.Interfaces.Repositories.MedicalStatus
             string? sortColumn = null,
             string? sortDirection = null
             );
+        Task<bool> ExistesAsync(
+            Guid? playerInjuryId = null,
+            Guid? playerId = null,
+            Guid? injuryId = null);
     }
 }

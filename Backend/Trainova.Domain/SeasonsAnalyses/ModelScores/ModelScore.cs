@@ -7,10 +7,8 @@ namespace Trainova.Domain.SeasonsAnalyses.ModelScores
     public class ModelScore : Entity<Guid>
     {
         public Guid PlayerId { get; private set; }
-        public Player Player { get; private set; }
 
         public Guid MatchId { get; private set; }
-        public Match Match { get; private set; }
 
         public double PassingScore { get; private set; }
 

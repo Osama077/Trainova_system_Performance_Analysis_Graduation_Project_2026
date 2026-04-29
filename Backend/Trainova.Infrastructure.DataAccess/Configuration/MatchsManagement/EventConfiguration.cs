@@ -16,23 +16,7 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.MatchsManagement
 
             builder.ToTable("Events");
 
-            builder
-                .HasOne(e => e.Match)
-                .WithMany(m => m.Events)
-                .HasForeignKey(e => e.MatchId)
-                .OnDelete(DeleteBehavior.Cascade);
 
-            builder
-                .HasOne(e => e.Player)
-                .WithMany(p => p.Events)
-                .HasForeignKey(e => e.PlayerId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder
-                .HasOne(e => e.Team)
-                .WithMany(t => t.Events)
-                .HasForeignKey(e => e.TeamId)
-                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasIndex(e => e.MatchId);
             builder.HasIndex(e => e.PlayerId);

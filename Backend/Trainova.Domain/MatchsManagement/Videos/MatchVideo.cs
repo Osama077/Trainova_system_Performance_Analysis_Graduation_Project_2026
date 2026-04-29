@@ -9,7 +9,6 @@ namespace Trainova.Domain.MatchsManagement.Videos
         public string ObjectStoregeProviderId { get; private set; }
         public string ProviderName { get; private set; }
         public Guid? RelatedMatchId { get; private set; }
-        public Match? RelatedMatch { get; private set; }
         private MatchVideo() : base() { }
         public MatchVideo(
             string videoUrl,

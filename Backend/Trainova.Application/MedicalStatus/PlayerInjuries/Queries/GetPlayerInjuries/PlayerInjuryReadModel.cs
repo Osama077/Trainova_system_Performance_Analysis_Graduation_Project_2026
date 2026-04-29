@@ -1,4 +1,3 @@
-using System;
 using Trainova.Application.Common.Interfaces.MarkUps;
 
 namespace Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInjuries
@@ -38,9 +37,9 @@ namespace Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInj
 
         // Parameterless constructor needed for EF/Dapper mapping
         public PlayerInjuryReadModel() { }
-        private int totalCount { get; }
-       
-        int ITotalCountIncluded.TotalCount => totalCount;
-         
+        private int TotalCount { get; set; }
+
+        int ITotalCountIncluded.TotalCount => TotalCount;
+
     }
 }

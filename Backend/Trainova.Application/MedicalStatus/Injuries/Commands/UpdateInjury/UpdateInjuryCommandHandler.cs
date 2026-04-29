@@ -39,18 +39,14 @@ namespace Trainova.Application.MedicalStatus.Injuries.Commands.UpdateInjury
                         TimeType = request.TimeType
                     };
                 }
-                InjuryType? injuryType = null;
-                if(request.InjuryType != null)
-                {
-                    injuryType = Enum.Parse<InjuryType>(request.InjuryType, true);
-                }
+
 
 
                 injury.Update(
                     name: request.Name,
                     description: request.Description,
-                    injuryType: injuryType,
-                    averageRecoveryTime: timeHelper.ToTimeSpan());
+                    injuryType: request.InjuryType,
+                    averageRecoveryTime: timeHelper?.ToTimeSpan() ?? null);
 
                 await _injuryrepository.UpdateAsync(injury);
 

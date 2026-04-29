@@ -46,6 +46,10 @@ namespace Trainova.Common.ResultOf
         {
             return ResultOf<TValue>.FromValue(value, DoneStatus.NoContent);
         }
+        public static ResultOf<TValue> AsZeroCount<TValue>(this TValue value)
+        {
+            return ResultOf<TValue>.FromValue(value, DoneStatus.PartialZeroCount);
+        }
     }
 
 

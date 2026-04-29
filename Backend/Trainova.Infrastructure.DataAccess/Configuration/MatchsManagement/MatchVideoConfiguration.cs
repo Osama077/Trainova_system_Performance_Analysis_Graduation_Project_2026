@@ -19,11 +19,6 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.MatchsManagement
 
             builder.ToTable("MatchVideos");
 
-            builder
-                .HasOne(mv => mv.RelatedMatch)
-                .WithMany(m => m.MatchVideos)
-                .HasForeignKey(mv => mv.RelatedMatchId)
-                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasIndex(mv => mv.RelatedMatchId);
         }

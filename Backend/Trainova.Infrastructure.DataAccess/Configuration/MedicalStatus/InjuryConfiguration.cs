@@ -10,7 +10,7 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.MedicalStatus
     {
         protected override void ConfigureEntity(
             EntityTypeBuilder<Injury> builder,
-            bool valueGeneratedOnAdd = true)
+            bool valueGeneratedOnAdd = false)
         {
             base.ConfigureEntity(builder, valueGeneratedOnAdd);
 

@@ -21,6 +21,7 @@
     <Folder Include="Common\Enums\" />
     <Folder Include="Common\Interfaces\Repositories\Profiles\ScoutingCandidates\" />
     <Folder Include="Common\Interfaces\Repositories\Profiles\TeamsStaff\" />
+    <Folder Include="MedicalStatus\RecoveryPlanPhases\Commands\" />
     <Folder Include="TrainingSessionsAccessibility\AccessPolicies\Commands\" />
     <Folder Include="TrainingSessionsAccessibility\AccessPolicies\Queries\" />
     <Folder Include="TrainingSessionsAccessibility\Activities\Commands\" />

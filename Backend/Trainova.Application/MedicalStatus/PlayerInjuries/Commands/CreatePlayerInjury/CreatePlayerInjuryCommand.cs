@@ -14,7 +14,7 @@ namespace Trainova.Application.MedicalStatus.PlayerInjuries.Commands.CreatePlaye
         DateTime? HappendAt = null,
         InjuryCause Cause = default,
         SevertiyGrade SevertiyGrade = default,
-        string? BodyPart = null,
+        BodyPart BodyPart = default,
         string? Notes = null,
         bool IsNew = false,
         DateTime? ExpectedReturnDate = null

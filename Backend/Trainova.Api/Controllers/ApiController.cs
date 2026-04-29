@@ -10,11 +10,14 @@ using Trainova.Common.ResultOf;
 namespace Trainova.Api.Controllers;
 
 [ApiController]
-public class ApiController(
-    CurrentUser? currentUser)
+public class ApiController
     : ControllerBase
 {
-    protected readonly CurrentUser? _currentUser = currentUser;
+    public ApiController(CurrentUser? currentUser)
+    {
+        _currentUser = currentUser;
+    }
+    protected readonly CurrentUser? _currentUser;
 
     protected IActionResult Success(DoneStatus status)
     {
@@ -47,6 +50,17 @@ public class ApiController(
 
             DoneStatus.Accepted
                 => Accepted(CreateResponse(value, "Accepted", 202)),
+            DoneStatus.PartialZeroCount
+                => StatusCode(
+                    206,
+                    CreateResponse(
+                        value,
+                        "Zero object found",
+                        206,
+                        0,
+                        null
+                    )
+                ),
 
             DoneStatus.Partial
             when value is IEnumerable<ITotalCountIncluded> countIncludeds
@@ -90,9 +104,10 @@ public class ApiController(
             Message: message,
             StatusCode: statusCode,
             ResponseTime: DateTime.UtcNow,
+            ValueType: data.GetType().Name,
             Count: count,
             TotalCount: totalCount,
-            UserId: currentUser.Id
+            UserId: _currentUser.Id
         );
     }
 
@@ -123,7 +138,7 @@ public class ApiController(
             _ => StatusCodes.Status500InternalServerError,
         };
 
-        return Problem(statusCode: statusCode, detail: error.Description);
+        return StatusCode(statusCode,new { error.Code, error.Description });
     }
 
     protected IActionResult ValidationError(List<Error> errors)
@@ -143,8 +158,8 @@ public class ApiController(
     protected IActionResult MapResult<T>(ResultOf<T> result)
     {
         return result.Match(
-            (value, status) => Success(value, status),
-            errors => ErrorsPassed(errors)
+            onValue: (value, status) => Success(value, status),
+            onError: errors => ErrorsPassed(errors)
         );
     }
 

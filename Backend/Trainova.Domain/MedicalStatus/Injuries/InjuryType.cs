@@ -7,5 +7,8 @@ namespace Trainova.Domain.MedicalStatus.Injuries
     {
         Muscular = 1,
         Bone,
+        Joint,
+        Ligament,
+        Other
     }
 }

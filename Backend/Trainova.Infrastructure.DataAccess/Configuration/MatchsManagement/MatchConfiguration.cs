@@ -20,28 +20,13 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.MatchsManagement
 
             builder.ToTable("Matches");
 
-            builder
-                .HasOne(m => m.Competition)
-                .WithMany(c => c.Matches)
-                .HasForeignKey(m => m.CompetitionId)
-                .OnDelete(DeleteBehavior.Restrict);
 
-            builder
-                .HasOne<Team>()
-                .WithMany()
-                .HasForeignKey(m => m.HomeTeamId)
-                .OnDelete(DeleteBehavior.Restrict);
 
-            builder
-                .HasOne<Team>()
-                .WithMany()
-                .HasForeignKey(m => m.AwayTeamId)
-                .OnDelete(DeleteBehavior.Restrict);
 
-            builder
-                .HasOne(m=>m.TrainingSession)
-                .WithOne(ts=>ts.Match)
-                .HasForeignKey<Match>(m=>m.Id)
+
+            builder.HasOne(m => m.TrainingSession)
+                .WithOne(ts => ts.Match)
+                .HasForeignKey<Match>(m => m.Id)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasIndex(m => m.CompetitionId);

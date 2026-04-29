@@ -13,7 +13,7 @@ namespace Trainova.Domain.MedicalStatus.PlayerInjuries
         public InjuryStatus Status { get; private set; } = InjuryStatus.InHealing;
         public InjuryCause Cause { get; private set; }
         public SevertiyGrade SevertiyGrade { get; private set; }
-        public string BodyPart { get; private set; }
+        public BodyPart BodyPart { get; private set; }
         public string? Notes { get; private set; }
         public bool IsNew { get; private set; }
 
@@ -30,11 +30,11 @@ namespace Trainova.Domain.MedicalStatus.PlayerInjuries
             DateTime? happendAt = null,
             InjuryCause cause = default,
             SevertiyGrade severtiyGrade = default,
-            string bodyPart = null,
+            BodyPart bodyPart = default,
             string notes = null,
             bool isNew = false,
             DateTime? expectedReturnDate = null,
-            Guid? createdBy = null) : base(createdBy)
+            Guid? createdBy = null) : base(Guid.NewGuid(), createdBy)
         {
             PlayerId = playerId;
             InjuryId = injuryId;
@@ -52,8 +52,8 @@ namespace Trainova.Domain.MedicalStatus.PlayerInjuries
             DateTime? happendAt = null,
             InjuryCause? cause = null,
             SevertiyGrade? severtiyGrade = null,
-            string bodyPart = null,
-            string notes = null,
+            BodyPart? bodyPart = null,
+            string? notes = null,
             bool? isNew = null,
             InjuryStatus? newStatus = null,
             DateTime? returnedAt = null,

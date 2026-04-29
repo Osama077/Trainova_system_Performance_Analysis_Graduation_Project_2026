@@ -6,7 +6,7 @@ namespace Trainova.Application.Common.Interfaces.Repositories.MedicalStatus
     {
         Task AddAsync(Injury injury);
         Task<Injury> GetByIdAsync(Guid id);
-        Task<IEnumerable<Injury>> GetInjuriesAsync(Guid? id, string? injuryType, int page, int pageSize);
+        Task<IEnumerable<Injury>> GetInjuriesAsync(Guid? id = null, string? injuryType = null);
         Task UpdateAsync(Injury injury);
         Task DeleteAsync(Injury injury);
     }

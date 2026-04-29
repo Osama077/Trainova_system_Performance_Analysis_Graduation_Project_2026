@@ -25,11 +25,13 @@ namespace Trainova.Application.MedicalStatus.Injuries.Commands.DeleteInjury
                         code: "DeleteInjuryCommandHandler.Handle_NotFound",
                         description: $"Injury with Id {request.Id} not found.");
                 }
-                var playerInjuries = await _playerInjuryRepository.GetAllAsync(injuryId:request.Id);
+                if(await _playerInjuryRepository.ExistesAsync(injuryId:request.Id))
+                    return Error.Conflict(
+                        code: "DeleteInjuryCommandHandler.Handle_Conflict",
+                        description: $"Cannot delete Injury with Id {request.Id} because it is associated with existing PlayerInjury records.");
 
                 await _unitOfWork.StartTransactionAsync();
 
-                await _playerInjuryRepository.DeleteRangeAsync(playerInjuries);
 
                 await _injuryRepository.DeleteAsync(injury);
 

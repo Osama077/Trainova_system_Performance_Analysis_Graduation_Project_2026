@@ -3,12 +3,12 @@ using Trainova.Application.MedicalStatus.Injuries.Queries.GetInjuries;
 
 namespace Trainova.Api.Requsts.MedicalStatus.Injuries
 {
-    public class GetInjuryFiltrationRequest : Paginator
+    public class GetInjuryFiltrationRequest
     {
         public string? InjuryType { get; set; }
-        public GetInjuriesQuery ToQuery(Guid? id)
+        public GetInjuriesQuery ToQuery()
         {
-            return new GetInjuriesQuery(id, InjuryType, Page, PageSize);
+            return new GetInjuriesQuery(InjuryType);
         }
     }
 }

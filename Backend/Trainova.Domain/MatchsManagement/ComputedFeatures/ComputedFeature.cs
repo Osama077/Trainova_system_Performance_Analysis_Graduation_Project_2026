@@ -8,10 +8,8 @@ namespace Trainova.Domain.MatchsManagement.ComputedFeatures
     {
 
         public Guid PlayerId { get; private set; }
-        public Player Player { get; private set; }
 
         public Guid MatchId { get; private set; }
-        public Match Match { get; private set; }
 
         public int TotalPasses { get; private set; }
 

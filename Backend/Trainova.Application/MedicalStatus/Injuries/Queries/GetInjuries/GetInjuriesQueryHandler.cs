@@ -13,9 +13,9 @@ namespace Trainova.Application.MedicalStatus.Injuries.Queries.GetInjuries
         {
             try
             {
-                var injuries = await _injuryRepository.GetInjuriesAsync(request.Id, request.InjuryType, request.Page, request.PageSize);
+                var injuries = await _injuryRepository.GetInjuriesAsync(injuryType: request.InjuryType);
 
-                return injuries.AsPartial();
+                return injuries.AsDone();
             }
             catch (Exception ex)
             {

@@ -25,12 +25,11 @@ namespace Trainova.Application.MedicalStatus.Injuries.Commands.CreateInjury
                     Amount = request.TimeAmount
                 };
 
-                var injuryType = Enum.Parse<InjuryType>(request.InjuryType, true);
 
                 var injury = new Injury(
                     request.Name,
                     request.Description,
-                    injuryType,
+                    request.InjuryType,
                     timeAttacher.ToTimeSpan()
                     );
                 await _injuryrepository.AddAsync(injury);

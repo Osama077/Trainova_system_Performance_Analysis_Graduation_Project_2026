@@ -13,9 +13,6 @@ namespace Trainova.Domain.SeasonsAnalyses.Teams
 
         public string? Country { get; private set; }
 
-        public ICollection<Event> Events { get; private set; } = new List<Event>();
-        public ICollection<Lineup> Lineups { get; private set; } = new List<Lineup>();
-        public ICollection<ScoutingCandidate> ScoutingCandidates { get; private set; } = new List<ScoutingCandidate>();
         private Team():base() { }
 
         public Team(

@@ -6,7 +6,9 @@
         NoContent = 1,
         Created = 2,
         Accepted = 3,
-        Partial = 4
+        Partial = 4,
+        PartialZeroCount = 5,
+
     }
 
 }
