@@ -1,4 +1,4 @@
-﻿using Trainova.Domain.Common.BaseEntity;
+﻿﻿using Trainova.Domain.Common.BaseEntity;
 using Trainova.Domain.Common.Enums;
 using Trainova.Domain.MatchsManagement.Matches;
 using Trainova.Domain.TrainingSessionsAccessibility.AccessPolicies;
@@ -33,10 +33,25 @@ namespace Trainova.Domain.TrainingSessionsAccessibility.TrainingSessions
             Place = place;
             HappenedAt = happenedAt;
         }
+        // ...existing code...
         private TrainingSession() :base() { }
 
         public ICollection<UserAccessPolicy> UserAccessPolicies { get; private set; } = new List<UserAccessPolicy>();
 
+        public void Update(string? sessionName = null, string? place = null, DateTime? happenedAt = null, PlanState? state = null)
+        {
+            if (!string.IsNullOrWhiteSpace(sessionName))
+                TrainingSessionName = sessionName;
+
+            if (!string.IsNullOrWhiteSpace(place))
+                Place = place;
+
+            if (happenedAt.HasValue)
+                HappenedAt = happenedAt;
+
+            if (state.HasValue)
+                SessionState = state.Value;
+        }
     }
 
 }

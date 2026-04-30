@@ -1,4 +1,4 @@
-﻿using Trainova.Domain.Common.AuditLogs;
+﻿﻿using Trainova.Domain.Common.AuditLogs;
 using Trainova.Domain.Common.BaseEntity;
 using Trainova.Domain.Common.Enums;
 using Trainova.Domain.TrainingSessionsAccessibility.AccessPolicies;
@@ -29,6 +29,7 @@ namespace Trainova.Domain.TrainingSessionsAccessibility.Plans
             DateTime startDate,
             DateTime? endDate,
             Guid? createdBy = null) : base(Guid.NewGuid(), createdBy)
+        // ...existing code...
         {
             PlanName = planName;
             PlanGoul = planGoul;
@@ -38,7 +39,20 @@ namespace Trainova.Domain.TrainingSessionsAccessibility.Plans
             EndDate = endDate;
         }
 
+        public void Update(string? planName = null, string? planGoal = null, DateTime? startDate = null, DateTime? endDate = null)
+        {
+            if (!string.IsNullOrWhiteSpace(planName))
+                PlanName = planName;
 
+            if (!string.IsNullOrWhiteSpace(planGoal))
+                PlanGoul = planGoal;
+
+            if (startDate.HasValue)
+                StartDate = startDate.Value;
+
+            if (endDate.HasValue)
+                EndDate = endDate;
+        }
     }
 
 

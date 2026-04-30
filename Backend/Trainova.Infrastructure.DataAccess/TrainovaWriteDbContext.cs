@@ -1,4 +1,4 @@
-﻿﻿using Microsoft.EntityFrameworkCore;
+﻿﻿﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Trainova.Application.Common.Interfaces.Services;
@@ -12,6 +12,7 @@ using Trainova.Domain.MedicalStatus.PlayerInjuries;
 using Trainova.Domain.MedicalStatus.RecoveryPlans;
 using Trainova.Domain.Profiles.Players;
 using Trainova.Domain.Profiles.TeamsStaff;
+using Trainova.Domain.TrainingSessionsAccessibility.AccessPolicies;
 using Trainova.Domain.TrainingSessionsAccessibility.Plans;
 using Trainova.Domain.TrainingSessionsAccessibility.TrainingSessions;
 using Trainova.Domain.UserAuth.Roles;
@@ -49,6 +50,8 @@ namespace Trainova.Infrastructure.DataAccess
         // Domain Entities
 
         //plans and events
+        public DbSet<AccessPolicy> AccessPolicies { get; set; }
+        public DbSet<UserAccessPolicy> UserAccessPolicies { get; set; }
         public DbSet<Plan> Plans { get; set; }
         public DbSet<TrainingSession> TrainingSessions { get; set; }
 

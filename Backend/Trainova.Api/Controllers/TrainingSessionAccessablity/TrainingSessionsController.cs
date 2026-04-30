@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Trainova.Api.Requests.TrainingSessionAccessablity;
 using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Application.Common.Models;
-using Trainova.Application.TrainingSessionsAccessibility.AccessPolicies.Commands.CreateTrainingSession;
+using Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Commands.CreateTrainingSession;
 
 namespace Trainova.Api.Controllers.TrainingSessionAccessablity
 {
@@ -19,6 +19,7 @@ namespace Trainova.Api.Controllers.TrainingSessionAccessablity
         {
             _mediator = mediator;
         }
+
 
 
 
