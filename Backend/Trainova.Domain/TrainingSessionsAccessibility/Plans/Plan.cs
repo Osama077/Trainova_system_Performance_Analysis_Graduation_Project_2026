@@ -28,7 +28,7 @@ namespace Trainova.Domain.TrainingSessionsAccessibility.Plans
             Guid accessPolicyId,
             DateTime startDate,
             DateTime? endDate,
-            Guid? createdBy = null) : base(createdBy)
+            Guid? createdBy = null) : base(Guid.NewGuid(), createdBy)
         {
             PlanName = planName;
             PlanGoul = planGoul;

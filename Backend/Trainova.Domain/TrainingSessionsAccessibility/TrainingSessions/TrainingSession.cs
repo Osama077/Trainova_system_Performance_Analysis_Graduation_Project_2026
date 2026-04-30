@@ -11,24 +11,24 @@ namespace Trainova.Domain.TrainingSessionsAccessibility.TrainingSessions
         public string TrainingSessionName { get; private set; }
         public Guid? PlanId { get; private set; }
         public Plan? Plan { get; private set; }
-        public Guid? UserAccessPolicyId { get; private set; }
-        public UserAccessPolicy? UserAccessPolicy { get; private set; }
+        public Guid? AccessPolicyId { get; private set; }
+        public AccessPolicy? AccessPolicy { get; private set; }
         public PlanState SessionState { get; private set; }
         public string? Place { get; private set; }
         public Match? Match { get; private set; }
         public DateTime? HappenedAt { get; private set; }
         public TrainingSession(
             string trainingSessionName,
-            Guid? planId,
-            Guid? userAccessPolicyId,
+            Guid? accessPolicyId,
             PlanState sessionState,
-            string? place,
-            DateTime? happenedAt,
-            Guid? createdBy = null) :base(createdBy)
+            string? place = null,
+            DateTime? happenedAt = null,
+            Guid? planId = null,
+            Guid? createdBy = null) :base(Guid.NewGuid(),createdBy)
         {
             TrainingSessionName = trainingSessionName;
             PlanId = planId;
-            UserAccessPolicyId = userAccessPolicyId;
+            AccessPolicyId = accessPolicyId;
             SessionState = sessionState;
             Place = place;
             HappenedAt = happenedAt;

@@ -17,7 +17,7 @@ namespace Trainova.Domain.TrainingSessionsAccessibility.AccessPolicies
             Guid accessPoliciesId,
             Guid userId,
             AttendanceStatus hasAttended = AttendanceStatus.Waiting,
-            Guid? createdBy = null) :base(createdBy)
+            Guid? createdBy = null) :base(Guid.NewGuid(), createdBy)
         {
             AccessPoliciesId = accessPoliciesId;
             UserId = userId;

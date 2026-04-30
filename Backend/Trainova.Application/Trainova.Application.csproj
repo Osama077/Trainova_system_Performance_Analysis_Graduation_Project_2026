@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Folder Include="Common\Enums\" />
+    <Folder Include="Common\Interfaces\Repositories\FitnessStatus\" />
     <Folder Include="Common\Interfaces\Repositories\Profiles\ScoutingCandidates\" />
     <Folder Include="Common\Interfaces\Repositories\Profiles\TeamsStaff\" />
     <Folder Include="MedicalStatus\RecoveryPlanPhases\Commands\" />
@@ -28,7 +29,6 @@
     <Folder Include="TrainingSessionsAccessibility\Activities\Queries\" />
     <Folder Include="TrainingSessionsAccessibility\Plans\Commands\" />
     <Folder Include="TrainingSessionsAccessibility\Plans\Queries\" />
-    <Folder Include="TrainingSessionsAccessibility\TrainingSessions\Commands\" />
     <Folder Include="TrainingSessionsAccessibility\TrainingSessions\Queries\" />
   </ItemGroup>
 

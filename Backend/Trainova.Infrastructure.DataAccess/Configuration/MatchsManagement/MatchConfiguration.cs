@@ -1,10 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Trainova.Domain.MatchsManagement.Matches;
-using Trainova.Domain.SeasonsAnalyses.Teams;
 using Trainova.Infrastructure.DataAccess.Configuration.Common;
 
 namespace Trainova.Infrastructure.DataAccess.Configuration.MatchsManagement

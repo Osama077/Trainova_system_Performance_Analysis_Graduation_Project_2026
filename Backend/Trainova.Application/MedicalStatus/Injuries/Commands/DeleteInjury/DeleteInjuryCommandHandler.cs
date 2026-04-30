@@ -49,7 +49,7 @@ namespace Trainova.Application.MedicalStatus.Injuries.Commands.DeleteInjury
             }
             catch (Exception ex)
             {
-                return Error.Failure(description: ex.Message);
+                return Error.Failure(code: "DeleteInjuryCommandHandler.Handle_Failure", description: ex.Message);
             }
 
         }

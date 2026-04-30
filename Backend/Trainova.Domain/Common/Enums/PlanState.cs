@@ -5,7 +5,5 @@
         Draft = 1,
         Active,
         Suspended,
-
-
     }
 }
