@@ -5,7 +5,7 @@ using Trainova.Domain.TrainingSessionsAccessibility.AccessPolicies;
 
 namespace Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAccessablity
 {
-    public interface IAccsessPolicyRepository
+    public interface IAccessPolicyRepository
     {
         Task AddAsync(AccessPolicy accessPolicy);
         Task<AccessPolicy?> GetByIdAsync(Guid value);

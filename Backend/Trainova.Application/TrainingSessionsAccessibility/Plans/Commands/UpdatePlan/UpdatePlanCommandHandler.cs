@@ -11,20 +11,13 @@ namespace Trainova.Application.TrainingSessionsAccessibility.Plans.Commands.Upda
 {
     public class UpdatePlanCommandHandler(
         IPlanRepository _planRepository,
-        IUnitOfWork _unitOfWork,
-        CurrentUser _currentUser)
+        IUnitOfWork _unitOfWork)
         : IRequestHandler<UpdatePlanCommand, ResultOf<Plan>>
     {
         public async Task<ResultOf<Plan>> Handle(UpdatePlanCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                // Validate request
-                if (request == null)
-                    return Error.Validation(code: "UpdatePlanCommandHandler.Handle_NullRequest", description: "Request cannot be null");
-
-                if (request.EndDate.HasValue && request.StartDate.HasValue && request.EndDate <= request.StartDate)
-                    return Error.Validation(code: "UpdatePlanCommandHandler.Handle_InvalidDateRange", description: "End date must be after start date");
 
                 // Start transaction
                 await _unitOfWork.StartTransactionAsync();
@@ -33,7 +26,6 @@ namespace Trainova.Application.TrainingSessionsAccessibility.Plans.Commands.Upda
                 var plan = await _planRepository.GetByIdAsync(request.Id);
                 if (plan == null)
                 {
-                    await _unitOfWork.RollbackTransactionAsync();
                     return Error.NotFound(
                         code: "UpdatePlanCommandHandler.Handle_PlanNotFound",
                         description: "Plan not found");
@@ -52,12 +44,10 @@ namespace Trainova.Application.TrainingSessionsAccessibility.Plans.Commands.Upda
             }
             catch (DomainException ex)
             {
-                try { await _unitOfWork.RollbackTransactionAsync(); } catch { /* swallow rollback errors */ }
                 return Error.DomainFailure(code: ex.Code, description: ex.Message);
             }
             catch (Exception ex)
             {
-                try { await _unitOfWork.RollbackTransactionAsync(); } catch { /* swallow rollback errors */ }
                 return Error.Unexpected(code: "UpdatePlanCommandHandler.Handle_Unexpected", description: ex.Message);
             }
         }

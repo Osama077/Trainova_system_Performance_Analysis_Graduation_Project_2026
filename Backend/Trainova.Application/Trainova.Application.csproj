@@ -25,8 +25,6 @@
     <Folder Include="MedicalStatus\RecoveryPlanPhases\Commands\" />
     <Folder Include="TrainingSessionsAccessibility\AccessPolicies\Commands\" />
     <Folder Include="TrainingSessionsAccessibility\AccessPolicies\Queries\" />
-    <Folder Include="TrainingSessionsAccessibility\Activities\Commands\" />
-    <Folder Include="TrainingSessionsAccessibility\Activities\Queries\" />
     <Folder Include="TrainingSessionsAccessibility\Plans\Commands\" />
     <Folder Include="TrainingSessionsAccessibility\Plans\Queries\" />
     <Folder Include="TrainingSessionsAccessibility\TrainingSessions\Queries\" />

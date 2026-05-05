@@ -42,6 +42,7 @@ namespace Trainova.Domain.Common.Helpers
 
         // Deserialize into any type
         public static T? Deserialize<T>(this string? json)
+            where T : ICreatorLogable
         {
             if (string.IsNullOrWhiteSpace(json))
                 return default;

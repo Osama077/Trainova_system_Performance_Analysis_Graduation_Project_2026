@@ -11,33 +11,25 @@ namespace Trainova.Application.TrainingSessionsAccessibility.UserAccessPolicies.
 {
     public class UpdateUserAccessPolicyCommandHandler(
         IUserAccessPolicyRepository _userAccessPolicyRepository,
-        IUnitOfWork _unitOfWork,
-        CurrentUser _currentUser)
+        IUnitOfWork _unitOfWork)
         : IRequestHandler<UpdateUserAccessPolicyCommand, ResultOf<UserAccessPolicy>>
     {
         public async Task<ResultOf<UserAccessPolicy>> Handle(UpdateUserAccessPolicyCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                // Validate request
-                if (request == null)
-                    return Error.Validation(code: "UpdateUserAccessPolicyCommandHandler.Handle_NullRequest", description: "Request cannot be null");
+
 
                 if (request.DoneScore.HasValue && (request.DoneScore < 0 || request.DoneScore > 100))
                     return Error.Validation(code: "UpdateUserAccessPolicyCommandHandler.Handle_InvalidScore", description: "Done score must be between 0 and 100");
 
-                // Start transaction
-                await _unitOfWork.StartTransactionAsync();
 
                 // Get existing user access policy
                 var userAccessPolicy = await _userAccessPolicyRepository.GetByIdAsync(request.Id);
                 if (userAccessPolicy == null)
-                {
-                    await _unitOfWork.RollbackTransactionAsync();
                     return Error.NotFound(
                         code: "UpdateUserAccessPolicyCommandHandler.Handle_NotFound",
                         description: "User access policy not found");
-                }
 
                 // Update user access policy
                 if (request.Status.HasValue || request.DoneScore.HasValue)
@@ -46,6 +38,9 @@ namespace Trainova.Application.TrainingSessionsAccessibility.UserAccessPolicies.
                     var score = request.DoneScore ?? userAccessPolicy.DoneScore;
                     userAccessPolicy.UpdateState(status, score);
                 }
+
+                // Start transaction
+                await _unitOfWork.StartTransactionAsync();
 
                 await _userAccessPolicyRepository.UpdateAsync(userAccessPolicy);
 

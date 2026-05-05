@@ -12,5 +12,7 @@ namespace Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAcc
         Task UpdateAsync(TrainingSession session);
         Task DeleteAsync(TrainingSession session);
         Task<bool> ExistsAsync(Guid? planId = null, Guid? accessPolicyId = null);
+        Task<IEnumerable<TrainingSession>> GetAllAsync(Guid? accessPolicyId);
+        Task<int> CountByAccessPolicyIdAsync(Guid accessPolicyId);
     }
 }

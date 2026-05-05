@@ -9,34 +9,46 @@ namespace Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Co
 {
     public class DeleteTrainingSessionCommandHandler(
         ITrainingSessionRepository _trainingSessionRepository,
-        IUnitOfWork _unitOfWork)
+        IUnitOfWork _unitOfWork,
+        IAccessPolicyRepository _accessPolicyRepository,
+        IUserAccessPolicyRepository _userAccessPolicyRepository,
+        IPlanRepository _planRepository)
         : IRequestHandler<DeleteTrainingSessionCommand, ResultOf<Done>>
     {
         public async Task<ResultOf<Done>> Handle(DeleteTrainingSessionCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                // Validate request
-                if (request == null)
-                    return Error.Validation(code: "DeleteTrainingSessionCommandHandler.Handle_NullRequest", description: "Request cannot be null");
+                if (request is null)
+                    return Error.Validation("DeleteTrainingSessionCommandHandler.Handle_NullRequest", "Request cannot be null");
 
-                // Start transaction
+                var session = await _trainingSessionRepository.GetByIdAsync(request.Id);
+
+                if (session is null)
+                    return Error.NotFound("DeleteTrainingSessionCommandHandler.Handle_SessionNotFound", "Training session not found");
+
+                if (session.HappenedAt <= DateTime.UtcNow)
+                    return Error.Conflict("DeleteTrainingSessionCommandHandler.Handle_ConflictDeleteStartedSession", " the Session should be already started");
+
+
                 await _unitOfWork.StartTransactionAsync();
 
-                // Get existing training session
-                var session = await _trainingSessionRepository.GetByIdAsync(request.Id);
-                if (session == null)
-                {
-                    await _unitOfWork.RollbackTransactionAsync();
-                    return Error.NotFound(
-                        code: "DeleteTrainingSessionCommandHandler.Handle_SessionNotFound",
-                        description: "Training session not found");
-                }
+                var accessPolicyId = session.AccessPolicyId;
 
-                // Delete training session
                 await _trainingSessionRepository.DeleteAsync(session);
 
-                // Save and commit
+                var sessionsCount = await _trainingSessionRepository.CountByAccessPolicyIdAsync(accessPolicyId);
+                var plansCount = await _planRepository.CountByAccessPolicyIdAsync(accessPolicyId);
+
+                if (sessionsCount + plansCount ==1)
+                {
+                    await _userAccessPolicyRepository.DeleteByPolicyIdAsync(accessPolicyId);
+
+                    var policy = await _accessPolicyRepository.GetByIdAsync(accessPolicyId);
+                    if (policy is not null)
+                        await _accessPolicyRepository.DeleteAsync(policy);
+                }
+
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
                 await _unitOfWork.CommitTransactionAsync();
 
@@ -44,14 +56,13 @@ namespace Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Co
             }
             catch (DomainException ex)
             {
-                try { await _unitOfWork.RollbackTransactionAsync(); } catch { /* swallow rollback errors */ }
-                return Error.DomainFailure(code: ex.Code, description: ex.Message);
+                return Error.DomainFailure(ex.Code, ex.Message);
             }
             catch (Exception ex)
             {
-                try { await _unitOfWork.RollbackTransactionAsync(); } catch { /* swallow rollback errors */ }
-                return Error.Unexpected(code: "DeleteTrainingSessionCommandHandler.Handle_Unexpected", description: ex.Message);
+                return Error.Unexpected("DeleteTrainingSessionCommandHandler.Handle_Unexpected", ex.Message);
             }
         }
+
     }
 }

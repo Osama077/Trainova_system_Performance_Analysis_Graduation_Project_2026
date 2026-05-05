@@ -50,5 +50,10 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.TrainingSessionAccessa
 
             _dbContext.UserAccessPolicies.RemoveRange(userAccessPolicies);
         }
+
+        public Task<IEnumerable<UserAccessPolicy>> GetAllAsync(Guid polcyId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

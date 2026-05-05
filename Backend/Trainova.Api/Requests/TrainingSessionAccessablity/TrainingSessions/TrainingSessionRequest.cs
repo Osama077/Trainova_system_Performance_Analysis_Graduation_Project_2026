@@ -10,6 +10,7 @@ namespace Trainova.Api.Requests.TrainingSessionAccessablity.TrainingSessions
         public Guid? PolicyId { get; set; }
         public string? Place { get; set; }
         public DateTime? WillHappenAt { get; set; }
+        public PlanState PlanState { get; set; } = PlanState.Active;
         public Guid? PlanId { get; set; }
         public List<Guid> UserIds { get; set; } = new();
 
@@ -18,7 +19,7 @@ namespace Trainova.Api.Requests.TrainingSessionAccessablity.TrainingSessions
             return new CreateTrainingSessionCommand(
                 SessionName,
                 PolicyId,
-                PlanState.Active,
+                PlanState,
                 Place,
                 WillHappenAt,
                 PlanId,
@@ -30,6 +31,7 @@ namespace Trainova.Api.Requests.TrainingSessionAccessablity.TrainingSessions
     {
         public string? SessionName { get; set; }
         public string? Place { get; set; }
+        public PlanState? PlanState { get; set; }
         public DateTime? WillHappenAt { get; set; }
         public PlanState? State { get; set; }
 
@@ -39,6 +41,7 @@ namespace Trainova.Api.Requests.TrainingSessionAccessablity.TrainingSessions
                 id,
                 SessionName,
                 Place,
+                PlanState,
                 WillHappenAt,
                 State);
         }

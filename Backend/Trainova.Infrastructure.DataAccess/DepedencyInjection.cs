@@ -63,7 +63,7 @@ public static class DependencyInjection
         // TrainingSessionAccessablity
 
         services.AddScoped<ITrainingSessionRepository, TrainingSessionRepository>();
-        services.AddScoped<IAccsessPolicyRepository, AccsessPolicyRepository>();
+        services.AddScoped<IAccessPolicyRepository, AccsessPolicyRepository>();
         services.AddScoped<IUserAccessPolicyRepository, UserAccessPolicyRepository>();
         services.AddScoped<IPlanRepository, PlanRepository>();
 

@@ -62,7 +62,7 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                 Guid.Parse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbba"),
                 "System Owner Amr",
                 "Amr Mousv",
-                "am7899@gmail.com",
+                "am7899@fayoum.edu.eg",
                 teamId,
                 "RESET_REQUIRED",
                 true,

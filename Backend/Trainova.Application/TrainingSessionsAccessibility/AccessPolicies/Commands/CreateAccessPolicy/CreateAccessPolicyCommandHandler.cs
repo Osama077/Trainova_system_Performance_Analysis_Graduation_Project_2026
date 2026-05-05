@@ -10,7 +10,7 @@ using Trainova.Domain.TrainingSessionsAccessibility.AccessPolicies;
 namespace Trainova.Application.TrainingSessionsAccessibility.AccessPolicies.Commands.CreateAccessPolicy
 {
     public class CreateAccessPolicyCommandHandler(
-        IAccsessPolicyRepository _accessPolicyRepository,
+        IAccessPolicyRepository _accessPolicyRepository,
         IUnitOfWork _unitOfWork,
         CurrentUser _currentUser)
         : IRequestHandler<CreateAccessPolicyCommand, ResultOf<AccessPolicy>>
@@ -19,18 +19,12 @@ namespace Trainova.Application.TrainingSessionsAccessibility.AccessPolicies.Comm
         {
             try
             {
-                // Validate request
-                if (request == null)
-                    return Error.Validation(code: "CreateAccessPolicyCommandHandler.Handle_NullRequest", description: "Request cannot be null");
-
-                if (string.IsNullOrWhiteSpace(request.PolicyName))
-                    return Error.Validation(code: "CreateAccessPolicyCommandHandler.Handle_InvalidPolicyName", description: "Policy name is required and cannot be empty");
+                var policy = new AccessPolicy(request.PolicyName, _currentUser.Id);
 
                 // Start transaction
                 await _unitOfWork.StartTransactionAsync();
 
                 // Create access policy
-                var policy = new AccessPolicy(request.PolicyName, _currentUser.Id);
 
                 await _accessPolicyRepository.AddAsync(policy);
 

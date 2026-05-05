@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.TrainingSessionAccessablity
 {
-    internal class AccsessPolicyRepository : IAccsessPolicyRepository
+    internal class AccsessPolicyRepository : IAccessPolicyRepository
     {
         public AccsessPolicyRepository(IDbSettings dbSettings, TrainovaWriteDbContext dbContext)
         {

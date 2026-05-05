@@ -11,6 +11,7 @@ namespace Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Co
         Guid Id,
         string? SessionName = null,
         string? Place = null,
+        PlanState? PlanState = null,
         DateTime? WillHappenAt = null,
         PlanState? State = null)
         : IRequest<ResultOf<TrainingSession>>;

@@ -13,5 +13,7 @@ namespace Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAcc
         Task UpdateAsync(UserAccessPolicy userAccessPolicy);
         Task DeleteAsync(UserAccessPolicy userAccessPolicy);
         Task DeleteByPolicyIdAsync(Guid policyId);
+        Task<IEnumerable<UserAccessPolicy>> GetAllAsync(Guid polcyId);
+        Task DeleteRangeAsync(IEnumerable<UserAccessPolicy> userpolicies);
     }
 }

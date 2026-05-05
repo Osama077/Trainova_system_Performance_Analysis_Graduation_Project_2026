@@ -8,7 +8,7 @@ using Trainova.Domain.Common.Helpers;
 namespace Trainova.Application.TrainingSessionsAccessibility.AccessPolicies.Commands.DeleteAccessPolicy
 {
     public class DeleteAccessPolicyCommandHandler(
-        IAccsessPolicyRepository _accessPolicyRepository,
+        IAccessPolicyRepository _accessPolicyRepository,
         IPlanRepository _planRepository,
         ITrainingSessionRepository _trainingSessionRepository,
         IUserAccessPolicyRepository _userAccessPolicyRepository,

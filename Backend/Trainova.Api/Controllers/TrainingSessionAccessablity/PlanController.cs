@@ -2,9 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Trainova.Api.Requests.TrainingSessionAccessablity.Plans;
 using Trainova.Application.Common.Models;
-using Trainova.Application.TrainingSessionsAccessibility.Plans.Commands.CreatePlan;
 using Trainova.Application.TrainingSessionsAccessibility.Plans.Commands.DeletePlan;
-using Trainova.Application.TrainingSessionsAccessibility.Plans.Commands.UpdatePlan;
 
 namespace Trainova.Api.Controllers.TrainingSessionAccessablity
 {

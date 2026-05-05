@@ -10,7 +10,7 @@ using Trainova.Domain.TrainingSessionsAccessibility.AccessPolicies;
 namespace Trainova.Application.TrainingSessionsAccessibility.AccessPolicies.Commands.UpdateAccessPolicy
 {
     public class UpdateAccessPolicyCommandHandler(
-        IAccsessPolicyRepository _accessPolicyRepository,
+        IAccessPolicyRepository _accessPolicyRepository,
         IUnitOfWork _unitOfWork,
         CurrentUser _currentUser)
         : IRequestHandler<UpdateAccessPolicyCommand, ResultOf<AccessPolicy>>

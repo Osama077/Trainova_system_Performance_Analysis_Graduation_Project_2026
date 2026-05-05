@@ -12,4 +12,5 @@ public interface IUsersRepository
     // Writing operations
     Task AddUserAsync(User user);
     Task UpdateAsync(User user);
+    Task<IEnumerable<User>> GetByIdsAsync(List<Guid> guids);
 }

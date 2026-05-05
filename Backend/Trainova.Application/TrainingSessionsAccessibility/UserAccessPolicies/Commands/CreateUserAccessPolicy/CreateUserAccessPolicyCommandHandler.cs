@@ -12,7 +12,7 @@ namespace Trainova.Application.TrainingSessionsAccessibility.UserAccessPolicies.
 {
     public class CreateUserAccessPolicyCommandHandler(
         IUserAccessPolicyRepository _userAccessPolicyRepository,
-        IAccsessPolicyRepository _accessPolicyRepository,
+        IAccessPolicyRepository _accessPolicyRepository,
         IUsersRepository _usersRepository,
         IUnitOfWork _unitOfWork,
         CurrentUser _currentUser)
@@ -22,32 +22,21 @@ namespace Trainova.Application.TrainingSessionsAccessibility.UserAccessPolicies.
         {
             try
             {
-                // Validate request
-                if (request == null)
-                    return Error.Validation(code: "CreateUserAccessPolicyCommandHandler.Handle_NullRequest", description: "Request cannot be null");
 
-                // Start transaction
-                await _unitOfWork.StartTransactionAsync();
 
                 // Validate access policy exists
                 var accessPolicy = await _accessPolicyRepository.GetByIdAsync(request.AccessPolicyId);
                 if (accessPolicy == null)
-                {
-                    await _unitOfWork.RollbackTransactionAsync();
                     return Error.NotFound(
                         code: "CreateUserAccessPolicyCommandHandler.Handle_PolicyNotFound",
                         description: "Access policy not found");
-                }
 
                 // Validate user exists
                 var user = await _usersRepository.GetByIdAsync(request.UserId);
                 if (user == null)
-                {
-                    await _unitOfWork.RollbackTransactionAsync();
                     return Error.NotFound(
                         code: "CreateUserAccessPolicyCommandHandler.Handle_UserNotFound",
                         description: "User not found");
-                }
 
                 // Create user access policy
                 var userAccessPolicy = new UserAccessPolicy(
@@ -55,6 +44,9 @@ namespace Trainova.Application.TrainingSessionsAccessibility.UserAccessPolicies.
                     request.UserId,
                     request.InitialStatus,
                     _currentUser.Id);
+
+                // Start transaction
+                await _unitOfWork.StartTransactionAsync();
 
                 await _userAccessPolicyRepository.AddAsync(userAccessPolicy);
 
@@ -66,12 +58,10 @@ namespace Trainova.Application.TrainingSessionsAccessibility.UserAccessPolicies.
             }
             catch (DomainException ex)
             {
-                try { await _unitOfWork.RollbackTransactionAsync(); } catch { /* swallow rollback errors */ }
                 return Error.DomainFailure(code: ex.Code, description: ex.Message);
             }
             catch (Exception ex)
             {
-                try { await _unitOfWork.RollbackTransactionAsync(); } catch { /* swallow rollback errors */ }
                 return Error.Unexpected(code: "CreateUserAccessPolicyCommandHandler.Handle_Unexpected", description: ex.Message);
             }
         }

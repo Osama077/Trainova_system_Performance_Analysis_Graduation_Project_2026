@@ -11,7 +11,7 @@ namespace Trainova.Domain.TrainingSessionsAccessibility.TrainingSessions
         public string TrainingSessionName { get; private set; }
         public Guid? PlanId { get; private set; }
         public Plan? Plan { get; private set; }
-        public Guid? AccessPolicyId { get; private set; }
+        public Guid AccessPolicyId { get; private set; }
         public AccessPolicy? AccessPolicy { get; private set; }
         public PlanState SessionState { get; private set; }
         public string? Place { get; private set; }
@@ -19,7 +19,7 @@ namespace Trainova.Domain.TrainingSessionsAccessibility.TrainingSessions
         public DateTime? HappenedAt { get; private set; }
         public TrainingSession(
             string trainingSessionName,
-            Guid? accessPolicyId,
+            Guid accessPolicyId,
             PlanState sessionState,
             string? place = null,
             DateTime? happenedAt = null,
@@ -38,13 +38,18 @@ namespace Trainova.Domain.TrainingSessionsAccessibility.TrainingSessions
 
         public ICollection<UserAccessPolicy> UserAccessPolicies { get; private set; } = new List<UserAccessPolicy>();
 
-        public void Update(string? sessionName = null, string? place = null, DateTime? happenedAt = null, PlanState? state = null)
+        public void Update(string? sessionName = null, string? place = null, PlanState? planState = null, DateTime? happenedAt = null, PlanState? state = null)
         {
+            MarkUpdatedNow();
             if (!string.IsNullOrWhiteSpace(sessionName))
                 TrainingSessionName = sessionName;
 
             if (!string.IsNullOrWhiteSpace(place))
                 Place = place;
+
+            if(planState.HasValue)
+                SessionState = planState.Value;
+
 
             if (happenedAt.HasValue)
                 HappenedAt = happenedAt;
