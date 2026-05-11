@@ -12,6 +12,7 @@ namespace Trainova.Application.MedicalStatus.Injuries.Queries.GetInjuryDetailes
         public int PlayerInjuriesCount { get; set; }
         public int PlayeresInjuredCount { get; set; } = 0;
         public int CurrentlyInHealingCount { get; set; }
+        public int CurrentlyInRecoveryCount { get; set; }
 
     }
 }

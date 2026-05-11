@@ -24,9 +24,15 @@ BEGIN
 
         COUNT(
             CASE
-                WHEN PI.Status = 0 THEN 1
+                WHEN PI.Status = 'InHealing' THEN 1
             END
-        ) AS CurrentlyInHealingCount
+        ) AS CurrentlyInHealingCount,
+
+        COUNT(
+            CASE
+                WHEN PI.Status = 'InRecovery' THEN 1
+            END
+        ) AS CurrentlyInRecoveryCount
 
     FROM dbo.Injuries I
 
@@ -43,4 +49,4 @@ BEGIN
         I.AverageRecoveryTimeInDayes
 END
 
-InjuriesData.sp_GetInjuryDetailesById @Id = 'e380fb48-62e3-45a1-8417-e0916a0f54ac'
+InjuriesData.sp_GetInjuryDetailesById @Id = '3a96780c-1c44-4d73-aca8-8269dd6bb48c'
