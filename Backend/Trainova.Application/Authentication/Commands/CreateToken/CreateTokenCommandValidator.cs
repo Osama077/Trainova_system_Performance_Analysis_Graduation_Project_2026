@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Trainova.Domain.UserAuth.UserTokens;
+using Trainova.Domain.UserAuth;
 
 namespace Trainova.Application.Authentication.Commands.CreateToken;
 

@@ -18,6 +18,7 @@ namespace Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInj
         public string? UserShowName { get; set; }
         public string? UserFullName { get; set; }
         public string? UserEmail { get; set; }
+        public string? PlayerPhotoUrl { get; set; }
 
         public Guid InjuryId { get; set; }
         public string? InjuryName { get; set; }
@@ -34,6 +35,8 @@ namespace Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInj
         public DateTime? ExpectedReturnDate { get; set; }
         public DateTime? ReturnedAt { get; set; }
         public bool IsNew { get; set; }
+        public string RecoveryPlanPhases { get; set; }
+        public int RecoveryPlanPhasesCount { get; set; }
 
         // Parameterless constructor needed for EF/Dapper mapping
         public PlayerInjuryReadModel() { }

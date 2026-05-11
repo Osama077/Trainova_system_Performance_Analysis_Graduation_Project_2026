@@ -1,17 +1,18 @@
 ﻿using MediatR;
 using Trainova.Application.Common.Helpers.TimeConverterHelpers;
 using Trainova.Application.Common.Interfaces.Repositories.MedicalStatus;
+using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Application.Common.Models;
 using Trainova.Common.Errors;
 using Trainova.Common.ResultOf;
 using Trainova.Domain.Common.Helpers;
-using Trainova.Domain.MedicalStatus.Injuries;
+using Trainova.Domain.MedicalStatus;
 
 namespace Trainova.Application.MedicalStatus.Injuries.Commands.CreateInjury
 {
     public class CreateInjuryCommandHandler(
         IInjuryRepository _injuryrepository,
-        CurrentUser _currentUser)
+        IUnitOfWork _unitOfWork)
         : IRequestHandler<CreateInjuryCommand, ResultOf<Injury>>
     {
 
@@ -19,20 +20,19 @@ namespace Trainova.Application.MedicalStatus.Injuries.Commands.CreateInjury
         {
             try
             {
-                var timeAttacher = new TimeConverterHelper
-                {
-                    TimeType = request.TimeType,
-                    Amount = request.TimeAmount
-                };
-
 
                 var injury = new Injury(
                     request.Name,
                     request.Description,
                     request.InjuryType,
-                    timeAttacher.ToTimeSpan()
+                    request.TimeAmountInDayes
                     );
+                await _unitOfWork.StartTransactionAsync();
+
                 await _injuryrepository.AddAsync(injury);
+
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+                await _unitOfWork.CommitTransactionAsync();
                 return injury.AsCreated();
             }
             catch (DomainException ex)

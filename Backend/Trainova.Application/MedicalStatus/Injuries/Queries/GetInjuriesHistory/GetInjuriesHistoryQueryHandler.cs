@@ -3,7 +3,7 @@ using Trainova.Application.Common.Interfaces.Repositories.CommonRepos;
 using Trainova.Common.Errors;
 using Trainova.Common.ResultOf;
 using Trainova.Domain.Common.AuditLogs;
-using Trainova.Domain.MedicalStatus.Injuries;
+using Trainova.Domain.MedicalStatus;
 
 namespace Trainova.Application.MedicalStatus.Injuries.Queries.GetInjuriesHistory
 {
@@ -18,7 +18,7 @@ namespace Trainova.Application.MedicalStatus.Injuries.Queries.GetInjuriesHistory
             {
                 var injuries = await _auditRepository.GetAuditLogsAsync(
                     typeof(Injury).Name,
-                    request.Id.ToString(),
+                    request.Id?.ToString() ??null,
                     request.Page,
                     request.PageSize,
                     request.IncludeAdded,

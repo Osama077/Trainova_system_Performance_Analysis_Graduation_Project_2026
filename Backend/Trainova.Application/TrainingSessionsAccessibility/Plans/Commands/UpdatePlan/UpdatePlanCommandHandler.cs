@@ -5,7 +5,7 @@ using Trainova.Application.Common.Models;
 using Trainova.Common.Errors;
 using Trainova.Common.ResultOf;
 using Trainova.Domain.Common.Helpers;
-using Trainova.Domain.TrainingSessionsAccessibility.Plans;
+using Trainova.Domain.TrainingSessionsAccessibility;
 
 namespace Trainova.Application.TrainingSessionsAccessibility.Plans.Commands.UpdatePlan
 {

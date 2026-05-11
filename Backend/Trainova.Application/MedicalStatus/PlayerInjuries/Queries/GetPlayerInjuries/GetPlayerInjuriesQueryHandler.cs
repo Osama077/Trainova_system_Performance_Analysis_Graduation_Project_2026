@@ -4,6 +4,7 @@ using Trainova.Application.Common.Models;
 using Trainova.Common.Errors;
 using Trainova.Common.ResultOf;
 using Trainova.Domain.Common;
+using Trainova.Domain.UserAuth;
 
 namespace Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInjuries
 {
@@ -18,14 +19,7 @@ namespace Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInj
             try
             {
 
-                if (_currentUser.Roles.Contains(RolesStaticSeeding.Player) && (request.PlayerId.HasValue || _currentUser.Id != request.PlayerId))
-                    return Error.Forbidden(
-                        code: "GetPlayerInjuriesQueryHandler.Handle_Forbidden",
-                        description: "players cant get any other players injuries"
-                        );
-
                 var items = await _playerInjuryRepository.GetReadModelsAsync(
-                            request.PlayerInjuryId,
                             request.PlayerId,
                             request.InjuryId,
                             request.Status,
@@ -37,7 +31,7 @@ namespace Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInj
                             request.ExpectedReturnAfter,
                             request.ReturnedBefore,
                             request.ReturnedAfter,
-                            request.Page + 1, // API page is zero-based; SP expects 1-based
+                            request.Page,
                             request.PageSize,
                             request.SortColumn,
                             request.SortDirection

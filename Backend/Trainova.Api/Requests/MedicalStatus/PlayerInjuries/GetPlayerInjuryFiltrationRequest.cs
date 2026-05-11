@@ -1,13 +1,10 @@
-﻿﻿using Trainova.Api.Models;
-using Trainova.Application.MedicalStatus.Injuries.Queries.GetInjuries;
+﻿using Trainova.Api.Models;
 using Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInjuries;
-using Trainova.Domain.MedicalStatus.PlayerInjuries;
 
 namespace Trainova.Api.Requests.MedicalStatus.PlayerInjuries
 {
     public class GetPlayerInjuryFiltrationRequest : Paginator
     {
-        public Guid? Id { get; set; } = null;
         public Guid? PlayerId { get; set; } = null;
         public Guid? InjuryId { get; set; } = null;
         public string? Status { get; set; } = null;
@@ -24,7 +21,6 @@ namespace Trainova.Api.Requests.MedicalStatus.PlayerInjuries
         public GetPlayerInjuriesQuery ToQuery()
         {
             return new GetPlayerInjuriesQuery(
-                Id,
                 PlayerId,
                 InjuryId,
                 Status,

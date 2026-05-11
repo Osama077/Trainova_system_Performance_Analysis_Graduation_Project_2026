@@ -47,7 +47,6 @@ GO
 CREATE OR ALTER PROCEDURE playersData.sp_GetPlayersFiltered
     @PlayerId UNIQUEIDENTIFIER = NULL,
     @SearchTerm NVARCHAR(100) = NULL,
-    @TeamId UNIQUEIDENTIFIER = NULL,
     @PerformanceLevel INT = NULL,
     @IsActive BIT = NULL,
     @MainPositionFilter INT = NULL,
@@ -74,21 +73,19 @@ BEGIN
     DECLARE @Where NVARCHAR(MAX) = N' WHERE 1=1';
     DECLARE @Params NVARCHAR(MAX) = N'
         @P_PlayerId UNIQUEIDENTIFIER, @P_SearchTerm NVARCHAR(100), 
-        @P_TeamId UNIQUEIDENTIFIER, @P_PerformanceLevel INT, 
+        @P_PerformanceLevel INT, 
         @P_IsActive BIT, @P_MainPositionFilter INT, 
         @P_OtherPositionFilter INT, @P_DateFrom DATETIME, 
-        @P_DateTo DATETIME, @P_MinMatches INT, 
+        @P_DateTo DATETIME,
         @P_MedicalStatus NVARCHAR(50), @P_PageNumber INT, @P_PageSize INT';
 
     IF @PlayerId IS NOT NULL SET @Where += N' AND Id = @P_PlayerId';
     IF @SearchTerm IS NOT NULL SET @Where += N' AND (FullName LIKE ''%'' + @P_SearchTerm + ''%'' OR ShowName LIKE ''%'' + @P_SearchTerm + ''%'')';
-    IF @TeamId IS NOT NULL SET @Where += N' AND TeamId = @P_TeamId';
     IF @PerformanceLevel IS NOT NULL SET @Where += N' AND PerformanceLevel = @P_PerformanceLevel';
     IF @IsActive IS NOT NULL SET @Where += N' AND IsActive = @P_IsActive';
     IF @MedicalStatus IS NOT NULL SET @Where += N' AND MedicalStatus = @P_MedicalStatus';
     IF @DateFrom IS NOT NULL SET @Where += N' AND DateOfEnrolment >= @P_DateFrom';
     IF @DateTo IS NOT NULL SET @Where += N' AND DateOfEnrolment <= @P_DateTo';
-    IF @MinMatches IS NOT NULL SET @Where += N' AND MatchesCount >= @P_MinMatches';
     IF @MainPositionFilter IS NOT NULL SET @Where += N' AND (CurrentMainPosition & @P_MainPositionFilter) = @P_MainPositionFilter';
     IF @OtherPositionFilter IS NOT NULL SET @Where += N' AND (OtherAvailablePositions & @P_OtherPositionFilter) = @P_OtherPositionFilter';
 
@@ -102,11 +99,12 @@ BEGIN
 
     EXEC sp_executesql @Sql, @Params, 
         @P_PlayerId = @PlayerId, @P_SearchTerm = @SearchTerm, 
-        @P_TeamId = @TeamId, @P_PerformanceLevel = @PerformanceLevel, 
+        @P_PerformanceLevel = @PerformanceLevel, 
         @P_IsActive = @IsActive, @P_MainPositionFilter = @MainPositionFilter, 
         @P_OtherPositionFilter = @OtherPositionFilter, @P_DateFrom = @DateFrom, 
-        @P_DateTo = @DateTo, @P_MinMatches = @MinMatches, 
-        @P_MedicalStatus = @MedicalStatus, @P_PageNumber = @PageNumber, 
+        @P_DateTo = @DateTo,
+        @P_MedicalStatus = @MedicalStatus,
+        @P_PageNumber = @PageNumber, 
         @P_PageSize = @PageSize;
 END;
 GO

@@ -1,7 +1,7 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Trainova.Domain.TrainingSessionsAccessibility.TrainingSessions;
+using Trainova.Domain.TrainingSessionsAccessibility;
 
 namespace Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAccessablity
 {

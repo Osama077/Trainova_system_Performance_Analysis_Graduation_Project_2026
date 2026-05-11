@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using Trainova.Domain.UserAuth.Users;
+using Trainova.Domain.UserAuth;
 
 namespace Trainova.Application.Authentication.Common;
 
@@ -14,6 +14,8 @@ public abstract class AuthenticationResultBase
     public string ShowName { get; init; }
     public string? PhotoPath { get; init; }
     public bool IsActive { get; init; }
+    public string RoleName { get; init; }
+
     public AuthenticationResultBase(User user)
     {
         UserId = user.Id;
@@ -22,6 +24,7 @@ public abstract class AuthenticationResultBase
         ShowName = user.ShowName;
         PhotoPath = user.PhotoPath;
         IsActive = user.IsActive;
+        RoleName = user.Role.ToString();
     }
 
 }

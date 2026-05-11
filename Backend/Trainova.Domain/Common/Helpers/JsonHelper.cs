@@ -2,8 +2,7 @@
 using System.Text.Json.Serialization;
 using Trainova.Domain.Common.AuditLogs;
 using Trainova.Domain.Common.BaseEntity;
-using Trainova.Domain.Common.DataConvrters;
-using Trainova.Domain.UserAuth.UserTokens;
+using Trainova.Domain.UserAuth;
 
 namespace Trainova.Domain.Common.Helpers
 {
@@ -17,9 +16,8 @@ namespace Trainova.Domain.Common.Helpers
             WriteIndented = false,
             Converters =
             {
-
-                new JsonStringEnumConverter(),              // Enums العادية
-                new SmartEnumJsonConverter<TokenType>(),  // SmartEnums اللي محتاجها
+                new JsonStringEnumConverter(),
+                new SmartEnumJsonConverter<TokenType>(),
             }
 
         };

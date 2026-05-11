@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Trainova.Domain.UserAuth.Users;
+using Trainova.Domain.UserAuth;
 using Trainova.Infrastructure.DataAccess.Configuration.Common;
 
 namespace Trainova.Infrastructure.DataAccess.Configuration.UserAuth
@@ -22,6 +22,18 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.UserAuth
             builder
             .HasIndex(u => u.Email)
             .IsUnique();
+
+
+
+            builder.Property(p => p.Role)
+                .HasConversion(
+                    r => r.Name,
+                    value => Role.FromName(value.Trim(), false))
+                .HasMaxLength(50)
+                .IsRequired();
+            builder.HasIndex(p => p.Role);
+
+
         }
     }
 }

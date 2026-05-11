@@ -1,5 +1,3 @@
-using System.Security.Claims;
-
 namespace Trainova.Application.Common.Models;
 
 using System.Security.Claims;
@@ -9,18 +7,20 @@ public record CurrentUser(
     string? FullName,
     string? Email,
     UserIP? UserIP,
-    IReadOnlyList<string> Roles,
+    string Role,
     IReadOnlyList<Claim> Claims
 )
 {
     public override string ToString()
     {
-        return $"ID: {Id}, Name: {FullName}, Email: {Email}, Roles: [{string.Join(", ", Roles)}]";
+        return $"ID: {Id}, Name: {FullName}, Email: {Email}, Role: {Role}" +
+            $"\nFrom IP: {UserIP}" +
+            $"\nClaims: [{string.Join("\n",Claims.Select(c=>$"{c.Type}: {c.Value}"))}]";
     }
     public bool IsAuthenticated => Id.HasValue;
 
     public bool IsInRole(string role) =>
-        Roles.Contains(role);
+        Role == role;
 
     public IReadOnlyList<string> GetClaimValues(string claimType) =>
         Claims.Where(c => c.Type == claimType)

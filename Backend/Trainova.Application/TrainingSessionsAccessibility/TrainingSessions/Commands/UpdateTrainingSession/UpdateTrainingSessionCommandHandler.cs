@@ -4,7 +4,7 @@ using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Common.Errors;
 using Trainova.Common.ResultOf;
 using Trainova.Domain.Common.Helpers;
-using Trainova.Domain.TrainingSessionsAccessibility.TrainingSessions;
+using Trainova.Domain.TrainingSessionsAccessibility;
 
 namespace Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Commands.UpdateTrainingSession
 {

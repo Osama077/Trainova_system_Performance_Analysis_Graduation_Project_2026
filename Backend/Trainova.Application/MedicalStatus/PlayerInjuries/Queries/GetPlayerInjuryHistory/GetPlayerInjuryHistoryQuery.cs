@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Trainova.Application.Common.Authorization;
 using Trainova.Common.ResultOf;
-using Trainova.Domain.MedicalStatus.PlayerInjuries;
+using Trainova.Domain.MedicalStatus;
 
 namespace Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInjuryHistory
 {
@@ -13,5 +13,4 @@ namespace Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInj
         bool IncludeAdded = false,
         bool IncludeDeleted = false,
         bool IncludeUpdated = false) : IRequest<ResultOf<IEnumerable<PlayerInjury>>>;
-
 }

@@ -1,4 +1,4 @@
-﻿﻿﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Trainova.Application.Common.Interfaces.Services;
@@ -7,18 +7,10 @@ using Trainova.Domain.Common.AuditLogs;
 using Trainova.Domain.Common.Outbox;
 using Trainova.Domain.FitnessStatus.MovementDistances;
 using Trainova.Domain.FitnessStatus.PhysicalCapacityTests;
-using Trainova.Domain.MedicalStatus.Injuries;
-using Trainova.Domain.MedicalStatus.PlayerInjuries;
-using Trainova.Domain.MedicalStatus.RecoveryPlans;
-using Trainova.Domain.Profiles.Players;
-using Trainova.Domain.Profiles.TeamsStaff;
-using Trainova.Domain.TrainingSessionsAccessibility.AccessPolicies;
-using Trainova.Domain.TrainingSessionsAccessibility.Plans;
-using Trainova.Domain.TrainingSessionsAccessibility.TrainingSessions;
-using Trainova.Domain.UserAuth.Roles;
-using Trainova.Domain.UserAuth.UserRoles;
-using Trainova.Domain.UserAuth.Users;
-using Trainova.Domain.UserAuth.UserTokens;
+using Trainova.Domain.MedicalStatus;
+using Trainova.Domain.Profiles;
+using Trainova.Domain.TrainingSessionsAccessibility;
+using Trainova.Domain.UserAuth;
 
 namespace Trainova.Infrastructure.DataAccess
 {
@@ -37,9 +29,7 @@ namespace Trainova.Infrastructure.DataAccess
 
         public bool IsInTransaction { get; private set; } = false;
         // Authentication and Authorization
-        public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<Role> Roles { get; set; }
         public DbSet<UserToken> UserTokens { get; set; }
 
 

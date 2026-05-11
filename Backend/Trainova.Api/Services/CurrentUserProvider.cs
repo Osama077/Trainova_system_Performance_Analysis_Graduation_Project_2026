@@ -61,7 +61,7 @@ namespace Trainova.Api.Services
                     FullName: null,
                     Email: null,
                     UserIP: userIP,
-                    Roles: Array.Empty<string>(),
+                    Role: null,
                     Claims: Array.Empty<Claim>()
                 );
 
@@ -86,10 +86,10 @@ namespace Trainova.Api.Services
 
             var email = user.FindFirst(ClaimTypes.Email)?.Value;
 
-            var roles = user
+            var role = user
                 .FindAll(ClaimTypes.Role)
                 .Select(r => r.Value)
-                .ToArray();
+                .FirstOrDefault();
 
             var claims = user.Claims.ToArray();
 
@@ -100,7 +100,7 @@ namespace Trainova.Api.Services
                 FullName: fullName,
                 Email: email,
                 UserIP: userIP,
-                Roles: roles,
+                Role: role,
                 Claims: claims
             );
         }

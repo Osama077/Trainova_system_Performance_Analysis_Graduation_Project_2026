@@ -10,7 +10,6 @@ namespace Trainova.Application.Profiles.Players
         public string Email { get; set; }
         public bool IsActive { get; set; }
         public string PhotoPath { get; set; }
-        public Guid TeamId { get; set; }
         public string TShirtName { get; set; }
         public int PlayerNumber { get; set; }
         public int PerformanceLevel { get; set; }
@@ -19,8 +18,6 @@ namespace Trainova.Application.Profiles.Players
         public string MedicalStatus { get; set; }
         public DateTime DateOfEnrolment { get; set; }
         public DateTime CreatedAt { get; set; }
-        public int MatchesCount { get; set; }
-        public int InjuriesCount { get; set; }
 
         // Captured from COUNT(*) OVER()
         private int TotalCount { get; set; }

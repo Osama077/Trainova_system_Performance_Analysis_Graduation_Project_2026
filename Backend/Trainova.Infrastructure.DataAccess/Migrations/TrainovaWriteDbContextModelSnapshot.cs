@@ -579,14 +579,14 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.ToTable("MatchVideos", (string)null);
                 });
 
-            modelBuilder.Entity("Trainova.Domain.MedicalStatus.Injuries.Injury", b =>
+            modelBuilder.Entity("Trainova.Domain.MedicalStatus.Injury", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<TimeSpan?>("AverageRecoveryTime")
-                        .HasColumnType("time");
+                    b.Property<int?>("AverageRecoveryTimeInDayes")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -617,7 +617,7 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.ToTable("Injuries", (string)null);
                 });
 
-            modelBuilder.Entity("Trainova.Domain.MedicalStatus.PlayerInjuries.PlayerInjury", b =>
+            modelBuilder.Entity("Trainova.Domain.MedicalStatus.PlayerInjury", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -685,13 +685,13 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.ToTable("PlayerInjuries", (string)null);
                 });
 
-            modelBuilder.Entity("Trainova.Domain.MedicalStatus.RecoveryPlans.RecoveryPlanPhase", b =>
+            modelBuilder.Entity("Trainova.Domain.MedicalStatus.RecoveryPlanPhase", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Activities")
+                    b.PrimitiveCollection<string>("Activities")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -716,8 +716,8 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<byte>("Order")
-                        .HasColumnType("tinyint");
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("PlayerInjuryId")
                         .HasColumnType("uniqueidentifier");
@@ -727,13 +727,12 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PlayerInjuryId")
-                        .IsUnique();
+                    b.HasIndex("PlayerInjuryId", "Order");
 
-                    b.ToTable("RecoveryPlanPhases", (string)null);
+                    b.ToTable("PlanPhases");
                 });
 
-            modelBuilder.Entity("Trainova.Domain.Profiles.Players.Player", b =>
+            modelBuilder.Entity("Trainova.Domain.Profiles.Player", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -780,7 +779,7 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.ToTable("Players", (string)null);
                 });
 
-            modelBuilder.Entity("Trainova.Domain.Profiles.ScoutingCandidates.ScoutingCandidate", b =>
+            modelBuilder.Entity("Trainova.Domain.Profiles.ScoutingCandidate", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -834,7 +833,7 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.ToTable("ScoutingCandidates", (string)null);
                 });
 
-            modelBuilder.Entity("Trainova.Domain.Profiles.TeamsStaff.TeamStaff", b =>
+            modelBuilder.Entity("Trainova.Domain.Profiles.TeamStaff", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -867,7 +866,44 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.ToTable("TeamStaffs", (string)null);
                 });
 
-            modelBuilder.Entity("Trainova.Domain.SeasonsAnalyses.ModelScores.ModelScore", b =>
+            modelBuilder.Entity("Trainova.Domain.SeasonsAnalyses.Competition", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CompetitionName")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("CountryName")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("LastUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("SeasonId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("SeasonName")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SeasonId");
+
+                    b.ToTable("Competitions", (string)null);
+                });
+
+            modelBuilder.Entity("Trainova.Domain.SeasonsAnalyses.ModelScore", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -938,7 +974,7 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.ToTable("ModelScores", (string)null);
                 });
 
-            modelBuilder.Entity("Trainova.Domain.SeasonsAnalyses.PositionBenchmarks.PositionBenchmark", b =>
+            modelBuilder.Entity("Trainova.Domain.SeasonsAnalyses.PositionBenchmark", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1008,44 +1044,7 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.ToTable("PositionBenchmarks", (string)null);
                 });
 
-            modelBuilder.Entity("Trainova.Domain.SeasonsAnalyses.Seasons.Competition", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CompetitionName")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("CountryName")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("LastUpdate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("SeasonId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("SeasonName")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SeasonId");
-
-                    b.ToTable("Competitions", (string)null);
-                });
-
-            modelBuilder.Entity("Trainova.Domain.SeasonsAnalyses.Teams.Team", b =>
+            modelBuilder.Entity("Trainova.Domain.SeasonsAnalyses.Team", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1073,7 +1072,7 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.ToTable("Teams", (string)null);
                 });
 
-            modelBuilder.Entity("Trainova.Domain.TrainingSessionsAccessibility.AccessPolicies.AccessPolicy", b =>
+            modelBuilder.Entity("Trainova.Domain.TrainingSessionsAccessibility.AccessPolicy", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1097,48 +1096,7 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.ToTable("AccessPolicies", (string)null);
                 });
 
-            modelBuilder.Entity("Trainova.Domain.TrainingSessionsAccessibility.AccessPolicies.UserAccessPolicy", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("AccessPoliciesId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("AttendanceState")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("DoneScore")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime?>("LastUpdate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("TrainingSessionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccessPoliciesId");
-
-                    b.HasIndex("TrainingSessionId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserAccessPolicies", (string)null);
-                });
-
-            modelBuilder.Entity("Trainova.Domain.TrainingSessionsAccessibility.Plans.Plan", b =>
+            modelBuilder.Entity("Trainova.Domain.TrainingSessionsAccessibility.Plan", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1182,13 +1140,13 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.ToTable("Plans", (string)null);
                 });
 
-            modelBuilder.Entity("Trainova.Domain.TrainingSessionsAccessibility.TrainingSessions.TrainingSession", b =>
+            modelBuilder.Entity("Trainova.Domain.TrainingSessionsAccessibility.TrainingSession", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("AccessPolicyId")
+                    b.Property<Guid>("AccessPolicyId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
@@ -1225,33 +1183,17 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.ToTable("TrainingSessions");
                 });
 
-            modelBuilder.Entity("Trainova.Domain.UserAuth.Roles.Role", b =>
+            modelBuilder.Entity("Trainova.Domain.TrainingSessionsAccessibility.UserAccessPolicy", b =>
                 {
-                    b.Property<byte>("Id")
-                        .HasColumnType("tinyint");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<string>("NormalizedName")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Roles");
-                });
-
-            modelBuilder.Entity("Trainova.Domain.UserAuth.UserRoles.UserRole", b =>
-                {
-                    b.Property<byte>("RoleId")
-                        .HasColumnType("tinyint");
-
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AccessPoliciesId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AttendanceState")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -1259,63 +1201,30 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<byte?>("RoleId1")
-                        .HasColumnType("tinyint");
+                    b.Property<decimal>("DoneScore")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("RoleId", "UserId");
+                    b.Property<DateTime?>("LastUpdate")
+                        .HasColumnType("datetime2");
 
-                    b.HasIndex("RoleId1");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserRoles", (string)null);
-                });
-
-            modelBuilder.Entity("Trainova.Domain.UserAuth.UserTokens.UserToken", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid?>("TrainingSessionId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsRevoked")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsUsed")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("RevokeCause")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("RevokedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("TokenType")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime?>("UsedAt")
-                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AccessPoliciesId");
+
+                    b.HasIndex("TrainingSessionId");
+
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserTokens", (string)null);
+                    b.ToTable("UserAccessPolicies", (string)null);
                 });
 
-            modelBuilder.Entity("Trainova.Domain.UserAuth.Users.User", b =>
+            modelBuilder.Entity("Trainova.Domain.UserAuth.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1361,6 +1270,11 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.Property<Guid?>("PlayerId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("ShowName")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -1388,6 +1302,8 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
 
                     b.HasIndex("PlayerId");
 
+                    b.HasIndex("Role");
+
                     b.HasIndex("TeamId");
 
                     b.HasIndex("TeamStaffId");
@@ -1395,15 +1311,59 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Trainova.Domain.UserAuth.UserToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRevoked")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("RevokeCause")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("RevokedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("TokenType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("UsedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserTokens", (string)null);
+                });
+
             modelBuilder.Entity("Trainova.Domain.FitnessStatus.MovementDistances.SessionMovement", b =>
                 {
-                    b.HasOne("Trainova.Domain.Profiles.Players.Player", "Player")
+                    b.HasOne("Trainova.Domain.Profiles.Player", "Player")
                         .WithMany()
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Trainova.Domain.TrainingSessionsAccessibility.TrainingSessions.TrainingSession", "TrainingSession")
+                    b.HasOne("Trainova.Domain.TrainingSessionsAccessibility.TrainingSession", "TrainingSession")
                         .WithMany()
                         .HasForeignKey("TrainingSessionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1553,7 +1513,7 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
 
             modelBuilder.Entity("Trainova.Domain.MatchsManagement.Matches.Match", b =>
                 {
-                    b.HasOne("Trainova.Domain.TrainingSessionsAccessibility.TrainingSessions.TrainingSession", "TrainingSession")
+                    b.HasOne("Trainova.Domain.TrainingSessionsAccessibility.TrainingSession", "TrainingSession")
                         .WithOne("Match")
                         .HasForeignKey("Trainova.Domain.MatchsManagement.Matches.Match", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1562,15 +1522,15 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.Navigation("TrainingSession");
                 });
 
-            modelBuilder.Entity("Trainova.Domain.MedicalStatus.PlayerInjuries.PlayerInjury", b =>
+            modelBuilder.Entity("Trainova.Domain.MedicalStatus.PlayerInjury", b =>
                 {
-                    b.HasOne("Trainova.Domain.MedicalStatus.Injuries.Injury", "Injury")
+                    b.HasOne("Trainova.Domain.MedicalStatus.Injury", "Injury")
                         .WithMany("PlayerInjuries")
                         .HasForeignKey("InjuryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Trainova.Domain.Profiles.Players.Player", "Player")
+                    b.HasOne("Trainova.Domain.Profiles.Player", "Player")
                         .WithMany("PlayerInjuries")
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1581,31 +1541,29 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("Trainova.Domain.MedicalStatus.RecoveryPlans.RecoveryPlanPhase", b =>
+            modelBuilder.Entity("Trainova.Domain.MedicalStatus.RecoveryPlanPhase", b =>
                 {
-                    b.HasOne("Trainova.Domain.MedicalStatus.PlayerInjuries.PlayerInjury", "PlayerInjury")
-                        .WithOne()
-                        .HasForeignKey("Trainova.Domain.MedicalStatus.RecoveryPlans.RecoveryPlanPhase", "PlayerInjuryId")
+                    b.HasOne("Trainova.Domain.MedicalStatus.PlayerInjury", null)
+                        .WithMany("Phases")
+                        .HasForeignKey("PlayerInjuryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("PlayerInjury");
                 });
 
-            modelBuilder.Entity("Trainova.Domain.Profiles.Players.Player", b =>
+            modelBuilder.Entity("Trainova.Domain.Profiles.Player", b =>
                 {
-                    b.HasOne("Trainova.Domain.UserAuth.Users.User", "User")
+                    b.HasOne("Trainova.Domain.UserAuth.User", "User")
                         .WithOne()
-                        .HasForeignKey("Trainova.Domain.Profiles.Players.Player", "Id")
+                        .HasForeignKey("Trainova.Domain.Profiles.Player", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Trainova.Domain.Profiles.TeamsStaff.TeamStaff", b =>
+            modelBuilder.Entity("Trainova.Domain.Profiles.TeamStaff", b =>
                 {
-                    b.HasOne("Trainova.Domain.UserAuth.Users.User", "User")
+                    b.HasOne("Trainova.Domain.UserAuth.User", "User")
                         .WithMany()
                         .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1614,32 +1572,9 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Trainova.Domain.TrainingSessionsAccessibility.AccessPolicies.UserAccessPolicy", b =>
+            modelBuilder.Entity("Trainova.Domain.TrainingSessionsAccessibility.Plan", b =>
                 {
-                    b.HasOne("Trainova.Domain.TrainingSessionsAccessibility.AccessPolicies.AccessPolicy", "AccessPolicy")
-                        .WithMany("PolicyUsers")
-                        .HasForeignKey("AccessPoliciesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Trainova.Domain.TrainingSessionsAccessibility.TrainingSessions.TrainingSession", null)
-                        .WithMany("UserAccessPolicies")
-                        .HasForeignKey("TrainingSessionId");
-
-                    b.HasOne("Trainova.Domain.UserAuth.Users.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AccessPolicy");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Trainova.Domain.TrainingSessionsAccessibility.Plans.Plan", b =>
-                {
-                    b.HasOne("Trainova.Domain.TrainingSessionsAccessibility.AccessPolicies.AccessPolicy", "AccessPolicy")
+                    b.HasOne("Trainova.Domain.TrainingSessionsAccessibility.AccessPolicy", "AccessPolicy")
                         .WithMany()
                         .HasForeignKey("AccessPolicyId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1648,13 +1583,15 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.Navigation("AccessPolicy");
                 });
 
-            modelBuilder.Entity("Trainova.Domain.TrainingSessionsAccessibility.TrainingSessions.TrainingSession", b =>
+            modelBuilder.Entity("Trainova.Domain.TrainingSessionsAccessibility.TrainingSession", b =>
                 {
-                    b.HasOne("Trainova.Domain.TrainingSessionsAccessibility.AccessPolicies.AccessPolicy", "AccessPolicy")
+                    b.HasOne("Trainova.Domain.TrainingSessionsAccessibility.AccessPolicy", "AccessPolicy")
                         .WithMany()
-                        .HasForeignKey("AccessPolicyId");
+                        .HasForeignKey("AccessPolicyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("Trainova.Domain.TrainingSessionsAccessibility.Plans.Plan", "Plan")
+                    b.HasOne("Trainova.Domain.TrainingSessionsAccessibility.Plan", "Plan")
                         .WithMany("TrainingSessions")
                         .HasForeignKey("PlanId");
 
@@ -1663,51 +1600,40 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.Navigation("Plan");
                 });
 
-            modelBuilder.Entity("Trainova.Domain.UserAuth.UserRoles.UserRole", b =>
+            modelBuilder.Entity("Trainova.Domain.TrainingSessionsAccessibility.UserAccessPolicy", b =>
                 {
-                    b.HasOne("Trainova.Domain.UserAuth.Roles.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
+                    b.HasOne("Trainova.Domain.TrainingSessionsAccessibility.AccessPolicy", "AccessPolicy")
+                        .WithMany("PolicyUsers")
+                        .HasForeignKey("AccessPoliciesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Trainova.Domain.UserAuth.Roles.Role", null)
-                        .WithMany("Roles")
-                        .HasForeignKey("RoleId1");
+                    b.HasOne("Trainova.Domain.TrainingSessionsAccessibility.TrainingSession", null)
+                        .WithMany("UserAccessPolicies")
+                        .HasForeignKey("TrainingSessionId");
 
-                    b.HasOne("Trainova.Domain.UserAuth.Users.User", "User")
-                        .WithMany("Roles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Trainova.Domain.UserAuth.UserTokens.UserToken", b =>
-                {
-                    b.HasOne("Trainova.Domain.UserAuth.Users.User", "User")
+                    b.HasOne("Trainova.Domain.UserAuth.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("AccessPolicy");
+
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Trainova.Domain.UserAuth.Users.User", b =>
+            modelBuilder.Entity("Trainova.Domain.UserAuth.User", b =>
                 {
-                    b.HasOne("Trainova.Domain.Profiles.Players.Player", "Player")
+                    b.HasOne("Trainova.Domain.Profiles.Player", "Player")
                         .WithMany()
                         .HasForeignKey("PlayerId");
 
-                    b.HasOne("Trainova.Domain.SeasonsAnalyses.Teams.Team", "Team")
+                    b.HasOne("Trainova.Domain.SeasonsAnalyses.Team", "Team")
                         .WithMany()
                         .HasForeignKey("TeamId");
 
-                    b.HasOne("Trainova.Domain.Profiles.TeamsStaff.TeamStaff", "TeamStaff")
+                    b.HasOne("Trainova.Domain.Profiles.TeamStaff", "TeamStaff")
                         .WithMany()
                         .HasForeignKey("TeamStaffId");
 
@@ -1718,41 +1644,47 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.Navigation("TeamStaff");
                 });
 
-            modelBuilder.Entity("Trainova.Domain.MedicalStatus.Injuries.Injury", b =>
+            modelBuilder.Entity("Trainova.Domain.UserAuth.UserToken", b =>
+                {
+                    b.HasOne("Trainova.Domain.UserAuth.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Trainova.Domain.MedicalStatus.Injury", b =>
                 {
                     b.Navigation("PlayerInjuries");
                 });
 
-            modelBuilder.Entity("Trainova.Domain.Profiles.Players.Player", b =>
+            modelBuilder.Entity("Trainova.Domain.MedicalStatus.PlayerInjury", b =>
+                {
+                    b.Navigation("Phases");
+                });
+
+            modelBuilder.Entity("Trainova.Domain.Profiles.Player", b =>
                 {
                     b.Navigation("PlayerInjuries");
                 });
 
-            modelBuilder.Entity("Trainova.Domain.TrainingSessionsAccessibility.AccessPolicies.AccessPolicy", b =>
+            modelBuilder.Entity("Trainova.Domain.TrainingSessionsAccessibility.AccessPolicy", b =>
                 {
                     b.Navigation("PolicyUsers");
                 });
 
-            modelBuilder.Entity("Trainova.Domain.TrainingSessionsAccessibility.Plans.Plan", b =>
+            modelBuilder.Entity("Trainova.Domain.TrainingSessionsAccessibility.Plan", b =>
                 {
                     b.Navigation("TrainingSessions");
                 });
 
-            modelBuilder.Entity("Trainova.Domain.TrainingSessionsAccessibility.TrainingSessions.TrainingSession", b =>
+            modelBuilder.Entity("Trainova.Domain.TrainingSessionsAccessibility.TrainingSession", b =>
                 {
                     b.Navigation("Match");
 
                     b.Navigation("UserAccessPolicies");
-                });
-
-            modelBuilder.Entity("Trainova.Domain.UserAuth.Roles.Role", b =>
-                {
-                    b.Navigation("Roles");
-                });
-
-            modelBuilder.Entity("Trainova.Domain.UserAuth.Users.User", b =>
-                {
-                    b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618
         }

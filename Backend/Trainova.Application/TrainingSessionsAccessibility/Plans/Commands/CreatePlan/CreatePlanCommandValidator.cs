@@ -1,6 +1,4 @@
 using FluentValidation;
-using Trainova.Domain.TrainingSessionsAccessibility.Plans;
-using Trainova.Domain.Common.Enums;
 
 namespace Trainova.Application.TrainingSessionsAccessibility.Plans.Commands.CreatePlan
 {

@@ -1,4 +1,4 @@
-using Trainova.Domain.UserAuth.Users;
+using Trainova.Domain.UserAuth;
 
 namespace Trainova.Application.Common.Interfaces.Repositories.UserAuth;
 

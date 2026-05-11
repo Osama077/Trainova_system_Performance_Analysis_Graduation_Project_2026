@@ -40,9 +40,7 @@ public static class DependencyInjection
 
         //User and Auth Related Repos
         services.AddScoped<IUsersRepository, UsersRepository>();
-        services.AddScoped<IRolesRepository, RolesRepository>();
         services.AddScoped<IUserTokensRepository, UserTokensRepository>();
-        services.AddScoped<IUserRolesRepository, UserRolesRepository>();
 
         //medical
         services.AddScoped<IInjuryRepository, InjuryRepository>();

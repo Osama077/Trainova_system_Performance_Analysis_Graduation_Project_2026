@@ -15,4 +15,8 @@
     <ProjectReference Include="..\Trainova.Common\Trainova.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Common\DataConvrters\" />
+  </ItemGroup>
+
 </Project>

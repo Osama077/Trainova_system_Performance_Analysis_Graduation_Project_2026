@@ -1,10 +1,10 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAccessablity;
-using Trainova.Domain.TrainingSessionsAccessibility.Plans;
 using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
 using Microsoft.EntityFrameworkCore;
+using Trainova.Domain.TrainingSessionsAccessibility;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.TrainingSessionAccessablity
 {
@@ -51,6 +51,11 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.TrainingSessionAccessa
                 query = query.Where(x => x.AccessPolicyId == accessPolicyId);
 
             return await query.AnyAsync();
+        }
+
+        public Task<int> CountByAccessPolicyIdAsync(Guid accessPolicyId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

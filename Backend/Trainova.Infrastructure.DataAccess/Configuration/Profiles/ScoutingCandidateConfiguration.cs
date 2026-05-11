@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Trainova.Domain.Profiles.ScoutingCandidates;
+using Trainova.Domain.Profiles;
 using Trainova.Infrastructure.DataAccess.Configuration.Common;
 
 namespace Trainova.Infrastructure.DataAccess.Configuration.Profiles

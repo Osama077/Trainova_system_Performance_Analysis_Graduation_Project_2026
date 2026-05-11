@@ -2,13 +2,10 @@ using MediatR;
 using Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAccessablity;
 using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
 using Trainova.Application.Common.Interfaces.Services;
-using Trainova.Application.Common.Models;
 using Trainova.Common.Errors;
 using Trainova.Common.ResultOf;
-using Trainova.Domain.Common.Enums;
 using Trainova.Domain.Common.Helpers;
-using Trainova.Domain.TrainingSessionsAccessibility.AccessPolicies;
-using Trainova.Domain.TrainingSessionsAccessibility.Plans;
+using Trainova.Domain.TrainingSessionsAccessibility;
 
 namespace Trainova.Application.TrainingSessionsAccessibility.Plans.Commands.CreatePlan
 {

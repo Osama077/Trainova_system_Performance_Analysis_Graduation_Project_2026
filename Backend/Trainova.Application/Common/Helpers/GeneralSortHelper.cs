@@ -2,12 +2,12 @@
 {
     public static class GeneralSortHelper
     {
-        public static string ASCSortOption { get; } = "ASC";
-        public static string DESCSortOption { get; } = "DESC";
+        public const string ASCSortOption = "ASC";
+        public const string DESCSortOption = "DESC";
         public static IReadOnlyCollection<string> SortDirectionOptions { get; } = new[]
         {
-            "ASC",
-            "DESC"
+            ASCSortOption,
+            DESCSortOption
         };
     }
 }

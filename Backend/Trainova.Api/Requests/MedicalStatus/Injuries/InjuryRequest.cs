@@ -1,7 +1,7 @@
 ﻿using Trainova.Application.Common.Helpers.TimeConverterHelpers;
 using Trainova.Application.MedicalStatus.Injuries.Commands.CreateInjury;
 using Trainova.Application.MedicalStatus.Injuries.Commands.UpdateInjury;
-using Trainova.Domain.MedicalStatus.Injuries;
+using Trainova.Domain.MedicalStatus;
 
 namespace Trainova.Api.Requsts.MedicalStatus.Injuries
 {
@@ -10,15 +10,14 @@ namespace Trainova.Api.Requsts.MedicalStatus.Injuries
         public string Name { get; set; }
         public string? Description { get; set; } = "no Data";
         public InjuryType InjuryType { get; set; }
-        public TimeConverterHelper? AverageRecoveryTime { get; set; }
+        public int? AverageRecoveryTimeInDayes { get; set; }
         public CreateInjuryCommand ToCommand()
         {
             return new CreateInjuryCommand(
                 Name,
                 Description,
                 InjuryType,
-                AverageRecoveryTime.TimeType,
-                AverageRecoveryTime.Amount);
+                AverageRecoveryTimeInDayes);
         }
 
     }
@@ -27,7 +26,7 @@ namespace Trainova.Api.Requsts.MedicalStatus.Injuries
         public string? Name { get; set; }
         public string? Description { get; set; } = "no Data";
         public InjuryType InjuryType { get; set; }
-        public TimeConverterHelper? AverageRecoveryTime { get; set; }
+        public int? AverageRecoveryTimeInDayes { get; set; }
         public UpdateInjuryCommand ToCommand(Guid id)
         {
             return new UpdateInjuryCommand(
@@ -35,8 +34,7 @@ namespace Trainova.Api.Requsts.MedicalStatus.Injuries
                 Name,
                 Description,
                 InjuryType,
-                AverageRecoveryTime.TimeType,
-                AverageRecoveryTime.Amount);
+                AverageRecoveryTimeInDayes);
         }
     }
     /*

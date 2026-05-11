@@ -1,8 +1,5 @@
 ﻿using Trainova.Domain.Common.BaseEntity;
 using Trainova.Domain.Common.Enums;
-using Trainova.Domain.MatchsManagement.Matches;
-using Trainova.Domain.Profiles.Players;
-using Trainova.Domain.SeasonsAnalyses.Teams;
 
 namespace Trainova.Domain.MatchsManagement.Lineups
 {

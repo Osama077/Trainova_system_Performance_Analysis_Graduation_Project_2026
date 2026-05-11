@@ -3,12 +3,12 @@ using System.Data;
 using Trainova.Application.Common.Helpers;
 using Trainova.Application.Common.Interfaces.Repositories.Profiles.Players;
 using Trainova.Application.Profiles.Players;
-using Trainova.Domain.Profiles.Players;
+using Trainova.Domain.Profiles;
 using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.Profiles
 {
-    internal class PlayerRepository : IPlayerRepository
+    public class PlayerRepository : IPlayerRepository
     {
 
 
@@ -28,16 +28,14 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.Profiles
 
         public async Task<IEnumerable<PlayerDetailResponse>> GetPlayersAsync(
             Guid? playerId = null,
-            string searchTerm = null,
-            Guid? teamId = null,
+            string? searchTerm = null,
             int? performanceLevel = null,
             bool? isActive = null,
             int? mainPositionFilter = null,
             int? otherPositionFilter = null,
             DateTime? dateFrom = null,
             DateTime? dateTo = null,
-            int? minMatches = null,
-            string medicalStatus = null,
+            string? medicalStatus = null,
             int pageNumber = 0,
             int pageSize = 12,
             string sortColumn = "CreatedAt",
@@ -48,14 +46,12 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.Profiles
             {
                 PlayerId = playerId,
                 SearchTerm = searchTerm,
-                TeamId = teamId,
                 PerformanceLevel = performanceLevel,
                 IsActive = isActive,
                 MainPositionFilter = mainPositionFilter,
                 OtherPositionFilter = otherPositionFilter,
                 DateFrom = dateFrom,
                 DateTo = dateTo,
-                MinMatches = minMatches,
                 MedicalStatus = medicalStatus,
                 PageNumber = pageNumber,
                 PageSize = pageSize,
@@ -77,6 +73,8 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.Profiles
                 );
 
         }
+
+
 
         public Task UpdateAsync(Player player)
         {

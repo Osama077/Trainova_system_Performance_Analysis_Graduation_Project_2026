@@ -2,7 +2,7 @@ using MediatR;
 using Trainova.Application.Common.Authorization;
 using Trainova.Common.ResultOf;
 using Trainova.Domain.Common.Helpers;
-using Trainova.Domain.TrainingSessionsAccessibility.AccessPolicies;
+using Trainova.Domain.TrainingSessionsAccessibility;
 
 namespace Trainova.Application.TrainingSessionsAccessibility.UserAccessPolicies.Commands.CreateUserAccessPolicy
 {

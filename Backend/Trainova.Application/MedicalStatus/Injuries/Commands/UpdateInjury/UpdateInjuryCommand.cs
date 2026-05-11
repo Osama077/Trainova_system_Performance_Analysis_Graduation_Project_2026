@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Trainova.Application.Common.Authorization;
 using Trainova.Common.ResultOf;
-using Trainova.Domain.MedicalStatus.Injuries;
+using Trainova.Domain.MedicalStatus;
 
 namespace Trainova.Application.MedicalStatus.Injuries.Commands.UpdateInjury
 {
@@ -11,8 +11,7 @@ namespace Trainova.Application.MedicalStatus.Injuries.Commands.UpdateInjury
         string? Name = null,
         string? Description = null,
         InjuryType? InjuryType = null,
-        string? TimeType = null,
-        decimal? TimeAmount = null)
+        int? TimeAmountInDayes = null)
         : IRequest<ResultOf<Injury>>;
 
 }

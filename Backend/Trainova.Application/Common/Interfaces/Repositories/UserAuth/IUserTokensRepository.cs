@@ -1,6 +1,5 @@
 ﻿using System.Data;
-using Trainova.Domain.UserAuth.UserTokens;
-
+using Trainova.Domain.UserAuth;
 
 namespace Trainova.Application.Common.Interfaces.Repositories.UserAuth
 {

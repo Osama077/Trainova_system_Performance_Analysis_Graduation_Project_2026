@@ -12,37 +12,9 @@ namespace Trainova.Domain.Common.BaseEntity
 
         object IAuditable.Id => Id!;
         [JsonIgnore]
-        AuditLog IAuditable.UpdatedAudit
-        {
-            get {
-                if (_audit is null)
-                    throw new DomainException(
-                        code: "AuditNullReference",
-                        message: $"Audit hasn't Created or has been disposed");
-                if (_audit.Action != AuditActionType.Update)
-                    throw new DomainException(
-                        code: "AuditTypeMissMatch",
-                        message:$"cant get update Audit from Audit with state {_audit.Action.ToString()}");
-                return _audit;
-
-                }
-        }
+        AuditLog IAuditable.UpdatedAudit { get => _audit; }
         [JsonIgnore]
-        AuditLog IAuditable.AddedAudit
-        {
-            get {
-                if (_audit is null)
-                    throw new DomainException(
-                        code: "AuditNullReference",
-                        message:$"Audit hasn't Created or has been disposed");
-                if (_audit.Action != AuditActionType.Create)
-                    throw new DomainException(
-                        code: "AuditTypeMissMatch",
-                        message:$"cant get Create Audit from Audit with state {_audit.Action.ToString()}");
-                return _audit;
-
-                }
-        }
+        AuditLog IAuditable.AddedAudit { get => _audit; }
 
         protected AuditableEntity(TId id, Guid? createdBy = null) : base(id, createdBy)
         {

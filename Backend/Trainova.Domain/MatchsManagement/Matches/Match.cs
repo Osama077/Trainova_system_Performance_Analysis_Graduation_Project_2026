@@ -1,11 +1,5 @@
 ﻿using Trainova.Domain.Common.BaseEntity;
-using Trainova.Domain.MatchsManagement.ComputedFeatures;
-using Trainova.Domain.MatchsManagement.Events;
-using Trainova.Domain.MatchsManagement.Lineups;
-using Trainova.Domain.MatchsManagement.Videos;
-using Trainova.Domain.SeasonsAnalyses.ModelScores;
-using Trainova.Domain.SeasonsAnalyses.Seasons;
-using Trainova.Domain.TrainingSessionsAccessibility.TrainingSessions;
+using Trainova.Domain.TrainingSessionsAccessibility;
 
 namespace Trainova.Domain.MatchsManagement.Matches
 {

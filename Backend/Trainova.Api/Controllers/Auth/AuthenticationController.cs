@@ -21,11 +21,15 @@ namespace Trainova.Api.Controllers.Auth
             _mediator = mediator;
         }
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        public async Task<IActionResult> Login(
+            [FromBody] LoginRequest request)
         {
             var query = request.ToQuery();
             var result = await _mediator.Send(query);
-            return MapResult(result);
+            return result.Match(
+                onValue: (value, status) => Success( value, status),
+                onError: errors => ErrorsPassed(errors)
+                );
         }
 
         [HttpPost("confirmemail")]
@@ -52,7 +56,10 @@ namespace Trainova.Api.Controllers.Auth
         {
             var command = request.ToCommand();
             var result = await _mediator.Send(command);
-            return MapResult(result);
+            return result.Match(
+                onValue: (value, status) => Success(value, status),
+                onError: errors => ErrorsPassed(errors)
+                );
         }
 
 

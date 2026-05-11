@@ -1,5 +1,5 @@
 ﻿using Trainova.Application.MedicalStatus.PlayerInjuries.Commands.UpdatePlayerInjury;
-using Trainova.Domain.MedicalStatus.PlayerInjuries;
+using Trainova.Domain.MedicalStatus;
 
 namespace Trainova.Api.Requests.MedicalStatus.PlayerInjuries
 {

@@ -1,5 +1,7 @@
-﻿using Trainova.Domain.MedicalStatus.PlayerInjuries;
+﻿using Trainova.Application.Common.Helpers;
+using Trainova.Application.MedicalStatus.PlayerInjuries;
 using Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInjuries;
+using Trainova.Domain.MedicalStatus;
 
 namespace Trainova.Application.Common.Interfaces.Repositories.MedicalStatus
 {
@@ -25,7 +27,6 @@ namespace Trainova.Application.Common.Interfaces.Repositories.MedicalStatus
             );
 
         Task<IEnumerable<PlayerInjuryReadModel>> GetReadModelsAsync(
-            Guid? playerInjuryId = null,
             Guid? playerId = null,
             Guid? injuryId = null,
             string? status = null,
@@ -37,10 +38,10 @@ namespace Trainova.Application.Common.Interfaces.Repositories.MedicalStatus
             DateTime? expectedReturnAfter = null,
             DateTime? returnedBefore = null,
             DateTime? returnedAfter = null,
-            int pageNumber = 1,
-            int pageSize = 20,
-            string? sortColumn = null,
-            string? sortDirection = null
+            int pageNumber = 0,
+            int pageSize = 12,
+            string sortColumn = PlayerInjuryCommonOptions.CreatedAtSortOption,
+            string sortDirection = GeneralSortHelper.DESCSortOption
             );
         Task<bool> ExistesAsync(
             Guid? playerInjuryId = null,

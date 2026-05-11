@@ -14,7 +14,6 @@
     <Folder Include="$(MSBuildThisFileDirectory)MedicalStats\Procedures\" />
     <Folder Include="$(MSBuildThisFileDirectory)MedicalStats\Views\" />
   </ItemGroup>
-
   <ItemGroup>
     <Content Include="Profiles\Procedures\**\*.sql">
       <Link>Profiles\Procedures\%(RecursiveDir)%(Filename)%(Extension)</Link>
@@ -32,5 +31,9 @@
       <Link>MedicalStats\Views\%(RecursiveDir)%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)medicalstats\procedures\GetInjuries.sql" />
+    <None Include="$(MSBuildThisFileDirectory)medicalstats\procedures\GetInjuryDetailesById.sql" />
   </ItemGroup>
 </Project>

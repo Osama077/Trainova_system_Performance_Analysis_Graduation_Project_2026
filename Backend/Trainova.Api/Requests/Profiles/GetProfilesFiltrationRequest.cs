@@ -41,21 +41,21 @@ namespace Trainova.Api.Requsts.Profiles
         public GetPlayersProfileQuery ToQuery(Guid? playerId)
         {
             return new GetPlayersProfileQuery(
-                PlayerId: playerId,
-                SearchTerm: SearchTerm,
-                TeamId: TeamId,
-                PerformanceLevel: PerformanceLevel,
-                IsActive: IsActive,
-                MainPositionFilter: MainPositionFilter,
-                OtherPositionFilter: OtherPositionFilter,
-                DateFrom: DateFrom,
-                DateTo: DateTo,
-                MinMatches: MinMatches,
-                MedicalStatus: MedicalStatus,
-                PageNumber: PageNumber,
-                PageSize: PageSize,
-                SortColumn: SortColumn,
-                SortDirection: SortDirection
+                playerId,
+                searchTerm: SearchTerm,
+                teamId: TeamId,
+                performanceLevel: PerformanceLevel,
+                isActive: IsActive,
+                mainPositionFilter: MainPositionFilter,
+                otherPositionFilter: OtherPositionFilter,
+                dateFrom: DateFrom,
+                dateTo: DateTo,
+                minMatches: MinMatches,
+                medicalStatus: MedicalStatus,
+                pageNumber: PageNumber,
+                pageSize: PageSize,
+                sortColumn: SortColumn,
+                sortDirection: SortDirection
             );
         }
     }

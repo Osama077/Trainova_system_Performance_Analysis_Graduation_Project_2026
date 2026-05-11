@@ -5,7 +5,7 @@ using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Common.Errors;
 using Trainova.Common.ResultOf;
 using Trainova.Domain.Common.Helpers;
-using Trainova.Domain.MedicalStatus.Injuries;
+using Trainova.Domain.MedicalStatus;
 
 namespace Trainova.Application.MedicalStatus.Injuries.Commands.UpdateInjury
 {
@@ -29,28 +29,19 @@ namespace Trainova.Application.MedicalStatus.Injuries.Commands.UpdateInjury
                         description: $"Injury with Id {request.Id} not found.");
                 }
 
-
-                TimeConverterHelper timeHelper = null;
-                if (request.TimeAmount.HasValue && !string.IsNullOrEmpty(request.TimeType))
-                {
-                    timeHelper = new TimeConverterHelper
-                    {
-                        Amount = request.TimeAmount.Value,
-                        TimeType = request.TimeType
-                    };
-                }
-
-
+                await _unitOfWork.StartTransactionAsync();
 
                 injury.Update(
                     name: request.Name,
                     description: request.Description,
                     injuryType: request.InjuryType,
-                    averageRecoveryTime: timeHelper?.ToTimeSpan() ?? null);
+                    averageRecoveryTime: request.TimeAmountInDayes);
 
                 await _injuryrepository.UpdateAsync(injury);
 
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+                await _unitOfWork.CommitTransactionAsync();
 
                 return injury.AsDone();
             }

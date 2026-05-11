@@ -3,16 +3,15 @@ using Trainova.Application.Common.Interfaces.Repositories.MedicalStatus;
 using Trainova.Application.Common.Models;
 using Trainova.Common.ResultOf;
 using Trainova.Common.Errors;
-using Trainova.Domain.MedicalStatus.PlayerInjuries;
 using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Domain.Common.Helpers;
+using Trainova.Domain.MedicalStatus;
 
 namespace Trainova.Application.MedicalStatus.PlayerInjuries.Commands.CreatePlayerInjury
 {
     public class CreatePlayerInjuryCommandHandler(
         IPlayerInjuryRepository playerInjuryRepository,
-        IUnitOfWork unitOfWork,
-        CurrentUser currentUser)
+        IUnitOfWork _unitOfWork)
         : IRequestHandler<CreatePlayerInjuryCommand, ResultOf<PlayerInjury>>
     {
         public async Task<ResultOf<PlayerInjury>> Handle(CreatePlayerInjuryCommand request, CancellationToken cancellationToken)
@@ -29,13 +28,14 @@ namespace Trainova.Application.MedicalStatus.PlayerInjuries.Commands.CreatePlaye
                     (BodyPart)request.BodyPart,
                     request.Notes,
                     request.IsNew,
-                    request.ExpectedReturnDate,
-                    currentUser.Id
+                    request.ExpectedReturnDate
                 );
+                await _unitOfWork.StartTransactionAsync();
 
                 await playerInjuryRepository.AddAsync(playerInjury);
 
-                await unitOfWork.SaveChangesAsync(cancellationToken);
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+                await _unitOfWork.CommitTransactionAsync();
 
                 return playerInjury.AsCreated();
             }

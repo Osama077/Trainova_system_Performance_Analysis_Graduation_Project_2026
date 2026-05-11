@@ -1,6 +1,6 @@
 ﻿using Trainova.Application.Common.Helpers.TimeConverterHelpers;
 using Trainova.Application.MedicalStatus.PlayerInjuries.Commands.CreatePlayerInjury;
-using Trainova.Domain.MedicalStatus.PlayerInjuries;
+using Trainova.Domain.MedicalStatus;
 
 namespace Trainova.Api.Requests.MedicalStatus.PlayerInjuries
 {

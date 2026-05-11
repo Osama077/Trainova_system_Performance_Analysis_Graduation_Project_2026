@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using Trainova.Application.MedicalStatus.Common;
 
 namespace Trainova.Application.MedicalStatus.Injuries.Commands.CreateInjury
 {
@@ -13,11 +12,8 @@ namespace Trainova.Application.MedicalStatus.Injuries.Commands.CreateInjury
             RuleFor(x => x.Description)
                 .MaximumLength(500);
 
-            RuleFor(x => x.TimeType)
-                .NotEmpty()
-                .Must(timeType => InjuryValues.AllowedTimeTypes.Contains(timeType))
-                .WithMessage(InjuryValues.MsgAllowedTimeTypes);
-            RuleFor(x => x.TimeAmount).GreaterThan(0);
+
+            RuleFor(x => x.TimeAmountInDayes).GreaterThan(0);
         }
     }
 

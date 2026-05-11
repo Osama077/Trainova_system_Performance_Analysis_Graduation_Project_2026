@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Trainova.Domain.UserAuth.UserTokens;
+using Trainova.Domain.UserAuth;
 
 namespace Trainova.Infrastructure.DataAccess.Configuration.UserAuth
 {

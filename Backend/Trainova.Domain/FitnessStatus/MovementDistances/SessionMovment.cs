@@ -1,6 +1,6 @@
 ﻿using Trainova.Domain.Common.BaseEntity;
-using Trainova.Domain.Profiles.Players;
-using Trainova.Domain.TrainingSessionsAccessibility.TrainingSessions;
+using Trainova.Domain.Profiles;
+using Trainova.Domain.TrainingSessionsAccessibility;
 
 namespace Trainova.Domain.FitnessStatus.MovementDistances
 {

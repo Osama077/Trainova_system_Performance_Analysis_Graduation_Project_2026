@@ -1,4 +1,5 @@
-﻿using Trainova.Domain.UserAuth.UserTokens;
+﻿using Trainova.Domain.UserAuth;
+
 namespace Trainova.Bootstrapper.Helpers
 {
     public static class EmailBodyTemplates

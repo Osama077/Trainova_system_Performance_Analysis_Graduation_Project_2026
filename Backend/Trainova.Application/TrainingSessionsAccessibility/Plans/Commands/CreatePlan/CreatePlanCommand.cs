@@ -2,8 +2,7 @@ using MediatR;
 using Trainova.Application.Common.Authorization;
 using Trainova.Common.ResultOf;
 using Trainova.Domain.Common.Enums;
-using Trainova.Domain.TrainingSessionsAccessibility.Plans;
-using Trainova.Domain.UserAuth.Users;
+using Trainova.Domain.TrainingSessionsAccessibility;
 
 namespace Trainova.Application.TrainingSessionsAccessibility.Plans.Commands.CreatePlan
 {

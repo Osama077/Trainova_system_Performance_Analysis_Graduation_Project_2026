@@ -1,6 +1,4 @@
 ﻿using Trainova.Domain.Common.BaseEntity;
-using Trainova.Domain.MatchsManagement.Matches;
-using Trainova.Domain.Profiles.Players;
 
 namespace Trainova.Domain.MatchsManagement.ComputedFeatures
 {

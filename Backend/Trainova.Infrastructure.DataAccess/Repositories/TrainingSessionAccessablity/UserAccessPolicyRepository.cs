@@ -1,7 +1,7 @@
-﻿﻿using Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAccessablity;
-using Trainova.Domain.TrainingSessionsAccessibility.AccessPolicies;
+﻿using Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAccessablity;
 using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
 using Microsoft.EntityFrameworkCore;
+using Trainova.Domain.TrainingSessionsAccessibility;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.TrainingSessionAccessablity
 {
@@ -52,6 +52,11 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.TrainingSessionAccessa
         }
 
         public Task<IEnumerable<UserAccessPolicy>> GetAllAsync(Guid polcyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteRangeAsync(IEnumerable<UserAccessPolicy> userpolicies)
         {
             throw new NotImplementedException();
         }

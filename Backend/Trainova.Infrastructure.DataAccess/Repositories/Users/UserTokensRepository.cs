@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
-using Trainova.Domain.UserAuth.UserTokens;
+using Trainova.Domain.UserAuth;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.Users
 {

@@ -6,14 +6,12 @@ using Trainova.Common.Errors;
 using Trainova.Common.ResultOf;
 using Trainova.Domain.Common.Helpers;
 using Trainova.Domain.Common.Services;
-using Trainova.Domain.UserAuth.UserTokens;
-
+using Trainova.Domain.UserAuth;
 
 namespace Trainova.Application.Authentication.Commands.PasswordReset
 {
     public class ResetPasswordCommandHandler (
         IUsersRepository _usersRepository,
-        IUserRolesRepository _userRolesRepository,
         ITokenGenerator _tokenGenerator,
         IUserTokensRepository _tokenRepsitory,
         IPasswordHasher _passwordHasher,
@@ -45,9 +43,8 @@ namespace Trainova.Application.Authentication.Commands.PasswordReset
                 }
 
 
-                var roles = (await _userRolesRepository.GetAllAsync(user.Id)).Select(ur => ur.Role).ToList();
 
-                var jwt = _tokenGenerator.GenerateJwtToken(user, roles);
+                var jwt = _tokenGenerator.GenerateJwtToken(user);
 
 
                 await _unitOfWork.StartTransactionAsync();

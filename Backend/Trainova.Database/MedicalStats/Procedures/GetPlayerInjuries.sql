@@ -1,4 +1,4 @@
-CREATE OR ALTER PROCEDURE dbo.GetPlayerInjuries
+CREATE OR ALTER PROCEDURE InjuriesData.GetPlayerInjuries
     @PlayerInjuryId UNIQUEIDENTIFIER = NULL,
     @PlayerId UNIQUEIDENTIFIER = NULL,
     @InjuryId UNIQUEIDENTIFIER = NULL,
@@ -12,7 +12,7 @@ CREATE OR ALTER PROCEDURE dbo.GetPlayerInjuries
     @ReturnedBefore DATETIME2 = NULL,
     @ReturnedAfter DATETIME2 = NULL,
     -- Pagination
-    @PageNumber INT = 1,            -- Changed to 1-based to match standard logic
+    @PageNumber INT = 0,            -- Changed to 1-based to match standard logic
     @PageSize INT = 20,
     -- Dynamic Sorting
     @SortColumn NVARCHAR(100) = 'PlayerInjuryCreatedAt',
@@ -66,13 +66,13 @@ BEGIN
     IF @ReturnedAfter IS NOT NULL  SET @Where += N' AND ReturnedAt >= @P_ReturnedAfter';
 
     -- 5. Calculate Offset (Assuming 1-based PageNumber)
-    DECLARE @Offset INT = (@PageNumber - 1) * @PageSize;
+    DECLARE @Offset INT = (@PageNumber) * @PageSize;
     IF @Offset < 0 SET @Offset = 0;
 
     -- 6. Combine and Execute
     SET @Sql = N'
         SELECT * 
-        FROM dbo.View_PlayerInjury_Player_Injury' 
+        FROM InjuriesData.View_PlayerInjury_Player_Injury' 
         + @Where + 
         N' ORDER BY ' + QUOTENAME(@SortColumn) + N' ' + @SortDirection + 
         N' OFFSET @P_Offset ROWS 

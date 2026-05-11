@@ -5,7 +5,6 @@ using Trainova.Application.Common.Interfaces.Service;
 using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Bootstrapper.Helpers;
 using Trainova.Domain.Common.Outbox;
-using Trainova.Domain.UserAuth.UserTokens;
 
 namespace Trainova.Bootstrapper.BackgroundServises
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
-using Trainova.Domain.UserAuth.Users;
+using Trainova.Domain.UserAuth;
 using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.Users
@@ -36,6 +36,10 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.Users
             return _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
         }
 
+        public Task<IEnumerable<User>> GetByIdsAsync(List<Guid> guids)
+        {
+            throw new NotImplementedException();
+        }
 
         public Task UpdateAsync(User user)
         {

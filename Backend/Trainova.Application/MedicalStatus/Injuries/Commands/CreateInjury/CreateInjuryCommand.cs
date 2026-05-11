@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Trainova.Application.Common.Authorization;
 using Trainova.Common.ResultOf;
-using Trainova.Domain.MedicalStatus.Injuries;
+using Trainova.Domain.MedicalStatus;
 
 namespace Trainova.Application.MedicalStatus.Injuries.Commands.CreateInjury
 {
@@ -10,8 +10,7 @@ namespace Trainova.Application.MedicalStatus.Injuries.Commands.CreateInjury
         string Name,
         string Description,
         InjuryType InjuryType,
-        string TimeType,
-        decimal TimeAmount)
+        int? TimeAmountInDayes)
         : IRequest<ResultOf<Injury>>;
 
 }

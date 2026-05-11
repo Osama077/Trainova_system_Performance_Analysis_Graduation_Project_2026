@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Trainova.Application.Common.Interfaces.Services;
-using Trainova.Domain.UserAuth.Roles;
-using Trainova.Domain.UserAuth.Users;
+using Trainova.Domain.UserAuth;
 
 namespace Trainova.Infrastructure.Authorization.TokenGenerators
 {
@@ -18,7 +18,7 @@ namespace Trainova.Infrastructure.Authorization.TokenGenerators
             _jwtSettings = options.Value;
         }
 
-        public string GenerateJwtToken(User user, List<Role>? roles = null)
+        public string GenerateJwtToken(User user)
         {
             if (_jwtSettings is null || user is null)
                 throw new Exception("JwtSettings section not found in configuration!");
@@ -30,15 +30,10 @@ namespace Trainova.Infrastructure.Authorization.TokenGenerators
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString("N")),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name, user.ShowName)
+                new Claim(ClaimTypes.Name, user.ShowName),
+                new Claim(ClaimTypes.Role, user.Role.Name)
             };
-            if (roles is not null)
-            {
-                foreach (var role in roles)
-                {
-                    claims.Add(new Claim(ClaimTypes.Role, role.Name));
-                }
-            }
+
             var token = new JwtSecurityToken(
                 issuer: _jwtSettings.Issuer,
                 audience: _jwtSettings.Audience,

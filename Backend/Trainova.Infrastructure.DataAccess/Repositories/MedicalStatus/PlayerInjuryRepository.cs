@@ -1,8 +1,10 @@
-﻿using Trainova.Application.Common.Interfaces.Repositories.MedicalStatus;
-using Trainova.Domain.MedicalStatus.PlayerInjuries;
+﻿using Dapper;
 using Microsoft.EntityFrameworkCore;
-using Dapper;
+using Trainova.Application.Common.Helpers;
+using Trainova.Application.Common.Interfaces.Repositories.MedicalStatus;
+using Trainova.Application.MedicalStatus.PlayerInjuries;
 using Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInjuries;
+using Trainova.Domain.MedicalStatus;
 using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus
@@ -92,7 +94,6 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus
         }
 
         public async Task<IEnumerable<PlayerInjuryReadModel>> GetReadModelsAsync(
-            Guid? playerInjuryId = null,
             Guid? playerId = null,
             Guid? injuryId = null,
             string? status = null,
@@ -104,17 +105,16 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus
             DateTime? expectedReturnAfter = null,
             DateTime? returnedBefore = null,
             DateTime? returnedAfter = null,
-            int pageNumber = 1,
-            int pageSize = 20,
-            string? sortColumn = null,
-            string? sortDirection = null
+            int pageNumber = 0,
+            int pageSize = 12,
+            string sortColumn = PlayerInjuryCommonOptions.CreatedAtSortOption,
+            string sortDirection = GeneralSortHelper.DESCSortOption
             )
         {
-            var sql = "dbo.GetPlayerInjuries"; // Name of the stored procedure
+            var sql = "InjuriesData.GetPlayerInjuries"; // Name of the stored procedure
            
 
             var parameters = new {
-                 PlayerInjuryId = playerInjuryId,
                  PlayerId = playerId,
                  InjuryId = injuryId,
                  Status = status,
@@ -128,8 +128,8 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus
                  ReturnedAfter = returnedAfter,
                  PageNumber = pageNumber,
                  PageSize = pageSize,
-                 SortColumn = sortColumn,
-                 SortDirection = sortDirection
+                 SortColumn = sortColumn?? PlayerInjuryCommonOptions.CreatedAtSortOption,
+                 SortDirection = sortDirection ?? GeneralSortHelper.DESCSortOption
             };
             using var conn = _dbSettings.CreateReadingConnection();
 

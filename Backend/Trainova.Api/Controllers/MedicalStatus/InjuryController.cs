@@ -4,6 +4,7 @@ using Trainova.Api.Models;
 using Trainova.Api.Requsts.MedicalStatus.Injuries;
 using Trainova.Application.Common.Models;
 using Trainova.Application.MedicalStatus.Injuries.Commands.DeleteInjury;
+using Trainova.Application.MedicalStatus.Injuries.Queries.GetInjuryDetailes;
 
 namespace Trainova.Api.Controllers.MedicalStatus
 {
@@ -57,8 +58,18 @@ namespace Trainova.Api.Controllers.MedicalStatus
             var result = await _sender.Send(query);
             return result.Match(
                 onValue: (done, status) =>Success(done, status),
-                onError: errors => ErrorsPassed(errors));
+                onError: errors => ErrorsPassed(errors)
+                );
         }
-
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetInjuryDetailes([FromRoute]Guid id)
+        {
+            var query = new GetInjuryDetailesQuery(id);
+            var result = await _sender.Send(query);
+            return result.Match(
+                onValue: (done, status) => Success(done, status),
+                onError: errors => ErrorsPassed(errors)
+                );
+        }
     }
 }

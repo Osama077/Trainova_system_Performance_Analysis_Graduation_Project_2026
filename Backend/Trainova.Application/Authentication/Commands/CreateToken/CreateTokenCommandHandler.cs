@@ -8,7 +8,7 @@ using Trainova.Common.Errors;
 using Trainova.Common.ResultOf;
 using Trainova.Domain.Common.Helpers;
 using Trainova.Domain.Common.Outbox;
-using Trainova.Domain.UserAuth.UserTokens;
+using Trainova.Domain.UserAuth;
 
 #nullable disable
 namespace Trainova.Application.Authentication.Commands.CreateToken

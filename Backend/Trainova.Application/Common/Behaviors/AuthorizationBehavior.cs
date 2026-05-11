@@ -4,6 +4,8 @@ using MediatR;
 using Trainova.Common.ResultOf;
 using Trainova.Common.Errors;
 using Trainova.Application.Common.Models;
+using Trainova.Domain.Common;
+using Trainova.Domain.UserAuth;
 
 namespace Trainova.Application.Common.Behaviors;
 
@@ -19,34 +21,46 @@ public class AuthorizationBehavior<TRequest, TResponse>(CurrentUser? _currentUse
     {
         var authorizationAttributes = request.GetType()
             .GetCustomAttributes<AuthorizeAttribute>()
-            .ToList();
+            .ToHashSet();
 
         if (authorizationAttributes.Count == 0)
         {
             return await next();
         }
 
-        if (_currentUser == null)
+        if (_currentUser == null || !_currentUser.IsAuthenticated)
         {
             return (dynamic)Error.Unauthorized(description: "User is not loged Id");
         }
-        if (_currentUser.IsAuthenticated && _currentUser.Roles.Contains("SystemOwner"))
-        {
+
+
+        if (request is IPlayerAuthraizedRequest playerAuthraizedRequest)
+            MatchPlayerId(playerAuthraizedRequest);
+
+        if (_currentUser.IsAuthenticated
+            && (_currentUser.Role.Contains(Role.SystemAdmin.Name) || _currentUser.Role.Contains(Role.SystemOwner.Name)))
             return await next();
-        }
+
+
 
 
         var requiredRoles = authorizationAttributes
             .SelectMany(authorizationAttribute => authorizationAttribute.Role?.Split(',') ?? [])
             .ToList();
 
-        if (!requiredRoles.Intersect(_currentUser.Roles).Any())
+        if (!requiredRoles.Contains(_currentUser.Role))
         {
             return (dynamic)Error.Unauthorized(description: "User is forbidden from taking this action");
         }
 
 
         return await next();
+    }
+
+    private void MatchPlayerId(IPlayerAuthraizedRequest playerAuthraizedRequest)
+    {
+        if(_currentUser.Role==Role.Player.Name)
+            playerAuthraizedRequest.PlayerId = _currentUser.Id;
     }
 
 }

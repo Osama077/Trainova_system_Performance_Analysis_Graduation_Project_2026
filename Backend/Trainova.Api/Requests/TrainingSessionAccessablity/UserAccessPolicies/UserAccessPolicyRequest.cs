@@ -1,7 +1,7 @@
 using Trainova.Application.TrainingSessionsAccessibility.UserAccessPolicies.Commands.CreateUserAccessPolicy;
 using Trainova.Application.TrainingSessionsAccessibility.UserAccessPolicies.Commands.UpdateUserAccessPolicy;
 using Trainova.Domain.Common.Helpers;
-using Trainova.Domain.TrainingSessionsAccessibility.AccessPolicies;
+using Trainova.Domain.TrainingSessionsAccessibility;
 
 namespace Trainova.Api.Requests.TrainingSessionAccessablity.UserAccessPolicies
 {

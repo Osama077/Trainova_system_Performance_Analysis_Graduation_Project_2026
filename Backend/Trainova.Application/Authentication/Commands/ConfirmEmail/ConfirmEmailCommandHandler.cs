@@ -2,10 +2,10 @@
 using MediatR;
 using Trainova.Common.ResultOf;
 using Trainova.Common.Errors;
-using Trainova.Domain.UserAuth.UserTokens;
 using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
 using Trainova.Application.Common.Models;
 using Trainova.Domain.Common.Helpers;
+using Trainova.Domain.UserAuth;
 
 
 namespace Trainova.Application.Authentication.Commands.ConfirmEmail

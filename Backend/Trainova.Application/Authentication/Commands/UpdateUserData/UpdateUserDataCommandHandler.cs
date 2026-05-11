@@ -2,7 +2,7 @@
 using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
 using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Common.ResultOf;
-using Trainova.Domain.UserAuth.Users;
+using Trainova.Domain.UserAuth;
 
 namespace Trainova.Application.Authentication.Commands.UpdateUserData
 {
