@@ -26,7 +26,8 @@ public static class DependencyInjection
         services.AddSingleton<ITokenGenerator, TokenGenerator>();
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
-        services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
+        services
+            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -35,10 +36,38 @@ public static class DependencyInjection
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = jwtSettings!.Issuer,
-                    ValidAudience = jwtSettings.Audience,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key)),
 
+                    ValidIssuer = jwtSettings.Issuer,
+                    ValidAudience = jwtSettings.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(jwtSettings.Key))
+                };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var authorization =
+                            context.Request.Headers.Authorization.FirstOrDefault();
+
+                        if (!string.IsNullOrWhiteSpace(authorization) &&
+                            authorization.StartsWith(
+                                "Bearer ",
+                                StringComparison.OrdinalIgnoreCase))
+                        {
+                            context.Token =
+                                authorization["Bearer ".Length..].Trim();
+                        }
+                        else if (context.Request.Cookies.TryGetValue(
+                                     "access_token",
+                                     out var cookieToken) &&
+                                 !string.IsNullOrWhiteSpace(cookieToken))
+                        {
+                            context.Token = cookieToken;
+                        }
+
+                        return Task.CompletedTask;
+                    }
                 };
             });
 

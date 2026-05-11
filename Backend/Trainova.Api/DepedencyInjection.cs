@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.HttpOverrides;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
+using System.Text;
 using Trainova.Api.Services;
 using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Application.Common.Models;
+using Trainova.Infrastructure.Authorization.TokenGenerators;
 
 namespace Trainova.Api;
 
@@ -17,7 +21,17 @@ public static class DependencyInjection
             CurrentUser? currentUser = sp.GetRequiredService<ICurrentUserProvider>().GetCurrentUser();
             return currentUser;
         });
-
+        services.AddCors(options =>
+        {
+            options.AddPolicy("DefaultCorsPolicy", policy =>
+            {
+                policy
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+            });
+        });
         services.AddControllers();
         services.AddEndpointsApiExplorer();
 
@@ -68,9 +82,9 @@ public static class DependencyInjection
 
 
 
-
         services.AddOpenApi();
 
         return services;
     }
+
 }

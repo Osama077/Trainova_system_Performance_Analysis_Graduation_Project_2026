@@ -5,13 +5,15 @@ using Trainova.Domain.Common.Services;
 using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
 using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Common.Errors;
+using Microsoft.AspNetCore.Http;
 
 namespace Trainova.Application.Authentication.Queries.Login;
 
 public class LoginQueryHandler(
     ITokenGenerator _tokenGenerator,
     IPasswordHasher _passwordHasher,
-    IUsersRepository _usersRepository)
+    IUsersRepository _usersRepository,
+    IHttpContextAccessor _contextAccessor)
         : IRequestHandler<LoginQuery, ResultOf<AuthenticationResultBase>>
 {
     public async Task<ResultOf<AuthenticationResultBase>> Handle(LoginQuery query, CancellationToken cancellationToken)
@@ -31,8 +33,9 @@ public class LoginQueryHandler(
             }
 
 
-
             var token = _tokenGenerator.GenerateJwtToken(user);
+
+            _contextAccessor.HttpContext.Response.Cookies.Append("access_token", token);
 
             return ((AuthenticationResultBase)
                 new FullAuthenticationResult(user, token)).AsDone();

@@ -26,7 +26,7 @@ app.UseSwaggerUI(c =>
 
 app.UseForwardedHeaders();
 app.UseHttpsRedirection();
-
+app.UseCors("DefaultCorsPolicy");
 app.UseAuthorization();
 
 app.MapControllers();

@@ -8,7 +8,6 @@ namespace Trainova.Api.Services
         IHttpContextAccessor _httpContextAccessor)
         : ICurrentUserProvider
     {
-
         public CurrentUser GetCurrentUser()
         {
             var httpContext = _httpContextAccessor.HttpContext;

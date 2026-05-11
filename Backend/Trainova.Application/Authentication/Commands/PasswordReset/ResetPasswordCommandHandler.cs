@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Trainova.Application.Authentication.Common;
 using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
 using Trainova.Application.Common.Interfaces.Services;
@@ -15,7 +16,8 @@ namespace Trainova.Application.Authentication.Commands.PasswordReset
         ITokenGenerator _tokenGenerator,
         IUserTokensRepository _tokenRepsitory,
         IPasswordHasher _passwordHasher,
-        IUnitOfWork _unitOfWork
+        IUnitOfWork _unitOfWork,
+        IHttpContextAccessor _contextAccessor
         ) : IRequestHandler<ResetPasswordCommand, ResultOf<FullAuthenticationResult>>
     {
         public async Task<ResultOf<FullAuthenticationResult>> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
@@ -45,6 +47,8 @@ namespace Trainova.Application.Authentication.Commands.PasswordReset
 
 
                 var jwt = _tokenGenerator.GenerateJwtToken(user);
+
+                _contextAccessor.HttpContext.Response.Cookies.Append("access_token", jwt);
 
 
                 await _unitOfWork.StartTransactionAsync();
