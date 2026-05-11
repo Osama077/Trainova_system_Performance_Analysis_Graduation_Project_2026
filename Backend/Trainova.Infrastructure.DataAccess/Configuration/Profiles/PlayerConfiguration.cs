@@ -22,7 +22,9 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.Profiles
                 .HasMaxLength(20)
                 .IsRequired();
 
-
+            builder.HasOne(p => p.User)
+                .WithOne(u => u.Player)
+                .HasForeignKey<Player>(p => p.Id);
 
 
             builder

@@ -16,9 +16,10 @@ public class ApiController
     public ApiController(CurrentUser? currentUser)
     {
         _currentUser = currentUser;
+        _requestArrive = DateTime.UtcNow;
     }
     protected readonly CurrentUser? _currentUser;
-
+    private readonly DateTime _requestArrive;
     protected IActionResult Success(DoneStatus status)
     {
         return status switch
@@ -99,15 +100,20 @@ public class ApiController
     int? count = null,
     int? totalCount = null)
     {
+        var responseTime = DateTime.UtcNow;
+        var duration = responseTime - _requestArrive;
         return new ApiResponse<T>(
             Data: data,
             Message: message,
             StatusCode: statusCode,
-            ResponseTime: DateTime.UtcNow,
+            ResponseTime: responseTime,
+            ArriveAt: _requestArrive,
             ValueType: data.GetType().Name,
             Count: count,
             TotalCount: totalCount,
-            UserId: _currentUser.Id
+            UserId: _currentUser?.Id,
+            IpAddress: _currentUser.UserIP?.ToString(),
+            DurationOfServiceInMilliseconds: duration.TotalMilliseconds
         );
     }
 

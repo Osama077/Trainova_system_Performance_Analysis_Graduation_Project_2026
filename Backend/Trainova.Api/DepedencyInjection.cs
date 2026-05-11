@@ -1,4 +1,5 @@
-﻿using Microsoft.OpenApi;
+﻿using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.OpenApi;
 using Trainova.Api.Services;
 using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Application.Common.Models;
@@ -55,6 +56,15 @@ public static class DependencyInjection
         });
 
 
+        services.Configure<ForwardedHeadersOptions>(options =>
+        {
+            options.ForwardedHeaders =
+                ForwardedHeaders.XForwardedFor |
+                ForwardedHeaders.XForwardedProto;
+
+            options.KnownIPNetworks.Clear();
+            options.KnownProxies.Clear();
+        });
 
 
 

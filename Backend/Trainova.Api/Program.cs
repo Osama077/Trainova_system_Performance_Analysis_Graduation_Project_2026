@@ -24,7 +24,7 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = string.Empty;
 });
 
-
+app.UseForwardedHeaders();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

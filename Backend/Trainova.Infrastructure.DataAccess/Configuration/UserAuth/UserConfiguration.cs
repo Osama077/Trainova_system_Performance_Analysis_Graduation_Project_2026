@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Trainova.Domain.Profiles;
 using Trainova.Domain.UserAuth;
 using Trainova.Infrastructure.DataAccess.Configuration.Common;
 
@@ -32,6 +33,18 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.UserAuth
                 .HasMaxLength(50)
                 .IsRequired();
             builder.HasIndex(p => p.Role);
+
+
+            builder.HasOne(u=>u.TeamStaff)
+                .WithOne(ts=>ts.User)
+                .HasForeignKey<TeamStaff>(ts=>ts.Id);
+
+            builder.HasOne(u=>u.Player)
+                .WithOne(p=>p.User)
+                .HasForeignKey<Player>(p=>p.Id);
+
+
+
 
 
         }

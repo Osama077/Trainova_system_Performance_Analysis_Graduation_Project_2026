@@ -18,11 +18,9 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.Profiles
 
 
 
-            builder
-                .HasOne(ts => ts.User)
-                .WithMany()
-                .HasForeignKey(ts => ts.Id)
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(ts => ts.User)
+                .WithOne(u => u.TeamStaff)
+                .HasForeignKey<TeamStaff>(ts => ts.Id);
 
             builder
                 .Property(ts => ts.Role)

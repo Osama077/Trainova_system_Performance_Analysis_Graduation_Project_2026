@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Trainova.Infrastructure.DataAccess;
 
@@ -11,9 +12,11 @@ using Trainova.Infrastructure.DataAccess;
 namespace Trainova.Infrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(TrainovaWriteDbContext))]
-    partial class TrainovaWriteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260511033219_Init_4_1")]
+    partial class Init_4_1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

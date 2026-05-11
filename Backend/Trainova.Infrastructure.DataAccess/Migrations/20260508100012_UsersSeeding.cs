@@ -61,45 +61,10 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
             },
 
             {
-                Guid.Parse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbba"),
-                "System Owner Amr",
-                "Amr Mousv",
-                "am7899@fayoum.edu.eg",
-                teamId,
-                "RESET_REQUIRED",
-                true,
-                true,
-                createdAt,
-                createdAt,
-                Guid.Empty,
-                null,
-                false,
-                null,
-                "SystemAdmin"
-            },
-
-            {
                 Guid.Parse("cccccccc-cccc-cccc-cccc-ccccccccccca"),
                 "System Owner Osama",
                 "Osama Nasr",
                 "Osamanasserm524@gmail.com",
-                teamId,
-                "RESET_REQUIRED",
-                true,
-                true,
-                createdAt,
-                createdAt,
-                Guid.Empty,
-                null,
-                false,
-                null,
-                "SystemAdmin"
-            },
-            {
-                Guid.Parse("dddddddd-dddd-dddd-dddd-ddddddddddda"),
-                "System Owner Fahmy",
-                "Fahmy",
-                "abode1029fahmy38@gmail.com",
                 teamId,
                 "RESET_REQUIRED",
                 true,
@@ -129,7 +94,80 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                 null,
                 "SystemAdmin"
             },
+            // ===============================
+            // TeamStaff (users only)
+            // ===============================
+            {
+                Guid.Parse("dddddddd-dddd-dddd-dddd-ddddddddddda"),
+                "System Owner Fahmy",
+                "Fahmy",
+                "abode1029fahmy38@gmail.com",
+                teamId,
+                "RESET_REQUIRED",
+                true,
+                true,
+                createdAt,
+                createdAt,
+                Guid.Empty,
+                null,
+                false,
+                null,
+                "SystemAdmin"
+            },
 
+            {
+                Guid.Parse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbba"),
+                "System Owner Amr 1",
+                "Amr Mousv 1",
+                "am7899@fayoum.edu.eg",
+                teamId,
+                "RESET_REQUIRED",
+                true,
+                true,
+                createdAt,
+                createdAt,
+                Guid.Empty,
+                null,
+                false,
+                null,
+                "Doctor"
+            },
+
+            {
+                Guid.Parse("ffffffff-ffff-ffff-ffff-fffffffffff1"), // Id
+                "System Owner Amr 2",
+                "Amr Mousv 2",
+                "amrdesigner378@gmail.com",
+                teamId,
+                "RESET_REQUIRED",
+                true,
+                true,
+                createdAt,
+                createdAt,
+                Guid.Empty,
+                null,
+                false,
+                null,
+                "HeadCoach"
+            },
+
+            {
+                Guid.Parse("ffffffff-ffff-ffff-ffff-fffffffffff2"), // Id
+                "System Owner Amr 3",
+                "Amr Mousv 3",
+                "amrworkfront@gmail.com",
+                teamId,
+                "RESET_REQUIRED",
+                true,
+                true,
+                createdAt,
+                createdAt,
+                Guid.Empty,
+                null,
+                false,
+                null,
+                "SystemAdmin"
+            },
             // ===============================
             // Players (users only)
             // ===============================
@@ -152,23 +190,6 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                 "Player"
             },
 
-            {
-                Guid.Parse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
-                "Player Amr Mousv",
-                "Mousv",
-                "amrworkfront@gmail.com",
-                teamId,
-                "RESET_REQUIRED",
-                true,
-                true,
-                createdAt,
-                createdAt,
-                Guid.Empty,
-                null,
-                false,
-                null,
-                "Player"
-            },
             {
                 Guid.Parse("cccccccc-cccc-cccc-cccc-cccccccccccb"),
                 "Player Osama",
@@ -234,15 +255,17 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                 keyColumn: "Id",
                 keyValues: new object[]
                 {
+                    // System Owners / Staff
                     Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-                    Guid.Parse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbba"),
                     Guid.Parse("cccccccc-cccc-cccc-cccc-ccccccccccca"),
-                    Guid.Parse("dddddddd-dddd-dddd-dddd-ddddddddddda"),
                     Guid.Parse("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea"),
+                    Guid.Parse("dddddddd-dddd-dddd-dddd-ddddddddddda"),
+                    Guid.Parse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbba"),
+                    Guid.Parse("ffffffff-ffff-ffff-ffff-fffffffffff1"), // Amr 2
+                    Guid.Parse("ffffffff-ffff-ffff-ffff-fffffffffff2"), // Amr 3
 
-
+                    // Players
                     Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab"),
-                    Guid.Parse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
                     Guid.Parse("cccccccc-cccc-cccc-cccc-cccccccccccb"),
                     Guid.Parse("dddddddd-dddd-dddd-dddd-dddddddddddb"),
                     Guid.Parse("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeeb")
