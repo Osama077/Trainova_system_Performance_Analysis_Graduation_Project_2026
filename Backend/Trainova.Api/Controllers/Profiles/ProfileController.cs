@@ -7,10 +7,10 @@ namespace Trainova.Api.Controllers.Profiles
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProfilesController : ApiController
+    public class ProfileController : ApiController
     {
         private readonly ISender _sender;
-        public ProfilesController(CurrentUser? currentUser, ISender sender) : base(currentUser)
+        public ProfileController(CurrentUser? currentUser, ISender sender) : base(currentUser)
         {
             _sender = sender;
         }

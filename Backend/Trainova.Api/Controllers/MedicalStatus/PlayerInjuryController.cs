@@ -10,7 +10,7 @@ namespace Trainova.Api.Controllers.MedicalStatus
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PlayerInjuriesController(
+    public class PlayerInjuryController(
         CurrentUser currentUser,
         ISender _sender)
         : ApiController (currentUser)
