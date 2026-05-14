@@ -2,7 +2,8 @@
 {
     public enum PlayerMedicalStatus
     {
-        Fit = 0,
-        Injured = 1,
+        Fit = 1,
+        Injured = 2,
+        InRecovry = 3,
     }
 }

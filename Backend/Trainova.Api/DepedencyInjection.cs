@@ -6,6 +6,7 @@ using System.Text;
 using Trainova.Api.Services;
 using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Application.Common.Models;
+using Trainova.Domain.Common.DataConvrters;
 using Trainova.Infrastructure.Authorization.TokenGenerators;
 
 namespace Trainova.Api;
@@ -32,7 +33,10 @@ public static class DependencyInjection
                     .AllowCredentials();
             });
         });
-        services.AddControllers();
+        services.AddControllers()
+            .AddJsonOptions(options =>
+                    options.JsonSerializerOptions.Converters.Add(new NonFlagsEnumConverterFactory())
+            );
         services.AddEndpointsApiExplorer();
 
         services.AddSwaggerGen(options =>
