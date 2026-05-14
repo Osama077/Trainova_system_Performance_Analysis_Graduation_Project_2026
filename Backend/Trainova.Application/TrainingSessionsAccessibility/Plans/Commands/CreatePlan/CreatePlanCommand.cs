@@ -6,7 +6,7 @@ using Trainova.Domain.TrainingSessionsAccessibility;
 
 namespace Trainova.Application.TrainingSessionsAccessibility.Plans.Commands.CreatePlan
 {
-    [Authorize(Role = "HeadCoach,AssistantCoach,SystemAdmin")]
+    [Authorize(Roles = "HeadCoach,AssistantCoach,SystemAdmin")]
     public record CreatePlanCommand(
         string PlanName,
         string PlanGoal,

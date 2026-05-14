@@ -5,7 +5,7 @@ using Trainova.Domain.MedicalStatus;
 
 namespace Trainova.Application.MedicalStatus.Injuries.Commands.CreateInjury
 {
-    [Authorize(Role ="Doctor")]
+    [Authorize(Roles ="Doctor")]
     public record CreateInjuryCommand(
         string Name,
         string Description,

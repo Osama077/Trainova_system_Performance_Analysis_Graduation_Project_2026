@@ -42,5 +42,16 @@ namespace Trainova.Api.Controllers.TrainingSessionAccessablity
                 onValue: (done, status) => Success(done, status),
                 onError: errors => ErrorsPassed(errors));
         }
+        [HttpGet("mine")]
+        public async Task<IActionResult> GetTrainingSessions()
+        {
+            return Ok("Not Implemented");
+        }
+        [HttpGet("playeres/{playerId}")]
+        public async Task<IActionResult> GetPlayerSessions([FromRoute] Guid? playerId)
+        {
+            return Ok("Not Implemented");
+        }
+
     }
 }

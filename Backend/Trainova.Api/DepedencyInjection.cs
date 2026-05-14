@@ -26,7 +26,7 @@ public static class DependencyInjection
             options.AddPolicy("DefaultCorsPolicy", policy =>
             {
                 policy
-                    .AllowAnyOrigin()
+                    .SetIsOriginAllowed(_ => true)
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();

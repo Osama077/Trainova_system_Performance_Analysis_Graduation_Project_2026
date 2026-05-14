@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Trainova.Api.Models;
 using Trainova.Api.Requests.MedicalStatus.PlayerInjuries;
 using Trainova.Application.Common.Models;
+using Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetCasesCount;
 using Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInjuryHistory;
 
 namespace Trainova.Api.Controllers.MedicalStatus
@@ -11,7 +12,7 @@ namespace Trainova.Api.Controllers.MedicalStatus
     [ApiController]
     public class PlayerInjuriesController(
         CurrentUser currentUser,
-        ISender sender)
+        ISender _sender)
         : ApiController (currentUser)
     {
 
@@ -20,7 +21,7 @@ namespace Trainova.Api.Controllers.MedicalStatus
             [FromBody] PlayerInjuryRequest request)
         {
             var command = request.ToCommand();
-            var result = await sender.Send(command);
+            var result = await _sender.Send(command);
             return MapResult(result);
 
         }
@@ -30,7 +31,7 @@ namespace Trainova.Api.Controllers.MedicalStatus
             [FromBody] PlayerInjuryUpdateRequet request)
         {
             var command = request.ToUpdateCommand(id);
-            var result = await sender.Send(command);
+            var result = await _sender.Send(command);
             return MapResult(result);
 
         }
@@ -40,7 +41,7 @@ namespace Trainova.Api.Controllers.MedicalStatus
             )
         {
             var query = request.ToQuery();
-            var result = await sender.Send(query);
+            var result = await _sender.Send(query);
             return result.Match(
                 onValue: (injury, status) =>Success(injury, status),
                 onError: errors => ErrorsPassed(errors));
@@ -53,11 +54,23 @@ namespace Trainova.Api.Controllers.MedicalStatus
             )
         {
             var query = pagennator.ToPlayerInjuriesHistoryQuery(playerInjuryId);
-            var result = await sender.Send(query);
+            var result = await _sender.Send(query);
             return MapResult(result);
 
         }
 
-
+        [HttpGet("CountOver")]
+        public async Task<IActionResult> GetInjuryStatus(
+            [FromQuery] int days = 7,
+            [FromQuery] Guid? injuryId = null
+            )
+        {
+            var query = new GetInjuriesCasesCountOverDayesQuery(injuryId, days);
+            var result = await _sender.Send(query);
+            return result.Match(
+                onValue: (done, status) => Success(done, status),
+                onError: errors => ErrorsPassed(errors)
+                );
+        }
     }
 }

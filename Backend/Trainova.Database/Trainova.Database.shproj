@@ -12,6 +12,7 @@
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\CodeSharing\Microsoft.CodeSharing.CSharp.targets" />
   <ItemGroup>
     <Content Remove="medicalstats\procedures\GetInjuries.sql" />
+    <Content Remove="medicalstats\procedures\GetInjuriesCount.sql" />
     <Content Remove="medicalstats\procedures\GetInjuryDetailesById.sql" />
   </ItemGroup>
 </Project>

@@ -6,7 +6,7 @@ using Trainova.Domain.MedicalStatus;
 namespace Trainova.Application.MedicalStatus.PlayerInjuries.Commands.CreatePlayerInjury
 {
     // Positional record representing the data required to create a PlayerInjury
-    [Authorize(Role = "Doctor")]
+    [Authorize(Roles = "Doctor")]
     public record CreatePlayerInjuryCommand(
         Guid InjuryId,
         Guid PlayerId,

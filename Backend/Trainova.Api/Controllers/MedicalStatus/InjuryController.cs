@@ -5,6 +5,7 @@ using Trainova.Api.Requsts.MedicalStatus.Injuries;
 using Trainova.Application.Common.Models;
 using Trainova.Application.MedicalStatus.Injuries.Commands.DeleteInjury;
 using Trainova.Application.MedicalStatus.Injuries.Queries.GetInjuryDetailes;
+using Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetCasesCount;
 
 namespace Trainova.Api.Controllers.MedicalStatus
 {
@@ -71,5 +72,7 @@ namespace Trainova.Api.Controllers.MedicalStatus
                 onError: errors => ErrorsPassed(errors)
                 );
         }
+
+
     }
 }

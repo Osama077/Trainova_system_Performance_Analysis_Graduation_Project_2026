@@ -4,7 +4,7 @@ using Trainova.Common.ResultOf;
 
 namespace Trainova.Application.TrainingSessionsAccessibility.UserAccessPolicies.Commands.DeleteUserAccessPolicy
 {
-    [Authorize(Role = "HeadCoach,AssistantCoach,SystemAdmin")]
+    [Authorize(Roles = "HeadCoach,AssistantCoach,SystemAdmin")]
     public record DeleteUserAccessPolicyCommand(Guid Id)
         : IRequest<ResultOf<Done>>;
 }

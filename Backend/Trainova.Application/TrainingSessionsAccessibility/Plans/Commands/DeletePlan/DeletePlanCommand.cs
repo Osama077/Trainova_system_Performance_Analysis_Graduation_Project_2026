@@ -4,7 +4,7 @@ using Trainova.Common.ResultOf;
 
 namespace Trainova.Application.TrainingSessionsAccessibility.Plans.Commands.DeletePlan
 {
-    [Authorize(Role = "HeadCoach,AssistantCoach,SystemAdmin")]
+    [Authorize(Roles = "HeadCoach,AssistantCoach,SystemAdmin")]
     public record DeletePlanCommand(Guid Id)
         : IRequest<ResultOf<Done>>;
 }

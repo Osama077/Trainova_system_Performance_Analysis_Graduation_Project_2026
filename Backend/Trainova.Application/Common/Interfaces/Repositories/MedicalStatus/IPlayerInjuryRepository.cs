@@ -1,5 +1,6 @@
 ﻿using Trainova.Application.Common.Helpers;
 using Trainova.Application.MedicalStatus.PlayerInjuries;
+using Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetCasesCount;
 using Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInjuries;
 using Trainova.Domain.MedicalStatus;
 
@@ -47,5 +48,6 @@ namespace Trainova.Application.Common.Interfaces.Repositories.MedicalStatus
             Guid? playerInjuryId = null,
             Guid? playerId = null,
             Guid? injuryId = null);
+        Task<CasesCountResponse> GetInjuriesCountOver(int days = 7, Guid? injuryId = null);
     }
 }

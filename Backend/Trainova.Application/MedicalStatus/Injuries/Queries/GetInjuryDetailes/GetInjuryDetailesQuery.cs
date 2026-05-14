@@ -5,7 +5,7 @@ using Trainova.Common.ResultOf;
 
 namespace Trainova.Application.MedicalStatus.Injuries.Queries.GetInjuryDetailes
 {
-    [Authorize(Role = "Doctor,SystemAdmin,HeadCoach")]
+    [Authorize(Roles = "Doctor,SystemAdmin,HeadCoach")]
     public record GetInjuryDetailesQuery(Guid Id) : IRequest<ResultOf<InjuryDetailes>>;
     public class GetInjuryDetailesQueryValidator : AbstractValidator<GetInjuryDetailesQuery>
     {

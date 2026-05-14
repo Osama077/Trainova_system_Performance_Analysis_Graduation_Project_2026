@@ -5,7 +5,7 @@ using Trainova.Domain.MedicalStatus;
 
 namespace Trainova.Application.MedicalStatus.Injuries.Queries.GetInjuries
 {
-    [Authorize(Role = "Doctor")]
+    [Authorize(Roles = "Doctor")]
     public record GetInjuriesQuery(
         string? SearchTerm,
         string? InjuryType)

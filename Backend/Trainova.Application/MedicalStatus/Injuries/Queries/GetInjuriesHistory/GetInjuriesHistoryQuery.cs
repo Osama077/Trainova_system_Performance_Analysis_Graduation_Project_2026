@@ -5,7 +5,7 @@ using Trainova.Domain.Common.AuditLogs;
 
 namespace Trainova.Application.MedicalStatus.Injuries.Queries.GetInjuriesHistory
 {
-    [Authorize(Role = "Doctor,SystemAdmin")]
+    [Authorize(Roles = "Doctor,SystemAdmin")]
     public record GetInjuriesHistoryQuery(
         Guid? Id,
         int Page = 0,

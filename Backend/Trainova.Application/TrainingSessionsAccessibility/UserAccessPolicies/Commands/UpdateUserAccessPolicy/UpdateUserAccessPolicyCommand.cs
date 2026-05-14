@@ -6,7 +6,7 @@ using Trainova.Domain.TrainingSessionsAccessibility;
 
 namespace Trainova.Application.TrainingSessionsAccessibility.UserAccessPolicies.Commands.UpdateUserAccessPolicy
 {
-    [Authorize(Role = "HeadCoach,AssistantCoach,SystemAdmin,Doctor")]
+    [Authorize(Roles = "HeadCoach,AssistantCoach,SystemAdmin,Doctor")]
     public record UpdateUserAccessPolicyCommand(
         Guid Id,
         AttendanceStatus? Status = null,

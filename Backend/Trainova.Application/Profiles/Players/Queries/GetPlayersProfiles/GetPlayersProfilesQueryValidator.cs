@@ -47,9 +47,6 @@ namespace Trainova.Application.Profiles.Players.Queries.GetPlayersProfiles
             // Numeric Filters
             // =========================
 
-            RuleFor(x => x.MinMatches)
-                .GreaterThanOrEqualTo(0)
-                .When(x => x.MinMatches.HasValue);
 
             RuleFor(x => x.PerformanceLevel)
                 .InclusiveBetween(0, 10)

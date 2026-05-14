@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using MailKit;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Text.Json;
 using Trainova.Domain.MedicalStatus;
 using Trainova.Infrastructure.DataAccess.Configuration.Common;
 
@@ -12,7 +14,11 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.MedicalStatus
 
             builder.HasIndex(p => new { p.PlayerInjuryId, p.Order });
 
-
+            builder.Property(pp => pp.Activities)
+                .HasConversion<string>(
+                value => JsonSerializer.Serialize(value),
+                value => JsonSerializer.Deserialize<List<string>>(value)
+                );
         }
     }
 }

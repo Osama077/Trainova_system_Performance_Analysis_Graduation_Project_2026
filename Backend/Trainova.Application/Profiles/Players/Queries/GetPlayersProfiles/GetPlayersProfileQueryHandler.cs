@@ -30,9 +30,10 @@ namespace Trainova.Application.Profiles.Players.Queries.GetPlayersProfiles
 
                 if (!players.Any())
                 {
-                    return Error.NotFound(
-                    code: "GetPlayersProfileQueryHandler.Handle_Failure",
-                    description: "no profiles found for the Specific area");
+                    return players.AsZeroCount();
+                    //return Error.NotFound(
+                    //code: "GetPlayersProfileQueryHandler.Handle_Failure",
+                    //description: "no profiles found for the Specific area");
                 }
 
                 return players.AsPartial();

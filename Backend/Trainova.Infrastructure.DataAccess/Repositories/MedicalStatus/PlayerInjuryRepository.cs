@@ -1,8 +1,12 @@
 ﻿using Dapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using System.Data;
+using System.Net.NetworkInformation;
 using Trainova.Application.Common.Helpers;
 using Trainova.Application.Common.Interfaces.Repositories.MedicalStatus;
 using Trainova.Application.MedicalStatus.PlayerInjuries;
+using Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetCasesCount;
 using Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInjuries;
 using Trainova.Domain.MedicalStatus;
 using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
@@ -148,6 +152,24 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus
                 pi => (!playerInjuryId.HasValue || pi.Id == playerInjuryId.Value) &&
                       (!playerId.HasValue || pi.PlayerId == playerId.Value) &&
                       (!injuryId.HasValue || pi.InjuryId == injuryId.Value));
+        }
+
+        public async Task<CasesCountResponse> GetInjuriesCountOver(int days = 7, Guid? injuryId = null)
+        {
+            const string sql = "InjuriesData.sp_GetInjuriesCount";
+            var parameters = new
+            {
+                DaysCount = days, // تغيير الاسم ليتطابق مع الـ Procedure
+                InjuryId = injuryId
+            };
+            using var conn = _dbSettings.CreateReadingConnection();
+
+            return await conn.QueryFirstOrDefaultAsync<CasesCountResponse>(
+                sql: sql,
+                param: parameters,
+                commandType: CommandType.StoredProcedure
+            );
+
         }
     }
 }

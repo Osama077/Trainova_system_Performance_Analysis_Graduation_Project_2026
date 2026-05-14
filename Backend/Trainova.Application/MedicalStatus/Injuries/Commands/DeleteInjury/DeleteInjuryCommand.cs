@@ -4,6 +4,6 @@ using Trainova.Common.ResultOf;
 
 namespace Trainova.Application.MedicalStatus.Injuries.Commands.DeleteInjury
 {
-    [Authorize(Role = "Doctor")]
+    [Authorize(Roles = "Doctor")]
     public record DeleteInjuryCommand(Guid Id) : IRequest<ResultOf<Done>>;
 }

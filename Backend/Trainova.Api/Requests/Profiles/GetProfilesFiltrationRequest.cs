@@ -7,7 +7,6 @@ namespace Trainova.Api.Requsts.Profiles
     {
         public string? SearchTerm { get; init; }
 
-        public Guid? TeamId { get; init; }
 
         public int? PerformanceLevel { get; init; }
 
@@ -21,7 +20,6 @@ namespace Trainova.Api.Requsts.Profiles
 
         public DateTime? DateTo { get; init; }
 
-        public int? MinMatches { get; init; }
 
         public string? MedicalStatus { get; init; }
 
@@ -43,14 +41,12 @@ namespace Trainova.Api.Requsts.Profiles
             return new GetPlayersProfileQuery(
                 playerId,
                 searchTerm: SearchTerm,
-                teamId: TeamId,
                 performanceLevel: PerformanceLevel,
                 isActive: IsActive,
                 mainPositionFilter: MainPositionFilter,
                 otherPositionFilter: OtherPositionFilter,
                 dateFrom: DateFrom,
                 dateTo: DateTo,
-                minMatches: MinMatches,
                 medicalStatus: MedicalStatus,
                 pageNumber: PageNumber,
                 pageSize: PageSize,

@@ -32,8 +32,6 @@ namespace Trainova.Application.Profiles.Players.Queries.GetPlayersProfiles
 
         public DateTime? DateTo { get; init; }
 
-        public int? MinMatches { get; init; }
-
         public string? MedicalStatus { get; init; }
 
         public int PageNumber { get; init; } = 0;
@@ -47,14 +45,12 @@ namespace Trainova.Application.Profiles.Players.Queries.GetPlayersProfiles
         public GetPlayersProfileQuery(
             Guid? playerId = null,
             string? searchTerm = null,
-            Guid? teamId = null,
             int? performanceLevel = null,
             bool? isActive = null,
             int? mainPositionFilter = null,
             int? otherPositionFilter = null,
             DateTime? dateFrom = null,
             DateTime? dateTo = null,
-            int? minMatches = null,
             string? medicalStatus = null,
             int pageNumber = 0,
             int pageSize = 12,
@@ -63,14 +59,12 @@ namespace Trainova.Application.Profiles.Players.Queries.GetPlayersProfiles
         {
             PlayerId = playerId;
             SearchTerm = searchTerm;
-            TeamId = teamId;
             PerformanceLevel = performanceLevel;
             IsActive = isActive;
             MainPositionFilter = mainPositionFilter;
             OtherPositionFilter = otherPositionFilter;
             DateFrom = dateFrom;
             DateTo = dateTo;
-            MinMatches = minMatches;
             MedicalStatus = medicalStatus;
             PageNumber = pageNumber;
             PageSize = pageSize;

@@ -1,4 +1,4 @@
-CREATE OR ALTER PROCEDURE InjuriesData.GetPlayerInjuries
+CREATE OR ALTER PROCEDURE InjuriesData.sp_GetPlayerInjuries
     @PlayerInjuryId UNIQUEIDENTIFIER = NULL,
     @PlayerId UNIQUEIDENTIFIER = NULL,
     @InjuryId UNIQUEIDENTIFIER = NULL,

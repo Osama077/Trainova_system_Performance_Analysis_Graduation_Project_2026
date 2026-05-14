@@ -5,6 +5,7 @@ using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
 using Dapper;
 using System.Data;
 using Trainova.Domain.MedicalStatus;
+using Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetCasesCount;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus
 {
@@ -68,6 +69,7 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus
                 commandType: CommandType.StoredProcedure
             );
         }
+
 
         public async Task<InjuryDetailes?> GetInjyryDetailesAsync(Guid id)
         {

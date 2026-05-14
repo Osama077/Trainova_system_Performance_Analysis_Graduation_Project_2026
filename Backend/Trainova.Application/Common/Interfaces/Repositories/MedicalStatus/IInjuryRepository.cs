@@ -1,4 +1,5 @@
 ﻿using Trainova.Application.MedicalStatus.Injuries.Queries.GetInjuryDetailes;
+using Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetCasesCount;
 using Trainova.Domain.MedicalStatus;
 
 namespace Trainova.Application.Common.Interfaces.Repositories.MedicalStatus

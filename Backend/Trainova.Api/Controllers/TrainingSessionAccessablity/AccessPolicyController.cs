@@ -2,9 +2,8 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Trainova.Api.Requests.TrainingSessionAccessablity.AccessPolicies;
 using Trainova.Application.Common.Models;
-using Trainova.Application.TrainingSessionsAccessibility.AccessPolicies.Commands.CreateAccessPolicy;
+
 using Trainova.Application.TrainingSessionsAccessibility.AccessPolicies.Commands.DeleteAccessPolicy;
-using Trainova.Application.TrainingSessionsAccessibility.AccessPolicies.Commands.UpdateAccessPolicy;
 
 namespace Trainova.Api.Controllers.TrainingSessionAccessablity
 {

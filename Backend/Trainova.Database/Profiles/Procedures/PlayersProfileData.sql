@@ -39,7 +39,7 @@ BEGIN
 END;
 GO
 
-sp_GetPlayersFiltered @SearchTerm = 'Osama'
+playersData.sp_GetPlayersFiltered @SearchTerm = 'Osama'
 
 GO
 

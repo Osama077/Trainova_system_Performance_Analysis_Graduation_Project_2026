@@ -4,7 +4,6 @@ using MediatR;
 using Trainova.Common.ResultOf;
 using Trainova.Common.Errors;
 using Trainova.Application.Common.Models;
-using Trainova.Domain.Common;
 using Trainova.Domain.UserAuth;
 
 namespace Trainova.Application.Common.Behaviors;
@@ -42,19 +41,15 @@ public class AuthorizationBehavior<TRequest, TResponse>(CurrentUser? _currentUse
             return await next();
 
 
-
-
         var requiredRoles = authorizationAttributes
-            .SelectMany(authorizationAttribute => authorizationAttribute.Role?.Split(',') ?? [])
+            .SelectMany(authorizationAttribute => authorizationAttribute.Roles?.Split(',') ?? [])
             .ToList();
 
-        if (!requiredRoles.Contains(_currentUser.Role))
-        {
-            return (dynamic)Error.Unauthorized(description: "User is forbidden from taking this action");
-        }
+        if (!requiredRoles.Any() || requiredRoles.Any(r => _currentUser.Role == r))
+            return await next();
 
 
-        return await next();
+        return (dynamic)Error.Unauthorized(description: "User is forbidden from taking this action");
     }
 
     private void MatchPlayerId(IPlayerAuthraizedRequest playerAuthraizedRequest)

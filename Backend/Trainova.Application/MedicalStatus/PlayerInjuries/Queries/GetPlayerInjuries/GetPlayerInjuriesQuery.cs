@@ -4,7 +4,7 @@ using Trainova.Common.ResultOf;
 
 namespace Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInjuries
 {
-    [Authorize(Role = "Doctor,Player,SystemAdmin,HeadCoach,AssistantCoach")]
+    [Authorize(Roles = "Doctor,Player,SystemAdmin,HeadCoach,AssistantCoach")]
     public record GetPlayerInjuriesQuery : IRequest<ResultOf<IEnumerable<PlayerInjuryReadModel>>>, IPlayerAuthraizedRequest
     {
         public Guid? PlayerId { get; private set; }

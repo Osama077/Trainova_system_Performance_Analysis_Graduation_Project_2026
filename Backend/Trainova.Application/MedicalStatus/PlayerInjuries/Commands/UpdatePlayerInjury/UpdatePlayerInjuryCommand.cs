@@ -6,7 +6,7 @@ using Trainova.Domain.MedicalStatus;
 namespace Trainova.Application.MedicalStatus.PlayerInjuries.Commands.UpdatePlayerInjury
 {
     // Positional record representing the updatable fields for PlayerInjury
-    [Authorize(Role = "Doctor")]
+    [Authorize(Roles = "Doctor")]
     public record UpdatePlayerInjuryCommand(
         Guid Id,
         InjuryStatus? Status,
