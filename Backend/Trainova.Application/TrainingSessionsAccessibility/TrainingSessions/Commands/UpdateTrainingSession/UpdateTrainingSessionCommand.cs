@@ -12,7 +12,6 @@ namespace Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Co
         string? SessionName = null,
         string? Place = null,
         PlanState? PlanState = null,
-        DateTime? WillHappenAt = null,
-        PlanState? State = null)
+        DateTime? WillHappenAt = null)
         : IRequest<ResultOf<TrainingSession>>;
 }

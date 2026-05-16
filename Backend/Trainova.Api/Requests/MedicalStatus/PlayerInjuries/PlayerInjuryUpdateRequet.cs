@@ -8,7 +8,7 @@ namespace Trainova.Api.Requests.MedicalStatus.PlayerInjuries
         public InjuryStatus? Status { get; set; }
         public DateTime? HappendAt { get; set; }
         public InjuryCause? Cause { get; set; }
-        public SevertiyGrade? SevertiyGrade { get; set; }
+        public SeverityGrade? SevertiyGrade { get; set; }
         public BodyPart? BodyPart { get; set; }
         public string? Notes { get; set; }
         public bool? IsNew { get; set; }

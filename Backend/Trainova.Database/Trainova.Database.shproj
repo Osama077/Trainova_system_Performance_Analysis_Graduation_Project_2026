@@ -14,5 +14,6 @@
     <Content Remove="medicalstats\procedures\GetInjuries.sql" />
     <Content Remove="medicalstats\procedures\GetInjuriesCount.sql" />
     <Content Remove="medicalstats\procedures\GetInjuryDetailesById.sql" />
+    <Content Remove="medicalstats\procedures\GetSquadHealthDashboard.sql" />
   </ItemGroup>
 </Project>

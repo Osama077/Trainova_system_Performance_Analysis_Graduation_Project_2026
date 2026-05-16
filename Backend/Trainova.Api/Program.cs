@@ -7,9 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services
     .AddPresentation(builder.Configuration)
-    .AddApplication()
+    .AddApplication(builder.Configuration)
     .AddInfrastructure(builder.Configuration);
-
 
 
 var app = builder.Build();
@@ -20,7 +19,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("swagger/v1/swagger.json", "My API V1");
+    c.SwaggerEndpoint("swagger/v1/swagger.json", "Trainova API V2");
     c.RoutePrefix = string.Empty;
 });
 

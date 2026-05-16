@@ -36,5 +36,6 @@
     <None Include="$(MSBuildThisFileDirectory)medicalstats\procedures\GetInjuries.sql" />
     <None Include="$(MSBuildThisFileDirectory)medicalstats\procedures\GetInjuriesCount.sql" />
     <None Include="$(MSBuildThisFileDirectory)medicalstats\procedures\GetInjuryDetailesById.sql" />
+    <None Include="$(MSBuildThisFileDirectory)medicalstats\procedures\GetSquadHealthDashboard.sql" />
   </ItemGroup>
 </Project>

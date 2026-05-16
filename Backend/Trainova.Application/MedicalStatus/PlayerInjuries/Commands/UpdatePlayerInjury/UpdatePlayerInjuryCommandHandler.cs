@@ -23,7 +23,7 @@ namespace Trainova.Application.MedicalStatus.PlayerInjuries.Commands.UpdatePlaye
 
                 if (existing == null)
                 {
-                    return Error.NotFound(code: "UpdatePlayerInjury_NotFound", description: "Player injury not found");
+                    return Error.NotFound(code: "UpdatePlayerInjuryCommandHandler.Handle_NotFound", description: "Player injury not found");
                 }
 
                 existing.Update(
@@ -37,10 +37,14 @@ namespace Trainova.Application.MedicalStatus.PlayerInjuries.Commands.UpdatePlaye
                     request.ReturnedAt,
                     request.ExpectedReturnDate
                 );
+
                 await _unitOfWork.StartTransactionAsync();
+
                 await _playerInjuryRepository.UpdateAsync(existing);
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
+
                 await _unitOfWork.CommitTransactionAsync();
+                
                 return existing.AsNoContent();
             }
             catch (DomainException ex)

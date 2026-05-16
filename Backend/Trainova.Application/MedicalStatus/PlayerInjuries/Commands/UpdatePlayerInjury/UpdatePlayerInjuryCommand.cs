@@ -12,7 +12,7 @@ namespace Trainova.Application.MedicalStatus.PlayerInjuries.Commands.UpdatePlaye
         InjuryStatus? Status,
         DateTime? HappendAt = null,
         InjuryCause? Cause = null,
-        SevertiyGrade? SevertiyGrade = null,
+        SeverityGrade? SevertiyGrade = null,
         BodyPart? BodyPart = null,
         string? Notes = null,
         bool? IsNew = null,

@@ -6,8 +6,8 @@ using System.Net.NetworkInformation;
 using Trainova.Application.Common.Helpers;
 using Trainova.Application.Common.Interfaces.Repositories.MedicalStatus;
 using Trainova.Application.MedicalStatus.PlayerInjuries;
+using Trainova.Application.MedicalStatus.PlayerInjuries.Queries;
 using Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetCasesCount;
-using Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInjuries;
 using Trainova.Domain.MedicalStatus;
 using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
 
@@ -115,7 +115,7 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus
             string sortDirection = GeneralSortHelper.DESCSortOption
             )
         {
-            var sql = "InjuriesData.GetPlayerInjuries"; // Name of the stored procedure
+            var sql = "InjuriesData.sp_GetPlayerInjuries"; // Name of the stored procedure
            
 
             var parameters = new {
@@ -170,6 +170,40 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus
                 commandType: CommandType.StoredProcedure
             );
 
+        }
+
+        public async Task<IEnumerable<PlayerInjuryReadModel>> GetReadAllModelsAsync(Guid? playerId = null, Guid? injuryId = null, string? status = null, string? cause = null, bool? isNew = null, DateTime? happendBefore = null, DateTime? happendAfter = null, DateTime? expectedReturnBefore = null, DateTime? expectedReturnAfter = null, DateTime? returnedBefore = null, DateTime? returnedAfter = null)
+        {
+            var sql = "InjuriesData.sp_GetPlayerInjuries"; // Name of the stored procedure
+
+
+            var parameters = new
+            {
+                PlayerId = playerId,
+                InjuryId = injuryId,
+                Status = status,
+                Cause = cause,
+                IsNew = isNew,
+                HappendBefore = happendBefore,
+                HappendAfter = happendAfter,
+                ExpectedReturnBefore = expectedReturnBefore,
+                ExpectedReturnAfter = expectedReturnAfter,
+                ReturnedBefore = returnedBefore,
+                ReturnedAfter = returnedAfter,
+                PageNumber = 0,
+                PageSize = int.MaxValue - 5,
+                SortColumn = PlayerInjuryCommonOptions.CreatedAtSortOption,
+                SortDirection = GeneralSortHelper.ASCSortOption
+            };
+            using var conn = _dbSettings.CreateReadingConnection();
+
+
+            var result = await conn.QueryAsync<PlayerInjuryReadModel>(
+                sql,
+                parameters,
+                commandType: System.Data.CommandType.StoredProcedure);
+
+            return result;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Trainova.Domain.Common.BaseEntity;
+using Trainova.Domain.Common.Enums;
 using Trainova.Domain.Common.Helpers;
 using Trainova.Domain.Profiles;
 
@@ -12,7 +13,7 @@ namespace Trainova.Domain.MedicalStatus
         public Player Player { get; private set; }
         public InjuryStatus Status { get; private set; } = InjuryStatus.InHealing;
         public InjuryCause Cause { get; private set; }
-        public SevertiyGrade SevertiyGrade { get; private set; }
+        public SeverityGrade SevertiyGrade { get; private set; }
         public BodyPart BodyPart { get; private set; }
         public string? Notes { get; private set; }
         public bool IsNew { get; private set; }
@@ -25,20 +26,24 @@ namespace Trainova.Domain.MedicalStatus
 
 
         public PlayerInjury(
-            Guid playerId,
-            Guid injuryId,
+            Player player,
+            Injury injury,
             InjuryStatus status,
             DateTime? happendAt = null,
             InjuryCause cause = default,
-            SevertiyGrade severtiyGrade = default,
+            SeverityGrade severtiyGrade = default,
             BodyPart bodyPart = default,
             string notes = null,
             bool isNew = false,
             DateTime? expectedReturnDate = null,
             Guid? createdBy = null) : base(Guid.NewGuid(), createdBy)
         {
-            PlayerId = playerId;
-            InjuryId = injuryId;
+            if (player.MedicalStatus != PlayerMedicalStatus.Injured)
+            {
+                Player!.MarkAsInjuried();
+            }
+            PlayerId = player.Id;
+            InjuryId = injury.Id;
             Status = status;
             HappendAt = happendAt ?? DateTime.UtcNow;
             Cause = cause;
@@ -46,13 +51,13 @@ namespace Trainova.Domain.MedicalStatus
             BodyPart = bodyPart;
             Notes = notes;
             IsNew = isNew;
-            ExpectedReturnDate = expectedReturnDate;
+            ExpectedReturnDate = expectedReturnDate??DateTime.UtcNow.AddDays(injury.AverageRecoveryTimeInDayes ?? 0);
         }
 
         public void Update(
             DateTime? happendAt = null,
             InjuryCause? cause = null,
-            SevertiyGrade? severtiyGrade = null,
+            SeverityGrade? severtiyGrade = null,
             BodyPart? bodyPart = null,
             string? notes = null,
             bool? isNew = null,

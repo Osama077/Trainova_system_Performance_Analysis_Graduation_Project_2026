@@ -78,6 +78,10 @@ namespace Trainova.Domain.Profiles
             PerformanceLevel = performanceLevel ?? PerformanceLevel;
         }
 
-
+        public void MarkAsInjuried()
+        {
+            MarkUpdatedNow();
+            MedicalStatus = PlayerMedicalStatus.Injured;
+        }
     }
 }

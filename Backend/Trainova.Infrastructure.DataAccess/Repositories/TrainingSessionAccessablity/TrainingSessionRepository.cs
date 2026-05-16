@@ -50,14 +50,18 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.TrainingSessionAccessa
             return await query.AnyAsync();
         }
 
-        public Task<IEnumerable<TrainingSession>> GetAllAsync(Guid? accessPolicyId)
+        public async Task<int> CountByAccessPolicyIdAsync(Guid accessPolicyId)
         {
-            throw new NotImplementedException();
+            return await _dbContext.TrainingSessions.CountAsync(x => x.AccessPolicyId == accessPolicyId);
         }
 
-        public Task<int> CountByAccessPolicyIdAsync(Guid accessPolicyId)
+        public async Task<IEnumerable<TrainingSession>> GetTrainingSessionsAsync(DateTime from, DateTime to, Guid? userAccsessPolicyId = null, Guid? creatorId = null)
         {
-            throw new NotImplementedException();
+            return await _dbContext.TrainingSessions
+                .Where(x => (x.HappenedAt >= from && x.HappenedAt <= to)
+                 &&(( userAccsessPolicyId == null || x.AccessPolicyId == userAccsessPolicyId)
+                 || ( creatorId == null || x.CreatedBy == creatorId)))
+                .ToListAsync();
         }
     }
 }

@@ -17,11 +17,7 @@ public static class DependencyInjection
     {
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
-        services.AddScoped<CurrentUser>(sp =>
-        {
-            CurrentUser? currentUser = sp.GetRequiredService<ICurrentUserProvider>().GetCurrentUser();
-            return currentUser;
-        });
+        services.AddScoped<CurrentUser>(sp => sp.GetRequiredService<ICurrentUserProvider>().GetCurrentUser());
         services.AddCors(options =>
         {
             options.AddPolicy("DefaultCorsPolicy", policy =>
@@ -44,7 +40,7 @@ public static class DependencyInjection
             options.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = "Trainova API",
-                Version = "v1"
+                Version = "v2"
             });
 
             options.AddSecurityDefinition("Bearer",

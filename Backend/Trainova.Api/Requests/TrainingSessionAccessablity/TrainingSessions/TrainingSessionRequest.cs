@@ -42,8 +42,7 @@ namespace Trainova.Api.Requests.TrainingSessionAccessablity.TrainingSessions
                 SessionName,
                 Place,
                 PlanState,
-                WillHappenAt,
-                State);
+                WillHappenAt);
         }
     }
 }

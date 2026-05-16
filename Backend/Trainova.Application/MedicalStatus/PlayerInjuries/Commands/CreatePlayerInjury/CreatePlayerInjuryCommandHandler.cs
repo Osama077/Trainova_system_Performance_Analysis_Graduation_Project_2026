@@ -6,11 +6,15 @@ using Trainova.Common.Errors;
 using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Domain.Common.Helpers;
 using Trainova.Domain.MedicalStatus;
+using Trainova.Application.Common.Interfaces.Repositories.Profiles.Players;
+using Trainova.Domain.Profiles;
 
 namespace Trainova.Application.MedicalStatus.PlayerInjuries.Commands.CreatePlayerInjury
 {
     public class CreatePlayerInjuryCommandHandler(
         IPlayerInjuryRepository playerInjuryRepository,
+        IInjuryRepository _injuryRepository,
+        IPlayerRepository _playerRepository,
         IUnitOfWork _unitOfWork)
         : IRequestHandler<CreatePlayerInjuryCommand, ResultOf<PlayerInjury>>
     {
@@ -18,14 +22,32 @@ namespace Trainova.Application.MedicalStatus.PlayerInjuries.Commands.CreatePlaye
         {
             try
             {
+                var player = await _playerRepository.GetByIdAsync(request.PlayerId);
+                if (player == null)
+                {
+                    return Error.NotFound(
+                        code: "CreatePlayerInjuryCommandHandler.Handle_PlayerNotFound",
+                        description: $"Player with id {request.PlayerId} was not found.");
+                }
+                var injury = await _injuryRepository.GetByIdAsync(request.InjuryId);
+
+                if (injury == null)
+                {
+                    return Error.NotFound(
+                        code: "CreatePlayerInjuryCommandHandler.Handle_InjuryNotFound",
+                        description: $"Injury with id {request.InjuryId} was not found.");
+                }
+
+
+
                 var playerInjury = new PlayerInjury(
-                    request.PlayerId,
-                    request.InjuryId,
-                    (InjuryStatus)request.Status,
+                    player,
+                    injury,
+                    request.Status,
                     request.HappendAt,
-                    (InjuryCause)request.Cause,
-                    (SevertiyGrade)request.SevertiyGrade,
-                    (BodyPart)request.BodyPart,
+                    request.Cause,
+                    request.SevertiyGrade,
+                    request.BodyPart,
                     request.Notes,
                     request.IsNew,
                     request.ExpectedReturnDate

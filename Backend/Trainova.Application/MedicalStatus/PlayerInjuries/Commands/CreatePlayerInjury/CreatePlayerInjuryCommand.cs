@@ -13,7 +13,7 @@ namespace Trainova.Application.MedicalStatus.PlayerInjuries.Commands.CreatePlaye
         InjuryStatus Status,
         DateTime? HappendAt = null,
         InjuryCause Cause = default,
-        SevertiyGrade SevertiyGrade = default,
+        SeverityGrade SevertiyGrade = default,
         BodyPart BodyPart = default,
         string? Notes = null,
         bool IsNew = false,

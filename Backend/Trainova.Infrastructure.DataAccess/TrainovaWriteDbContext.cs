@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Application.Common.Models;
 using Trainova.Domain.Common.AuditLogs;
+using Trainova.Domain.Common.BaseEntity;
 using Trainova.Domain.Common.Outbox;
 using Trainova.Domain.FitnessStatus.MovementDistances;
 using Trainova.Domain.FitnessStatus.PhysicalCapacityTests;
@@ -18,13 +20,15 @@ namespace Trainova.Infrastructure.DataAccess
     {
         private readonly CurrentUser _currentUser;
         private IDbContextTransaction _dbTransaction;
-        private static readonly string logFilePath = @"D:\EFCoreDebugLog.txt";
+        private string _logFilePath;
 
         public TrainovaWriteDbContext(
             DbContextOptions<TrainovaWriteDbContext> options,
-            CurrentUser currentUser) : base(options)
+            CurrentUser currentUser,
+            EFCoreLoggingOptions eFCoreLoggingOptions) : base(options)
         {
             _currentUser = currentUser;
+            _logFilePath = eFCoreLoggingOptions.LogFilePath;
         }
 
         public bool IsInTransaction { get; private set; } = false;
@@ -110,7 +114,7 @@ namespace Trainova.Infrastructure.DataAccess
             {
                 try
                 {
-                    File.AppendAllText(logFilePath, logMessage + Environment.NewLine);
+                    File.AppendAllText(_logFilePath, logMessage + Environment.NewLine);
                 }
                 catch
                 {
@@ -158,13 +162,27 @@ namespace Trainova.Infrastructure.DataAccess
                 }
             }
 
+
+
+
+
             return logs;
         }
-
+        private void HandleCreationLogs()
+        {
+            var entries = ChangeTracker
+                            .Entries<ICreatorLogable>()
+                            .Where(e => e.State == EntityState.Added)
+                            .Select(e => e.Entity);
+            foreach (var entry in entries)
+            {
+                entry.SetCreator(_currentUser?.Id ?? Guid.Empty);
+            }
+        }
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
+            HandleCreationLogs();
             var auditLogs = HandleAuditLogs();
-
 
             if (auditLogs.Any())
             {

@@ -1,5 +1,8 @@
-﻿namespace Trainova.Domain.MedicalStatus
+﻿using Trainova.Domain.Common.Helpers;
+
+namespace Trainova.Domain.MedicalStatus
 {
+    [StoreAsString]
     public enum BodyPart
     {
         HeadAndNeck = 1,

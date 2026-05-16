@@ -1,17 +1,20 @@
 ﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
 using System.Data;
 using Trainova.Application.Common.Helpers;
 using Trainova.Application.Common.Interfaces.Repositories.Profiles.Players;
 using Trainova.Application.Profiles.Players;
+using Trainova.Application.Profiles.Players.Queries.GetSquadHealthProfiles;
+using Trainova.Domain.Common.Enums;
+using Trainova.Domain.MedicalStatus;
 using Trainova.Domain.Profiles;
 using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
+using static System.Net.WebRequestMethods;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.Profiles
 {
     public class PlayerRepository : IPlayerRepository
     {
-
-
         private readonly IDbSettings _dbSettings;
         private readonly TrainovaWriteDbContext _dbContext;
 
@@ -24,6 +27,13 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.Profiles
         public async Task AddAsync(Player player)
         {
             await _dbContext.AddAsync(player);
+        }
+
+        public async Task<Player?> GetByIdAsync(Guid playerId)
+        {
+            return await _dbContext.Players
+                .Include(p => p.User)
+                .FirstOrDefaultAsync(p => p.Id == playerId);
         }
 
         public async Task<IEnumerable<PlayerDetailResponse>> GetPlayersAsync(
@@ -74,7 +84,25 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.Profiles
 
         }
 
+        public async Task<IEnumerable<SquadHealthProfilesDataReadingModel>> GetSquadHealthProfiles(Position? position = null, InjuryStatus? injuryStatus = null, SeverityGrade? severityGrade = null, string? searchName = null)
+        {
+            const string sql = "InjuriesData.sp_GetSquadHealthDashboard";
+            var parameters = new
+            {
+                Position = position,
+                InjuryStatus = injuryStatus,
+                SeverityGrade = severityGrade,
+                SearchName = searchName
+            };
 
+            using var connection = _dbSettings.CreateReadingConnection();
+
+            return await connection.QueryAsync<SquadHealthProfilesDataReadingModel>(
+                sql,
+                parameters,
+                commandType: CommandType.StoredProcedure
+            );
+        }
 
         public Task UpdateAsync(Player player)
         {

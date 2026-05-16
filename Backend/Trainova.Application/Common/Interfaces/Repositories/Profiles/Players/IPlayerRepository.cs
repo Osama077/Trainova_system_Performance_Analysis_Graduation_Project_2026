@@ -1,5 +1,8 @@
 ﻿using Trainova.Application.Profiles.Players;
 using Trainova.Application.Profiles.Players.Common;
+using Trainova.Application.Profiles.Players.Queries.GetSquadHealthProfiles;
+using Trainova.Domain.Common.Enums;
+using Trainova.Domain.MedicalStatus;
 using Trainova.Domain.Profiles;
 
 namespace Trainova.Application.Common.Interfaces.Repositories.Profiles.Players
@@ -22,7 +25,12 @@ namespace Trainova.Application.Common.Interfaces.Repositories.Profiles.Players
             int pageSize = 12,
             string sortColumn = PlayerCommonOptions.CreatedAtSortOption,
             string sortDirection = "DESC");
-
+        Task<IEnumerable<SquadHealthProfilesDataReadingModel>> GetSquadHealthProfiles(
+            Position? position = null,
+            InjuryStatus? injuryStatus = null,
+            SeverityGrade? severityGrade= null,
+            string? searchName= null);
+        Task<Player?> GetByIdAsync(Guid playerId);
     }
 
 }

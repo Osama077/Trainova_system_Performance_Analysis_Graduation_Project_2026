@@ -1,6 +1,6 @@
 using Trainova.Application.Common.Interfaces.MarkUps;
 
-namespace Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInjuries
+namespace Trainova.Application.MedicalStatus.PlayerInjuries.Queries
 {
     // Read model for joined PlayerInjury + Player + Injury view
     public class PlayerInjuryReadModel:ITotalCountIncluded
@@ -24,7 +24,7 @@ namespace Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInj
         public string? InjuryName { get; set; }
         public string? InjuryDescription { get; set; }
         public string? InjuryType { get; set; }
-        public TimeSpan? InjuryAverageRecoveryTime { get; set; }
+        public int? AverageRecoveryTimeInDayes { get; set; }
 
         public string? Status { get; set; }
         public string? SevertiyGrade { get; set; }

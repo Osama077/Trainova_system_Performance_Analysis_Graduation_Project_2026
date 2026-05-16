@@ -12,6 +12,8 @@
     <PackageReference Include="MailKit" Version="4.16.0" />
     <PackageReference Include="MediatR" Version="14.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.9" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.8" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,7 +29,6 @@
     <Folder Include="TrainingSessionsAccessibility\AccessPolicies\Queries\" />
     <Folder Include="TrainingSessionsAccessibility\Plans\Commands\" />
     <Folder Include="TrainingSessionsAccessibility\Plans\Queries\" />
-    <Folder Include="TrainingSessionsAccessibility\TrainingSessions\Queries\" />
   </ItemGroup>
 
 </Project>

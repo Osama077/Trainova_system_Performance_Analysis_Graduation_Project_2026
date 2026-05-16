@@ -1,11 +1,15 @@
 ﻿using MediatR;
+using Org.BouncyCastle.Asn1.Ocsp;
 using Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAccessablity;
 using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
 using Trainova.Application.Common.Interfaces.Services;
+using Trainova.Application.Common.Models;
 using Trainova.Common.Errors;
 using Trainova.Common.ResultOf;
+using Trainova.Domain.Common.Enums;
 using Trainova.Domain.Common.Helpers;
 using Trainova.Domain.TrainingSessionsAccessibility;
+using Trainova.Domain.UserAuth;
 
 namespace Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Commands.CreateTrainingSession
 {
@@ -15,7 +19,8 @@ namespace Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Co
         IUserAccessPolicyRepository _userAccessPolicyRepository,
         IAccessPolicyRepository _accessPolicyRepository,
         IUnitOfWork _unitOfWork,
-        IUsersRepository _usersRepository)
+        IUsersRepository _usersRepository,
+        CurrentUser _currentUser)
         : IRequestHandler<CreateTrainingSessionCommand, ResultOf<TrainingSession>>
     {
         public async Task<ResultOf<TrainingSession>> Handle(CreateTrainingSessionCommand request, CancellationToken cancellationToken)
@@ -66,13 +71,7 @@ namespace Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Co
                     await _userAccessPolicyRepository.AddRangeAsync(userAccessPolicies);
                 }
 
-                var session = new TrainingSession(
-                    request.SessionName,
-                    accessPolicy.Id,
-                    request.PlanState,
-                    request.Place,
-                    request.WillHappenAt,
-                    request.PlanId);
+                var session = CreateTrainingSessionAsWithNeededType(request, accessPolicy, _currentUser);
 
                 await _trainingSessionRepository.AddAsync(session);
 
@@ -90,6 +89,26 @@ namespace Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Co
                 return Error.Unexpected("CreateTrainingSession.Unexpected", ex.Message);
             }
         }
+        private TrainingSession CreateTrainingSessionAsWithNeededType(CreateTrainingSessionCommand request, AccessPolicy accessPolicy, CurrentUser currentUser)
+        {
+            var sessionType = currentUser switch
+            {
+                _ when currentUser.IsInRole(StaticRoleNamesData.DoctorName) => SessionType.DoctorVisit,
+                _ when currentUser.IsInRole(StaticRoleNamesData.HeadCoachName) => SessionType.TrainingVisit,
+                _ when currentUser.IsInRole(StaticRoleNamesData.FitnessCoachName) => SessionType.FitnessVisit,
+                _ => SessionType.Other
+            };
+            return new TrainingSession(
+                    request.SessionName,
+                    accessPolicy.Id,
+                    request.PlanState,
+                    sessionType,
+                    request.Place,
+                    request.WillHappenAt,
+                    request.PlanId,
+                    _currentUser.Id);
+        }
+
     }
 
 

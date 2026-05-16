@@ -5,6 +5,7 @@ using Trainova.Application.Common.Models;
 using Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Commands.CreateTrainingSession;
 using Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Commands.DeleteTrainingSession;
 using Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Commands.UpdateTrainingSession;
+using Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Queries.GetTrainingSessions;
 
 namespace Trainova.Api.Controllers.TrainingSessionAccessablity
 {
@@ -42,16 +43,18 @@ namespace Trainova.Api.Controllers.TrainingSessionAccessablity
                 onValue: (done, status) => Success(done, status),
                 onError: errors => ErrorsPassed(errors));
         }
-        [HttpGet("mine")]
-        public async Task<IActionResult> GetTrainingSessions()
+        [HttpGet]
+        public async Task<IActionResult> GetTrainingSessions(
+            [FromQuery] DateTime from,
+            [FromQuery] DateTime to,
+            [FromQuery] Guid? playerId = null,
+            [FromQuery] bool includeCreateror = false)
         {
-            return Ok("Not Implemented");
+            var query = new GetTrainingSessionsQuery(from, to, playerId, includeCreateror);
+            var result = await _sender.Send(query);
+            return MapResult(result);
         }
-        [HttpGet("playeres/{playerId}")]
-        public async Task<IActionResult> GetPlayerSessions([FromRoute] Guid? playerId)
-        {
-            return Ok("Not Implemented");
-        }
+
 
     }
 }

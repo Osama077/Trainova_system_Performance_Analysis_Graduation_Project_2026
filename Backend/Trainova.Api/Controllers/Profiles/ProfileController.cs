@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Trainova.Api.Requsts.Profiles;
 using Trainova.Application.Common.Models;
+using Trainova.Application.Profiles.Players.Queries.GetSquadHealthProfiles;
 
 namespace Trainova.Api.Controllers.Profiles
 {
@@ -22,7 +23,13 @@ namespace Trainova.Api.Controllers.Profiles
             var query = request.ToQuery(playerId);
             var result = await _sender.Send(query);
             return MapResult(result);
-
+        }
+        [HttpGet("MedicalAnalytics")]
+        public async Task<IActionResult> GetMedicalStatus(
+            [FromQuery] GetSquadHealthProfilesQuery request)
+        {
+            var result = await _sender.Send(request);
+            return MapResult(result);
         }
 
     }

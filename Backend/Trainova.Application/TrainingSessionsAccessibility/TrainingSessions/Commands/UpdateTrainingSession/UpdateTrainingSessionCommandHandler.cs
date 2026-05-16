@@ -30,7 +30,7 @@ namespace Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Co
                 await _unitOfWork.StartTransactionAsync();
 
                 // Update training session
-                session.Update(request.SessionName, request.Place, request.PlanState, request.WillHappenAt, request.State);
+                session.Update(request.SessionName, request.Place, request.PlanState, request.WillHappenAt);
 
                 await _trainingSessionRepository.UpdateAsync(session);
 

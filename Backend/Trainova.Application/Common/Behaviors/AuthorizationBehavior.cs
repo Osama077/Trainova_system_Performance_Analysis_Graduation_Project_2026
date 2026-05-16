@@ -36,6 +36,9 @@ public class AuthorizationBehavior<TRequest, TResponse>(CurrentUser? _currentUse
         if (request is IPlayerAuthraizedRequest playerAuthraizedRequest)
             MatchPlayerId(playerAuthraizedRequest);
 
+        if(request is ICreatorAuthraizedRequest creatorAuthraizedRequest)
+            MatchCreatorId(creatorAuthraizedRequest);
+
         if (_currentUser.IsAuthenticated
             && (_currentUser.Role.Contains(Role.SystemAdmin.Name) || _currentUser.Role.Contains(Role.SystemOwner.Name)))
             return await next();
@@ -56,6 +59,11 @@ public class AuthorizationBehavior<TRequest, TResponse>(CurrentUser? _currentUse
     {
         if(_currentUser.Role==Role.Player.Name)
             playerAuthraizedRequest.PlayerId = _currentUser.Id;
+    }
+    private void MatchCreatorId(ICreatorAuthraizedRequest creatorAuthraizedRequest)
+    {
+        if(_currentUser.Role!=Role.Player.Name && creatorAuthraizedRequest.IncludeCreateror)
+            creatorAuthraizedRequest.CreatorId = _currentUser.Id;
     }
 
 }

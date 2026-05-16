@@ -11,7 +11,7 @@ namespace Trainova.Api.Requests.MedicalStatus.PlayerInjuries
         public InjuryStatus Status { get; set; } = InjuryStatus.InHealing;
         public DateTime? HappendAt { get; set; }
         public InjuryCause Cause { get; set; } = InjuryCause.Unknown;
-        public SevertiyGrade SevertiyGrade { get; set; } = SevertiyGrade.Mild;
+        public SeverityGrade SevertiyGrade { get; set; } = SeverityGrade.Mild;
         public BodyPart BodyPart { get; set; }
         public string? Notes { get; set; }
         public bool IsNew { get; set; } = false;

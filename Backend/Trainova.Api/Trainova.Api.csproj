@@ -25,5 +25,9 @@
     <ProjectReference Include="..\Trainova.Application\Trainova.Application.csproj" />
     <ProjectReference Include="..\Trainova.Bootstrapper\Trainova.Bootstrapper.csproj" />
   </ItemGroup>
-
+	<ItemGroup>
+		<Content Update="appsettings.Development.json">
+			<CopyToPublishDirectory>Never</CopyToPublishDirectory>
+		</Content>
+	</ItemGroup>
 </Project>

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Trainova.Domain.TrainingSessionsAccessibility;
+﻿using Trainova.Domain.TrainingSessionsAccessibility;
 
 namespace Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAccessablity
 {
@@ -12,7 +9,7 @@ namespace Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAcc
         Task UpdateAsync(TrainingSession session);
         Task DeleteAsync(TrainingSession session);
         Task<bool> ExistsAsync(Guid? planId = null, Guid? accessPolicyId = null);
-        Task<IEnumerable<TrainingSession>> GetAllAsync(Guid? accessPolicyId);
         Task<int> CountByAccessPolicyIdAsync(Guid accessPolicyId);
+        Task<IEnumerable<TrainingSession>> GetTrainingSessionsAsync(DateTime from, DateTime to, Guid? userAccsessPolicyId = null, Guid? creatorId = null);
     }
 }

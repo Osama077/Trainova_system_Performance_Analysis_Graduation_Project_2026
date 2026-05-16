@@ -47,6 +47,18 @@ namespace Trainova.Api.Controllers.MedicalStatus
                 onError: errors => ErrorsPassed(errors));
 
         }
+        [HttpGet("trend")]
+        public async Task<IActionResult> GetPlayerInjuriesTrend(
+            [FromQuery] GetPlayerInjuryTrendFiltrationRequest request
+            )
+        {
+            var query = request.ToTrendQuery();
+            var result = await _sender.Send(query);
+            return result.Match(
+                onValue: (injury, status) =>Success(injury, status),
+                onError: errors => ErrorsPassed(errors));
+
+        }
         [HttpGet("history")]
         public async Task<IActionResult> GetPlayerInjuriesHistory(
             [FromQuery] HistoryRequest pagennator,
