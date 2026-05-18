@@ -41,5 +41,13 @@ namespace Trainova.Api.Controllers.TrainingSessionAccessablity
                 onValue: (done, status) => Success(done, status),
                 onError: errors => ErrorsPassed(errors));
         }
+
+        [HttpPost("search")]
+        public async Task<IActionResult> Search([FromBody] Trainova.Api.Requests.TrainingSessionAccessablity.AccessPolicies.SearchAccessPolicyRequest request)
+        {
+            var query = request.ToQuery();
+            var result = await _sender.Send(query);
+            return MapResult(result);
+        }
     }
 }
