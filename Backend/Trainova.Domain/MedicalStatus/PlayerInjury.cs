@@ -1,4 +1,5 @@
-﻿using Trainova.Domain.Common.BaseEntity;
+﻿using System.Text.Json.Serialization;
+using Trainova.Domain.Common.BaseEntity;
 using Trainova.Domain.Common.Enums;
 using Trainova.Domain.Common.Helpers;
 using Trainova.Domain.Profiles;
@@ -8,8 +9,10 @@ namespace Trainova.Domain.MedicalStatus
     public class PlayerInjury : AuditableEntity<Guid>
     {
         public Guid InjuryId { get; private set; }
+        [JsonIgnore]
         public Injury Injury { get; private set; }
         public Guid PlayerId { get; private set; }
+        [JsonIgnore]
         public Player Player { get; private set; }
         public InjuryStatus Status { get; private set; } = InjuryStatus.InHealing;
         public InjuryCause Cause { get; private set; }
@@ -21,7 +24,7 @@ namespace Trainova.Domain.MedicalStatus
         public DateTime? HappendAt { get; private set; }
         public DateTime? ReturnedAt { get; private set; }
         public DateTime? ExpectedReturnDate { get; private set; }
-
+        [JsonIgnore]
         public List<RecoveryPlanPhase> Phases { get; private set; } = new List<RecoveryPlanPhase>();
 
 
@@ -40,7 +43,7 @@ namespace Trainova.Domain.MedicalStatus
         {
             if (player.MedicalStatus != PlayerMedicalStatus.Injured)
             {
-                Player!.MarkAsInjuried();
+                player!.MarkAsInjuried();
             }
             PlayerId = player.Id;
             InjuryId = injury.Id;

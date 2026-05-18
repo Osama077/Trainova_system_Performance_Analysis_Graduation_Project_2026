@@ -4,7 +4,7 @@ namespace Trainova.Application.Profiles.Players.Queries.GetSquadHealthProfiles
 {
     public class SquadHealthDetailes
     {
-        public IEnumerable<SquadHealthProfilesDataReadingModel> SquadHealthProfiles { get; set; }
+        public IEnumerable<PlayerHealthProfileModel> SquadHealthProfiles { get; set; }
 
         public GeneralStats General { get; set; } = new();
         public SeverityStats Severity { get; set; } = new();
@@ -12,78 +12,117 @@ namespace Trainova.Application.Profiles.Players.Queries.GetSquadHealthProfiles
         public CauseStats Cause { get; set; } = new();
         public TypeStats Type { get; set; } = new();
 
-        public SquadHealthDetailes(IEnumerable<SquadHealthProfilesDataReadingModel> profiles)
+        public SquadHealthDetailes(IEnumerable<SquadHealthProfilesDataReadingModel> flatProfiles)
         {
-            SquadHealthProfiles = profiles ?? new List<SquadHealthProfilesDataReadingModel>();
-            General.TotalPlayers = SquadHealthProfiles.Count();
+            var rawProfiles = flatProfiles ?? new List<SquadHealthProfilesDataReadingModel>();
 
-            foreach (var profile in SquadHealthProfiles)
+            General.TotalPlayers = rawProfiles.Select(p => p.PlayerId).Distinct().Count();
+
+            var groupedPlayers = rawProfiles
+                .GroupBy(p => p.PlayerId)
+                .Select(group => {
+                    var firstRow = group.First();
+
+                    var injuriesList = group
+                        .Where(i => i.PlayerInjuryId.HasValue && i.InjuryStatus != nameof(InjuryStatus.Ended))
+                        .Select(i => new PlayerInjuryDetailModel(
+                            i.PlayerInjuryId!.Value,
+                            i.InjuryStatus,
+                            i.Cause,
+                            i.SevertiyGrade,
+                            i.BodyPart,
+                            i.Notes,
+                            i.IsNew,
+                            i.HappendAt,
+                            i.ReturnedAt,
+                            i.ExpectedReturnDate,
+                            i.InjuryId,
+                            i.InjuryName,
+                            i.AverageRecoveryTimeInDayes,
+                            i.InjuryDescription,
+                            i.InjuryType,
+                            i.ProgressPercentage
+                        )).ToList();
+
+                    return new PlayerHealthProfileModel(
+                        firstRow.PlayerId,
+                        firstRow.ShowName,
+                        firstRow.FullName,
+                        firstRow.PhotoPath,
+                        firstRow.Email,
+                        firstRow.PlayerNumber,
+                        firstRow.TShirtName,
+                        firstRow.PlayerMedicalStatus,
+                        firstRow.CurrentMainPosition,
+                        firstRow.OtherAvailablePositions,
+                        firstRow.PerformanceLevel,
+                        firstRow.DateOfEnrolment,
+                        injuriesList
+                    );
+                }).ToList();
+
+            SquadHealthProfiles = groupedPlayers;
+
+            foreach (var player in groupedPlayers)
             {
-                if (profile.PlayerInjuryId.HasValue && profile.InjuryStatus != nameof(InjuryStatus.Ended))
+                if (player.Injuries.Any())
                 {
                     General.TotalInjured++;
 
-                    // 1. New vs Old
-                    if (profile.IsNew.HasValue)
+                    foreach (var injury in player.Injuries)
                     {
-                        if (profile.IsNew.Value) General.TotalIsNew++;
-                        else General.TotalIsNotNew++;
-                    }
-
-                    // 2. Severity Grade
-                    if (profile.SevertiyGrade.HasValue)
-                    {
-                        switch ((SeverityGrade)profile.SevertiyGrade.Value)
+                        if (injury.IsNew.HasValue)
                         {
-                            case SeverityGrade.Mild: Severity.Mild++; break;
-                            case SeverityGrade.Medium: Severity.Medium++; break;
-                            case SeverityGrade.Severe: Severity.Severe++; break;
+                            if (injury.IsNew.Value) General.TotalIsNew++;
+                            else General.TotalIsNotNew++;
                         }
-                    }
 
-                    // 3. Injury Status
-                    if (!string.IsNullOrEmpty(profile.InjuryStatus))
-                    {
-                        if (profile.InjuryStatus == nameof(InjuryStatus.InHealing)) Status.InHealing++;
-                        else if (profile.InjuryStatus == nameof(InjuryStatus.InRecovery)) Status.InRecovery++;
-                    }
+                        if (injury.SevertiyGrade.HasValue)
+                        {
+                            switch ((SeverityGrade)injury.SevertiyGrade.Value)
+                            {
+                                case SeverityGrade.Mild: Severity.Mild++; break;
+                                case SeverityGrade.Medium: Severity.Medium++; break;
+                                case SeverityGrade.Severe: Severity.Severe++; break;
+                            }
+                        }
 
-                    // 4. Injury Cause
-                    if (!string.IsNullOrEmpty(profile.Cause))
-                    {
-                        if (profile.Cause == nameof(InjuryCause.Training)) Cause.Training++;
-                        else if (profile.Cause == nameof(InjuryCause.Match)) Cause.Match++;
-                        else if (profile.Cause == nameof(InjuryCause.OverUse)) Cause.OverUse++;
-                        else if (profile.Cause == nameof(InjuryCause.Collision)) Cause.Collision++;
-                        else Cause.Unknown++;
-                    }
+                        if (!string.IsNullOrEmpty(injury.InjuryStatus))
+                        {
+                            if (injury.InjuryStatus == nameof(InjuryStatus.InHealing)) Status.InHealing++;
+                            else if (injury.InjuryStatus == nameof(InjuryStatus.InRecovery)) Status.InRecovery++;
+                        }
 
-                    // 5. Injury Type
-                    if (!string.IsNullOrEmpty(profile.InjuryType))
-                    {
-                        if (profile.InjuryType == nameof(InjuryType.Muscular)) Type.Muscular++;
-                        else if (profile.InjuryType == nameof(InjuryType.Bone)) Type.Bone++;
-                        else if (profile.InjuryType == nameof(InjuryType.Joint)) Type.Joint++;
-                        else if (profile.InjuryType == nameof(InjuryType.Ligament)) Type.Ligament++;
-                        else Type.Other++;
+                        if (!string.IsNullOrEmpty(injury.Cause))
+                        {
+                            if (injury.Cause == nameof(InjuryCause.Training)) Cause.Training++;
+                            else if (injury.Cause == nameof(InjuryCause.Match)) Cause.Match++;
+                            else if (injury.Cause == nameof(InjuryCause.OverUse)) Cause.OverUse++;
+                            else if (injury.Cause == nameof(InjuryCause.Collision)) Cause.Collision++;
+                            else Cause.Unknown++;
+                        }
+
+                        if (!string.IsNullOrEmpty(injury.InjuryType))
+                        {
+                            if (injury.InjuryType == nameof(InjuryType.Muscular)) Type.Muscular++;
+                            else if (injury.InjuryType == nameof(InjuryType.Bone)) Type.Bone++;
+                            else if (injury.InjuryType == nameof(InjuryType.Joint)) Type.Joint++;
+                            else if (injury.InjuryType == nameof(InjuryType.Ligament)) Type.Ligament++;
+                            else Type.Other++;
+                        }
                     }
                 }
                 else
                 {
                     General.TotalHealthy++;
-
-                    if (profile.InjuryStatus == nameof(InjuryStatus.Ended))
-                    {
-                        Status.Ended++;
-                    }
                 }
             }
         }
 
-        // ==========================================
-        // Nested Classes
-        // ==========================================
-        public class GeneralStats
+        // =========================================================================
+        // SubClasses (Nested)
+        // =========================================================================
+        public record GeneralStats
         {
             public int TotalPlayers { get; set; }
             public int TotalInjured { get; set; }
@@ -92,21 +131,21 @@ namespace Trainova.Application.Profiles.Players.Queries.GetSquadHealthProfiles
             public int TotalIsNotNew { get; set; }
         }
 
-        public class SeverityStats
+        public record SeverityStats
         {
             public int Mild { get; set; }
             public int Medium { get; set; }
             public int Severe { get; set; }
         }
 
-        public class StatusStats
+        public record StatusStats
         {
             public int InHealing { get; set; }
             public int InRecovery { get; set; }
             public int Ended { get; set; }
         }
 
-        public class CauseStats
+        public record CauseStats
         {
             public int Training { get; set; }
             public int Match { get; set; }
@@ -115,7 +154,7 @@ namespace Trainova.Application.Profiles.Players.Queries.GetSquadHealthProfiles
             public int Unknown { get; set; }
         }
 
-        public class TypeStats
+        public record TypeStats
         {
             public int Muscular { get; set; }
             public int Bone { get; set; }
@@ -125,7 +164,42 @@ namespace Trainova.Application.Profiles.Players.Queries.GetSquadHealthProfiles
         }
     }
 
+    // =========================================================================
+    // =========================================================================
+    public record PlayerHealthProfileModel(
+        Guid PlayerId,
+        string ShowName,
+        string FullName,
+        string PhotoPath,
+        string Email,
+        int PlayerNumber,
+        string TShirtName,
+        string PlayerMedicalStatus,
+        int CurrentMainPosition,
+        int? OtherAvailablePositions,
+        int? PerformanceLevel,
+        DateTime DateOfEnrolment,
+        List<PlayerInjuryDetailModel> Injuries
+    );
 
+    public record PlayerInjuryDetailModel(
+        Guid PlayerInjuryId,
+        string InjuryStatus,
+        string Cause,
+        int? SevertiyGrade,
+        string BodyPart,
+        string Notes,
+        bool? IsNew,
+        DateTime? HappendAt,
+        DateTime? ReturnedAt,
+        DateTime? ExpectedReturnDate,
+        Guid? InjuryId,
+        string InjuryName,
+        int? AverageRecoveryTimeInDayes,
+        string InjuryDescription,
+        string InjuryType,
+        decimal ProgressPercentage
+    );
 
     public class SquadHealthProfilesDataReadingModel
     {
@@ -134,7 +208,6 @@ namespace Trainova.Application.Profiles.Players.Queries.GetSquadHealthProfiles
         public string FullName { get; set; }
         public string PhotoPath { get; set; }
         public string Email { get; set; }
-
         public int PlayerNumber { get; set; }
         public string TShirtName { get; set; }
         public string PlayerMedicalStatus { get; set; }
@@ -142,7 +215,6 @@ namespace Trainova.Application.Profiles.Players.Queries.GetSquadHealthProfiles
         public int? OtherAvailablePositions { get; set; }
         public int? PerformanceLevel { get; set; }
         public DateTime DateOfEnrolment { get; set; }
-
         public Guid? PlayerInjuryId { get; set; }
         public string InjuryStatus { get; set; }
         public string Cause { get; set; }
@@ -153,14 +225,11 @@ namespace Trainova.Application.Profiles.Players.Queries.GetSquadHealthProfiles
         public DateTime? HappendAt { get; set; }
         public DateTime? ReturnedAt { get; set; }
         public DateTime? ExpectedReturnDate { get; set; }
-
         public Guid? InjuryId { get; set; }
         public string InjuryName { get; set; }
         public int? AverageRecoveryTimeInDayes { get; set; }
         public string InjuryDescription { get; set; }
         public string? InjuryType { get; set; }
-
         public decimal ProgressPercentage { get; set; } = 0;
     }
-
 }

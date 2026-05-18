@@ -9,14 +9,14 @@ namespace Trainova.Domain.MedicalStatus
         public int Order { get; private set; } = 0;
         public string? Description { get; private set; }
         public DateTime From { get; private set; } = DateTime.UtcNow;
-        public DateTime? To { get; private set; }
+        public DateTime To { get; private set; }
         public List<string> Activities { get; private set; } = new List<string>();
         public RecoveryPlanPhase(
             Guid playerInjuryId,
             string name,
             string? description,
+            DateTime to,
             DateTime? from = null,
-            DateTime? to = null,
             List<string> activties = null,
             Guid? createdBy = null)
             : base(Guid.NewGuid(),createdBy)
@@ -34,6 +34,21 @@ namespace Trainova.Domain.MedicalStatus
         {
             MarkUpdatedNow();
             Order = order;
+        }
+        public void Update(
+            string? name = null,
+            string? description = null,
+            DateTime? to = null,
+            DateTime? from = null,
+            List<string>? activties = null)
+        {
+            MarkUpdatedNow();
+            Name = name;
+            Description = description;
+            From = from ?? From;
+            To = to ?? To;
+            if (activties != null)
+                Activities = activties;
         }
 
         private RecoveryPlanPhase() { }

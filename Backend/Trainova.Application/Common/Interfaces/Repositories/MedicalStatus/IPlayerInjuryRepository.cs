@@ -62,5 +62,7 @@ namespace Trainova.Application.Common.Interfaces.Repositories.MedicalStatus
             Guid? playerId = null,
             Guid? injuryId = null);
         Task<CasesCountResponse> GetInjuriesCountOver(int days = 7, Guid? injuryId = null);
+        Task<PlayerInjury?> GetByIdAsync(Guid playerInjuryId);
+        Task<PlayerInjury?> GetByIdWithPhasesIncludedAsync(Guid playerInjuryId);
     }
 }

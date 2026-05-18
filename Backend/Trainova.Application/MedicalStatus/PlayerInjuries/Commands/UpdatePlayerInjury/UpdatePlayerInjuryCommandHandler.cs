@@ -1,6 +1,5 @@
 using MediatR;
 using Trainova.Application.Common.Interfaces.Repositories.MedicalStatus;
-using Trainova.Application.Common.Models;
 using Trainova.Common.ResultOf;
 using Trainova.Common.Errors;
 using Trainova.Application.Common.Interfaces.Services;
@@ -11,15 +10,14 @@ namespace Trainova.Application.MedicalStatus.PlayerInjuries.Commands.UpdatePlaye
 {
     public class UpdatePlayerInjuryCommandHandler(
         IPlayerInjuryRepository _playerInjuryRepository,
-        IUnitOfWork _unitOfWork,
-        CurrentUser currentUser)
+        IUnitOfWork _unitOfWork)
         : IRequestHandler<UpdatePlayerInjuryCommand, ResultOf<PlayerInjury>>
     {
         public async Task<ResultOf<PlayerInjury>> Handle(UpdatePlayerInjuryCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                var existing = (await _playerInjuryRepository.GetAllAsync(playerInjuryId: request.Id)).FirstOrDefault();
+                var existing = await _playerInjuryRepository.GetByIdAsync(request.Id);
 
                 if (existing == null)
                 {
@@ -53,7 +51,7 @@ namespace Trainova.Application.MedicalStatus.PlayerInjuries.Commands.UpdatePlaye
             }
             catch (Exception ex)
             {
-                return Error.Unexpected(code: "UpdatePlayerInjuryUnexpectedError", description: ex.Message);
+                return Error.Unexpected(code: "UpdatePlayerInjuryCommandHandler.Handle_Unexpected", description: ex.Message);
             }
         }
     }

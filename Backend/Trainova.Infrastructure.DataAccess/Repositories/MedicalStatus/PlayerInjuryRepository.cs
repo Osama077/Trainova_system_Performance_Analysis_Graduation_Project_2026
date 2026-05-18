@@ -15,25 +15,25 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus
 {
     public class PlayerInjuryRepository : IPlayerInjuryRepository
     {
-        private readonly TrainovaWriteDbContext _db;
+        private readonly TrainovaWriteDbContext _dbContext;
         private readonly IDbSettings _dbSettings;
 
         public PlayerInjuryRepository(TrainovaWriteDbContext db, IDbSettings dbSettings)
         {
-            _db = db;
+            _dbContext = db;
             _dbSettings = dbSettings;
         }
 
         public async Task AddAsync(PlayerInjury playerInjury)
         {
-            await _db.PlayerInjuries.AddAsync(playerInjury);
-            await _db.SaveChangesAsync();
+            await _dbContext.PlayerInjuries.AddAsync(playerInjury);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task DeleteRangeAsync(IEnumerable<PlayerInjury> playerInjuries)
         {
-            _db.PlayerInjuries.RemoveRange(playerInjuries);
-            await _db.SaveChangesAsync();
+            _dbContext.PlayerInjuries.RemoveRange(playerInjuries);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<PlayerInjury>> GetAllAsync(
@@ -50,7 +50,7 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus
             DateTime? returnedBefore = null,
             DateTime? returnedAfter = null)
         {
-            IQueryable<PlayerInjury> query = _db.PlayerInjuries.AsQueryable();
+            IQueryable<PlayerInjury> query = _dbContext.PlayerInjuries.AsQueryable();
 
             if (playerInjuryId.HasValue)
                 query = query.Where(pi => pi.Id == playerInjuryId.Value);
@@ -93,8 +93,8 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus
 
         public async Task UpdateAsync(PlayerInjury playerInjury)
         {
-            _db.PlayerInjuries.Update(playerInjury);
-            await _db.SaveChangesAsync();
+            _dbContext.PlayerInjuries.Update(playerInjury);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<PlayerInjuryReadModel>> GetReadModelsAsync(
@@ -148,7 +148,7 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus
 
         public async Task<bool> ExistesAsync(Guid? playerInjuryId = null, Guid? playerId = null, Guid? injuryId = null)
         {
-            return await _db.PlayerInjuries.AnyAsync(
+            return await _dbContext.PlayerInjuries.AnyAsync(
                 pi => (!playerInjuryId.HasValue || pi.Id == playerInjuryId.Value) &&
                       (!playerId.HasValue || pi.PlayerId == playerId.Value) &&
                       (!injuryId.HasValue || pi.InjuryId == injuryId.Value));
@@ -204,6 +204,16 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus
                 commandType: System.Data.CommandType.StoredProcedure);
 
             return result;
+        }
+
+        public async Task<PlayerInjury?> GetByIdAsync(Guid playerInjuryId)
+        {
+            return await _dbContext.PlayerInjuries.FirstOrDefaultAsync(pi => pi.Id == playerInjuryId);
+        }
+
+        public async Task<PlayerInjury?> GetByIdWithPhasesIncludedAsync(Guid playerInjuryId)
+        {
+            return await _dbContext.PlayerInjuries.Include(pi=>pi.Phases).FirstOrDefaultAsync(pi => pi.Id == playerInjuryId);
         }
     }
 }
