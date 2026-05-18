@@ -1,13 +1,12 @@
-﻿using MediatR;
-
+﻿
 namespace Trainova.Domain.Common.BaseEntity
 {
-    public abstract class Entity<TId> : ICreatorLogable ,IHasId<TId>
+    public abstract class Entity<TId> : IEntity<TId>
     {
         public TId Id { get; protected set; } = default!;
         public Guid? CreatedBy { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
-        private List<INotification> _domainEvents = new List<INotification>();
+        private List<IDomainEvent> _domainEvents = new List<IDomainEvent>();
 
         protected Entity(Guid? createdBy = null)
         {
@@ -30,10 +29,17 @@ namespace Trainova.Domain.Common.BaseEntity
 
             CreatedBy = creatorId;
         }
-        protected void AddDomainEvent(INotification domainEvent)
+        protected void AddDomainEvent(IDomainEvent domainEvent)
         {
             _domainEvents.Add(domainEvent);
         }
+        void IEntity<TId>.AddDomainEvent(IDomainEvent domainEvent)
+        {
+            AddDomainEvent(domainEvent);
+        }
     }
-
+    public interface IEntity<TId>: IHasId<TId>,ICreatorLogable
+    {
+        void AddDomainEvent(IDomainEvent domainEvent);
+    }
 }

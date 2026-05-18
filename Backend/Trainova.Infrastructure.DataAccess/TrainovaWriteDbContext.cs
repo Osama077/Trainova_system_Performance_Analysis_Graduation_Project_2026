@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -39,7 +40,7 @@ namespace Trainova.Infrastructure.DataAccess
 
         // Outbox
         public DbSet<EmailOutbox> EmailOutboxes { get; set; }
-
+        public DbSet<DomainEventOutbox> DomainEventOutboxes { get; set; }
 
         // Domain Entities
 
@@ -103,7 +104,7 @@ namespace Trainova.Infrastructure.DataAccess
         {
             // Apply all IEntityTypeConfiguration implementations from this assembly
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(TrainovaWriteDbContext).Assembly);
-
+            ConfigureEventsOutboxEntity(modelBuilder.Entity<DomainEventOutbox>());
             base.OnModelCreating(modelBuilder);
         }
 
@@ -194,6 +195,18 @@ namespace Trainova.Infrastructure.DataAccess
             return result;
         }
 
-
+        private void ConfigureEventsOutboxEntity(EntityTypeBuilder<DomainEventOutbox> modelBuilder)
+        {
+            modelBuilder.Property(e => e.Id)
+                .IsRequired();
+            modelBuilder.Property(e => e.EventType)
+                .IsRequired()
+                .HasMaxLength(200);
+            modelBuilder.Property(e => e.Notification)
+                .HasMaxLength(5000)
+                .IsRequired();
+            modelBuilder.Property(e => e.IsHandled)
+                .IsRequired();
+        }
     }
 }

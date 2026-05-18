@@ -1,10 +1,7 @@
-﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Trainova.Domain.Common.BaseEntity;
 
 namespace Trainova.Domain.UserAuth.DomainEvents
 {
-    public record TFATokenCreateEvent(User User) : INotification;
+    public record TFATokenCreateEvent(User User) : IDomainEvent;
 
 }

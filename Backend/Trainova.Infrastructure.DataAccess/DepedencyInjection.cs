@@ -32,11 +32,28 @@ public static class DependencyInjection
         services.AddScoped<IUnitOfWork>(sp =>
             sp.GetRequiredService<TrainovaWriteDbContext>());
 
-        services.AddSingleton<IDbSettings>(new DbSettings(
-                configuration.GetConnectionString("TrainovaWriteDbConnection"),
-                configuration.GetConnectionString("TrainovaReadDbConnection"))
-        );
+        services.AddSingleton<ConnectionString>(sp =>
+        {
+            var connStringObj = configuration.GetSection("ConnectionStrings").Get<ConnectionString>();
 
+            if (connStringObj == null || string.IsNullOrEmpty(connStringObj.TrainovaWriteDbConnection))
+            {
+                throw new InvalidOperationException("Could not load connection strings from configuration.");
+            }
+
+            return connStringObj;
+        });
+
+
+        //services.AddSingleton<IDbSettings>(new DbSettings(
+        //        configuration.GetConnectionString("TrainovaWriteDbConnection"),
+        //        configuration.GetConnectionString("TrainovaReadDbConnection"))
+        //);
+
+
+
+
+        services.AddScoped<IDbSettings, DbSettings>();
 
         //User and Auth Related Repos
         services.AddScoped<IUsersRepository, UsersRepository>();
@@ -50,7 +67,7 @@ public static class DependencyInjection
         services.AddScoped<IAuditRepository,AuditRepository>();
         // Outbox
         services.AddScoped<IEmailOutboxRepository, EmailOutboxRepository>();
-
+        services.AddScoped<IEventOutboxRepository, EventOutboxRepository>();
 
         // Profiles
         services.AddScoped<IPlayerRepository,PlayerRepository>();
