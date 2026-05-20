@@ -2,10 +2,14 @@ using MediatR;
 using Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAccessablity;
 using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
 using Trainova.Application.Common.Interfaces.Services;
+using Trainova.Application.Common.Models;
+using Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Commands.CreateTrainingSession;
 using Trainova.Common.Errors;
 using Trainova.Common.ResultOf;
+using Trainova.Domain.Common.Enums;
 using Trainova.Domain.Common.Helpers;
 using Trainova.Domain.TrainingSessionsAccessibility;
+using Trainova.Domain.UserAuth;
 
 namespace Trainova.Application.TrainingSessionsAccessibility.Plans.Commands.CreatePlan
 {
@@ -14,7 +18,8 @@ namespace Trainova.Application.TrainingSessionsAccessibility.Plans.Commands.Crea
         IAccessPolicyRepository _accessPolicyRepository,
         IUnitOfWork _unitOfWork,
         IUsersRepository _usersRepository,
-        IUserAccessPolicyRepository _userAccessPolicyRepository)
+        IUserAccessPolicyRepository _userAccessPolicyRepository,
+        CurrentUser _currentUser)
         : IRequestHandler<CreatePlanCommand, ResultOf<Plan>>
     {
         public async Task<ResultOf<Plan>> Handle(CreatePlanCommand request, CancellationToken cancellationToken)
@@ -39,41 +44,41 @@ namespace Trainova.Application.TrainingSessionsAccessibility.Plans.Commands.Crea
 
 
 
-                await _unitOfWork.StartTransactionAsync();
 
                 AccessPolicy accessPolicy;
+                List<UserAccessPolicy> userAccessPolicies;
 
                 if (!creatingNewPolicy)
                 {
-                    accessPolicy = await _accessPolicyRepository.GetByIdAsync(request.AccessPolicyId!.Value);
-
-                    if (accessPolicy is null)
+                    var polcyToBeCopied = await _accessPolicyRepository.GetByIdIncludingUsersAsync(request.AccessPolicyId!.Value);
+                    if (polcyToBeCopied is null)
                         return Error.NotFound("CreateTrainingSession.PolicyNotFound", "Access policy not found");
+
+                    accessPolicy = polcyToBeCopied.CopyAccessPolicy(out userAccessPolicies);
                 }
                 else
                 {
-                    accessPolicy = new AccessPolicy(request.PlanName);
+                    accessPolicy = new AccessPolicy(request.PlanName,isSession: false);
 
                     var users = await _usersRepository.GetByIdsAsync(request.UserIds!);
 
                     if (users.Count() != request.UserIds!.Count)
                         return Error.NotFound("CreateTrainingSession.UserNotFound", "One or more users not found");
 
-                    var userAccessPolicies = users
+                    userAccessPolicies = users
                         .Select(u => new UserAccessPolicy(accessPolicy.Id, u.Id, AttendanceStatus.Waiting))
                         .ToList();
-                    await _accessPolicyRepository.AddAsync(accessPolicy);
 
-                    await _userAccessPolicyRepository.AddRangeAsync(userAccessPolicies);
                 }
 
-                var plan = new Plan(
-                    request.PlanName,
-                    request.PlanGoal,
-                    request.PlanState,
-                    accessPolicy.Id,
-                    request.StartDate,
-                    request.EndDate);
+                var plan = CreatePlanAsWithNeededType(request, accessPolicy);
+
+                await _unitOfWork.StartTransactionAsync();
+
+
+                await _accessPolicyRepository.AddAsync(accessPolicy);
+
+                await _userAccessPolicyRepository.AddRangeAsync(userAccessPolicies);
 
                 await _planRepository.AddAsync(plan);
 
@@ -90,6 +95,25 @@ namespace Trainova.Application.TrainingSessionsAccessibility.Plans.Commands.Crea
             {
                 return Error.Unexpected("CreatePlanCommandHandler.Handle_Unexpected", ex.Message);
             }
+        }
+        private Plan CreatePlanAsWithNeededType(CreatePlanCommand request, AccessPolicy accessPolicy)
+        {
+            var planType = _currentUser switch
+            {
+                _ when _currentUser.IsInRole(StaticRoleNamesData.DoctorName) => SessionType.DoctorVisit,
+                _ when _currentUser.IsInRole(StaticRoleNamesData.HeadCoachName) => SessionType.TrainingVisit,
+                _ when _currentUser.IsInRole(StaticRoleNamesData.FitnessCoachName) => SessionType.FitnessVisit,
+                _ => SessionType.Other
+            };
+            return new Plan(
+                    request.PlanName,
+                    request.PlanGoal,
+                    request.PlanState,
+                    accessPolicy.Id,
+                    request.StartDate,
+                    request.EndDate,
+                    planType,
+                    _currentUser.Id);
         }
     }
 

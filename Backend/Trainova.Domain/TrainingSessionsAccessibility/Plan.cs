@@ -11,6 +11,7 @@ namespace Trainova.Domain.TrainingSessionsAccessibility
         public PlanState State { get; private set; }
         public Guid AccessPolicyId { get; private set; }
         public AccessPolicy AccessPolicy { get; private set; }
+        public SessionType PlanType { get; private set; }
 
         public DateTime StartDate { get; private set; }
         public DateTime? EndDate { get; private set; }
@@ -24,8 +25,9 @@ namespace Trainova.Domain.TrainingSessionsAccessibility
             string planGoul,
             PlanState state,
             Guid accessPolicyId,
-            DateTime startDate,
+            DateTime? startDate,
             DateTime? endDate,
+            SessionType planType,
             Guid? createdBy = null) : base(Guid.NewGuid(), createdBy)
         // ...existing code...
         {
@@ -33,7 +35,9 @@ namespace Trainova.Domain.TrainingSessionsAccessibility
             PlanGoul = planGoul;
             State = state;
             AccessPolicyId = accessPolicyId;
-            StartDate = startDate;
+            PlanType = planType;
+            StartDate = startDate ?? DateTime.UtcNow;
+
             EndDate = endDate;
         }
 

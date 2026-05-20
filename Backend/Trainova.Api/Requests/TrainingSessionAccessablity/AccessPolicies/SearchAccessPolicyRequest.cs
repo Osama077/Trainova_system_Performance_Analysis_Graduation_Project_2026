@@ -2,13 +2,11 @@ using Trainova.Application.TrainingSessionsAccessibility.AccessPolicies.Queries.
 
 namespace Trainova.Api.Requests.TrainingSessionAccessablity.AccessPolicies;
 
-public record SearchAccessPolicyRequest(
-    string? SearchTerm,
-    string? UsageType = null,
-    int? PageNumber = null,
-    int? PageSize = null,
-    string SortColumn = "CreatedAt",
-    string SortDirection = "DESC")
+public class SearchAccessPolicyRequest
 {
-    public SearchAccessPoliciesQuery ToQuery() => new SearchAccessPoliciesQuery(SearchTerm, UsageType, PageNumber, PageSize, SortColumn, SortDirection);
+    public string SearchTerm { get; set; } = null;
+    public bool? IsSession { get; set; } = null;
+    public int PageNumber { get; set; } = 0;
+    public int PageSize { get; set; } = 12;
+    public SearchAccessPoliciesQuery ToQuery() => new SearchAccessPoliciesQuery(SearchTerm, IsSession, PageNumber, PageSize);
 }

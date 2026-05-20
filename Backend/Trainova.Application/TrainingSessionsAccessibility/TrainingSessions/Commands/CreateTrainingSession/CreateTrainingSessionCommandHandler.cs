@@ -43,35 +43,43 @@ namespace Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Co
                         return Error.NotFound("CreateTrainingSession.PlanNotFound", "Plan not found");
                 }
 
-                await _unitOfWork.StartTransactionAsync();
+
 
                 AccessPolicy accessPolicy;
+                List<UserAccessPolicy> userAccessPolicies;
 
                 if (!creatingNewPolicy)
                 {
-                    accessPolicy = await _accessPolicyRepository.GetByIdAsync(request.PolicyId!.Value);
-
-                    if (accessPolicy is null)
+                    var polcyToBeCopied = await _accessPolicyRepository.GetByIdIncludingUsersAsync(request.PolicyId!.Value);
+                    if (polcyToBeCopied is null)
                         return Error.NotFound("CreateTrainingSession.PolicyNotFound", "Access policy not found");
+
+                    accessPolicy = polcyToBeCopied.CopyAccessPolicy(out userAccessPolicies);
                 }
                 else
                 {
-                    accessPolicy = new AccessPolicy(request.SessionName);
+                    accessPolicy = new AccessPolicy(request.SessionName,isSession: true);
 
                     var users = await _usersRepository.GetByIdsAsync(request.UserIds!);
 
                     if (users.Count() != request.UserIds!.Count)
                         return Error.NotFound("CreateTrainingSession.UserNotFound", "One or more users not found");
 
-                    var userAccessPolicies = users
+                    userAccessPolicies = users
                         .Select(u => new UserAccessPolicy(accessPolicy.Id, u.Id, AttendanceStatus.Waiting))
                         .ToList();
-                    await _accessPolicyRepository.AddAsync(accessPolicy);
 
-                    await _userAccessPolicyRepository.AddRangeAsync(userAccessPolicies);
                 }
+                var session = CreateTrainingSessionAsWithNeededType(request, accessPolicy);
 
-                var session = CreateTrainingSessionAsWithNeededType(request, accessPolicy, _currentUser);
+                await _unitOfWork.StartTransactionAsync();
+
+
+                await _accessPolicyRepository.AddAsync(accessPolicy);
+
+                await _userAccessPolicyRepository.AddRangeAsync(userAccessPolicies);
+
+
 
                 await _trainingSessionRepository.AddAsync(session);
 
@@ -89,13 +97,13 @@ namespace Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Co
                 return Error.Unexpected("CreateTrainingSession.Unexpected", ex.Message);
             }
         }
-        private TrainingSession CreateTrainingSessionAsWithNeededType(CreateTrainingSessionCommand request, AccessPolicy accessPolicy, CurrentUser currentUser)
+        private TrainingSession CreateTrainingSessionAsWithNeededType(CreateTrainingSessionCommand request, AccessPolicy accessPolicy)
         {
-            var sessionType = currentUser switch
+            var sessionType = _currentUser switch
             {
-                _ when currentUser.IsInRole(StaticRoleNamesData.DoctorName) => SessionType.DoctorVisit,
-                _ when currentUser.IsInRole(StaticRoleNamesData.HeadCoachName) => SessionType.TrainingVisit,
-                _ when currentUser.IsInRole(StaticRoleNamesData.FitnessCoachName) => SessionType.FitnessVisit,
+                _ when _currentUser.IsInRole(StaticRoleNamesData.DoctorName) => SessionType.DoctorVisit,
+                _ when _currentUser.IsInRole(StaticRoleNamesData.HeadCoachName) => SessionType.TrainingVisit,
+                _ when _currentUser.IsInRole(StaticRoleNamesData.FitnessCoachName) => SessionType.FitnessVisit,
                 _ => SessionType.Other
             };
             return new TrainingSession(

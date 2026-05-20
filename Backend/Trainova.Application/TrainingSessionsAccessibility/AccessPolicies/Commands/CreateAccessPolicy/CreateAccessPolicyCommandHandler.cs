@@ -19,7 +19,7 @@ namespace Trainova.Application.TrainingSessionsAccessibility.AccessPolicies.Comm
         {
             try
             {
-                var policy = new AccessPolicy(request.PolicyName, _currentUser.Id);
+                var policy = new AccessPolicy(request.PolicyName, request.IsSession, _currentUser.Id);
 
                 // Start transaction
                 await _unitOfWork.StartTransactionAsync();

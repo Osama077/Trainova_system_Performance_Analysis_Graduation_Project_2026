@@ -6,6 +6,6 @@ using Trainova.Domain.TrainingSessionsAccessibility;
 namespace Trainova.Application.TrainingSessionsAccessibility.AccessPolicies.Commands.CreateAccessPolicy
 {
     [Authorize(Roles = "HeadCoach,AssistantCoach,SystemAdmin")]
-    public record CreateAccessPolicyCommand(string PolicyName)
+    public record CreateAccessPolicyCommand(string PolicyName, bool IsSession)
         : IRequest<ResultOf<AccessPolicy>>;
 }
