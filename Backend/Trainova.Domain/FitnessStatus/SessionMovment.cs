@@ -1,19 +1,14 @@
 ﻿using Trainova.Domain.Common.BaseEntity;
-using Trainova.Domain.Profiles;
+using Trainova.Domain.Common.Helpers;
 using Trainova.Domain.TrainingSessionsAccessibility;
 
-namespace Trainova.Domain.FitnessStatus.MovementDistances
+namespace Trainova.Domain.FitnessStatus
 {
     public class SessionMovement : AuditableEntity<Guid>
     {
-        private const decimal DefaultHumanError = 5;
 
-        public Guid PlayerId { get; private set; }
-        public Player Player { get; private set; }
-
-        public Guid TrainingSessionId { get; private set; }
-        public TrainingSession TrainingSession { get; private set; }
-
+        public Guid UserAccessPolicyId { get; private set; }
+        public UserAccessPolicy UserAccessPolicy { get; private set; }
         public int? SprintsCount { get; private set; }
 
         public Distance? Distance { get; private set; }
@@ -24,48 +19,36 @@ namespace Trainova.Domain.FitnessStatus.MovementDistances
         private SessionMovement() : base() { }
 
         public SessionMovement(
-            Guid playerId,
-            Guid trainingSessionId,
+            Guid userAccessPolicyId,
             int sprintsCount,
             Distance? distance,
-            Speed? speed,
-            decimal playerLoad)
+            Speed? speed)
         {
             if (sprintsCount < 0)
-                throw new ArgumentException("Invalid sprints count.");
+                throw new DomainException("Invalid sprints count.");
 
-            if (playerLoad < 0)
-                throw new ArgumentException("Invalid player load.");
-
-            PlayerId = playerId;
-            TrainingSessionId = trainingSessionId;
             SprintsCount = sprintsCount;
             Distance = distance;
             Speed = speed;
-            PlayerLoad = playerLoad;
+            PlayerLoad = 0;// for now but should be implemnted later
         }
 
         public static SessionMovement CreateFromRawData(
-            Guid playerId,
-            Guid trainingSessionId,
+            Guid userAccessPolicyId,
             int sprintsCount,
             decimal? averageSpeed,
             decimal? maxSpeed,
             decimal? peakAcceleration,
-            decimal playerLoad,
-            decimal? totalDistance,
+            decimal? playerLoad,
             decimal? walkDistance,
             decimal? runDistance,
-            decimal? highSpeedRunDistance,
-            decimal? humanError = null)
+            decimal? highSpeedRunDistance)
         {
-            var distance = totalDistance.HasValue
+            var distance = walkDistance.HasValue
                 ? new Distance(
-                    totalDistance.Value,
                     walkDistance ?? 0,
                     runDistance ?? 0,
-                    highSpeedRunDistance ?? 0,
-                    humanError ?? DefaultHumanError)
+                    highSpeedRunDistance ?? 0)
                 : null;
 
             var speed = averageSpeed.HasValue
@@ -76,12 +59,10 @@ namespace Trainova.Domain.FitnessStatus.MovementDistances
                 : null;
 
             return new SessionMovement(
-                playerId,
-                trainingSessionId,
+                userAccessPolicyId,
                 sprintsCount,
                 distance,
-                speed,
-                playerLoad);
+                speed);
         }
     }
 

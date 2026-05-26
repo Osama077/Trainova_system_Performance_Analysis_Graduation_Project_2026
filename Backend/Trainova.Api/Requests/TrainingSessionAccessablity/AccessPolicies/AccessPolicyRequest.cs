@@ -6,11 +6,10 @@ namespace Trainova.Api.Requests.TrainingSessionAccessablity.AccessPolicies
     public class CreateAccessPolicyRequest
     {
         public string PolicyName { get; set; }
-        public bool IsSession { get; set; }
 
         public CreateAccessPolicyCommand ToCommand()
         {
-            return new CreateAccessPolicyCommand(PolicyName,IsSession);
+            return new CreateAccessPolicyCommand(PolicyName);
         }
     }
 

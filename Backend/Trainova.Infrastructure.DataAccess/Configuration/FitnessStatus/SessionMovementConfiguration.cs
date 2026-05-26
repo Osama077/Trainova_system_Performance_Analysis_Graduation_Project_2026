@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Trainova.Domain.FitnessStatus.MovementDistances;
+using Trainova.Domain.FitnessStatus;
 using Trainova.Infrastructure.DataAccess.Configuration.Common;
 
 namespace Trainova.Infrastructure.DataAccess.Configuration.FitnessStatus
@@ -19,16 +19,12 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.FitnessStatus
             // =========================
 
             builder
-                .HasOne(sm => sm.Player)
-                .WithMany()
-                .HasForeignKey(sm => sm.PlayerId)
+                .HasOne(sm => sm.UserAccessPolicy)
+                .WithOne(ac => ac.SessionMovement)
+                .HasForeignKey<SessionMovement>(sm => sm.UserAccessPolicyId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder
-                .HasOne(sm => sm.TrainingSession)
-                .WithMany()
-                .HasForeignKey(sm => sm.TrainingSessionId)
-                .OnDelete(DeleteBehavior.Cascade);
+
 
             // =========================
             // Simple Properties

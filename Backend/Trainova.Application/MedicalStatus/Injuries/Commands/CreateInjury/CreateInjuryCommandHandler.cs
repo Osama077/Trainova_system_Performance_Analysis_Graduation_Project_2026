@@ -12,7 +12,8 @@ namespace Trainova.Application.MedicalStatus.Injuries.Commands.CreateInjury
 {
     public class CreateInjuryCommandHandler(
         IInjuryRepository _injuryrepository,
-        IUnitOfWork _unitOfWork)
+        IUnitOfWork _unitOfWork,
+        CurrentUser _currentUser)
         : IRequestHandler<CreateInjuryCommand, ResultOf<Injury>>
     {
 
@@ -25,7 +26,8 @@ namespace Trainova.Application.MedicalStatus.Injuries.Commands.CreateInjury
                     request.Name,
                     request.Description,
                     request.InjuryType,
-                    request.TimeAmountInDayes
+                    request.TimeAmountInDayes,
+                    _currentUser.Id
                     );
                 await _unitOfWork.StartTransactionAsync();
 

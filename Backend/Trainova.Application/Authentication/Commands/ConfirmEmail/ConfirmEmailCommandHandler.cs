@@ -1,10 +1,11 @@
-﻿using Trainova.Application.Common.Interfaces.Services;
-using MediatR;
-using Trainova.Common.ResultOf;
-using Trainova.Common.Errors;
+﻿using MediatR;
 using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
+using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Application.Common.Models;
+using Trainova.Common.Errors;
+using Trainova.Common.ResultOf;
 using Trainova.Domain.Common.Helpers;
+using Trainova.Domain.TrainingSessionsAccessibility;
 using Trainova.Domain.UserAuth;
 
 
@@ -62,7 +63,7 @@ namespace Trainova.Application.Authentication.Commands.ConfirmEmail
                 await _unitOfWork.CommitTransactionAsync();
 
 
-                return Done.done.AsNoContent();
+                return Done.Default;
 
             }
             catch (DomainException ex)

@@ -1,5 +1,6 @@
 ﻿using Trainova.Domain.Common.BaseEntity;
 using Trainova.Domain.Common.Helpers;
+using Trainova.Domain.FitnessStatus;
 using Trainova.Domain.UserAuth;
 
 namespace Trainova.Domain.TrainingSessionsAccessibility
@@ -12,6 +13,7 @@ namespace Trainova.Domain.TrainingSessionsAccessibility
         public User User { get; private set; }
         public AttendanceStatus AttendanceState { get; private set; }
         public decimal DoneScore { get; private set; } = 0;
+        public SessionMovement? SessionMovement { get; private set; }
 
         public UserAccessPolicy(
             Guid accessPoliciesId,

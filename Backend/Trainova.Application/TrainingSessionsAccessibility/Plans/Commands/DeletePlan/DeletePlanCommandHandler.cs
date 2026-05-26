@@ -4,6 +4,7 @@ using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Common.Errors;
 using Trainova.Common.ResultOf;
 using Trainova.Domain.Common.Helpers;
+using Trainova.Domain.TrainingSessionsAccessibility;
 
 namespace Trainova.Application.TrainingSessionsAccessibility.Plans.Commands.DeletePlan
 {
@@ -53,7 +54,7 @@ namespace Trainova.Application.TrainingSessionsAccessibility.Plans.Commands.Dele
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
                 await _unitOfWork.CommitTransactionAsync();
 
-                return Done.done.AsNoContent();
+                return new Done(id: plan.Id).NoContent;
             }
             catch (DomainException ex)
             {

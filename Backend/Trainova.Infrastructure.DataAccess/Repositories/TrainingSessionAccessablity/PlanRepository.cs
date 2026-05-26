@@ -55,7 +55,7 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.TrainingSessionAccessa
 
         public Task<int> CountByAccessPolicyIdAsync(Guid accessPolicyId)
         {
-            throw new NotImplementedException();
+            return _dbContext.Plans.CountAsync(x => x.AccessPolicyId == accessPolicyId);
         }
     }
 }

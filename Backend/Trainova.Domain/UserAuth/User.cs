@@ -67,7 +67,7 @@ namespace Trainova.Domain.UserAuth
                 return PasswordHashresult.Errors;
             }
             _passwordHash = PasswordHashresult.Value;
-            return Done.done;
+            return Done.Default;
         }
 
         public void ConfirmEmail()

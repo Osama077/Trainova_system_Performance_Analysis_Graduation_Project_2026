@@ -34,7 +34,7 @@ namespace Trainova.Application.TrainingSessionsAccessibility.UserAccessPolicies.
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
                 await _unitOfWork.CommitTransactionAsync();
 
-                return Done.done.AsNoContent();
+                return new Done(id: userAccessPolicy.Id).NoContent;
             }
             catch (DomainException ex)
             {

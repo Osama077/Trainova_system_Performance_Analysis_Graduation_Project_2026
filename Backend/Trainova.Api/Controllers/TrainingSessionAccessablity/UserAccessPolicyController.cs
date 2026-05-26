@@ -5,6 +5,8 @@ using Trainova.Application.Common.Models;
 using Trainova.Application.TrainingSessionsAccessibility.UserAccessPolicies.Commands.CreateUserAccessPolicy;
 using Trainova.Application.TrainingSessionsAccessibility.UserAccessPolicies.Commands.DeleteUserAccessPolicy;
 using Trainova.Application.TrainingSessionsAccessibility.UserAccessPolicies.Commands.UpdateUserAccessPolicy;
+using Trainova.Application.TrainingSessionsAccessibility.UserAccessPolicies.Quereis.GetUserAccessPolicy;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Trainova.Api.Controllers.TrainingSessionAccessablity
 {
@@ -38,6 +40,15 @@ namespace Trainova.Api.Controllers.TrainingSessionAccessablity
         {
             var command = new DeleteUserAccessPolicyCommand(id);
             var result = await _sender.Send(command);
+            return result.Match(
+                onValue: (done, status) => Success(done, status),
+                onError: errors => ErrorsPassed(errors));
+        }
+        [HttpGet("{policyId:guid}")]
+        public async Task<IActionResult> GetUserAccessPolicyByPolicyId([FromRoute] Guid policyId)
+        {
+            var query = new GetUserAccessPolicyDetailsQuery(policyId);
+            var result = await _sender.Send(query);
             return result.Match(
                 onValue: (done, status) => Success(done, status),
                 onError: errors => ErrorsPassed(errors));

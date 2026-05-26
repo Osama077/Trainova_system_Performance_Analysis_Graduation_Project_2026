@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <Folder Include="Common\Enums\" />
-    <Folder Include="Common\Interfaces\Repositories\FitnessStatus\" />
     <Folder Include="Common\Interfaces\Repositories\Profiles\ScoutingCandidates\" />
     <Folder Include="Common\Interfaces\Repositories\Profiles\TeamsStaff\" />
     <Folder Include="TrainingSessionsAccessibility\AccessPolicies\Commands\" />

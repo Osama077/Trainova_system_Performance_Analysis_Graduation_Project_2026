@@ -2,12 +2,18 @@
 
 public record struct Done
 {
-    string Massage = "The action has been Doneed";
+    public string Message { get; set; } = "The action has been Done.";
+    public Guid Id { get; set; }
 
-    public Done(string massage="")
+    public Done(string message = null, Guid? id = null)
     {
-        Massage = massage;
+        Message = message ?? "The action has been Done.";
+        Id = id ?? Guid.Empty;
     }
-    public static Done done => new Done();
-    public static Done NoContent => new Done("The action has been Doneed with no content");
+
+    public static Done Default => new Done();
+
+    public ResultOf<Done> NoContent => Id != Guid.Empty
+        ? new Done($"The action has been Done with no content but Id = {Id}.", Id)
+        : new Done("The action has been Done with no content.", Id);
 }

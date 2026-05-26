@@ -1,12 +1,11 @@
 CREATE OR ALTER PROCEDURE InjuriesData.sp_GetSquadHealthDashboard
-    @Position INT = NULL,           -- Bitwise (Flags)
+    @Position INT = NULL,
     @InjuryStatus NVARCHAR(50) = NULL,
     @SeverityGrade INT  = NULL,
     @SearchName NVARCHAR(100) = NULL
 AS
 BEGIN
     SET NOCOUNT ON;
-
     SELECT 
         u.[Id] AS PlayerId, u.[ShowName], u.[FullName], u.[PhotoPath], u.[Email],
         p.[PlayerNumber], p.[TShirtName], p.[MedicalStatus] AS PlayerMedicalStatus, p.[CurrentMainPosition], p.[OtherAvailablePositions], p.[PerformanceLevel], p.[DateOfEnrolment],

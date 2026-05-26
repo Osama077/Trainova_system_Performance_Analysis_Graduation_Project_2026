@@ -1,7 +1,10 @@
-﻿using Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAccessablity;
-using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
+﻿using Dapper;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
+using Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAccessablity;
+using Trainova.Application.TrainingSessionsAccessibility.UserAccessPolicies.Quereis.GetUserAccessPolicy;
 using Trainova.Domain.TrainingSessionsAccessibility;
+using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.TrainingSessionAccessablity
 {
@@ -51,14 +54,35 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.TrainingSessionAccessa
             _dbContext.UserAccessPolicies.RemoveRange(userAccessPolicies);
         }
 
-        public Task<IEnumerable<UserAccessPolicy>> GetAllAsync(Guid polcyId)
+        public async Task<IEnumerable<UserAccessPolicy>> GetAllAsync(Guid policyId)
         {
-            throw new NotImplementedException();
+            return await _dbContext.UserAccessPolicies
+                .Where(x => x.AccessPoliciesId == policyId)
+                .ToListAsync();
         }
 
-        public Task DeleteRangeAsync(IEnumerable<UserAccessPolicy> userpolicies)
+        public async Task DeleteRangeAsync(IEnumerable<UserAccessPolicy> userpolicies)
         {
-            throw new NotImplementedException();
+            _dbContext.RemoveRange(userpolicies);
+            await Task.CompletedTask;
+        }
+
+        public async Task<IEnumerable<UserAccessDetailes>> GetUserAccessPolicyDetails(Guid policyId)
+        {
+            const string sql = "tsa.sp_GetUserAccessPolicyDetails";
+
+            var parameters = new { PolicyId = policyId };
+
+
+            using var conn = _dbSettings.CreateReadingConnection();
+
+
+
+            return await conn.QueryAsync<UserAccessDetailes>(
+                sql,
+                parameters,
+                commandType: CommandType.StoredProcedure
+            );
         }
     }
 }

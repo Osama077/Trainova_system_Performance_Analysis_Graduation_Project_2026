@@ -43,7 +43,7 @@ namespace Trainova.Api.Controllers.TrainingSessionAccessablity
         }
 
         [HttpPost("search")]
-        public async Task<IActionResult> Search([FromBody] Trainova.Api.Requests.TrainingSessionAccessablity.AccessPolicies.SearchAccessPolicyRequest request)
+        public async Task<IActionResult> Search([FromBody] SearchAccessPolicyRequest request)
         {
             var query = request.ToQuery();
             var result = await _sender.Send(query);

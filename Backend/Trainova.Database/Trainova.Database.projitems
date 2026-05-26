@@ -13,6 +13,7 @@
     <Folder Include="$(MSBuildThisFileDirectory)Profiles\Views\" />
     <Folder Include="$(MSBuildThisFileDirectory)MedicalStats\Procedures\" />
     <Folder Include="$(MSBuildThisFileDirectory)MedicalStats\Views\" />
+    <Folder Include="$(MSBuildThisFileDirectory)tsa\Views\" />
     <Folder Include="$(MSBuildThisFileDirectory)tsa\Procedures\" />
   </ItemGroup>
   <ItemGroup>
@@ -38,6 +39,7 @@
     <None Include="$(MSBuildThisFileDirectory)medicalstats\procedures\GetInjuriesCount.sql" />
     <None Include="$(MSBuildThisFileDirectory)medicalstats\procedures\GetInjuryDetailesById.sql" />
     <None Include="$(MSBuildThisFileDirectory)medicalstats\procedures\GetSquadHealthDashboard.sql" />
+    <None Include="$(MSBuildThisFileDirectory)tsa\procedures\GetUserAccessPolicyDetails.sql" />
     <None Include="$(MSBuildThisFileDirectory)tsa\procedures\SearchForAccessPolicy.sql" />
   </ItemGroup>
 </Project>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Trainova.Application.TrainingSessionsAccessibility.UserAccessPolicies.Quereis.GetUserAccessPolicy;
 using Trainova.Domain.TrainingSessionsAccessibility;
 
 namespace Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAccessablity
@@ -15,5 +16,6 @@ namespace Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAcc
         Task DeleteByPolicyIdAsync(Guid policyId);
         Task<IEnumerable<UserAccessPolicy>> GetAllAsync(Guid polcyId);
         Task DeleteRangeAsync(IEnumerable<UserAccessPolicy> userpolicies);
+        Task<IEnumerable<UserAccessDetailes>> GetUserAccessPolicyDetails(Guid policyId);
     }
 }

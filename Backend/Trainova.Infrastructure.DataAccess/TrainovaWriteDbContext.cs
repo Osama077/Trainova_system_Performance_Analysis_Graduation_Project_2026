@@ -8,7 +8,7 @@ using Trainova.Application.Common.Models;
 using Trainova.Domain.Common.AuditLogs;
 using Trainova.Domain.Common.BaseEntity;
 using Trainova.Domain.Common.Outbox;
-using Trainova.Domain.FitnessStatus.MovementDistances;
+using Trainova.Domain.FitnessStatus;
 using Trainova.Domain.FitnessStatus.PhysicalCapacityTests;
 using Trainova.Domain.MedicalStatus;
 using Trainova.Domain.Profiles;
@@ -49,10 +49,10 @@ namespace Trainova.Infrastructure.DataAccess
         public DbSet<UserAccessPolicy> UserAccessPolicies { get; set; }
         public DbSet<Plan> Plans { get; set; }
         public DbSet<TrainingSession> TrainingSessions { get; set; }
-
         // Fitness 
         public DbSet<PhysicalCapacityTest> CapacityTests { get; set; }
         public DbSet<SessionMovement> SessionMovements { get; set; }
+        public DbSet<FitnessExercise> FitnessExercises { get; set; }
 
 
         //medical

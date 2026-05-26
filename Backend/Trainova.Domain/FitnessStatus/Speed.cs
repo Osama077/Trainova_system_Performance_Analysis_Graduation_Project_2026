@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Trainova.Domain.Common.Helpers;
 
-namespace Trainova.Domain.FitnessStatus.MovementDistances
+namespace Trainova.Domain.FitnessStatus
 {
     [Owned]
     public record Speed

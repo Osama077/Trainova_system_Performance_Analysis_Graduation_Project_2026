@@ -58,7 +58,7 @@ namespace Trainova.Application.TrainingSessionsAccessibility.Plans.Commands.Crea
                 }
                 else
                 {
-                    accessPolicy = new AccessPolicy(request.PlanName,isSession: false);
+                    accessPolicy = new AccessPolicy(request.PlanName, AccessPolicyType.Plane);
 
                     var users = await _usersRepository.GetByIdsAsync(request.UserIds!);
 

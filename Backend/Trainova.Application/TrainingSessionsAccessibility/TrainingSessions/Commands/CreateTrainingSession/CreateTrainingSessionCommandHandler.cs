@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Org.BouncyCastle.Asn1.Ocsp;
 using Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAccessablity;
 using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
 using Trainova.Application.Common.Interfaces.Services;
@@ -58,7 +57,7 @@ namespace Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Co
                 }
                 else
                 {
-                    accessPolicy = new AccessPolicy(request.SessionName,isSession: true);
+                    accessPolicy = new AccessPolicy(request.SessionName, AccessPolicyType.Session);
 
                     var users = await _usersRepository.GetByIdsAsync(request.UserIds!);
 

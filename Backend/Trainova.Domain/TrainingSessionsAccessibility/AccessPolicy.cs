@@ -5,15 +5,15 @@ namespace Trainova.Domain.TrainingSessionsAccessibility
     public class AccessPolicy : AuditableEntity<Guid>
     {
         public string PolicyName { get; private set; } = null;
-        public bool IsSession {  get; private set; } = false;
+        public AccessPolicyType Type {  get; private set; } = AccessPolicyType.Template;
 
         public ICollection<UserAccessPolicy> PolicyUsers { get; private set; } = [];
         private AccessPolicy() : base() {}
         // ...existing code...
-        public AccessPolicy(string policyName, bool isSession = false, Guid? createdBy = null)
+        public AccessPolicy(string policyName, AccessPolicyType type = AccessPolicyType.Template, Guid? createdBy = null)
             : base(Guid.NewGuid(), createdBy)
         {
-            IsSession = isSession;
+            Type = type;
             PolicyName = policyName;
         }
 
