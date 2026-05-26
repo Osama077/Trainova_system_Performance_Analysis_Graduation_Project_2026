@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Trainova.Application.Common.Interfaces.Repositories.CommonRepos;
+using Trainova.Application.Common.Interfaces.Repositories.FitnessStatus;
 using Trainova.Application.Common.Interfaces.Repositories.MedicalStatus;
 using Trainova.Application.Common.Interfaces.Repositories.Profiles.Players;
 using Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAccessablity;
@@ -9,6 +10,7 @@ using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
 using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
 using Trainova.Infrastructure.DataAccess.Repositories.Common;
+using Trainova.Infrastructure.DataAccess.Repositories.FitnessStatus;
 using Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus;
 using Trainova.Infrastructure.DataAccess.Repositories.Profiles;
 using Trainova.Infrastructure.DataAccess.Repositories.TrainingSessionAccessablity;
@@ -19,8 +21,6 @@ namespace Trainova.Infrastructure.DataAccess;
 
 public static class DependencyInjection
 {
-
-
     public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
 
@@ -81,6 +81,11 @@ public static class DependencyInjection
         services.AddScoped<IAccessPolicyRepository, AccsessPolicyRepository>();
         services.AddScoped<IUserAccessPolicyRepository, UserAccessPolicyRepository>();
         services.AddScoped<IPlanRepository, PlanRepository>();
+
+        // FitnessStatus
+        services.AddScoped<IFitnessExerciseRepository, FitnessExerciseRepository>();
+
+
 
         return services;
     }
