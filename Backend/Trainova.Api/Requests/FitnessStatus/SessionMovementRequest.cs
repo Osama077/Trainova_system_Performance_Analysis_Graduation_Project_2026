@@ -1,0 +1,61 @@
+using System;
+using Trainova.Application.FitnessStatus.SessionMovements.Commands.CreateSessionMovement;
+using Trainova.Application.FitnessStatus.SessionMovements.Commands.UpdateSessionMovement;
+
+namespace Trainova.Api.Requests.FitnessStatus
+{
+    public class CreateSessionMovementRequest
+    {
+        public Guid UserAccessPolicyId { get; set; }
+        public int SprintsCount { get; set; }
+        public decimal? WalkDistance { get; set; }
+        public decimal? RunDistance { get; set; }
+        public decimal? HighSpeedRunDistance { get; set; }
+        public decimal? AverageSpeed { get; set; }
+        public decimal? MaxSpeed { get; set; }
+        public decimal? PeakAcceleration { get; set; }
+        public decimal? PlayerLoad { get; set; }
+
+        public CreateSessionMovementCommand ToCommand()
+        {
+            return new CreateSessionMovementCommand(
+                UserAccessPolicyId: UserAccessPolicyId,
+                SprintsCount: SprintsCount,
+                WalkDistance: WalkDistance,
+                RunDistance: RunDistance,
+                HighSpeedRunDistance: HighSpeedRunDistance,
+                AverageSpeed: AverageSpeed,
+                MaxSpeed: MaxSpeed,
+                PeakAcceleration: PeakAcceleration,
+                PlayerLoad: PlayerLoad
+            );
+        }
+    }
+
+    public class UpdateSessionMovementRequest
+    {
+        public int? SprintsCount { get; set; }
+        public decimal? WalkDistance { get; set; }
+        public decimal? RunDistance { get; set; }
+        public decimal? HighSpeedRunDistance { get; set; }
+        public decimal? AverageSpeed { get; set; }
+        public decimal? MaxSpeed { get; set; }
+        public decimal? PeakAcceleration { get; set; }
+        public decimal? PlayerLoad { get; set; }
+
+        public UpdateSessionMovementCommand ToCommand(Guid id)
+        {
+            return new UpdateSessionMovementCommand(
+                Id: id,
+                SprintsCount: SprintsCount,
+                WalkDistance: WalkDistance,
+                RunDistance: RunDistance,
+                HighSpeedRunDistance: HighSpeedRunDistance,
+                AverageSpeed: AverageSpeed,
+                MaxSpeed: MaxSpeed,
+                PeakAcceleration: PeakAcceleration,
+                PlayerLoad: PlayerLoad
+            );
+        }
+    }
+}

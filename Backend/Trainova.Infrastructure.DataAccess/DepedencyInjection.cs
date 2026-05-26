@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Trainova.Application.Common.Interfaces.Repositories.CommonRepos;
@@ -84,6 +84,9 @@ public static class DependencyInjection
 
         // FitnessStatus
         services.AddScoped<IFitnessExerciseRepository, FitnessExerciseRepository>();
+        services.AddScoped<IFitnessSessionExerciseRepository, FitnessSessionExerciseRepository>();
+        services.AddScoped<IPhysicalCapacityTestRepository, PhysicalCapacityTestRepository>();
+        services.AddScoped<ISessionMovementRepository, SessionMovementRepository>();
 
 
 

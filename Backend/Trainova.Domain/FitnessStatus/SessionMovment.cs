@@ -1,4 +1,4 @@
-﻿using Trainova.Domain.Common.BaseEntity;
+using Trainova.Domain.Common.BaseEntity;
 using Trainova.Domain.Common.Helpers;
 using Trainova.Domain.TrainingSessionsAccessibility;
 
@@ -31,6 +31,30 @@ namespace Trainova.Domain.FitnessStatus
             Distance = distance;
             Speed = speed;
             PlayerLoad = 0;// for now but should be implemnted later
+        }
+
+        public void Update(
+            int? sprintsCount,
+            Distance? distance,
+            Speed? speed,
+            decimal? playerLoad = null)
+        {
+            MarkUpdatedNow();
+            if (sprintsCount.HasValue)
+            {
+                if (sprintsCount.Value < 0)
+                    throw new DomainException("Invalid sprints count.");
+                SprintsCount = sprintsCount.Value;
+            }
+
+            if (distance != null)
+                Distance = distance;
+
+            if (speed != null)
+                Speed = speed;
+
+            if (playerLoad.HasValue)
+                PlayerLoad = playerLoad.Value;
         }
 
         public static SessionMovement CreateFromRawData(

@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
@@ -53,6 +53,7 @@ namespace Trainova.Infrastructure.DataAccess
         public DbSet<PhysicalCapacityTest> CapacityTests { get; set; }
         public DbSet<SessionMovement> SessionMovements { get; set; }
         public DbSet<FitnessExercise> FitnessExercises { get; set; }
+        public DbSet<FitnessSessionExercise> FitnessSessionExercises { get; set; }
 
 
         //medical

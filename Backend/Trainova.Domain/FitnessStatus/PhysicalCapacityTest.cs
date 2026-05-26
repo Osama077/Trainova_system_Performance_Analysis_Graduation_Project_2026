@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Trainova.Domain.Common.BaseEntity;
 
 namespace Trainova.Domain.FitnessStatus.PhysicalCapacityTests
@@ -12,6 +12,33 @@ namespace Trainova.Domain.FitnessStatus.PhysicalCapacityTests
         public SprintTest SprintTest { get; private set; }
 
         public ExplosivePowerTest ExplosivePowerTest { get; private set; }
+
+        public PhysicalCapacityTest(
+            Guid playerId,
+            AerobicCapacityTest aerobicCapacityTest,
+            SprintTest sprintTest,
+            ExplosivePowerTest explosivePowerTest)
+            : base(Guid.NewGuid())
+        {
+            PlayerId = playerId;
+            AerobicCapacityTest = aerobicCapacityTest;
+            SprintTest = sprintTest;
+            ExplosivePowerTest = explosivePowerTest;
+        }
+
+        private PhysicalCapacityTest() : base()
+        {
+        }
+
+        public void Update(
+            AerobicCapacityTest aerobicCapacityTest,
+            SprintTest sprintTest,
+            ExplosivePowerTest explosivePowerTest)
+        {
+            AerobicCapacityTest = aerobicCapacityTest;
+            SprintTest = sprintTest;
+            ExplosivePowerTest = explosivePowerTest;
+        }
 
     }
     [Owned]
