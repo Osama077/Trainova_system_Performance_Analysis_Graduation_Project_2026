@@ -2,19 +2,26 @@
 using Trainova.Application.Common.Interfaces.Repositories.MedicalStatus;
 using Trainova.Common.Errors;
 using Trainova.Common.ResultOf;
-using Trainova.Domain.MedicalStatus;
 
 namespace Trainova.Application.MedicalStatus.PlanPhases.Queries.GetRecoveryPlanPhases
 {
-    public class GetRecoveryPlanPhasesQueryHandler(IRecoveryPlanPhasesRepository _recoveryPlanPhasesRepository) : IRequestHandler<GetRecoveryPlanPhasesQuery, ResultOf<IEnumerable<RecoveryPlanPhase>>>
+    public class GetRecoveryPlanPhasesQueryHandler(IPlayerInjuryRepository _playerInjuryRepository) : IRequestHandler<GetRecoveryPlanPhasesQuery, ResultOf<PlayerInjuryRecoveryPlanData>>
     {
-        public async Task<ResultOf<IEnumerable<RecoveryPlanPhase>>> Handle(GetRecoveryPlanPhasesQuery request, CancellationToken cancellationToken)
+        public async Task<ResultOf<PlayerInjuryRecoveryPlanData>> Handle(GetRecoveryPlanPhasesQuery request, CancellationToken cancellationToken)
         {
             try
             {
-                var injuries = await _recoveryPlanPhasesRepository.GetByPlayerInjuryIdAsync(request.PlayerInjuryId);
+                var injuryCase = await _playerInjuryRepository.GetByIdWithPhasesIncludedAsync(request.PlayerInjuryId);
 
-                return injuries.AsDone();
+                if (injuryCase == null)
+                {
+                    return Error.NotFound(
+                        code: "GetRecoveryPlanPhasesQueryHandler.Handle_NotFound",
+                        description: $"No injury case found with Id: {request.PlayerInjuryId}");
+                }
+
+
+                return new PlayerInjuryRecoveryPlanData(injuryCase).AsDone();
             }
             catch (Exception ex)
             {

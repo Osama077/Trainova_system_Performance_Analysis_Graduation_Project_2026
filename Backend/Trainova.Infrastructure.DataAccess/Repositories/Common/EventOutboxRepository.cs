@@ -10,20 +10,16 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.Common
 
         public EventOutboxRepository(TrainovaWriteDbContext dbContext)
         {
-            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            _dbContext = dbContext;
         }
 
         public async Task AddAsync(DomainEventOutbox domainEvent)
         {
-            if (domainEvent == null) throw new ArgumentNullException(nameof(domainEvent));
-
             await _dbContext.DomainEventOutboxes.AddAsync(domainEvent);
         }
 
         public async Task AddRangeAsync(IEnumerable<DomainEventOutbox> domainEvents)
         {
-            if (domainEvents == null) throw new ArgumentNullException(nameof(domainEvents));
-
             await _dbContext.DomainEventOutboxes.AddRangeAsync(domainEvents);
         }
 

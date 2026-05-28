@@ -71,6 +71,9 @@ namespace Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Co
                 }
                 var session = CreateTrainingSessionAsWithNeededType(request, accessPolicy);
 
+                userAccessPolicies.ForEach(u=>u.AddNotification(session));
+
+
                 await _unitOfWork.StartTransactionAsync();
 
 

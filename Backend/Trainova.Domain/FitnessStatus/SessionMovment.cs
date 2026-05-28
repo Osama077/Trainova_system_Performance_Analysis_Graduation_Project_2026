@@ -6,7 +6,6 @@ namespace Trainova.Domain.FitnessStatus
 {
     public class SessionMovement : AuditableEntity<Guid>
     {
-
         public Guid UserAccessPolicyId { get; private set; }
         public UserAccessPolicy UserAccessPolicy { get; private set; }
         public int? SprintsCount { get; private set; }
@@ -26,7 +25,7 @@ namespace Trainova.Domain.FitnessStatus
         {
             if (sprintsCount < 0)
                 throw new DomainException("Invalid sprints count.");
-
+            UserAccessPolicyId = userAccessPolicyId;
             SprintsCount = sprintsCount;
             Distance = distance;
             Speed = speed;

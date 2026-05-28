@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Trainova.Infrastructure.DataAccess;
 
@@ -11,9 +12,11 @@ using Trainova.Infrastructure.DataAccess;
 namespace Trainova.Infrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(TrainovaWriteDbContext))]
-    partial class TrainovaWriteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260528091505_DomainEventOutboxEdit_v1_3")]
+    partial class DomainEventOutboxEdit_v1_3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -800,6 +803,53 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.HasIndex("Status");
 
                     b.ToTable("PlayerInjuries", (string)null);
+                });
+
+            modelBuilder.Entity("Trainova.Domain.MedicalStatus.RecoveryPlanPhase", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Activities")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1200)
+                        .HasColumnType("nvarchar(1200)");
+
+                    b.Property<DateTime>("From")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("LastUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("PlayerInjuryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("To")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerInjuryId", "Order");
+
+                    b.ToTable("PlanPhases");
                 });
 
             modelBuilder.Entity("Trainova.Domain.Profiles.Player", b =>
@@ -1628,59 +1678,18 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsMany("Trainova.Domain.MedicalStatus.RecoveryPlanPhase", "Phases", b1 =>
-                        {
-                            b1.Property<Guid>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("Activities")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<DateTime>("CreatedAt")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<Guid?>("CreatedBy")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("Description")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<DateTime>("From")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<DateTime?>("LastUpdate")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<string>("Name")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<int>("Order")
-                                .HasColumnType("int");
-
-                            b1.Property<Guid>("PlayerInjuryId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<DateTime>("To")
-                                .HasColumnType("datetime2");
-
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("PlayerInjuryId", "Order");
-
-                            b1.ToTable("RecoveryPlanPhases", (string)null);
-
-                            b1.WithOwner()
-                                .HasForeignKey("PlayerInjuryId");
-                        });
-
                     b.Navigation("Injury");
 
-                    b.Navigation("Phases");
-
                     b.Navigation("Player");
+                });
+
+            modelBuilder.Entity("Trainova.Domain.MedicalStatus.RecoveryPlanPhase", b =>
+                {
+                    b.HasOne("Trainova.Domain.MedicalStatus.PlayerInjury", null)
+                        .WithMany("Phases")
+                        .HasForeignKey("PlayerInjuryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Trainova.Domain.Profiles.Player", b =>
@@ -1780,6 +1789,11 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
             modelBuilder.Entity("Trainova.Domain.MedicalStatus.Injury", b =>
                 {
                     b.Navigation("PlayerInjuries");
+                });
+
+            modelBuilder.Entity("Trainova.Domain.MedicalStatus.PlayerInjury", b =>
+                {
+                    b.Navigation("Phases");
                 });
 
             modelBuilder.Entity("Trainova.Domain.Profiles.Player", b =>

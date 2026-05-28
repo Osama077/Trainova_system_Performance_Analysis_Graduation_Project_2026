@@ -1,16 +1,9 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Trainova.Common.ResultOf;
+using Trainova.Domain.MedicalStatus;
 
 namespace Trainova.Application.MedicalStatus.PlanPhases.Commands.ResortplanPhases
 {
-    public record ResortPlanPhasesCommand():IRequest<ResultOf<PlayerInjuryRecoveryPlanData>>
-    {
-    }
+    public record ResortPlanPhasesCommand(Guid PlayerInjuryId, List<int> NewOrders) : IRequest<ResultOf<PlayerInjuryRecoveryPlanData>>;
 
-    public class PlayerInjuryRecoveryPlanData
-    {
-    }
 }

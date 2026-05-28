@@ -1,4 +1,4 @@
-﻿
+
 namespace Trainova.Domain.Common.BaseEntity
 {
     public abstract class Entity<TId> : IEntity<TId>
@@ -7,6 +7,7 @@ namespace Trainova.Domain.Common.BaseEntity
         public Guid? CreatedBy { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
         private List<IDomainEvent> _domainEvents = new List<IDomainEvent>();
+        public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
         protected Entity(Guid? createdBy = null)
         {
@@ -33,6 +34,10 @@ namespace Trainova.Domain.Common.BaseEntity
         {
             _domainEvents.Add(domainEvent);
         }
+        public void ClearDomainEvents()
+        {
+            _domainEvents.Clear();
+        }
         void IEntity<TId>.AddDomainEvent(IDomainEvent domainEvent)
         {
             AddDomainEvent(domainEvent);
@@ -40,6 +45,8 @@ namespace Trainova.Domain.Common.BaseEntity
     }
     public interface IEntity<TId>: IHasId<TId>,ICreatorLogable
     {
+        IReadOnlyCollection<IDomainEvent> DomainEvents { get; }
         void AddDomainEvent(IDomainEvent domainEvent);
+        void ClearDomainEvents();
     }
 }

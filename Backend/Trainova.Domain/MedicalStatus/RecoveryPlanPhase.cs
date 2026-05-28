@@ -1,4 +1,5 @@
 ﻿using Trainova.Domain.Common.BaseEntity;
+using Trainova.Domain.Common.Helpers;
 
 namespace Trainova.Domain.MedicalStatus
 {
@@ -19,7 +20,7 @@ namespace Trainova.Domain.MedicalStatus
             DateTime? from = null,
             List<string> activties = null,
             Guid? createdBy = null)
-            : base(Guid.NewGuid(),createdBy)
+            : base(Guid.NewGuid(), createdBy)
         {
             PlayerInjuryId = playerInjuryId;
             Name = name;
@@ -35,20 +36,34 @@ namespace Trainova.Domain.MedicalStatus
             MarkUpdatedNow();
             Order = order;
         }
-        public void Update(
+        public RecoveryPlanPhase Update(
             string? name = null,
             string? description = null,
             DateTime? to = null,
-            DateTime? from = null,
             List<string>? activties = null)
         {
             MarkUpdatedNow();
-            Name = name;
-            Description = description;
-            From = from ?? From;
+            Name = name ?? Name;
+            Description = description ?? Description;
             To = to ?? To;
             if (activties != null)
-                Activities = activties;
+            {
+                Activities.Clear();
+                Activities.AddRange(activties);
+            }
+            return this;
+        }
+        public TimeSpan Duration => To - From;
+
+        public void UpdateForReOrder(int newOrder, DateTime newStartDate, DateTime newEndDate)
+        {
+            if (newEndDate < newStartDate)
+                throw new DomainException("End date cannot be before start date", "InvalidPhaseDates");
+
+            MarkUpdatedNow();
+            Order = newOrder;
+            From = newStartDate;
+            To = newEndDate;
         }
 
         private RecoveryPlanPhase() { }

@@ -1,7 +1,7 @@
 ﻿using Trainova.Api.Models;
 using Trainova.Application.MedicalStatus.Injuries.Queries.GetInjuries;
 
-namespace Trainova.Api.Requsts.MedicalStatus.Injuries
+namespace Trainova.Api.Requests.MedicalStatus
 {
     public class GetInjuryFiltrationRequest
     {

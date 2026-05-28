@@ -57,5 +57,10 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.TrainingSessionAccessa
         {
             return _dbContext.Plans.CountAsync(x => x.AccessPolicyId == accessPolicyId);
         }
+
+        public async Task<Plan> GetByPlanidAsync(Guid policyId)
+        {
+            return await _dbContext.Plans.FirstOrDefaultAsync(x => x.AccessPolicyId == policyId);
+        }
     }
 }

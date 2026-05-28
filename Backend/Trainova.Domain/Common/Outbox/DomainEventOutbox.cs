@@ -1,25 +1,25 @@
-﻿using MediatR;
-using System.Text.Json;
+﻿using System.Text.Json;
 using Trainova.Domain.Common.BaseEntity;
 
 namespace Trainova.Domain.Common.Outbox
 {
-    public class DomainEventOutbox : IHasId<Guid>
+    public class DomainEventOutbox : IHasId<Guid>, ICreatorLogable
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
-        public string EventType { get; set; }
-        public bool IsHandled { get; set; } = false;
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime? HandledAt { get; set; } = null;
-        public List<string> ErrorMessage { get; set; } = new List<string>();
-        public int RetryCount { get; set; } = 0;
-        public string Notification { get; set; }
+        public Guid Id { get; private set; } = Guid.NewGuid();
+        public string EventType { get; private set; }
+        public bool IsHandled { get; private set; } = false;
+        public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
+        public DateTime? HandledAt { get; private set; } = null;
+        public List<string> ErrorMessage { get; private set; } = new List<string>();
+        public int RetryCount { get; private set; } = 0;
+        public string Notification { get; private set; }
+        public Guid? CreatedBy { get; private set; }
+
         public DomainEventOutbox(IDomainEvent notification)
         {
             Id = Guid.NewGuid();
             var type = notification.GetType();
             EventType = type.FullName;
-            CreatedAt = DateTime.UtcNow;
             IsHandled = false;
             Notification = JsonSerializer.Serialize(notification, type);
         }
@@ -33,6 +33,13 @@ namespace Trainova.Domain.Common.Outbox
             ErrorMessage.Add(message);
             RetryCount++;
         }
+
+        public void SetCreator(Guid creatorId)
+        {
+            CreatedBy = creatorId;
+            CreatedAt = DateTime.UtcNow;
+        }
+
         public DomainEventOutbox() { }
     }
 }

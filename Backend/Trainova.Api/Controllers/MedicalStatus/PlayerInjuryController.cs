@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Trainova.Api.Models;
-using Trainova.Api.Requests.MedicalStatus.PlayerInjuries;
+using Trainova.Api.Requests.MedicalStatus;
 using Trainova.Application.Common.Models;
 using Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetCasesCount;
 using Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInjuryHistory;
@@ -18,7 +18,7 @@ namespace Trainova.Api.Controllers.MedicalStatus
 
         [HttpPost]
         public async Task<IActionResult> CreatePlayerInjury(
-            [FromBody] PlayerInjuryRequest request)
+            [FromBody] PlayerInjuryCreateRequest request)
         {
             var command = request.ToCommand();
             var result = await _sender.Send(command);

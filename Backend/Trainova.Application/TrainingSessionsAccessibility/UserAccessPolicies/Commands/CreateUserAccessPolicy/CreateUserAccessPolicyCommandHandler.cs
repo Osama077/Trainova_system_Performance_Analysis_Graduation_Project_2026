@@ -15,6 +15,8 @@ namespace Trainova.Application.TrainingSessionsAccessibility.UserAccessPolicies.
         IAccessPolicyRepository _accessPolicyRepository,
         IUsersRepository _usersRepository,
         IUnitOfWork _unitOfWork,
+        ITrainingSessionRepository _trainingSessionRepository,
+        IPlanRepository _planRepository,
         CurrentUser _currentUser)
         : IRequestHandler<CreateUserAccessPolicyCommand, ResultOf<UserAccessPolicy>>
     {
@@ -44,6 +46,20 @@ namespace Trainova.Application.TrainingSessionsAccessibility.UserAccessPolicies.
                     request.UserId,
                     request.InitialStatus,
                     _currentUser.Id);
+
+
+                if (accessPolicy.Type == AccessPolicyType.Plane)
+                {
+                    var plan = await _planRepository.GetByPlanidAsync(accessPolicy.Id);
+                    userAccessPolicy.AddNotification(plan);
+                }
+                else if (accessPolicy.Type == AccessPolicyType.Session)
+                {
+                    var session = await _trainingSessionRepository.GetByPlanidAsync(accessPolicy.Id);
+                    userAccessPolicy.AddNotification(session);
+                }
+
+
 
                 // Start transaction
                 await _unitOfWork.StartTransactionAsync();

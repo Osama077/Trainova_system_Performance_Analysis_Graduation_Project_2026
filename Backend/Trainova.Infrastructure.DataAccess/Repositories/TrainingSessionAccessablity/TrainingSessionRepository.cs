@@ -63,5 +63,10 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.TrainingSessionAccessa
                  || ( creatorId == null || x.CreatedBy == creatorId)))
                 .ToListAsync();
         }
+
+        public async Task<TrainingSession> GetByPlanidAsync(Guid policyId)
+        {
+            return await _dbContext.TrainingSessions.FirstOrDefaultAsync(x => x.AccessPolicyId == policyId);
+        }
     }
 }

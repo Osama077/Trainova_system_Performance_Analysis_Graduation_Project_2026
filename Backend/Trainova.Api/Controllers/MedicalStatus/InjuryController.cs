@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Trainova.Api.Models;
-using Trainova.Api.Requsts.MedicalStatus.Injuries;
+using Trainova.Api.Requests.MedicalStatus;
 using Trainova.Application.Common.Models;
 using Trainova.Application.MedicalStatus.Injuries.Commands.DeleteInjury;
 using Trainova.Application.MedicalStatus.Injuries.Queries.GetInjuryDetailes;

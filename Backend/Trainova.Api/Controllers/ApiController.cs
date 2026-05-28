@@ -75,6 +75,18 @@ public class ApiController
                         countIncludeds.FirstOrDefault().TotalCount
                     )
                 ),
+            DoneStatus.Partial when value is ITotalCountIncluded countIncluded
+                => StatusCode(
+                    206,
+                    CreateResponse(
+                        value,
+                        "Partial content",
+                        206,
+                        1,
+                        countIncluded.TotalCount
+                    )
+                ),
+
             DoneStatus.Partial when value is IEnumerable enumerable
                 => StatusCode(
                     206,
@@ -144,7 +156,7 @@ public class ApiController
             _ => StatusCodes.Status500InternalServerError,
         };
 
-        return StatusCode(statusCode,new { error.Code, error.Description });
+        return StatusCode(statusCode, new { error.Code, error.Description });
     }
 
     protected IActionResult ValidationError(List<Error> errors)

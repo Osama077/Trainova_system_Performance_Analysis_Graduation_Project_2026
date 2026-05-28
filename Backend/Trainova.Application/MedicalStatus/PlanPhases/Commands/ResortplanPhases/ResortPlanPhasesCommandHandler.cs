@@ -5,14 +5,14 @@ using Trainova.Common.Errors;
 using Trainova.Common.ResultOf;
 using Trainova.Domain.Common.Helpers;
 
-namespace Trainova.Application.MedicalStatus.PlanPhases.Commands.CreatePlanPhases
+namespace Trainova.Application.MedicalStatus.PlanPhases.Commands.ResortplanPhases
 {
-    public class CreateRecoveryPlanPhaseCommandHandler(
+    public class ResortPlanPhasesCommandHandler(
         IPlayerInjuryRepository _playerInjuryRepository,
-        IUnitOfWork _unitOfWork
-        ) : IRequestHandler<CreateRecoveryPlanPhaseCommand, ResultOf<PlayerInjuryRecoveryPlanData>>
+        IUnitOfWork _unitOfWork)
+        : IRequestHandler<ResortPlanPhasesCommand, ResultOf<PlayerInjuryRecoveryPlanData>>
     {
-        public async Task<ResultOf<PlayerInjuryRecoveryPlanData>> Handle(CreateRecoveryPlanPhaseCommand request, CancellationToken cancellationToken)
+        public async Task<ResultOf<PlayerInjuryRecoveryPlanData>> Handle(ResortPlanPhasesCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -20,18 +20,18 @@ namespace Trainova.Application.MedicalStatus.PlanPhases.Commands.CreatePlanPhase
 
                 if (playerInjury is null)
                     return Error.NotFound(
-                        code: "CreateRecoveryPlanPhaseCommandHandler.Handle_PlayerInjuryNotFound",
+                        code: "ResortPlanPhasesCommandHandler.Handle_PlayerInjuryNotFound",
                         description: $"Player injury with id '{request.PlayerInjuryId}' was not found.");
 
-                playerInjury.AddRecoveryPlanPhase(
-                    name: request.Name,
-                    description: request.Description,
-                    durationInDays: request.DurationInDays,
-                    activities: request.Activities,
-                    insertAtOrder: request.InsertOrder
-                    );
+
+                playerInjury.ReorderPhases(request.NewOrders);
+
 
                 await _unitOfWork.StartTransactionAsync();
+
+
+                await _playerInjuryRepository.UpdateAsync(playerInjury);
+
 
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
 
@@ -47,9 +47,10 @@ namespace Trainova.Application.MedicalStatus.PlanPhases.Commands.CreatePlanPhase
             }
             catch (Exception ex)
             {
-                return Error.Failure(code: "CreateRecoveryPlanPhaseCommandHandler.Handle_Failure", description: ex.Message);
+                return Error.Failure(code: "ResortPlanPhasesCommandHandler.Handle_Failure", description: ex.Message);
             }
 
         }
     }
+
 }

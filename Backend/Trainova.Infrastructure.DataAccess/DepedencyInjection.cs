@@ -62,15 +62,14 @@ public static class DependencyInjection
         //medical
         services.AddScoped<IInjuryRepository, InjuryRepository>();
         services.AddScoped<IPlayerInjuryRepository, PlayerInjuryRepository>();
-        services.AddScoped<IRecoveryPlanPhasesRepository, RecoveryPlanPhasesRepository>();
         // Audit
-        services.AddScoped<IAuditRepository,AuditRepository>();
+        services.AddScoped<IAuditRepository, AuditRepository>();
         // Outbox
         services.AddScoped<IEmailOutboxRepository, EmailOutboxRepository>();
         services.AddScoped<IEventOutboxRepository, EventOutboxRepository>();
 
         // Profiles
-        services.AddScoped<IPlayerRepository,PlayerRepository>();
+        services.AddScoped<IPlayerRepository, PlayerRepository>();
         // Register Dapper type handlers for enums
         DapperTypeHandlerConfiguration.Register();
 

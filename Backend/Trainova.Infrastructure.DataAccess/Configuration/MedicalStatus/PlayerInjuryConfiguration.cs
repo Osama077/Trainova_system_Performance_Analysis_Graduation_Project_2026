@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Text.Json;
 using Trainova.Domain.MedicalStatus;
 using Trainova.Infrastructure.DataAccess.Configuration.Common;
 
@@ -36,6 +37,24 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.MedicalStatus
                 .WithMany(i => i.PlayerInjuries)
                 .HasForeignKey(pi => pi.InjuryId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.OwnsMany(p => p.Phases, phaseBuilder =>
+            {
+                phaseBuilder.WithOwner().HasForeignKey(pp => pp.PlayerInjuryId);
+
+                phaseBuilder.ToTable("RecoveryPlanPhases");
+
+                phaseBuilder.HasKey(pp => pp.Id);
+
+                phaseBuilder.HasIndex(pp => new { pp.PlayerInjuryId, pp.Order });
+
+                phaseBuilder.Property(pp => pp.Activities)
+                    .HasConversion(
+                        value => JsonSerializer.Serialize(value, JsonSerializerOptions.Default),
+                        value => JsonSerializer.Deserialize<List<string>>(value, JsonSerializerOptions.Default) ?? new List<string>()
+                    );
+            });
+
 
             //----------------------------------------
             // Enums

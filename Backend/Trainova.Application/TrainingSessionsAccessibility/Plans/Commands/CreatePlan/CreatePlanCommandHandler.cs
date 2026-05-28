@@ -73,6 +73,9 @@ namespace Trainova.Application.TrainingSessionsAccessibility.Plans.Commands.Crea
 
                 var plan = CreatePlanAsWithNeededType(request, accessPolicy);
 
+                userAccessPolicies.ForEach(u => u.AddNotification(plan));
+
+
                 await _unitOfWork.StartTransactionAsync();
 
 

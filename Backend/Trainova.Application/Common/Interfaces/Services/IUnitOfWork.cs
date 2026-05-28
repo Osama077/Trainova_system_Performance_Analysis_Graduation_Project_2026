@@ -1,6 +1,4 @@
-﻿using System.Data;
-
-namespace Trainova.Application.Common.Interfaces.Services
+﻿namespace Trainova.Application.Common.Interfaces.Services
 {
     public interface IUnitOfWork
     {

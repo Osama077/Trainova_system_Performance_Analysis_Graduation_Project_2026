@@ -54,7 +54,7 @@ namespace Trainova.Domain.MedicalStatus
             BodyPart = bodyPart;
             Notes = notes;
             IsNew = isNew;
-            ExpectedReturnDate = expectedReturnDate??DateTime.UtcNow.AddDays(injury.AverageRecoveryTimeInDayes ?? 0);
+            ExpectedReturnDate = expectedReturnDate ?? DateTime.UtcNow.AddDays(injury.AverageRecoveryTimeInDayes ?? 0);
         }
 
         public void Update(
@@ -87,44 +87,181 @@ namespace Trainova.Domain.MedicalStatus
         }
 
 
-        public void AddRecoveryPlanPhase(RecoveryPlanPhase phase)
+
+
+        public void UpdateRecoveryPlanPhase(
+            Guid phaseId,
+            string? name,
+            string? description,
+            int? durationInDays,
+            List<string>? activities)
         {
-            phase.SetOrder(Phases.Count);
-            Phases.Add(phase);
+            var phase = Phases.FirstOrDefault(p => p.Id == phaseId);
+            if (phase == null)
+                throw new DomainException("Phase not found in this injury case.", "PhaseNotFound");
+
+            MarkUpdatedNow();
+
+            if (durationInDays.HasValue)
+            {
+                if (durationInDays.Value <= 0)
+                    throw new DomainException("Phase duration must be at least 1 day.", "InvalidPhaseDuration");
+
+                DateTime originalTo = phase.To;
+                DateTime newTo = phase.From.AddDays(durationInDays.Value);
+                TimeSpan durationDifference = newTo - originalTo;
+
+                phase.UpdateForReOrder(phase.Order, phase.From, newTo);
+
+                var subsequentPhases = Phases.Where(p => p.Order > phase.Order).OrderBy(p => p.Order);
+                foreach (var subPhase in subsequentPhases)
+                {
+                    DateTime updatedFrom = subPhase.From.Add(durationDifference);
+                    DateTime updatedTo = subPhase.To.Add(durationDifference);
+
+                    subPhase.UpdateForReOrder(subPhase.Order, updatedFrom, updatedTo);
+                }
+            }
+
+            phase.Update(name, description, phase.To, activities);
+
+            ExpectedReturnDate = Phases.MaxBy(p => p.Order)!.To;
         }
-        public void ReorderPhases(List<int> newOrder)
+
+
+        public void AddRecoveryPlanPhase(
+            string name,
+            string? description,
+            int durationInDays,
+            List<string>? activities = null,
+            int? insertAtOrder = null)
         {
-            if (newOrder.Count != Phases.Count)
+            MarkUpdatedNow();
+
+            int targetOrder = insertAtOrder ?? Phases.Count;
+
+            if (targetOrder < 0 || targetOrder > Phases.Count)
+                throw new DomainException("Invalid insert order location", "InvalidInsertOrder");
+
+            if (durationInDays <= 0)
+                throw new DomainException("Phase duration must be at least 1 day.", "InvalidPhaseDuration");
+
+            DateTime newPhaseStart;
+            if (targetOrder == 0)
+            {
+                newPhaseStart = HappendAt ?? CreatedAt;
+            }
+            else
+            {
+                newPhaseStart = Phases.First(p => p.Order == targetOrder - 1).To;
+            }
+
+            if (newPhaseStart < DateTime.UtcNow)
+            {
+                throw new DomainException("Cannot insert or append a phase in a past timeframe.", "CannotInsertInPastTime");
+            }
+
+            TimeSpan newPhaseDuration = TimeSpan.FromDays(durationInDays);
+            DateTime newPhaseEnd = newPhaseStart.Add(newPhaseDuration);
+
+            var newPhase = new RecoveryPlanPhase(
+                playerInjuryId: this.Id,
+                name: name,
+                description: description,
+                to: newPhaseEnd,
+                from: newPhaseStart,
+                activties: activities
+            );
+
+            newPhase.SetOrder(targetOrder);
+
+            if (targetOrder < Phases.Count)
+            {
+                var phasesToShift = Phases.Where(p => p.Order >= targetOrder).OrderBy(p => p.Order);
+
+                foreach (var phase in phasesToShift)
+                {
+                    int updatedOrder = phase.Order + 1;
+                    DateTime updatedFrom = phase.From.Add(newPhaseDuration);
+                    DateTime updatedTo = phase.To.Add(newPhaseDuration);
+
+                    phase.UpdateForReOrder(updatedOrder, updatedFrom, updatedTo);
+                }
+            }
+
+            Phases.Add(newPhase);
+            ExpectedReturnDate = Phases.MaxBy(p => p.Order)!.To;
+
+        }
+        public List<RecoveryPlanPhase> ReorderPhases(List<int> newOrder)
+        {
+            MarkUpdatedNow();
+            if (newOrder == null || newOrder.Count != Phases.Count)
                 throw new DomainException("Invalid reorder list", "InvalidOrder");
 
-            var phaseByOrder = Phases.ToDictionary(p => p.Order);
+            var phaseByOldOrder = Phases.ToDictionary(p => p.Order);
 
-            var newList = new List<RecoveryPlanPhase>();
+            var datesByOrderSnapshot = Phases.ToDictionary(
+                p => p.Order,
+                p => new { p.From, p.To }
+            );
 
             for (int i = 0; i < newOrder.Count; i++)
             {
                 var oldOrder = newOrder[i];
 
-                if (!phaseByOrder.TryGetValue(oldOrder, out var phase))
+                if (!phaseByOldOrder.TryGetValue(oldOrder, out var phase))
                     throw new DomainException("Phase not found", "PhaseNotFound");
 
-                phase.SetOrder(i);
-                newList.Add(phase);
-            }
+                var targetLocationDates = datesByOrderSnapshot[i];
 
-            Phases = newList;
+                phase.UpdateForReOrder(
+                    newOrder: i,
+                    newStartDate: targetLocationDates.From,
+                    newEndDate: targetLocationDates.To
+                );
+            }
+            ExpectedReturnDate = Phases.OrderBy(p => p.Order).Last().To;
+
+            return Phases;
+
         }
         public void RemovePhase(int order)
         {
-            if (Phases.Count() >= order || !Phases.Any())
-                throw new DomainException("order is out of the list", "EmptyPhasesOrOrderOutOfRange");
+            if (order < 0 || order >= Phases.Count || !Phases.Any())
+                throw new DomainException("Order is out of the list range", "EmptyPhasesOrOrderOutOfRange");
 
             var phaseToBeDeleted = Phases.FirstOrDefault(p => p.Order == order);
 
             if (phaseToBeDeleted == null)
                 throw new DomainException("No phase with that order", "PhaseNotFound");
 
+            MarkUpdatedNow();
+
+            var deletedPhaseDuration = phaseToBeDeleted.To - phaseToBeDeleted.From;
+
             Phases.Remove(phaseToBeDeleted);
+
+            var phasesToShift = Phases.Where(p => p.Order > order).OrderBy(p => p.Order);
+
+            foreach (var phase in phasesToShift)
+            {
+                int updatedOrder = phase.Order - 1;
+
+                DateTime updatedFrom = phase.From.Subtract(deletedPhaseDuration);
+                DateTime updatedTo = phase.To.Subtract(deletedPhaseDuration);
+
+                phase.UpdateForReOrder(updatedOrder, updatedFrom, updatedTo);
+            }
+
+            if (Phases.Any())
+            {
+                ExpectedReturnDate = Phases.OrderBy(p => p.Order).Last().To;
+            }
+            else
+            {
+                ExpectedReturnDate = HappendAt;
+            }
         }
 
         private PlayerInjury() : base() { }

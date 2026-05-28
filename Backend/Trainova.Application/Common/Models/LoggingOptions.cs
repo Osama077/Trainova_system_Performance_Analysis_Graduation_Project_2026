@@ -1,7 +1,8 @@
 ﻿namespace Trainova.Application.Common.Models
 {
-    public class EFCoreLoggingOptions
+    public class LoggingOptions
     {
         public string LogFilePath { get; set; }
+        public string DomainEventLogFilePath { get; set; }
     }
 }

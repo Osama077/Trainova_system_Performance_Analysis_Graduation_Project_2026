@@ -1,8 +1,10 @@
-﻿using Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInjuriesTrend;
+﻿using Trainova.Api.Models;
+using Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInjuries;
+using Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetPlayerInjuriesTrend;
 
-namespace Trainova.Api.Requests.MedicalStatus.PlayerInjuries
+namespace Trainova.Api.Requests.MedicalStatus
 {
-    public class GetPlayerInjuryTrendFiltrationRequest
+    public class GetPlayerInjuryFiltrationRequest : Paginator
     {
         public Guid? PlayerId { get; set; } = null;
         public Guid? InjuryId { get; set; } = null;
@@ -15,7 +17,25 @@ namespace Trainova.Api.Requests.MedicalStatus.PlayerInjuries
         public DateTime? ExpectedReturnAfter { get; set; } = null;
         public DateTime? ReturnedBefore { get; set; } = null;
         public DateTime? ReturnedAfter { get; set; } = null;
-
+        public string? SortColumn { get; set; } = null;
+        public string? SortDirection { get; set; } = null;
+        public GetPlayerInjuriesQuery ToQuery()
+        {
+            return new GetPlayerInjuriesQuery(
+                PlayerId,
+                InjuryId,
+                Status,
+                Cause,
+                IsNew,
+                HappendBefore,
+                HappendAfter,
+                ExpectedReturnBefore,
+                ExpectedReturnAfter,
+                ReturnedBefore,
+                ReturnedAfter,
+                Page, PageSize,
+                SortColumn, SortDirection);
+        }
         public GetPlayerInjuriesTrendQuery ToTrendQuery()
         {
             return new GetPlayerInjuriesTrendQuery(

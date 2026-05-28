@@ -1,7 +1,9 @@
-﻿using Trainova.Domain.Common.BaseEntity;
+using Trainova.Domain.Common.BaseEntity;
 using Trainova.Domain.Common.Helpers;
 using Trainova.Domain.FitnessStatus;
 using Trainova.Domain.UserAuth;
+
+using Trainova.Domain.TrainingSessionsAccessibility.Events;
 
 namespace Trainova.Domain.TrainingSessionsAccessibility
 {
@@ -25,6 +27,65 @@ namespace Trainova.Domain.TrainingSessionsAccessibility
             UserId = userId;
             AttendanceState = hasAttended;
         }
+
+        public void AddNotification(TrainingSession trainingSession)
+        {
+            AddDomainEvent(new SessionUserAccessPolicyCreatedEvent(
+                UserId,
+                AccessPoliciesId,
+                trainingSession.TrainingSessionName,
+                trainingSession.HappenedAt,
+                trainingSession.Place));
+        }
+        public void AddNotification(Plan plan)
+        {
+            AddDomainEvent(new PlanUserAccessPolicyCreatedEvent(
+                UserId,
+                AccessPoliciesId,
+                plan.PlanName,
+                plan.StartDate)
+                );
+        }
+
+
+        // obsolete
+        /*
+        public UserAccessPolicy(
+            TrainingSession trainingSession,
+            Guid userId,
+            AttendanceStatus hasAttended = AttendanceStatus.Waiting,
+            Guid? createdBy = null) : base(Guid.NewGuid(), createdBy)
+        {
+            AccessPoliciesId = trainingSession.AccessPolicyId;
+            UserId = userId;
+            AttendanceState = hasAttended;
+
+            AddDomainEvent(new SessionUserAccessPolicyCreatedEvent(
+                userId,
+                trainingSession.AccessPolicyId,
+                trainingSession.TrainingSessionName,
+                trainingSession.HappenedAt,
+                trainingSession.Place));
+        }
+        public UserAccessPolicy(
+            Plan plan,
+            Guid userId,
+            AttendanceStatus hasAttended = AttendanceStatus.Waiting,
+            Guid? createdBy = null) : base(Guid.NewGuid(), createdBy)
+        {
+            AccessPoliciesId = plan.AccessPolicyId;
+            UserId = userId;
+            AttendanceState = hasAttended;
+
+            AddDomainEvent(new PlanUserAccessPolicyCreatedEvent(
+                userId,
+                plan.AccessPolicyId,
+                plan.PlanName,
+                plan.StartDate));
+        }
+        */
+
+
         private UserAccessPolicy() :base() { }
         public void UpdateState(AttendanceStatus hasAttended, decimal doneScore = 100)
         {

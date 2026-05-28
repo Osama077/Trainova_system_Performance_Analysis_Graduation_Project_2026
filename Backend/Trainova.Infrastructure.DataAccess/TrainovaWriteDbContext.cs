@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Application.Common.Models;
@@ -17,32 +16,40 @@ using Trainova.Domain.UserAuth;
 
 namespace Trainova.Infrastructure.DataAccess
 {
-    public class TrainovaWriteDbContext :DbContext,IUnitOfWork
+    public class TrainovaWriteDbContext : DbContext, IUnitOfWork
     {
         private readonly CurrentUser _currentUser;
         private IDbContextTransaction _dbTransaction;
-        private string _logFilePath;
+        private readonly string _logFilePath;
+        private bool _isInTransaction = false;
+        bool IUnitOfWork.IsInTransaction => _isInTransaction;
 
         public TrainovaWriteDbContext(
             DbContextOptions<TrainovaWriteDbContext> options,
             CurrentUser currentUser,
-            EFCoreLoggingOptions eFCoreLoggingOptions) : base(options)
+            LoggingOptions eFCoreLoggingOptions) : base(options)
         {
             _currentUser = currentUser;
             _logFilePath = eFCoreLoggingOptions.LogFilePath;
         }
 
-        public bool IsInTransaction { get; private set; } = false;
-        // Authentication and Authorization
-        public DbSet<User> Users { get; set; }
-        public DbSet<UserToken> UserTokens { get; set; }
 
 
         // Outbox
         public DbSet<EmailOutbox> EmailOutboxes { get; set; }
         public DbSet<DomainEventOutbox> DomainEventOutboxes { get; set; }
 
+
+        // ==============================================================
         // Domain Entities
+        // ==============================================================
+
+
+        // Authentication and Authorization
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserToken> UserTokens { get; set; }
+
+
 
         //plans and events
         public DbSet<AccessPolicy> AccessPolicies { get; set; }
@@ -59,7 +66,6 @@ namespace Trainova.Infrastructure.DataAccess
         //medical
         public DbSet<PlayerInjury> PlayerInjuries { get; set; }
         public DbSet<Injury> Injuries { get; set; }
-        public DbSet<RecoveryPlanPhase> PlanPhases { get; set; }
 
         //profiles
         public DbSet<Player> Players { get; set; }
@@ -73,7 +79,7 @@ namespace Trainova.Infrastructure.DataAccess
             if (_dbTransaction == null)
             {
                 _dbTransaction = await Database.BeginTransactionAsync();
-                IsInTransaction = true;
+                _isInTransaction = true;
             }
         }
 
@@ -86,7 +92,7 @@ namespace Trainova.Infrastructure.DataAccess
                 await _dbTransaction.CommitAsync();
                 await _dbTransaction.DisposeAsync();
                 _dbTransaction = null;
-                IsInTransaction = false;
+                _isInTransaction = false;
             }
         }
 
@@ -97,7 +103,7 @@ namespace Trainova.Infrastructure.DataAccess
                 _dbTransaction.Rollback();
                 await _dbTransaction.DisposeAsync();
                 _dbTransaction = null;
-                IsInTransaction = false;
+                _isInTransaction = false;
             }
         }
         //ahmed remove the following shit if you wany
@@ -127,49 +133,72 @@ namespace Trainova.Infrastructure.DataAccess
 
 
 
-        private List<AuditLog> HandleAuditLogs()
+        private async Task HandleAuditLogs()
         {
             ChangeTracker.DetectChanges();
 
             var logs = new List<AuditLog>();
 
-            var entries = ChangeTracker
-                .Entries<IAuditable>()
-                .Where(e =>
-                    e.Entity is IAuditable &&
-                    (e.State == EntityState.Added ||
-                     e.State == EntityState.Modified ||
-                     e.State == EntityState.Deleted));
+            var entries = ChangeTracker.Entries()
+                    .Where(e => e.Entity is IAuditable &&
+                               (e.State == EntityState.Added ||
+                                e.State == EntityState.Modified ||
+                                e.State == EntityState.Deleted));
 
             foreach (var entry in entries)
             {
-                if(entry.State == EntityState.Deleted)
+                var auditableEntity = (IAuditable)entry.Entity;
+                if (entry.State == EntityState.Deleted)
                 {
-                    var deletedLog = entry.Entity.CreateDeletionAudit();
-                    deletedLog.SetUser(_currentUser?.Id??Guid.Empty);
+                    var deletedLog = auditableEntity.CreateDeletionAudit();
+                    deletedLog.SetUser(_currentUser?.Id ?? Guid.Empty);
                     logs.Add(deletedLog);
                 }
 
-                else if(entry.State == EntityState.Added)
+                else if (entry.State == EntityState.Added)
                 {
-                    var createdLog = entry.Entity.AddedAudit;
+                    var createdLog = auditableEntity.AddedAudit;
                     createdLog.SetUser(_currentUser?.Id ?? Guid.Empty);
                     logs.Add(createdLog);
                 }
-                else if(entry.State == EntityState.Modified)
+                else if (entry.State == EntityState.Modified)
                 {
-                    var updatedLog = entry.Entity.UpdatedAudit;
+                    var updatedLog = auditableEntity.UpdatedAudit;
                     updatedLog.SetUser(_currentUser?.Id ?? Guid.Empty);
                     logs.Add(updatedLog);
                 }
             }
 
+            if (logs.Any())
+            {
+                await AuditLoges.AddRangeAsync(logs);
+            }
 
 
-
-
-            return logs;
         }
+        private async Task HandleDomainEvents()
+        {
+            var domainEntities = ChangeTracker
+                .Entries<IEntity<Guid>>()
+                .Where(x => x.Entity.DomainEvents != null && x.Entity.DomainEvents.Any())
+                .ToList();
+
+            var domainEvents = domainEntities
+                .SelectMany(x => x.Entity.DomainEvents)
+                .ToList();
+
+            domainEntities.ForEach(entity => entity.Entity.ClearDomainEvents());
+
+            var outboxMessages = domainEvents
+                .Select(e => new DomainEventOutbox(e))
+                .ToList();
+
+            if (outboxMessages.Any())
+            {
+                await DomainEventOutboxes.AddRangeAsync(outboxMessages);
+            }
+        }
+
         private void HandleCreationLogs()
         {
             var entries = ChangeTracker
@@ -181,15 +210,12 @@ namespace Trainova.Infrastructure.DataAccess
                 entry.SetCreator(_currentUser?.Id ?? Guid.Empty);
             }
         }
+
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             HandleCreationLogs();
-            var auditLogs = HandleAuditLogs();
-
-            if (auditLogs.Any())
-            {
-                await AuditLoges.AddRangeAsync(auditLogs);
-            }
+            await HandleAuditLogs();
+            await HandleDomainEvents();
 
             var result = await base.SaveChangesAsync(cancellationToken);
 

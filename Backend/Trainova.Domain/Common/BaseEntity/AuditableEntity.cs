@@ -8,25 +8,25 @@ namespace Trainova.Domain.Common.BaseEntity
     {
 
         public DateTime? LastUpdate { get; protected set; }
-        protected AuditLog _audit;
-
+        protected AuditLog _addedAudit;
+        protected AuditLog _updatedAudit;
         object IAuditable.Id => Id!;
         [JsonIgnore]
-        AuditLog IAuditable.UpdatedAudit { get => _audit; }
+        public AuditLog UpdatedAudit => _updatedAudit;
         [JsonIgnore]
-        AuditLog IAuditable.AddedAudit { get => _audit; }
+        public AuditLog AddedAudit => _addedAudit;
 
         protected AuditableEntity(TId id, Guid? createdBy = null) : base(id, createdBy)
         {
             LastUpdate = null;
             var audit = this.CreateCreationAudit();
-            _audit = audit;
+            _addedAudit = audit;
         }
         protected AuditableEntity(Guid? createdBy = null) : base(createdBy)
         {
             LastUpdate = null;
             var audit = this.CreateCreationAudit();
-            _audit = audit;
+            _addedAudit = audit;
         }
         protected AuditableEntity()
             : base()
@@ -37,7 +37,7 @@ namespace Trainova.Domain.Common.BaseEntity
         protected void MarkUpdatedNow()
         {
             var audit = this.CreateUpdateAudit();
-            _audit = audit;
+            _updatedAudit = audit;
             LastUpdate = DateTime.UtcNow;
         }
 

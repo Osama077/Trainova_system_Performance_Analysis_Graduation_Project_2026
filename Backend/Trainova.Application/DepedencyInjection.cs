@@ -18,7 +18,7 @@ public static class DependencyInjection
 
         services.AddTransient(typeof(MediatR.IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
 
-        services.AddSingleton<EFCoreLoggingOptions>(configuration.GetSection("EFCoreLoggingOptions").Get<EFCoreLoggingOptions>());
+        services.AddSingleton<LoggingOptions>(configuration.GetSection("LoggingOptions").Get<LoggingOptions>());
 
         services.AddValidatorsFromAssemblyContaining(typeof(DependencyInjection));
 

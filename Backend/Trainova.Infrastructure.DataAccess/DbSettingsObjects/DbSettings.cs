@@ -11,10 +11,9 @@ namespace Trainova.Infrastructure.DataAccess.DbSettingsObjects
         private IDbConnection? _writeConnection;
         private bool _disposed;
 
-        // الاعتماد المباشر على كائن السينجلتون المحقون
         public DbSettings(ConnectionString connectionString)
         {
-            _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
+            _connectionString = connectionString;
         }
 
         public string WriteConnectionString => _connectionString.TrainovaWriteDbConnection;

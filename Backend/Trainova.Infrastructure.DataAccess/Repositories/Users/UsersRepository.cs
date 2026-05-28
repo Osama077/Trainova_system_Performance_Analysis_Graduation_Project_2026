@@ -36,9 +36,9 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.Users
             return _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
         }
 
-        public Task<IEnumerable<User>> GetByIdsAsync(List<Guid> guids)
+        public async Task<IEnumerable<User>> GetByIdsAsync(List<Guid> guids)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Users.Where(u => guids.Contains(u.Id)).ToListAsync();
         }
 
         public Task UpdateAsync(User user)
