@@ -597,47 +597,6 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.ToTable("Lineups", (string)null);
                 });
 
-            modelBuilder.Entity("Trainova.Domain.MatchsManagement.Matches.CandidateMatch", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int?>("AwayScore")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("CandidateId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int?>("HomeScore")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("LastUpdate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("MatchDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Notes")
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
-
-                    b.Property<string>("OpponentName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CandidateMatches", (string)null);
-                });
-
             modelBuilder.Entity("Trainova.Domain.MatchsManagement.Matches.Match", b =>
                 {
                     b.Property<Guid>("Id")
@@ -841,43 +800,6 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.HasIndex("Status");
 
                     b.ToTable("PlayerInjuries", (string)null);
-                });
-
-            modelBuilder.Entity("Trainova.Domain.Profiles.Candidate", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<bool>("IsShortlisted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<DateTime?>("LastUpdate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ScoutedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Candidates", (string)null);
                 });
 
             modelBuilder.Entity("Trainova.Domain.Profiles.Player", b =>

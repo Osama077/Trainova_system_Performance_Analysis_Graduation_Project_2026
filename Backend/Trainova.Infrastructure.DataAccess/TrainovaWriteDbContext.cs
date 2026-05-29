@@ -56,7 +56,6 @@ namespace Trainova.Infrastructure.DataAccess
         public DbSet<UserAccessPolicy> UserAccessPolicies { get; set; }
         public DbSet<Plan> Plans { get; set; }
         public DbSet<TrainingSession> TrainingSessions { get; set; }
-        public DbSet<Trainova.Domain.MatchsManagement.Matches.CandidateMatch> CandidateMatches { get; set; }
         // Fitness 
         public DbSet<PhysicalCapacityTest> CapacityTests { get; set; }
         public DbSet<SessionMovement> SessionMovements { get; set; }
@@ -71,7 +70,6 @@ namespace Trainova.Infrastructure.DataAccess
         //profiles
         public DbSet<Player> Players { get; set; }
         public DbSet<TeamStaff> Coaches { get; set; }
-        public DbSet<Domain.Profiles.Candidate> Candidates { get; set; }
 
         public DbSet<AuditLog> AuditLoges { get; set; }
 

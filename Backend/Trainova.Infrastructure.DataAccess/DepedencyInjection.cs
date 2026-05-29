@@ -70,7 +70,6 @@ public static class DependencyInjection
 
         // Profiles
         services.AddScoped<IPlayerRepository, PlayerRepository>();
-        services.AddScoped<Trainova.Application.Common.Interfaces.Repositories.Profiles.Candidates.ICandidateRepository, Trainova.Infrastructure.DataAccess.Repositories.Profiles.CandidateRepository>();
         // Register Dapper type handlers for enums
         DapperTypeHandlerConfiguration.Register();
 
@@ -78,7 +77,6 @@ public static class DependencyInjection
         // TrainingSessionAccessablity
 
         services.AddScoped<ITrainingSessionRepository, TrainingSessionRepository>();
-        services.AddScoped<Trainova.Application.Common.Interfaces.Repositories.MatchsManagement.Matches.ICandidateMatchRepository, Trainova.Infrastructure.DataAccess.Repositories.MatchsManagement.Matches.CandidateMatchRepository>();
         services.AddScoped<IAccessPolicyRepository, AccsessPolicyRepository>();
         services.AddScoped<IUserAccessPolicyRepository, UserAccessPolicyRepository>();
         services.AddScoped<IPlanRepository, PlanRepository>();
