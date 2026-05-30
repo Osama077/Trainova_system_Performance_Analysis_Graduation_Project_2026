@@ -1,0 +1,39 @@
+using Trainova.Application.Scouting.Candidates.Queries.GetCandidates;
+using Trainova.Domain.Common.Enums;
+using System;
+
+namespace Trainova.Api.Requests.Profiles
+{
+    public class GetCandidatesFiltrationRequest
+    {
+        public Guid? CandidateId { get; init; }
+        public Guid? CurrentTeamId { get; init; }
+        public int? MinAge { get; init; }
+        public int? MaxAge { get; init; }
+        public string? SearchTerm { get; init; }
+        public int? Position { get; init; }
+        public CandidateStatus? Status { get; init; }
+        public DateTime? DateFrom { get; init; }
+        public DateTime? DateTo { get; init; }
+        public int PageNumber { get; init; } = 0;
+        public int PageSize { get; init; } = 12;
+        public string SortColumn { get; init; } = "CreatedAt";
+        public string SortDirection { get; init; } = "DESC";
+
+        public GetCandidatesQuery ToQuery(Guid? candidateId) => new GetCandidatesQuery(
+            CandidateId: candidateId ?? CandidateId,
+            CurrentTeamId: CurrentTeamId,
+            MinAge: MinAge,
+            MaxAge: MaxAge,
+            SearchTerm: SearchTerm,
+            Position: Position,
+            Status: Status,
+            DateFrom: DateFrom,
+            DateTo: DateTo,
+            PageNumber: PageNumber,
+            PageSize: PageSize,
+            SortColumn: SortColumn,
+            SortDirection: SortDirection
+            );
+    }
+}

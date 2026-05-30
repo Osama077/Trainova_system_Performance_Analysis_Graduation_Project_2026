@@ -11,6 +11,7 @@ using Trainova.Domain.FitnessStatus;
 using Trainova.Domain.FitnessStatus.PhysicalCapacityTests;
 using Trainova.Domain.MedicalStatus;
 using Trainova.Domain.Profiles;
+using Trainova.Domain.Scouting;
 using Trainova.Domain.TrainingSessionsAccessibility;
 using Trainova.Domain.UserAuth;
 
@@ -69,6 +70,8 @@ namespace Trainova.Infrastructure.DataAccess
 
         //profiles
         public DbSet<Player> Players { get; set; }
+        // Scouting candidates (scouts' targets)
+        public DbSet<ScoutingCandidate> ScoutingCandidates { get; set; }
         public DbSet<TeamStaff> Coaches { get; set; }
 
         public DbSet<AuditLog> AuditLoges { get; set; }

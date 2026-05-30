@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Trainova.Infrastructure.DataAccess;
 
@@ -11,9 +12,11 @@ using Trainova.Infrastructure.DataAccess;
 namespace Trainova.Infrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(TrainovaWriteDbContext))]
-    partial class TrainovaWriteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260529224035_AddTrainovaMigration")]
+    partial class AddTrainovaMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -849,40 +852,7 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.ToTable("Players", (string)null);
                 });
 
-            modelBuilder.Entity("Trainova.Domain.Profiles.TeamStaff", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ContractFilesLink")
-                        .HasMaxLength(400)
-                        .HasColumnType("nvarchar(400)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("InsuranceFilesLink")
-                        .HasMaxLength(400)
-                        .HasColumnType("nvarchar(400)");
-
-                    b.Property<DateTime?>("LastUpdate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TeamStaffs", (string)null);
-                });
-
-            modelBuilder.Entity("Trainova.Domain.Scouting.ScoutingCandidate", b =>
+            modelBuilder.Entity("Trainova.Domain.Profiles.ScoutingCandidate", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -991,6 +961,39 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.HasIndex("CurrentTeamId");
 
                     b.ToTable("ScoutingCandidates", (string)null);
+                });
+
+            modelBuilder.Entity("Trainova.Domain.Profiles.TeamStaff", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ContractFilesLink")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("InsuranceFilesLink")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<DateTime?>("LastUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TeamStaffs", (string)null);
                 });
 
             modelBuilder.Entity("Trainova.Domain.SeasonsAnalyses.Competition", b =>

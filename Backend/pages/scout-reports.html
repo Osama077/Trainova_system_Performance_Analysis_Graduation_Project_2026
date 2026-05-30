@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trainova - Scout Reports</title>
+<style>
+  :root {
+    --bg-primary:#0D1117;--bg-secondary:#161B22;--bg-card:#1C2333;--bg-hover:#21283A;
+    --border:#30363D;--border-light:#21283A;
+    --accent:#00D084;--accent-dim:rgba(0,208,132,.12);--accent-hover:#00E890;
+    --text-primary:#E6EDF3;--text-secondary:#8B949E;--text-muted:#484F58;
+    --red:#F85149;--red-dim:rgba(248,81,73,.12);
+    --yellow:#D29922;--yellow-dim:rgba(210,153,34,.12);
+    --blue:#58A6FF;--blue-dim:rgba(88,166,255,.12);
+    --purple:#BC8CFF;--purple-dim:rgba(188,140,255,.12);
+    --orange:#FF8C42;--orange-dim:rgba(255,140,66,.12);
+    --sidebar-width:220px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg-primary);color:var(--text-primary);font-family:'Segoe UI',system-ui,sans-serif;display:flex;min-height:100vh;font-size:14px;}
+  .sidebar{width:var(--sidebar-width);background:var(--bg-secondary);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;}
+  .sidebar-logo{padding:20px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);}
+  .logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#00D084,#00A066);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#fff;}
+  .logo-text{font-weight:700;font-size:15px;}.logo-role{font-size:11px;color:var(--text-secondary);}
+  .sidebar-nav{flex:1;padding:12px 8px;overflow-y:auto;}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;color:var(--text-secondary);font-size:13px;transition:all .15s;margin-bottom:2px;text-decoration:none;}
+  .nav-item:hover{background:var(--bg-hover);color:var(--text-primary);}
+  .nav-item.active{background:var(--accent-dim);color:var(--accent);}
+  .sidebar-footer{padding:12px 8px;border-top:1px solid var(--border);}
+  .logout-btn{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;color:var(--text-secondary);font-size:13px;width:100%;background:none;border:none;transition:all .15s;}
+  .logout-btn:hover{color:var(--red);}
+  .main{margin-left:var(--sidebar-width);flex:1;padding:28px 32px;overflow-y:auto;}
+  .page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;}
+  .page-title{font-size:24px;font-weight:700;margin-bottom:4px;}
+  .page-subtitle{color:var(--text-secondary);font-size:13px;}
+  .btn{padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:.15s;display:inline-flex;align-items:center;gap:6px;}
+  .btn-primary{background:var(--accent);color:#0D1117;}
+  .btn-primary:hover{background:var(--accent-hover);}
+  .btn-secondary{background:transparent;color:var(--text-secondary);border:1px solid var(--border);}
+  .btn-secondary:hover{background:var(--bg-hover);color:var(--text-primary);}
+  .card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;}
+  .card-header{padding:16px 18px 12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+  .card-title{font-size:14px;font-weight:600;}
+  .card-body{padding:18px;}
+  .pos-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;}
+  .pos-gk{background:rgba(255,140,66,.15);color:var(--orange);}
+  .pos-df{background:var(--blue-dim);color:var(--blue);}
+  .pos-mf{background:var(--accent-dim);color:var(--accent);}
+  .pos-fw{background:var(--red-dim);color:var(--red);}
+
+  /* KPI STRIP */
+  .kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+  .ks{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:16px;}
+  .ks-val{font-size:26px;font-weight:800;line-height:1;}
+  .ks-lbl{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+
+  /* REPORT TYPE CARDS */
+  .report-types{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px;}
+  .rt-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:20px;cursor:pointer;transition:.15s;}
+  .rt-card:hover{border-color:var(--accent);background:var(--bg-hover);}
+  .rt-card.selected{border-color:var(--accent);background:var(--accent-dim);}
+  .rt-icon{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;}
+  .rt-title{font-size:13px;font-weight:700;margin-bottom:4px;}
+  .rt-desc{font-size:11px;color:var(--text-secondary);line-height:1.5;margin-bottom:10px;}
+  .rt-count{font-size:11px;font-weight:600;}
+
+  /* GENERATE PANEL */
+  .gen-panel{background:var(--bg-secondary);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:24px;}
+  .gen-title{font-size:15px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+  .form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px;}
+  .field-group{display:flex;flex-direction:column;gap:5px;}
+  .field-label{font-size:11px;font-weight:600;color:var(--text-secondary);}
+  .form-input{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text-primary);font-size:13px;outline:none;width:100%;transition:.15s;font-family:inherit;}
+  .form-input:focus{border-color:var(--accent);}
+  textarea.form-input{resize:vertical;min-height:80px;line-height:1.5;}
+  .section-toggles{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+  .sec-toggle{padding:6px 14px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);color:var(--text-secondary);background:transparent;transition:.15s;display:flex;align-items:center;gap:5px;}
+  .sec-toggle.on{background:var(--accent-dim);color:var(--accent);border-color:var(--accent);}
+  .sec-toggle:hover{background:var(--bg-hover);}
+
+  /* REPORT LIST */
+  .two-col{display:grid;grid-template-columns:1fr 340px;gap:18px;}
+  .report-item{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--border-light);}
+  .report-item:last-child{border-bottom:none;}
+  .ri-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .ri-info{flex:1;}
+  .ri-title{font-size:13px;font-weight:600;}
+  .ri-meta{font-size:11px;color:var(--text-secondary);margin-top:3px;}
+  .ri-actions{display:flex;gap:6px;}
+  .icon-btn{width:30px;height:30px;border-radius:7px;background:transparent;border:1px solid var(--border);color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;}
+  .icon-btn:hover{background:var(--accent-dim);color:var(--accent);border-color:var(--accent);}
+  .status-badge{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;}
+
+  /* PREVIEW CARD */
+  .preview-card{background:var(--bg-secondary);border:1px solid var(--border);border-radius:12px;overflow:hidden;position:sticky;top:28px;}
+  .preview-header{padding:18px 20px;background:linear-gradient(135deg,#071A10,#070E1A);border-bottom:1px solid var(--border);}
+  .preview-logo{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+  .preview-body{padding:18px;}
+  .pr-section{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border-light);}
+  .pr-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .pr-section-title{font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+  .pr-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;}
+  .pr-key{color:var(--text-secondary);}
+  .pr-val{font-weight:600;}
+  .pr-skill-row{margin-bottom:6px;}
+  .pr-sk-top{display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);margin-bottom:3px;}
+  .pr-sk-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+  .pr-sk-fill{height:100%;border-radius:2px;background:var(--accent);}
+  .pr-note{font-size:12px;color:var(--text-secondary);line-height:1.6;padding:10px;background:var(--bg-card);border-radius:7px;border-left:2px solid var(--border);}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-logo"><div class="logo-icon">T</div><div><div class="logo-text">TRAINOVA</div><div class="logo-role">Scout Team</div></div></div>
+  <nav class="sidebar-nav">
+    <a href="scout-dashboard.html" class="nav-item"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard</a>
+    <a href="scout-search.html" class="nav-item"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>Scout Search</a>
+    <a href="scout-candidates.html" class="nav-item"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Candidates</a>
+    <a href="scout-shortlist.html" class="nav-item"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Shortlist</a>
+    <a href="scout-reports.html" class="nav-item active"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Reports</a>
+    <a href="scout-timeline.html" class="nav-item"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Timeline</a>
+  </nav>
+  <div class="sidebar-footer"><button class="logout-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout</button></div>
+</aside>
+
+<main class="main">
+  <div class="page-header">
+    <div><div class="page-title">Scouting Reports</div><div class="page-subtitle">Generate, manage, and submit reports to the Head Coach</div></div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-secondary"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export All</button>
+      <button class="btn btn-primary"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>New Report</button>
+    </div>
+  </div>
+
+  <!-- KPI STRIP -->
+  <div class="kpi-strip">
+    <div class="ks"><div class="ks-val">23</div><div class="ks-lbl">Total Reports</div></div>
+    <div class="ks"><div class="ks-val" style="color:var(--accent);">8</div><div class="ks-lbl">This Month</div></div>
+    <div class="ks"><div class="ks-val" style="color:var(--yellow);">5</div><div class="ks-lbl">Pending Review</div></div>
+    <div class="ks"><div class="ks-val" style="color:var(--blue);">3</div><div class="ks-lbl">Sent to Coach</div></div>
+  </div>
+
+  <!-- REPORT TYPE CARDS -->
+  <div class="report-types">
+    <div class="rt-card selected">
+      <div class="rt-icon" style="background:var(--accent-dim);"><svg width="20" height="20" fill="none" stroke="var(--accent)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg></div>
+      <div class="rt-title">Player Scouting Report</div>
+      <div class="rt-desc">Full assessment of an individual candidate — skills, stats, match logs, and recommendation</div>
+      <div class="rt-count" style="color:var(--accent);">15 reports</div>
+    </div>
+    <div class="rt-card">
+      <div class="rt-icon" style="background:var(--blue-dim);"><svg width="20" height="20" fill="none" stroke="var(--blue)" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div class="rt-title">Shortlist Summary</div>
+      <div class="rt-desc">Consolidated overview of all shortlisted candidates — for Head Coach presentation</div>
+      <div class="rt-count" style="color:var(--blue);">4 reports</div>
+    </div>
+    <div class="rt-card">
+      <div class="rt-icon" style="background:var(--yellow-dim);"><svg width="20" height="20" fill="none" stroke="var(--yellow)" stroke-width="2" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+      <div class="rt-title">Position Need Analysis</div>
+      <div class="rt-desc">Gap analysis by position — which roles need reinforcement and top targets for each</div>
+      <div class="rt-count" style="color:var(--yellow);">2 reports</div>
+    </div>
+    <div class="rt-card">
+      <div class="rt-icon" style="background:var(--purple-dim);"><svg width="20" height="20" fill="none" stroke="var(--purple)" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+      <div class="rt-title">Match Observation Report</div>
+      <div class="rt-desc">Detailed notes from a specific match watched — events, standout moments, tactics</div>
+      <div class="rt-count" style="color:var(--purple);">1 report</div>
+    </div>
+    <div class="rt-card">
+      <div class="rt-icon" style="background:var(--orange-dim);"><svg width="20" height="20" fill="none" stroke="var(--orange)" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+      <div class="rt-title">Season Activity Report</div>
+      <div class="rt-desc">Season scouting summary — matches attended, candidates evaluated, recommendations made</div>
+      <div class="rt-count" style="color:var(--orange);">1 report</div>
+    </div>
+    <div class="rt-card">
+      <div class="rt-icon" style="background:var(--red-dim);"><svg width="20" height="20" fill="none" stroke="var(--red)" stroke-width="2" viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 22 11 13 2 9l20-7z"/></svg></div>
+      <div class="rt-title">Recommendation to Coach</div>
+      <div class="rt-desc">Formal recommendation package — player profile, evidence, and transfer justification</div>
+      <div class="rt-count" style="color:var(--red);">0 pending</div>
+    </div>
+  </div>
+
+  <!-- GENERATE + LIST + PREVIEW -->
+  <div>
+    <!-- Generate Form -->
+    <div class="gen-panel" style="margin-bottom:24px;">
+      <div class="gen-title">
+        <svg width="16" height="16" fill="none" stroke="var(--accent)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>
+        Generate: Player Scouting Report
+      </div>
+      <div class="form-row-3">
+        <div class="field-group">
+          <label class="field-label">Candidate *</label>
+          <select class="form-input">
+            <option>Karim Mostafa — ST</option>
+            <option>Ahmed Ramy — AM</option>
+            <option>Youssef Adel — CM</option>
+            <option>Mohamed Hassan — CB</option>
+            <option>Hassan Khalil — DM</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Report Type</label>
+          <select class="form-input">
+            <option>Player Scouting Report</option>
+            <option>Shortlist Summary</option>
+            <option>Match Observation</option>
+            <option>Recommendation to Coach</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Export Format</label>
+          <select class="form-input">
+            <option>PDF</option>
+            <option>Word (.docx)</option>
+            <option>Print</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <div class="field-label" style="margin-bottom:8px;">Include Sections</div>
+        <div class="section-toggles">
+          <button class="sec-toggle on"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Player Bio</button>
+          <button class="sec-toggle on"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Season Stats</button>
+          <button class="sec-toggle on"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Skill Assessment</button>
+          <button class="sec-toggle on"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Match Log</button>
+          <button class="sec-toggle on"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Scout Notes</button>
+          <button class="sec-toggle"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Comparison</button>
+          <button class="sec-toggle"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Market Info</button>
+          <button class="sec-toggle on"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Recommendation</button>
+        </div>
+      </div>
+      <div class="field-group" style="margin-bottom:14px;">
+        <label class="field-label">Scout's Summary Note</label>
+        <textarea class="form-input" placeholder="Overall assessment and recommendation for the Head Coach...">Karim Mostafa is our top target for the striker position. His clinical finishing, strong aerial presence, and intelligent movement suit our 4-3-3 system. Contract expiry in June 2026 provides an opportunity for a cost-effective deal. Recommend scheduling a trial match immediately.</textarea>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button class="btn btn-primary" style="flex:1;justify-content:center;"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Generate & Export PDF</button>
+        <button class="btn btn-secondary">Preview</button>
+        <button class="btn btn-secondary"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 22 11 13 2 9l20-7z"/></svg>Send to Coach</button>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <!-- Report List -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Recent Reports</span>
+          <div style="display:flex;gap:8px;">
+            <select style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:7px;padding:5px 10px;color:var(--text-secondary);font-size:12px;outline:none;"><option>All Types</option><option>Player</option><option>Shortlist</option><option>Recommendation</option></select>
+          </div>
+        </div>
+        <div style="padding:0 18px;">
+
+          <div class="report-item">
+            <div class="ri-icon" style="background:var(--accent-dim);"><svg width="16" height="16" fill="none" stroke="var(--accent)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg></div>
+            <div class="ri-info">
+              <div class="ri-title">Karim Mostafa — Player Scouting Report</div>
+              <div class="ri-meta">Generated Feb 12, 2026 · Scout Hassan · <span class="status-badge" style="background:var(--accent-dim);color:var(--accent);">Sent to Coach</span></div>
+            </div>
+            <div class="ri-actions">
+              <button class="icon-btn" title="View"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+              <button class="icon-btn" title="Download"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+            </div>
+          </div>
+
+          <div class="report-item">
+            <div class="ri-icon" style="background:var(--blue-dim);"><svg width="16" height="16" fill="none" stroke="var(--blue)" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+            <div class="ri-info">
+              <div class="ri-title">Shortlist Summary — February 2026</div>
+              <div class="ri-meta">Generated Feb 10, 2026 · Scout Hassan · <span class="status-badge" style="background:var(--yellow-dim);color:var(--yellow);">Pending Review</span></div>
+            </div>
+            <div class="ri-actions">
+              <button class="icon-btn"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+              <button class="icon-btn"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+            </div>
+          </div>
+
+          <div class="report-item">
+            <div class="ri-icon" style="background:var(--orange-dim);"><svg width="16" height="16" fill="none" stroke="var(--orange)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg></div>
+            <div class="ri-info">
+              <div class="ri-title">Ahmed Ramy — Player Scouting Report</div>
+              <div class="ri-meta">Generated Feb 8, 2026 · Scout Ramadan · <span class="status-badge" style="background:var(--accent-dim);color:var(--accent);">Sent to Coach</span></div>
+            </div>
+            <div class="ri-actions">
+              <button class="icon-btn"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+              <button class="icon-btn"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+            </div>
+          </div>
+
+          <div class="report-item">
+            <div class="ri-icon" style="background:var(--purple-dim);"><svg width="16" height="16" fill="none" stroke="var(--purple)" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/></svg></div>
+            <div class="ri-info">
+              <div class="ri-title">Al Ahly vs Zamalek — Match Observation</div>
+              <div class="ri-meta">Generated Feb 5, 2026 · Scout Hassan · <span class="status-badge" style="background:rgba(72,79,88,.2);color:var(--text-secondary);">Draft</span></div>
+            </div>
+            <div class="ri-actions">
+              <button class="icon-btn"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+              <button class="icon-btn"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+            </div>
+          </div>
+
+          <div class="report-item">
+            <div class="ri-icon" style="background:var(--accent-dim);"><svg width="16" height="16" fill="none" stroke="var(--accent)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg></div>
+            <div class="ri-info">
+              <div class="ri-title">Youssef Adel — Player Scouting Report</div>
+              <div class="ri-meta">Generated Feb 3, 2026 · Scout Hassan · <span class="status-badge" style="background:var(--yellow-dim);color:var(--yellow);">Pending Review</span></div>
+            </div>
+            <div class="ri-actions">
+              <button class="icon-btn"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+              <button class="icon-btn"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+            </div>
+          </div>
+
+          <div class="report-item">
+            <div class="ri-icon" style="background:var(--red-dim);"><svg width="16" height="16" fill="none" stroke="var(--red)" stroke-width="2" viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 22 11 13 2 9l20-7z"/></svg></div>
+            <div class="ri-info">
+              <div class="ri-title">Recommendation — Karim Mostafa for Trial</div>
+              <div class="ri-meta">Generated Jan 28, 2026 · Scout Hassan · <span class="status-badge" style="background:var(--accent-dim);color:var(--accent);">Coach Approved</span></div>
+            </div>
+            <div class="ri-actions">
+              <button class="icon-btn"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+              <button class="icon-btn"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Report Preview -->
+      <div class="preview-card">
+        <div class="preview-header">
+          <div class="preview-logo">
+            <div style="width:28px;height:28px;background:linear-gradient(135deg,#00D084,#00A066);border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;color:#fff;">T</div>
+            <div>
+              <div style="font-size:12px;font-weight:700;">TRAINOVA Scouting</div>
+              <div style="font-size:10px;color:var(--text-muted);">Confidential Report</div>
+            </div>
+          </div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:3px;">Player Scouting Report</div>
+          <div style="font-size:11px;color:var(--text-secondary);">Karim Mostafa · Generated Feb 12, 2026</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Scout: Hassan · Scout Team</div>
+        </div>
+        <div class="preview-body">
+          <div class="pr-section">
+            <div class="pr-section-title">Player Information</div>
+            <div class="pr-row"><span class="pr-key">Full Name</span><span class="pr-val">Karim Mostafa</span></div>
+            <div class="pr-row"><span class="pr-key">Position</span><span class="pr-val">Striker (ST)</span></div>
+            <div class="pr-row"><span class="pr-key">Club</span><span class="pr-val">Al Ahly SC</span></div>
+            <div class="pr-row"><span class="pr-key">Nationality</span><span class="pr-val">🇪🇬 Egyptian</span></div>
+            <div class="pr-row"><span class="pr-key">Age / DOB</span><span class="pr-val">23 / Mar 15, 2002</span></div>
+            <div class="pr-row"><span class="pr-key">Market Value</span><span class="pr-val" style="color:var(--accent);">€2.1M</span></div>
+            <div class="pr-row"><span class="pr-key">Contract End</span><span class="pr-val" style="color:var(--yellow);">Jun 2026</span></div>
+          </div>
+          <div class="pr-section">
+            <div class="pr-section-title">Season Statistics</div>
+            <div class="pr-row"><span class="pr-key">Goals</span><span class="pr-val" style="color:var(--accent);">14</span></div>
+            <div class="pr-row"><span class="pr-key">Assists</span><span class="pr-val">6</span></div>
+            <div class="pr-row"><span class="pr-key">Matches</span><span class="pr-val">22</span></div>
+            <div class="pr-row"><span class="pr-key">Shots/90</span><span class="pr-val">4.2</span></div>
+            <div class="pr-row"><span class="pr-key">xG/90</span><span class="pr-val">2.8</span></div>
+          </div>
+          <div class="pr-section">
+            <div class="pr-section-title">Key Skills</div>
+            <div class="pr-skill-row"><div class="pr-sk-top"><span>Pace</span><span>88</span></div><div class="pr-sk-bar"><div class="pr-sk-fill" style="width:88%;"></div></div></div>
+            <div class="pr-skill-row"><div class="pr-sk-top"><span>Shooting</span><span>84</span></div><div class="pr-sk-bar"><div class="pr-sk-fill" style="width:84%;"></div></div></div>
+            <div class="pr-skill-row"><div class="pr-sk-top"><span>Positioning</span><span>85</span></div><div class="pr-sk-bar"><div class="pr-sk-fill" style="width:85%;"></div></div></div>
+            <div class="pr-skill-row"><div class="pr-sk-top"><span>Physicality</span><span>81</span></div><div class="pr-sk-bar"><div class="pr-sk-fill" style="width:81%;background:var(--blue);"></div></div></div>
+          </div>
+          <div class="pr-section">
+            <div class="pr-section-title">Scout Rating & Recommendation</div>
+            <div class="pr-row"><span class="pr-key">Rating</span><span class="pr-val" style="color:var(--accent);font-size:15px;">8.4 / 10</span></div>
+            <div class="pr-row"><span class="pr-key">Potential</span><span class="pr-val">★★★★★</span></div>
+            <div class="pr-row"><span class="pr-key">Status</span><span class="pr-val" style="color:var(--accent);">⭐ Shortlisted</span></div>
+            <div style="margin-top:10px;">
+              <div class="pr-note">Recommend trial match scheduling. Contract opportunity in June 2026. Strong fit for 4-3-3 striker profile.</div>
+            </div>
+          </div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:4px;"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export PDF</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+</body>
+</html>

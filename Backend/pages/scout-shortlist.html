@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trainova - Shortlist</title>
+<style>
+  :root {
+    --bg-primary:#0D1117;--bg-secondary:#161B22;--bg-card:#1C2333;--bg-hover:#21283A;
+    --border:#30363D;--border-light:#21283A;
+    --accent:#00D084;--accent-dim:rgba(0,208,132,.12);--accent-hover:#00E890;
+    --text-primary:#E6EDF3;--text-secondary:#8B949E;--text-muted:#484F58;
+    --red:#F85149;--red-dim:rgba(248,81,73,.12);
+    --yellow:#D29922;--yellow-dim:rgba(210,153,34,.12);
+    --blue:#58A6FF;--blue-dim:rgba(88,166,255,.12);
+    --purple:#BC8CFF;--purple-dim:rgba(188,140,255,.12);
+    --orange:#FF8C42;--sidebar-width:220px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg-primary);color:var(--text-primary);font-family:'Segoe UI',system-ui,sans-serif;display:flex;min-height:100vh;font-size:14px;}
+  .sidebar{width:var(--sidebar-width);background:var(--bg-secondary);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;}
+  .sidebar-logo{padding:20px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);}
+  .logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#00D084,#00A066);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#fff;}
+  .logo-text{font-weight:700;font-size:15px;}.logo-role{font-size:11px;color:var(--text-secondary);}
+  .sidebar-nav{flex:1;padding:12px 8px;overflow-y:auto;}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;color:var(--text-secondary);font-size:13px;transition:all .15s;margin-bottom:2px;text-decoration:none;}
+  .nav-item:hover{background:var(--bg-hover);color:var(--text-primary);}
+  .nav-item.active{background:var(--accent-dim);color:var(--accent);}
+  .sidebar-footer{padding:12px 8px;border-top:1px solid var(--border);}
+  .logout-btn{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;color:var(--text-secondary);font-size:13px;width:100%;background:none;border:none;transition:all .15s;}
+  .logout-btn:hover{color:var(--red);}
+  .main{margin-left:var(--sidebar-width);flex:1;padding:28px 32px;overflow-y:auto;}
+  .page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;}
+  .page-title{font-size:24px;font-weight:700;margin-bottom:4px;}
+  .page-subtitle{color:var(--text-secondary);font-size:13px;}
+  .btn{padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:.15s;display:inline-flex;align-items:center;gap:6px;}
+  .btn-primary{background:var(--accent);color:#0D1117;}
+  .btn-primary:hover{background:var(--accent-hover);}
+  .btn-secondary{background:transparent;color:var(--text-secondary);border:1px solid var(--border);}
+  .btn-secondary:hover{background:var(--bg-hover);color:var(--text-primary);}
+  .btn-danger{background:var(--red-dim);color:var(--red);border:1px solid rgba(248,81,73,.3);}
+  .card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;}
+  .card-header{padding:16px 18px 12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+  .card-title{font-size:14px;font-weight:600;}
+  .card-body{padding:18px;}
+  .pos-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;}
+  .pos-gk{background:rgba(255,140,66,.15);color:var(--orange);}
+  .pos-df{background:var(--blue-dim);color:var(--blue);}
+  .pos-mf{background:var(--accent-dim);color:var(--accent);}
+  .pos-fw{background:var(--red-dim);color:var(--red);}
+
+  /* KPI STRIP */
+  .kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+  .ks{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:16px;}
+  .ks-val{font-size:26px;font-weight:800;line-height:1;}
+  .ks-lbl{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+  .ks-sub{font-size:11px;margin-top:3px;}
+
+  /* SHORTLIST CARDS */
+  .shortlist-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px;}
+  .sl-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:20px;position:relative;cursor:pointer;transition:.15s;}
+  .sl-card:hover{border-color:rgba(0,208,132,.3);transform:translateY(-1px);}
+  .sl-card.priority-1{border-color:rgba(0,208,132,.4);}
+  .sl-card.priority-2{border-color:rgba(88,166,255,.3);}
+  .sl-rank{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;background:var(--accent-dim);color:var(--accent);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+  .sl-rank.r2{background:var(--blue-dim);color:var(--blue);}
+  .sl-rank.r3{background:var(--yellow-dim);color:var(--yellow);}
+  .sl-rank.r4{background:rgba(72,79,88,.2);color:var(--text-secondary);}
+  .sl-avatar{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;margin-bottom:12px;}
+  .sl-name{font-size:15px;font-weight:700;margin-bottom:3px;}
+  .sl-meta{font-size:12px;color:var(--text-secondary);margin-bottom:10px;}
+  .sl-score-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+  .sl-score{font-size:28px;font-weight:800;color:var(--accent);}
+  .sl-score-lbl{font-size:10px;color:var(--text-secondary);}
+  .sl-stars{color:var(--yellow);font-size:13px;margin-bottom:10px;}
+  .sl-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:12px;}
+  .sl-stat{background:var(--bg-secondary);border-radius:7px;padding:8px;text-align:center;}
+  .sl-stat-val{font-size:14px;font-weight:700;}
+  .sl-stat-lbl{font-size:9px;color:var(--text-muted);margin-top:2px;}
+  .sl-actions{display:flex;gap:6px;}
+
+  /* SKILL BARS */
+  .skill-mini{margin-bottom:8px;}
+  .sk-top{display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);margin-bottom:3px;}
+  .sk-top span:last-child{font-weight:700;color:var(--text-primary);}
+  .sk-bar{height:4px;background:var(--border);border-radius:3px;overflow:hidden;}
+  .sk-fill{height:100%;border-radius:3px;}
+
+  /* COMPARISON TABLE */
+  .comp-wrap{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;margin-bottom:24px;overflow:hidden;}
+  .comp-header{padding:16px 18px 12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+  .comp-table{width:100%;border-collapse:collapse;}
+  .comp-table th{padding:12px 16px;font-size:11px;color:var(--text-secondary);font-weight:600;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);text-align:center;}
+  .comp-table th:first-child{text-align:left;width:140px;}
+  .comp-table td{padding:11px 16px;border-bottom:1px solid var(--border-light);font-size:13px;text-align:center;}
+  .comp-table td:first-child{text-align:left;color:var(--text-secondary);font-size:12px;}
+  .comp-table tr:last-child td{border-bottom:none;}
+  .comp-table tr:hover td{background:var(--bg-hover);}
+  .better{color:var(--accent);font-weight:700;}
+  .worse{color:var(--text-secondary);}
+  .comp-player-header{display:flex;flex-direction:column;align-items:center;gap:4px;}
+  .comp-avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;}
+
+  /* RECOMMENDATION CARD */
+  .rec-card{background:linear-gradient(135deg,#071A10,#070E1A);border:1px solid rgba(0,208,132,.2);border-radius:12px;padding:20px;margin-bottom:24px;display:flex;align-items:center;gap:20px;}
+  .rec-icon{width:52px;height:52px;border-radius:14px;background:var(--accent-dim);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .rec-title{font-size:16px;font-weight:700;margin-bottom:4px;}
+  .rec-sub{font-size:12px;color:var(--text-secondary);line-height:1.5;}
+  .rec-actions{margin-left:auto;display:flex;gap:8px;flex-shrink:0;}
+
+  /* POSITION FILTER TABS */
+  .pos-tabs{display:flex;gap:8px;margin-bottom:18px;}
+  .pos-tab{padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);color:var(--text-secondary);background:transparent;transition:.15s;}
+  .pos-tab.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent);}
+  .pos-tab:hover{background:var(--bg-hover);}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-logo"><div class="logo-icon">T</div><div><div class="logo-text">TRAINOVA</div><div class="logo-role">Scout Team</div></div></div>
+  <nav class="sidebar-nav">
+    <a href="scout-dashboard.html" class="nav-item"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard</a>
+    <a href="scout-search.html" class="nav-item"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>Scout Search</a>
+    <a href="scout-candidates.html" class="nav-item"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Candidates</a>
+    <a href="scout-shortlist.html" class="nav-item active"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Shortlist</a>
+    <a href="scout-reports.html" class="nav-item"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Reports</a>
+    <a href="scout-timeline.html" class="nav-item"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Timeline</a>
+  </nav>
+  <div class="sidebar-footer"><button class="logout-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout</button></div>
+</aside>
+
+<main class="main">
+  <div class="page-header">
+    <div><div class="page-title">Shortlist</div><div class="page-subtitle">Priority candidates ranked and ready for recommendation to Head Coach</div></div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-secondary"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export Shortlist</button>
+      <button class="btn btn-primary"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 22 11 13 2 9l20-7z"/></svg>Submit to Coach</button>
+    </div>
+  </div>
+
+  <!-- KPI STRIP -->
+  <div class="kpi-strip">
+    <div class="ks">
+      <div class="ks-val" style="color:var(--accent);">12</div>
+      <div class="ks-lbl">Total Shortlisted</div>
+      <div class="ks-sub" style="color:var(--text-secondary);">Across all positions</div>
+    </div>
+    <div class="ks">
+      <div class="ks-val" style="color:var(--blue);">3</div>
+      <div class="ks-lbl">Ready for Trial</div>
+      <div class="ks-sub" style="color:var(--blue);">High priority</div>
+    </div>
+    <div class="ks">
+      <div class="ks-val" style="color:var(--yellow);">2</div>
+      <div class="ks-lbl">Currently On Trial</div>
+      <div class="ks-sub" style="color:var(--text-secondary);">Being evaluated</div>
+    </div>
+    <div class="ks">
+      <div class="ks-val" style="color:var(--accent);">3</div>
+      <div class="ks-lbl">Signed This Season</div>
+      <div class="ks-sub" style="color:var(--accent);">Successful transfers</div>
+    </div>
+  </div>
+
+  <!-- HEAD COACH RECOMMENDATION BANNER -->
+  <div class="rec-card">
+    <div class="rec-icon">
+      <svg width="24" height="24" fill="none" stroke="var(--accent)" stroke-width="2" viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 22 11 13 2 9l20-7z"/></svg>
+    </div>
+    <div>
+      <div class="rec-title">3 Players Ready for Head Coach Recommendation</div>
+      <div class="rec-sub">Karim Mostafa (ST), Ahmed Ramy (AM), and Youssef Adel (CM) have been fully assessed with complete scouting reports. Ready to submit for Head Coach review and trial scheduling.</div>
+    </div>
+    <div class="rec-actions">
+      <button class="btn btn-secondary">Preview Report</button>
+      <button class="btn btn-primary">Submit Recommendation</button>
+    </div>
+  </div>
+
+  <!-- POSITION FILTER TABS -->
+  <div class="pos-tabs">
+    <button class="pos-tab active">All Positions (12)</button>
+    <button class="pos-tab">Forwards (4)</button>
+    <button class="pos-tab">Midfielders (5)</button>
+    <button class="pos-tab">Defenders (2)</button>
+    <button class="pos-tab">Goalkeepers (1)</button>
+  </div>
+
+  <!-- SHORTLIST CARDS GRID -->
+  <div class="shortlist-grid">
+
+    <!-- RANK 1 -->
+    <div class="sl-card priority-1">
+      <div class="sl-rank">1</div>
+      <div class="sl-avatar" style="background:linear-gradient(135deg,#00D084,#00A066);">KM</div>
+      <div class="sl-name">Karim Mostafa</div>
+      <div class="sl-meta">ST &nbsp;·&nbsp; Al Ahly SC &nbsp;·&nbsp; Age 23 &nbsp;·&nbsp; 🇪🇬</div>
+      <div class="sl-score-row">
+        <div>
+          <div class="sl-score">8.4</div>
+          <div class="sl-score-lbl">Scout Rating</div>
+        </div>
+        <span class="pos-badge pos-fw">ST</span>
+      </div>
+      <div class="sl-stars">★★★★★</div>
+      <div class="sl-stats">
+        <div class="sl-stat"><div class="sl-stat-val" style="color:var(--accent);">14</div><div class="sl-stat-lbl">Goals</div></div>
+        <div class="sl-stat"><div class="sl-stat-val" style="color:var(--blue);">6</div><div class="sl-stat-lbl">Assists</div></div>
+        <div class="sl-stat"><div class="sl-stat-val">22</div><div class="sl-stat-lbl">Matches</div></div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <div class="skill-mini"><div class="sk-top"><span>Pace</span><span>88</span></div><div class="sk-bar"><div class="sk-fill" style="width:88%;background:var(--accent);"></div></div></div>
+        <div class="skill-mini"><div class="sk-top"><span>Shooting</span><span>84</span></div><div class="sk-bar"><div class="sk-fill" style="width:84%;background:var(--accent);"></div></div></div>
+        <div class="skill-mini"><div class="sk-top"><span>Positioning</span><span>85</span></div><div class="sk-bar"><div class="sk-fill" style="width:85%;background:var(--yellow);"></div></div></div>
+      </div>
+      <div style="font-size:11px;color:var(--text-secondary);padding:8px;background:var(--bg-secondary);border-radius:7px;margin-bottom:12px;line-height:1.5;">Contract expires Jun 2026 · Market Value €2.1M · Agent: Ahmed Fathi</div>
+      <div class="sl-actions">
+        <button class="btn btn-secondary" style="flex:1;justify-content:center;font-size:11px;">View Profile</button>
+        <button class="btn btn-primary" style="flex:1;justify-content:center;font-size:11px;">Recommend Trial</button>
+      </div>
+    </div>
+
+    <!-- RANK 2 -->
+    <div class="sl-card">
+      <div class="sl-rank r2">2</div>
+      <div class="sl-avatar" style="background:linear-gradient(135deg,#FF8C42,#CC5500);">AR</div>
+      <div class="sl-name">Ahmed Ramy</div>
+      <div class="sl-meta">AM &nbsp;·&nbsp; Ismaily SC &nbsp;·&nbsp; Age 19 &nbsp;·&nbsp; 🇪🇬</div>
+      <div class="sl-score-row">
+        <div>
+          <div class="sl-score" style="color:var(--blue);">7.2</div>
+          <div class="sl-score-lbl">Scout Rating</div>
+        </div>
+        <span class="pos-badge pos-mf">AM</span>
+      </div>
+      <div class="sl-stars" style="color:var(--yellow);">★★★★★</div>
+      <div class="sl-stats">
+        <div class="sl-stat"><div class="sl-stat-val" style="color:var(--accent);">9</div><div class="sl-stat-lbl">Goals</div></div>
+        <div class="sl-stat"><div class="sl-stat-val" style="color:var(--blue);">4</div><div class="sl-stat-lbl">Assists</div></div>
+        <div class="sl-stat"><div class="sl-stat-val">18</div><div class="sl-stat-lbl">Matches</div></div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <div class="skill-mini"><div class="sk-top"><span>Vision</span><span>82</span></div><div class="sk-bar"><div class="sk-fill" style="width:82%;background:var(--purple);"></div></div></div>
+        <div class="skill-mini"><div class="sk-top"><span>Dribbling</span><span>85</span></div><div class="sk-bar"><div class="sk-fill" style="width:85%;background:var(--accent);"></div></div></div>
+        <div class="skill-mini"><div class="sk-top"><span>Passing</span><span>78</span></div><div class="sk-bar"><div class="sk-fill" style="width:78%;background:var(--blue);"></div></div></div>
+      </div>
+      <div style="font-size:11px;color:var(--text-secondary);padding:8px;background:var(--bg-secondary);border-radius:7px;margin-bottom:12px;line-height:1.5;">19 years old — exceptional ceiling · Market Value €800K · Versatile attacker</div>
+      <div class="sl-actions">
+        <button class="btn btn-secondary" style="flex:1;justify-content:center;font-size:11px;">View Profile</button>
+        <button class="btn btn-primary" style="flex:1;justify-content:center;font-size:11px;">Recommend Trial</button>
+      </div>
+    </div>
+
+    <!-- RANK 3 -->
+    <div class="sl-card">
+      <div class="sl-rank r3">3</div>
+      <div class="sl-avatar" style="background:linear-gradient(135deg,#58A6FF,#0066CC);">YA</div>
+      <div class="sl-name">Youssef Adel</div>
+      <div class="sl-meta">CM &nbsp;·&nbsp; Zamalek SC &nbsp;·&nbsp; Age 21 &nbsp;·&nbsp; 🇪🇬</div>
+      <div class="sl-score-row">
+        <div>
+          <div class="sl-score" style="color:var(--yellow);">7.9</div>
+          <div class="sl-score-lbl">Scout Rating</div>
+        </div>
+        <span class="pos-badge pos-mf">CM</span>
+      </div>
+      <div class="sl-stars">★★★★<span style="color:var(--text-muted);">★</span></div>
+      <div class="sl-stats">
+        <div class="sl-stat"><div class="sl-stat-val" style="color:var(--accent);">7</div><div class="sl-stat-lbl">Goals</div></div>
+        <div class="sl-stat"><div class="sl-stat-val" style="color:var(--blue);">11</div><div class="sl-stat-lbl">Assists</div></div>
+        <div class="sl-stat"><div class="sl-stat-val">24</div><div class="sl-stat-lbl">Matches</div></div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <div class="skill-mini"><div class="sk-top"><span>Passing</span><span>88</span></div><div class="sk-bar"><div class="sk-fill" style="width:88%;background:var(--blue);"></div></div></div>
+        <div class="skill-mini"><div class="sk-top"><span>Stamina</span><span>84</span></div><div class="sk-bar"><div class="sk-fill" style="width:84%;background:var(--accent);"></div></div></div>
+        <div class="skill-mini"><div class="sk-top"><span>Vision</span><span>80</span></div><div class="sk-bar"><div class="sk-fill" style="width:80%;background:var(--purple);"></div></div></div>
+      </div>
+      <div style="font-size:11px;color:var(--text-secondary);padding:8px;background:var(--bg-secondary);border-radius:7px;margin-bottom:12px;line-height:1.5;">On Trial — evaluating this month · Market Value €1.2M · Strong box-to-box</div>
+      <div class="sl-actions">
+        <button class="btn btn-secondary" style="flex:1;justify-content:center;font-size:11px;">View Profile</button>
+        <button class="btn btn-secondary" style="flex:1;justify-content:center;font-size:11px;color:var(--blue);border-color:var(--blue);">On Trial</button>
+      </div>
+    </div>
+
+    <!-- RANK 4 -->
+    <div class="sl-card">
+      <div class="sl-rank r4">4</div>
+      <div class="sl-avatar" style="background:linear-gradient(135deg,#BC8CFF,#7B4FCC);">MB</div>
+      <div class="sl-name">Mohamed Badawi</div>
+      <div class="sl-meta">LB &nbsp;·&nbsp; Zamalek SC &nbsp;·&nbsp; Age 22 &nbsp;·&nbsp; 🇪🇬</div>
+      <div class="sl-score-row">
+        <div>
+          <div class="sl-score" style="color:var(--yellow);">7.5</div>
+          <div class="sl-score-lbl">Scout Rating</div>
+        </div>
+        <span class="pos-badge pos-df">LB</span>
+      </div>
+      <div class="sl-stars">★★★★<span style="color:var(--text-muted);">★</span></div>
+      <div class="sl-stats">
+        <div class="sl-stat"><div class="sl-stat-val" style="color:var(--accent);">2</div><div class="sl-stat-lbl">Goals</div></div>
+        <div class="sl-stat"><div class="sl-stat-val" style="color:var(--blue);">8</div><div class="sl-stat-lbl">Assists</div></div>
+        <div class="sl-stat"><div class="sl-stat-val">21</div><div class="sl-stat-lbl">Matches</div></div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <div class="skill-mini"><div class="sk-top"><span>Crossing</span><span>83</span></div><div class="sk-bar"><div class="sk-fill" style="width:83%;background:var(--purple);"></div></div></div>
+        <div class="skill-mini"><div class="sk-top"><span>Pace</span><span>86</span></div><div class="sk-bar"><div class="sk-fill" style="width:86%;background:var(--accent);"></div></div></div>
+        <div class="skill-mini"><div class="sk-top"><span>Tackling</span><span>77</span></div><div class="sk-bar"><div class="sk-fill" style="width:77%;background:var(--blue);"></div></div></div>
+      </div>
+      <div style="font-size:11px;color:var(--text-secondary);padding:8px;background:var(--bg-secondary);border-radius:7px;margin-bottom:12px;line-height:1.5;">On Trial · Market Value €900K · Best full-back in Egyptian league</div>
+      <div class="sl-actions">
+        <button class="btn btn-secondary" style="flex:1;justify-content:center;font-size:11px;">View Profile</button>
+        <button class="btn btn-secondary" style="flex:1;justify-content:center;font-size:11px;color:var(--blue);border-color:var(--blue);">On Trial</button>
+      </div>
+    </div>
+
+    <!-- RANK 5 -->
+    <div class="sl-card">
+      <div class="sl-rank r4">5</div>
+      <div class="sl-avatar" style="background:linear-gradient(135deg,#BC8CFF,#7B4FCC);">MH</div>
+      <div class="sl-name">Mohamed Hassan</div>
+      <div class="sl-meta">CB &nbsp;·&nbsp; Pyramids FC &nbsp;·&nbsp; Age 26 &nbsp;·&nbsp; 🇪🇬</div>
+      <div class="sl-score-row">
+        <div>
+          <div class="sl-score" style="color:var(--yellow);">7.6</div>
+          <div class="sl-score-lbl">Scout Rating</div>
+        </div>
+        <span class="pos-badge pos-df">CB</span>
+      </div>
+      <div class="sl-stars">★★★★<span style="color:var(--text-muted);">★</span></div>
+      <div class="sl-stats">
+        <div class="sl-stat"><div class="sl-stat-val" style="color:var(--accent);">3</div><div class="sl-stat-lbl">Goals</div></div>
+        <div class="sl-stat"><div class="sl-stat-val" style="color:var(--blue);">1</div><div class="sl-stat-lbl">Assists</div></div>
+        <div class="sl-stat"><div class="sl-stat-val">25</div><div class="sl-stat-lbl">Matches</div></div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <div class="skill-mini"><div class="sk-top"><span>Defending</span><span>85</span></div><div class="sk-bar"><div class="sk-fill" style="width:85%;background:var(--blue);"></div></div></div>
+        <div class="skill-mini"><div class="sk-top"><span>Aerial</span><span>88</span></div><div class="sk-bar"><div class="sk-fill" style="width:88%;background:var(--accent);"></div></div></div>
+        <div class="skill-mini"><div class="sk-top"><span>Positioning</span><span>82</span></div><div class="sk-bar"><div class="sk-fill" style="width:82%;background:var(--purple);"></div></div></div>
+      </div>
+      <div style="font-size:11px;color:var(--text-secondary);padding:8px;background:var(--bg-secondary);border-radius:7px;margin-bottom:12px;line-height:1.5;">3 matches watched · Market Value €1.5M · Strong aerial presence</div>
+      <div class="sl-actions">
+        <button class="btn btn-secondary" style="flex:1;justify-content:center;font-size:11px;">View Profile</button>
+        <button class="btn btn-primary" style="flex:1;justify-content:center;font-size:11px;">Recommend</button>
+      </div>
+    </div>
+
+    <!-- RANK 6 -->
+    <div class="sl-card">
+      <div class="sl-rank r4">6</div>
+      <div class="sl-avatar" style="background:linear-gradient(135deg,#D29922,#AA7700);">HK</div>
+      <div class="sl-name">Hassan Khalil</div>
+      <div class="sl-meta">DM &nbsp;·&nbsp; Pyramids FC &nbsp;·&nbsp; Age 25 &nbsp;·&nbsp; 🇪🇬</div>
+      <div class="sl-score-row">
+        <div>
+          <div class="sl-score" style="color:var(--yellow);">7.7</div>
+          <div class="sl-score-lbl">Scout Rating</div>
+        </div>
+        <span class="pos-badge pos-mf">DM</span>
+      </div>
+      <div class="sl-stars">★★★★<span style="color:var(--text-muted);">★</span></div>
+      <div class="sl-stats">
+        <div class="sl-stat"><div class="sl-stat-val" style="color:var(--accent);">2</div><div class="sl-stat-lbl">Goals</div></div>
+        <div class="sl-stat"><div class="sl-stat-val" style="color:var(--blue);">5</div><div class="sl-stat-lbl">Assists</div></div>
+        <div class="sl-stat"><div class="sl-stat-val">23</div><div class="sl-stat-lbl">Matches</div></div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <div class="skill-mini"><div class="sk-top"><span>Interceptions</span><span>87</span></div><div class="sk-bar"><div class="sk-fill" style="width:87%;background:var(--blue);"></div></div></div>
+        <div class="skill-mini"><div class="sk-top"><span>Stamina</span><span>90</span></div><div class="sk-bar"><div class="sk-fill" style="width:90%;background:var(--accent);"></div></div></div>
+        <div class="skill-mini"><div class="sk-top"><span>Passing</span><span>79</span></div><div class="sk-bar"><div class="sk-fill" style="width:79%;background:var(--blue);"></div></div></div>
+      </div>
+      <div style="font-size:11px;color:var(--text-secondary);padding:8px;background:var(--bg-secondary);border-radius:7px;margin-bottom:12px;line-height:1.5;">On Trial · Market Value €1.1M · Excellent defensive midfielder</div>
+      <div class="sl-actions">
+        <button class="btn btn-secondary" style="flex:1;justify-content:center;font-size:11px;">View Profile</button>
+        <button class="btn btn-primary" style="flex:1;justify-content:center;font-size:11px;">Recommend</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SIDE-BY-SIDE COMPARISON TABLE -->
+  <div class="comp-wrap">
+    <div class="comp-header">
+      <span style="font-size:14px;font-weight:600;">Side-by-Side Comparison</span>
+      <div style="display:flex;gap:8px;">
+        <select style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:7px;padding:5px 10px;color:var(--text-primary);font-size:12px;outline:none;"><option>Karim Mostafa</option><option>Ahmed Ramy</option><option>Youssef Adel</option></select>
+        <span style="color:var(--text-muted);line-height:30px;">vs</span>
+        <select style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:7px;padding:5px 10px;color:var(--text-primary);font-size:12px;outline:none;"><option>Ahmed Ramy</option><option>Karim Mostafa</option><option>Youssef Adel</option></select>
+        <button class="btn btn-secondary" style="font-size:12px;">Compare</button>
+      </div>
+    </div>
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>
+            <div class="comp-player-header">
+              <div class="comp-avatar" style="background:linear-gradient(135deg,#00D084,#00A066);">KM</div>
+              <span style="font-size:12px;font-weight:700;color:var(--accent);">Karim Mostafa</span>
+              <span style="font-size:10px;color:var(--text-secondary);">ST · Age 23</span>
+            </div>
+          </th>
+          <th>
+            <div class="comp-player-header">
+              <div class="comp-avatar" style="background:linear-gradient(135deg,#FF8C42,#CC5500);">AR</div>
+              <span style="font-size:12px;font-weight:700;color:var(--orange);">Ahmed Ramy</span>
+              <span style="font-size:10px;color:var(--text-secondary);">AM · Age 19</span>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Scout Rating</td><td class="better">8.4</td><td class="worse">7.2</td></tr>
+        <tr><td>Goals (Season)</td><td class="better">14</td><td class="worse">9</td></tr>
+        <tr><td>Assists</td><td class="worse">6</td><td class="better">—</td></tr>
+        <tr><td>Pass Accuracy</td><td class="worse">71%</td><td class="better">78%</td></tr>
+        <tr><td>Shots / 90</td><td class="better">4.2</td><td class="worse">2.8</td></tr>
+        <tr><td>xG / 90</td><td class="better">2.8</td><td class="worse">1.9</td></tr>
+        <tr><td>Dribbles / 90</td><td class="worse">3.1</td><td class="better">4.4</td></tr>
+        <tr><td>Distance / Match</td><td class="worse">9.8 km</td><td class="better">10.4 km</td></tr>
+        <tr><td>Market Value</td><td class="worse">€2.1M</td><td class="better">€800K</td></tr>
+        <tr><td>Age / Potential</td><td class="worse">23 / ★★★★★</td><td class="better">19 / ★★★★★</td></tr>
+        <tr><td>Contract End</td><td style="color:var(--yellow);font-weight:600;">Jun 2026</td><td style="color:var(--text-secondary);">Dec 2026</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+</body>
+</html>

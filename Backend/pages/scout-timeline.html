@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trainova - Scout Timeline</title>
+<style>
+  :root {
+    --bg-primary:#0D1117;--bg-secondary:#161B22;--bg-card:#1C2333;--bg-hover:#21283A;
+    --border:#30363D;--border-light:#21283A;
+    --accent:#00D084;--accent-dim:rgba(0,208,132,.12);--accent-hover:#00E890;
+    --text-primary:#E6EDF3;--text-secondary:#8B949E;--text-muted:#484F58;
+    --red:#F85149;--red-dim:rgba(248,81,73,.12);
+    --yellow:#D29922;--yellow-dim:rgba(210,153,34,.12);
+    --blue:#58A6FF;--blue-dim:rgba(88,166,255,.12);
+    --purple:#BC8CFF;--purple-dim:rgba(188,140,255,.12);
+    --orange:#FF8C42;--orange-dim:rgba(255,140,66,.12);
+    --sidebar-width:220px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg-primary);color:var(--text-primary);font-family:'Segoe UI',system-ui,sans-serif;display:flex;min-height:100vh;font-size:14px;}
+
+  /* SIDEBAR */
+  .sidebar{width:var(--sidebar-width);background:var(--bg-secondary);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;}
+  .sidebar-logo{padding:20px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);}
+  .logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#00D084,#00A066);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#fff;}
+  .logo-text{font-weight:700;font-size:15px;}.logo-role{font-size:11px;color:var(--text-secondary);}
+  .sidebar-nav{flex:1;padding:12px 8px;overflow-y:auto;}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;color:var(--text-secondary);font-size:13px;transition:all .15s;margin-bottom:2px;text-decoration:none;}
+  .nav-item:hover{background:var(--bg-hover);color:var(--text-primary);}
+  .nav-item.active{background:var(--accent-dim);color:var(--accent);}
+  .sidebar-footer{padding:12px 8px;border-top:1px solid var(--border);}
+  .logout-btn{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;color:var(--text-secondary);font-size:13px;width:100%;background:none;border:none;transition:all .15s;}
+  .logout-btn:hover{color:var(--red);}
+
+  /* MAIN */
+  .main{margin-left:var(--sidebar-width);flex:1;padding:28px 32px;overflow-y:auto;}
+  .page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;}
+  .page-title{font-size:24px;font-weight:700;margin-bottom:4px;}
+  .page-subtitle{color:var(--text-secondary);font-size:13px;}
+  .btn{padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:.15s;display:inline-flex;align-items:center;gap:6px;}
+  .btn-primary{background:var(--accent);color:#0D1117;}
+  .btn-primary:hover{background:var(--accent-hover);}
+  .btn-secondary{background:transparent;color:var(--text-secondary);border:1px solid var(--border);}
+  .btn-secondary:hover{background:var(--bg-hover);color:var(--text-primary);}
+
+  /* KPI STRIP */
+  .kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px;}
+  .ks{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:15px 16px;text-align:center;}
+  .ks-val{font-size:24px;font-weight:800;line-height:1;}
+  .ks-lbl{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+
+  /* FILTER BAR */
+  .filter-bar{display:flex;gap:10px;margin-bottom:24px;align-items:center;flex-wrap:wrap;}
+  .search-box{position:relative;flex:1;max-width:280px;}
+  .search-box input{width:100%;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:9px 12px 9px 34px;color:var(--text-primary);font-size:13px;outline:none;}
+  .search-box input:focus{border-color:var(--accent);}
+  .search-box svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-muted);}
+  .pill-row{display:flex;gap:6px;flex-wrap:wrap;}
+  .pill{padding:5px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--border);color:var(--text-secondary);background:transparent;transition:.15s;}
+  .pill:hover{background:var(--bg-hover);}
+  .pill.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent);}
+  .fselect{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text-primary);font-size:13px;outline:none;cursor:pointer;margin-left:auto;}
+
+  /* TWO COLUMN LAYOUT */
+  .content-wrap{display:grid;grid-template-columns:1fr 280px;gap:24px;align-items:start;}
+
+  /* TIMELINE */
+  .month-group{margin-bottom:32px;}
+  .month-label{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+  .month-label h3{font-size:13px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.6px;}
+  .month-line{flex:1;height:1px;background:var(--border);}
+  .month-count{font-size:11px;color:var(--text-muted);padding:2px 8px;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;}
+
+  /* TIMELINE ITEMS */
+  .tl-item{display:flex;gap:16px;margin-bottom:14px;}
+  .tl-left{display:flex;flex-direction:column;align-items:center;width:52px;flex-shrink:0;}
+  .tl-time{font-size:10px;color:var(--text-muted);text-align:center;line-height:1.3;margin-bottom:6px;}
+  .tl-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .td-match{background:var(--blue-dim);border:2px solid var(--blue);}
+  .td-shortlist{background:var(--accent-dim);border:2px solid var(--accent);}
+  .td-report{background:var(--purple-dim);border:2px solid var(--purple);}
+  .td-trial{background:var(--yellow-dim);border:2px solid var(--yellow);}
+  .td-signed{background:var(--accent-dim);border:2px solid var(--accent);}
+  .td-note{background:rgba(72,79,88,.2);border:2px solid var(--border);}
+  .td-reject{background:var(--red-dim);border:2px solid var(--red);}
+  .td-recommend{background:var(--orange-dim);border:2px solid var(--orange);}
+  .tl-line{width:2px;background:var(--border-light);flex:1;margin-top:4px;}
+  .tl-card{flex:1;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;transition:.15s;}
+  .tl-card:hover{border-color:rgba(0,208,132,.2);background:var(--bg-hover);}
+
+  /* CARD VARIANTS */
+  .tl-card.tc-match{border-left:3px solid var(--blue);}
+  .tl-card.tc-shortlist{border-left:3px solid var(--accent);}
+  .tl-card.tc-report{border-left:3px solid var(--purple);}
+  .tl-card.tc-trial{border-left:3px solid var(--yellow);}
+  .tl-card.tc-signed{border-left:3px solid var(--accent);}
+  .tl-card.tc-note{border-left:3px solid var(--border);}
+  .tl-card.tc-reject{border-left:3px solid var(--red);}
+  .tl-card.tc-recommend{border-left:3px solid var(--orange);}
+
+  .tc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;}
+  .tc-type-badge{padding:2px 9px;border-radius:20px;font-size:10px;font-weight:700;flex-shrink:0;}
+  .tcb-match{background:var(--blue-dim);color:var(--blue);}
+  .tcb-shortlist{background:var(--accent-dim);color:var(--accent);}
+  .tcb-report{background:var(--purple-dim);color:var(--purple);}
+  .tcb-trial{background:var(--yellow-dim);color:var(--yellow);}
+  .tcb-signed{background:var(--accent-dim);color:var(--accent);}
+  .tcb-note{background:rgba(72,79,88,.15);color:var(--text-secondary);}
+  .tcb-reject{background:var(--red-dim);color:var(--red);}
+  .tcb-recommend{background:var(--orange-dim);color:var(--orange);}
+  .tc-title{font-size:13px;font-weight:700;margin-bottom:4px;}
+  .tc-sub{font-size:12px;color:var(--text-secondary);margin-bottom:8px;line-height:1.5;}
+  .tc-meta-row{display:flex;gap:12px;flex-wrap:wrap;}
+  .tc-meta-item{font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:4px;}
+  .tc-rating{font-size:14px;font-weight:800;}
+  .tc-detail-row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;}
+  .tc-detail-tag{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:600;background:var(--bg-secondary);color:var(--text-secondary);border:1px solid var(--border-light);}
+
+  /* SIDEBAR SUMMARY */
+  .summary-sidebar{display:flex;flex-direction:column;gap:16px;position:sticky;top:28px;}
+  .sum-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;}
+  .sum-header{padding:14px 16px 10px;border-bottom:1px solid var(--border);font-size:13px;font-weight:600;}
+  .sum-body{padding:14px 16px;}
+  .sum-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border-light);font-size:12px;}
+  .sum-row:last-child{border-bottom:none;}
+  .sum-label{color:var(--text-secondary);}
+  .sum-val{font-weight:700;}
+
+  /* ACTIVITY BAR */
+  .act-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+  .act-lbl{font-size:11px;color:var(--text-secondary);width:70px;flex-shrink:0;}
+  .act-bar{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
+  .act-fill{height:100%;border-radius:3px;}
+  .act-num{font-size:11px;font-weight:700;width:24px;text-align:right;}
+
+  /* TOP CANDIDATES SIDEBAR */
+  .top-cand-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border-light);}
+  .top-cand-item:last-child{border-bottom:none;}
+  .tci-avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;}
+  .tci-info{flex:1;}
+  .tci-name{font-size:12px;font-weight:600;}
+  .tci-sub{font-size:10px;color:var(--text-secondary);}
+  .tci-score{font-size:14px;font-weight:800;color:var(--accent);}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo"><div class="logo-icon">T</div><div><div class="logo-text">TRAINOVA</div><div class="logo-role">Scout Team</div></div></div>
+  <nav class="sidebar-nav">
+    <a href="scout-dashboard.html" class="nav-item"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard</a>
+    <a href="scout-search.html" class="nav-item"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>Scout Search</a>
+    <a href="scout-candidates.html" class="nav-item"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Candidates</a>
+    <a href="scout-shortlist.html" class="nav-item"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Shortlist</a>
+    <a href="scout-reports.html" class="nav-item"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Reports</a>
+    <a href="scout-timeline.html" class="nav-item active"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Timeline</a>
+  </nav>
+  <div class="sidebar-footer"><button class="logout-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout</button></div>
+</aside>
+
+<main class="main">
+  <div class="page-header">
+    <div><div class="page-title">Scout Timeline</div><div class="page-subtitle">Full scouting activity log — matches, evaluations, reports, and decisions</div></div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-secondary"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export Log</button>
+    </div>
+  </div>
+
+  <!-- KPI STRIP -->
+  <div class="kpi-strip">
+    <div class="ks"><div class="ks-val">47</div><div class="ks-lbl">Total Activities</div></div>
+    <div class="ks"><div class="ks-val" style="color:var(--blue);">18</div><div class="ks-lbl">Matches Attended</div></div>
+    <div class="ks"><div class="ks-val" style="color:var(--accent);">12</div><div class="ks-lbl">Players Shortlisted</div></div>
+    <div class="ks"><div class="ks-val" style="color:var(--purple);">23</div><div class="ks-lbl">Reports Generated</div></div>
+    <div class="ks"><div class="ks-val" style="color:var(--yellow);">3</div><div class="ks-lbl">Signed This Season</div></div>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <div class="search-box">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search timeline...">
+    </div>
+    <div class="pill-row">
+      <button class="pill active">All</button>
+      <button class="pill">Match Watch</button>
+      <button class="pill">Shortlisted</button>
+      <button class="pill">Reports</button>
+      <button class="pill">Trial</button>
+      <button class="pill">Signed</button>
+      <button class="pill">Rejected</button>
+    </div>
+    <select class="fselect">
+      <option>All Scouts</option>
+      <option>Scout Hassan</option>
+      <option>Scout Ramadan</option>
+      <option>Scout Ali</option>
+    </select>
+  </div>
+
+  <!-- TIMELINE + SIDEBAR -->
+  <div class="content-wrap">
+
+    <!-- TIMELINE FEED -->
+    <div>
+
+      <!-- FEBRUARY 2026 -->
+      <div class="month-group">
+        <div class="month-label">
+          <h3>February 2026</h3>
+          <div class="month-line"></div>
+          <div class="month-count">12 activities</div>
+        </div>
+
+        <!-- Match Watch -->
+        <div class="tl-item">
+          <div class="tl-left">
+            <div class="tl-time">Feb 12<br>21:00</div>
+            <div class="tl-dot td-match"><svg width="14" height="14" fill="none" stroke="var(--blue)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m8 12 2 2 4-4"/></svg></div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-card tc-match">
+            <div class="tc-top">
+              <div>
+                <span class="tc-type-badge tcb-match">Match Watch</span>
+                <div class="tc-title" style="margin-top:6px;">Al Ahly 3–1 Zamalek</div>
+              </div>
+              <div class="tc-rating" style="color:var(--blue);">Live</div>
+            </div>
+            <div class="tc-sub">Egyptian Premier League · Cairo International Stadium · Scout Hassan attended</div>
+            <div class="tc-detail-row">
+              <span class="tc-detail-tag">Karim Mostafa — 2G 1A</span>
+              <span class="tc-detail-tag">Mohamed Hassan — CB</span>
+              <span class="tc-detail-tag">Watch #5</span>
+            </div>
+            <div class="tc-meta-row" style="margin-top:8px;">
+              <span class="tc-meta-item"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>21:00</span>
+              <span class="tc-meta-item">Scout Hassan</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Report generated -->
+        <div class="tl-item">
+          <div class="tl-left">
+            <div class="tl-time">Feb 12<br>14:00</div>
+            <div class="tl-dot td-report"><svg width="14" height="14" fill="none" stroke="var(--purple)" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-card tc-report">
+            <div class="tc-top">
+              <div>
+                <span class="tc-type-badge tcb-report">Report</span>
+                <div class="tc-title" style="margin-top:6px;">Karim Mostafa — Full Scouting Report</div>
+              </div>
+              <div style="font-size:11px;padding:3px 9px;border-radius:10px;background:var(--accent-dim);color:var(--accent);font-weight:700;">Sent to Coach</div>
+            </div>
+            <div class="tc-sub">Player Scouting Report generated and submitted to Head Coach. Includes 5-match log, skill bars, market info, and recommendation.</div>
+            <div class="tc-detail-row">
+              <span class="tc-detail-tag">PDF Exported</span>
+              <span class="tc-detail-tag">Scout Rating: 8.4</span>
+              <span class="tc-detail-tag">Recommendation: Trial</span>
+            </div>
+            <div class="tc-meta-row" style="margin-top:8px;">
+              <span class="tc-meta-item">Scout Hassan</span>
+              <span class="tc-meta-item">Feb 12, 14:00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shortlisted -->
+        <div class="tl-item">
+          <div class="tl-left">
+            <div class="tl-time">Feb 10<br>09:30</div>
+            <div class="tl-dot td-shortlist"><svg width="14" height="14" fill="none" stroke="var(--accent)" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-card tc-shortlist">
+            <div class="tc-top">
+              <div>
+                <span class="tc-type-badge tcb-shortlist">Shortlisted</span>
+                <div class="tc-title" style="margin-top:6px;">Shortlist Summary Report — February 2026</div>
+              </div>
+            </div>
+            <div class="tc-sub">12 candidates moved to shortlist priority list. Includes Karim Mostafa (ST), Ahmed Ramy (AM), Youssef Adel (CM), and 9 others across all positions.</div>
+            <div class="tc-detail-row">
+              <span class="tc-detail-tag">4 Forwards</span>
+              <span class="tc-detail-tag">5 Midfielders</span>
+              <span class="tc-detail-tag">2 Defenders</span>
+              <span class="tc-detail-tag">1 GK</span>
+            </div>
+            <div class="tc-meta-row" style="margin-top:8px;">
+              <span class="tc-meta-item">Scout Team</span>
+              <span class="tc-meta-item">Feb 10, 09:30</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trial started -->
+        <div class="tl-item">
+          <div class="tl-left">
+            <div class="tl-time">Feb 8<br>10:00</div>
+            <div class="tl-dot td-trial"><svg width="14" height="14" fill="none" stroke="var(--yellow)" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-card tc-trial">
+            <div class="tc-top">
+              <div>
+                <span class="tc-type-badge tcb-trial">Trial Started</span>
+                <div class="tc-title" style="margin-top:6px;">Youssef Adel — Trial Period Begins</div>
+              </div>
+              <div style="font-size:11px;color:var(--yellow);font-weight:600;">Ongoing</div>
+            </div>
+            <div class="tc-sub">CM from Zamalek SC begins 3-week trial with the squad. Participating in training sessions and friendly scrimmages to evaluate fit with team system.</div>
+            <div class="tc-detail-row">
+              <span class="tc-detail-tag">CM · Age 21</span>
+              <span class="tc-detail-tag">3-week trial</span>
+              <span class="tc-detail-tag">Scout Rating: 7.9</span>
+            </div>
+            <div class="tc-meta-row" style="margin-top:8px;">
+              <span class="tc-meta-item">Scout Hassan</span>
+              <span class="tc-meta-item">Feb 8, 10:00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recommend -->
+        <div class="tl-item">
+          <div class="tl-left">
+            <div class="tl-time">Feb 5<br>16:00</div>
+            <div class="tl-dot td-recommend"><svg width="14" height="14" fill="none" stroke="var(--orange)" stroke-width="2" viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 22 11 13 2 9l20-7z"/></svg></div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-card tc-recommend">
+            <div class="tc-top">
+              <div>
+                <span class="tc-type-badge tcb-recommend">Recommendation</span>
+                <div class="tc-title" style="margin-top:6px;">Formal Recommendation — Karim Mostafa for Trial</div>
+              </div>
+              <div style="font-size:11px;padding:3px 9px;border-radius:10px;background:var(--accent-dim);color:var(--accent);font-weight:700;">Approved by Coach</div>
+            </div>
+            <div class="tc-sub">Formal recommendation package submitted to Head Coach. Includes 5 scouted matches, full stats, market value analysis, and scout assessment. Coach approved the trial scheduling.</div>
+            <div class="tc-detail-row">
+              <span class="tc-detail-tag">ST · Age 23</span>
+              <span class="tc-detail-tag">€2.1M value</span>
+              <span class="tc-detail-tag">Contract ends Jun 2026</span>
+            </div>
+            <div class="tc-meta-row" style="margin-top:8px;">
+              <span class="tc-meta-item">Scout Hassan</span>
+              <span class="tc-meta-item">Feb 5, 16:00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Match Watch -->
+        <div class="tl-item">
+          <div class="tl-left">
+            <div class="tl-time">Feb 3<br>19:30</div>
+            <div class="tl-dot td-match"><svg width="14" height="14" fill="none" stroke="var(--blue)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m8 12 2 2 4-4"/></svg></div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-card tc-match">
+            <div class="tc-top">
+              <div>
+                <span class="tc-type-badge tcb-match">Match Watch</span>
+                <div class="tc-title" style="margin-top:6px;">Ismaily 1–2 Pyramids FC</div>
+              </div>
+              <div class="tc-rating" style="color:var(--blue);">8.5</div>
+            </div>
+            <div class="tc-sub">Egyptian Premier League · Ismaily Stadium · Scout Ramadan attended for Ahmed Ramy and Hassan Khalil evaluation</div>
+            <div class="tc-detail-row">
+              <span class="tc-detail-tag">Ahmed Ramy — 1G 1A</span>
+              <span class="tc-detail-tag">Hassan Khalil — Strong DM display</span>
+              <span class="tc-detail-tag">Watch #3</span>
+            </div>
+            <div class="tc-meta-row" style="margin-top:8px;">
+              <span class="tc-meta-item">Scout Ramadan</span>
+              <span class="tc-meta-item">Feb 3, 19:30</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- JANUARY 2026 -->
+      <div class="month-group">
+        <div class="month-label">
+          <h3>January 2026</h3>
+          <div class="month-line"></div>
+          <div class="month-count">16 activities</div>
+        </div>
+
+        <!-- Signed -->
+        <div class="tl-item">
+          <div class="tl-left">
+            <div class="tl-time">Jan 28<br>12:00</div>
+            <div class="tl-dot td-signed"><svg width="14" height="14" fill="none" stroke="var(--accent)" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-card tc-signed" style="border-left-color:var(--accent);background:rgba(0,208,132,.04);">
+            <div class="tc-top">
+              <div>
+                <span class="tc-type-badge tcb-signed">✓ Signed</span>
+                <div class="tc-title" style="margin-top:6px;color:var(--accent);">Omar Salah — Official Transfer Complete</div>
+              </div>
+              <div style="font-size:11px;padding:3px 9px;border-radius:10px;background:var(--accent-dim);color:var(--accent);font-weight:700;">🎉 Success</div>
+            </div>
+            <div class="tc-sub">LW from Zamalek SC officially joined the club. 2.5-year contract. Scout Hassan originally identified him in October 2025. Total transfer fee: €800K.</div>
+            <div class="tc-detail-row">
+              <span class="tc-detail-tag" style="color:var(--accent);border-color:rgba(0,208,132,.3);">LW · Age 22</span>
+              <span class="tc-detail-tag" style="color:var(--accent);border-color:rgba(0,208,132,.3);">2.5yr contract</span>
+              <span class="tc-detail-tag" style="color:var(--accent);border-color:rgba(0,208,132,.3);">€800K</span>
+            </div>
+            <div class="tc-meta-row" style="margin-top:8px;">
+              <span class="tc-meta-item">Scout Hassan</span>
+              <span class="tc-meta-item">Jan 28, 12:00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Added to candidate list -->
+        <div class="tl-item">
+          <div class="tl-left">
+            <div class="tl-time">Jan 25<br>11:00</div>
+            <div class="tl-dot td-match"><svg width="14" height="14" fill="none" stroke="var(--blue)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m8 12 2 2 4-4"/></svg></div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-card tc-match">
+            <div class="tc-top">
+              <div>
+                <span class="tc-type-badge tcb-match">Match Watch</span>
+                <div class="tc-title" style="margin-top:6px;">Al Ahly 2–0 Pyramids FC</div>
+              </div>
+              <div class="tc-rating" style="color:var(--accent);">9.2</div>
+            </div>
+            <div class="tc-sub">Egyptian Premier League · Al Ahly Stadium · Scout Hassan attended — primary focus on Karim Mostafa's forward movement and link-up play</div>
+            <div class="tc-detail-row">
+              <span class="tc-detail-tag">Karim Mostafa — 1G 2A</span>
+              <span class="tc-detail-tag">Rating: 8.8 · Watch #4</span>
+            </div>
+            <div class="tc-meta-row" style="margin-top:8px;">
+              <span class="tc-meta-item">Scout Hassan</span>
+              <span class="tc-meta-item">Jan 25, 19:00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Note -->
+        <div class="tl-item">
+          <div class="tl-left">
+            <div class="tl-time">Jan 20<br>10:00</div>
+            <div class="tl-dot td-note"><svg width="14" height="14" fill="none" stroke="var(--text-secondary)" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-card tc-note">
+            <div class="tc-top">
+              <span class="tc-type-badge tcb-note">Scout Note</span>
+            </div>
+            <div class="tc-title" style="margin-top:6px;">Karim Mostafa — Contract Situation Update</div>
+            <div class="tc-sub">Agent confirmed contract expires June 2026. Club open to negotiation. Recommend moving to formal recommendation phase immediately to avoid competition from foreign clubs.</div>
+            <div class="tc-meta-row" style="margin-top:8px;">
+              <span class="tc-meta-item">Scout Hassan</span>
+              <span class="tc-meta-item">Jan 20, 10:00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rejected -->
+        <div class="tl-item">
+          <div class="tl-left">
+            <div class="tl-time">Jan 15<br>14:00</div>
+            <div class="tl-dot td-reject"><svg width="14" height="14" fill="none" stroke="var(--red)" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-card tc-reject">
+            <div class="tc-top">
+              <div>
+                <span class="tc-type-badge tcb-reject">Rejected</span>
+                <div class="tc-title" style="margin-top:6px;">Omar Magdi — GK — Removed from List</div>
+              </div>
+            </div>
+            <div class="tc-sub">After 3 match evaluations, Omar Magdi was removed from candidate consideration. Distribution below standard for our style of play and command of the box inconsistent under pressure.</div>
+            <div class="tc-detail-row">
+              <span class="tc-detail-tag">GK · Age 24</span>
+              <span class="tc-detail-tag">3 matches watched</span>
+              <span class="tc-detail-tag">Does not fit profile</span>
+            </div>
+            <div class="tc-meta-row" style="margin-top:8px;">
+              <span class="tc-meta-item">Scout Ramadan</span>
+              <span class="tc-meta-item">Jan 15, 14:00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Match Watch -->
+        <div class="tl-item">
+          <div class="tl-left">
+            <div class="tl-time">Jan 12<br>20:00</div>
+            <div class="tl-dot td-match"><svg width="14" height="14" fill="none" stroke="var(--blue)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m8 12 2 2 4-4"/></svg></div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-card tc-match">
+            <div class="tc-top">
+              <div>
+                <span class="tc-type-badge tcb-match">Match Watch</span>
+                <div class="tc-title" style="margin-top:6px;">Al Ahly 1–0 ENPPI FC</div>
+              </div>
+              <div class="tc-rating" style="color:var(--blue);">7.9</div>
+            </div>
+            <div class="tc-sub">Egyptian Premier League — Karim Mostafa's first official scouting visit. Scored one goal in a controlled performance.</div>
+            <div class="tc-detail-row">
+              <span class="tc-detail-tag">Karim Mostafa — 1G</span>
+              <span class="tc-detail-tag">First Watch</span>
+            </div>
+            <div class="tc-meta-row" style="margin-top:8px;">
+              <span class="tc-meta-item">Scout Hassan</span>
+              <span class="tc-meta-item">Jan 12, 20:00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DECEMBER 2025 -->
+      <div class="month-group">
+        <div class="month-label">
+          <h3>December 2025</h3>
+          <div class="month-line"></div>
+          <div class="month-count">11 activities</div>
+        </div>
+
+        <!-- Signed Dec -->
+        <div class="tl-item">
+          <div class="tl-left">
+            <div class="tl-time">Dec 18<br>12:00</div>
+            <div class="tl-dot td-signed"><svg width="14" height="14" fill="none" stroke="var(--accent)" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-card tc-signed" style="background:rgba(0,208,132,.04);border-left-color:var(--accent);">
+            <div class="tc-top">
+              <div>
+                <span class="tc-type-badge tcb-signed">✓ Signed</span>
+                <div class="tc-title" style="margin-top:6px;color:var(--accent);">Mahmoud Fathi — CB — Transfer Complete</div>
+              </div>
+              <div style="font-size:11px;padding:3px 9px;border-radius:10px;background:var(--accent-dim);color:var(--accent);font-weight:700;">🎉 Success</div>
+            </div>
+            <div class="tc-sub">CB from Pyramids FC joined after a successful 2-week trial. 3-year contract. First scouted in October 2025 by Scout Ramadan.</div>
+            <div class="tc-detail-row">
+              <span class="tc-detail-tag" style="color:var(--accent);border-color:rgba(0,208,132,.3);">CB · Age 25</span>
+              <span class="tc-detail-tag" style="color:var(--accent);border-color:rgba(0,208,132,.3);">3yr contract</span>
+              <span class="tc-detail-tag" style="color:var(--accent);border-color:rgba(0,208,132,.3);">€1.1M</span>
+            </div>
+            <div class="tc-meta-row" style="margin-top:8px;">
+              <span class="tc-meta-item">Scout Ramadan</span>
+              <span class="tc-meta-item">Dec 18, 12:00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Match Watch Dec -->
+        <div class="tl-item">
+          <div class="tl-left">
+            <div class="tl-time">Dec 5<br>20:00</div>
+            <div class="tl-dot td-match"><svg width="14" height="14" fill="none" stroke="var(--blue)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m8 12 2 2 4-4"/></svg></div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-card tc-match">
+            <div class="tc-top">
+              <div>
+                <span class="tc-type-badge tcb-match">Match Watch</span>
+                <div class="tc-title" style="margin-top:6px;">Al Ahly 2–1 Smouha SC</div>
+              </div>
+              <div class="tc-rating" style="color:var(--yellow);">7.4</div>
+            </div>
+            <div class="tc-sub">Karim Mostafa had a quieter game but created 3 big chances. Showed intelligent movement even when not on the scoresheet.</div>
+            <div class="tc-detail-row">
+              <span class="tc-detail-tag">Karim Mostafa — 0G 1A</span>
+              <span class="tc-detail-tag">Watch #2</span>
+            </div>
+            <div class="tc-meta-row" style="margin-top:8px;">
+              <span class="tc-meta-item">Scout Hassan</span>
+              <span class="tc-meta-item">Dec 5, 20:00</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- SUMMARY SIDEBAR -->
+    <div class="summary-sidebar">
+
+      <!-- Season Summary -->
+      <div class="sum-card">
+        <div class="sum-header">Season Summary 2025/26</div>
+        <div class="sum-body">
+          <div class="sum-row"><span class="sum-label">Matches Attended</span><span class="sum-val">18</span></div>
+          <div class="sum-row"><span class="sum-label">Players Evaluated</span><span class="sum-val">47</span></div>
+          <div class="sum-row"><span class="sum-label">Reports Generated</span><span class="sum-val">23</span></div>
+          <div class="sum-row"><span class="sum-label">Shortlisted</span><span class="sum-val" style="color:var(--accent);">12</span></div>
+          <div class="sum-row"><span class="sum-label">On Trial</span><span class="sum-val" style="color:var(--yellow);">2</span></div>
+          <div class="sum-row"><span class="sum-label">Signed</span><span class="sum-val" style="color:var(--accent);">3</span></div>
+          <div class="sum-row"><span class="sum-label">Rejected</span><span class="sum-val" style="color:var(--red);">11</span></div>
+          <div class="sum-row"><span class="sum-label">Success Rate</span><span class="sum-val" style="color:var(--accent);">64%</span></div>
+        </div>
+      </div>
+
+      <!-- Activity Breakdown -->
+      <div class="sum-card">
+        <div class="sum-header">Activity Breakdown</div>
+        <div class="sum-body">
+          <div class="act-bar-row">
+            <span class="act-lbl" style="color:var(--blue);">Match Watch</span>
+            <div class="act-bar"><div class="act-fill" style="width:76%;background:var(--blue);"></div></div>
+            <span class="act-num" style="color:var(--blue);">18</span>
+          </div>
+          <div class="act-bar-row">
+            <span class="act-lbl" style="color:var(--purple);">Reports</span>
+            <div class="act-bar"><div class="act-fill" style="width:97%;background:var(--purple);"></div></div>
+            <span class="act-num" style="color:var(--purple);">23</span>
+          </div>
+          <div class="act-bar-row">
+            <span class="act-lbl" style="color:var(--accent);">Shortlisted</span>
+            <div class="act-bar"><div class="act-fill" style="width:50%;background:var(--accent);"></div></div>
+            <span class="act-num" style="color:var(--accent);">12</span>
+          </div>
+          <div class="act-bar-row">
+            <span class="act-lbl" style="color:var(--yellow);">Trial</span>
+            <div class="act-bar"><div class="act-fill" style="width:21%;background:var(--yellow);"></div></div>
+            <span class="act-num" style="color:var(--yellow);">5</span>
+          </div>
+          <div class="act-bar-row">
+            <span class="act-lbl" style="color:var(--red);">Rejected</span>
+            <div class="act-bar"><div class="act-fill" style="width:46%;background:var(--red);"></div></div>
+            <span class="act-num" style="color:var(--red);">11</span>
+          </div>
+          <div class="act-bar-row">
+            <span class="act-lbl" style="color:var(--text-secondary);">Notes</span>
+            <div class="act-bar"><div class="act-fill" style="width:34%;background:var(--text-muted);"></div></div>
+            <span class="act-num" style="color:var(--text-muted);">8</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Candidates -->
+      <div class="sum-card">
+        <div class="sum-header">Top Candidates</div>
+        <div class="sum-body" style="padding-top:8px;">
+          <div class="top-cand-item">
+            <div class="tci-avatar" style="background:linear-gradient(135deg,#00D084,#00A066);">KM</div>
+            <div class="tci-info">
+              <div class="tci-name">Karim Mostafa</div>
+              <div class="tci-sub">ST · Al Ahly · 5 matches watched</div>
+            </div>
+            <div class="tci-score">8.4</div>
+          </div>
+          <div class="top-cand-item">
+            <div class="tci-avatar" style="background:linear-gradient(135deg,#58A6FF,#0066CC);">YA</div>
+            <div class="tci-info">
+              <div class="tci-name">Youssef Adel</div>
+              <div class="tci-sub">CM · Zamalek · On Trial</div>
+            </div>
+            <div class="tci-score" style="color:var(--yellow);">7.9</div>
+          </div>
+          <div class="top-cand-item">
+            <div class="tci-avatar" style="background:linear-gradient(135deg,#BC8CFF,#7B4FCC);">MH</div>
+            <div class="tci-info">
+              <div class="tci-name">Mohamed Hassan</div>
+              <div class="tci-sub">CB · Pyramids · 3 watches</div>
+            </div>
+            <div class="tci-score" style="color:var(--yellow);">7.6</div>
+          </div>
+          <div class="top-cand-item">
+            <div class="tci-avatar" style="background:linear-gradient(135deg,#D29922,#AA7700);">HK</div>
+            <div class="tci-info">
+              <div class="tci-name">Hassan Khalil</div>
+              <div class="tci-sub">DM · Pyramids · On Trial</div>
+            </div>
+            <div class="tci-score" style="color:var(--yellow);">7.7</div>
+          </div>
+          <div class="top-cand-item">
+            <div class="tci-avatar" style="background:linear-gradient(135deg,#FF8C42,#CC5500);">AR</div>
+            <div class="tci-info">
+              <div class="tci-name">Ahmed Ramy</div>
+              <div class="tci-sub">AM · Ismaily · Shortlisted</div>
+            </div>
+            <div class="tci-score" style="color:var(--text-secondary);">7.2</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scout Leaderboard -->
+      <div class="sum-card">
+        <div class="sum-header">Scout Activity</div>
+        <div class="sum-body" style="padding-top:8px;">
+          <div class="top-cand-item">
+            <div class="tci-avatar" style="background:linear-gradient(135deg,#00D084,#00A066);">SH</div>
+            <div class="tci-info">
+              <div class="tci-name">Scout Hassan</div>
+              <div class="tci-sub">12 matches · 28 evaluations</div>
+            </div>
+            <div style="font-size:11px;padding:3px 8px;border-radius:10px;background:var(--accent-dim);color:var(--accent);font-weight:700;">#1</div>
+          </div>
+          <div class="top-cand-item">
+            <div class="tci-avatar" style="background:linear-gradient(135deg,#58A6FF,#0066CC);">SR</div>
+            <div class="tci-info">
+              <div class="tci-name">Scout Ramadan</div>
+              <div class="tci-sub">5 matches · 14 evaluations</div>
+            </div>
+            <div style="font-size:11px;padding:3px 8px;border-radius:10px;background:var(--blue-dim);color:var(--blue);font-weight:700;">#2</div>
+          </div>
+          <div class="top-cand-item">
+            <div class="tci-avatar" style="background:linear-gradient(135deg,#BC8CFF,#7B4FCC);">SA</div>
+            <div class="tci-info">
+              <div class="tci-name">Scout Ali</div>
+              <div class="tci-sub">1 match · 5 evaluations</div>
+            </div>
+            <div style="font-size:11px;padding:3px 8px;border-radius:10px;background:rgba(72,79,88,.2);color:var(--text-secondary);font-weight:700;">#3</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+</body>
+</html>
