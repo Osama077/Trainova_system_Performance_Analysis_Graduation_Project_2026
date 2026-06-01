@@ -2,6 +2,8 @@ using MediatR;
 using Trainova.Application.Scouting.Candidates;
 using Trainova.Domain.Common.Enums;
 using System;
+using Trainova.Common.ResultOf;
+using System.Collections.Generic;
 
 namespace Trainova.Application.Scouting.Candidates.Queries.GetCandidates
 {
@@ -18,5 +20,5 @@ namespace Trainova.Application.Scouting.Candidates.Queries.GetCandidates
         int PageNumber = 0,
         int PageSize = 12,
         string SortColumn = "CreatedAt",
-        string SortDirection = "DESC") : IRequest<IEnumerable<CandidateListItemResponse>>;
+        string SortDirection = "DESC") : IRequest<ResultOf<IEnumerable<CandidateListItemResponse>>>;
 }

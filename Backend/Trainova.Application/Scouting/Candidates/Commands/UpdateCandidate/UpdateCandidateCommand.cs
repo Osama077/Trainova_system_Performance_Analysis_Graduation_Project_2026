@@ -1,5 +1,6 @@
 using MediatR;
 using System;
+using Trainova.Common.ResultOf;
 
 namespace Trainova.Application.Scouting.Candidates.Commands.UpdateCandidate
 {
@@ -10,5 +11,5 @@ namespace Trainova.Application.Scouting.Candidates.Commands.UpdateCandidate
         int? CurrentMainPosition,
         int? OtherAvailablePositions,
         decimal? PerformanceLevel,
-        string? Note) : IRequest<string?>;
+        string? Note) : IRequest<ResultOf<string?>>;
 }

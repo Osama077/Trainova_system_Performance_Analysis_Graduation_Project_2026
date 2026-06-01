@@ -5,10 +5,12 @@ using Trainova.Domain.Scouting;
 using Trainova.Domain.Common.Enums;
 using Trainova.Domain.MedicalStatus;
 using System.Threading;
+using Trainova.Common.ResultOf;
+using Trainova.Common.Errors;
 
 namespace Trainova.Application.Scouting.Candidates.Commands.CreateCandidate
 {
-    public class CreateCandidateCommandHandler : IRequestHandler<CreateCandidateCommand, Guid>
+    public class CreateCandidateCommandHandler : IRequestHandler<CreateCandidateCommand, ResultOf<Guid>>
     {
         private readonly ICandidateRepository _candidateRepository;
         private readonly IUnitOfWork _unitOfWork;
@@ -19,7 +21,7 @@ namespace Trainova.Application.Scouting.Candidates.Commands.CreateCandidate
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Guid> Handle(CreateCandidateCommand request, CancellationToken cancellationToken)
+        public async Task<ResultOf<Guid>> Handle(CreateCandidateCommand request, CancellationToken cancellationToken)
         {
             var candidate = new ScoutingCandidate(
                 request.FullName,
@@ -42,10 +44,11 @@ namespace Trainova.Application.Scouting.Candidates.Commands.CreateCandidate
             }
             catch (System.Exception ex)
             {
-                throw new System.InvalidOperationException($"Failed to create scouting candidate: {ex.Message}", ex);
+                // Return a structured error instead of throwing to allow ApiController to map it
+                return Error.Failure("CreateCandidate.Failed", $"Failed to create scouting candidate: {ex.Message}").AsError<Guid>();
             }
 
-            return candidate.Id;
+            return candidate.Id.AsCreated();
         }
     }
 }

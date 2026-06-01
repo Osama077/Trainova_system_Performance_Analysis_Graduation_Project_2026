@@ -2,10 +2,12 @@ using MediatR;
 using Trainova.Application.Common.Interfaces.Repositories.Scouting.Candidates;
 using Trainova.Domain.Common.Enums;
 using System.Threading;
+using Trainova.Common.ResultOf;
+using Trainova.Common.Errors;
 
 namespace Trainova.Application.Scouting.Candidates.Commands.SetCandidateStatus
 {
-    public class SetCandidateStatusCommandHandler : IRequestHandler<SetCandidateStatusCommand, bool>
+    public class SetCandidateStatusCommandHandler : IRequestHandler<SetCandidateStatusCommand, ResultOf<bool>>
     {
         private readonly ICandidateRepository _candidateRepository;
 
@@ -14,10 +16,11 @@ namespace Trainova.Application.Scouting.Candidates.Commands.SetCandidateStatus
             _candidateRepository = candidateRepository;
         }
 
-        public async Task<bool> Handle(SetCandidateStatusCommand request, CancellationToken cancellationToken)
+        public async Task<ResultOf<bool>> Handle(SetCandidateStatusCommand request, CancellationToken cancellationToken)
         {
             var candidate = await _candidateRepository.GetByIdAsync(request.CandidateId, cancellationToken);
-            if (candidate == null) return false;
+            if (candidate == null)
+                return Error.NotFound("Candidate.NotFound", $"Candidate {request.CandidateId} not found").AsError<bool>();
 
             if (request.Add)
                 candidate.AddStatus(request.Flags);
@@ -32,16 +35,15 @@ namespace Trainova.Application.Scouting.Candidates.Commands.SetCandidateStatus
 
             try
             {
-                await _candidateRepository.UpdateAsync(candidate);
+                await _candidateRepository.UpdateAsync(candidate, cancellationToken);
                 await _candidateRepository.SaveChangesAsync(cancellationToken);
             }
             catch (System.Exception ex)
             {
-                // Wrap and surface a clear message for callers (middleware will translate to a 400/500 as appropriate)
-                throw new System.InvalidOperationException($"Failed to update candidate status for candidate {request.CandidateId}: {ex.Message}", ex);
+                return Error.Failure("SetCandidateStatus.Failed", $"Failed to update candidate status for candidate {request.CandidateId}: {ex.Message}").AsError<bool>();
             }
 
-            return true;
+            return true.AsDone();
         }
     }
 }

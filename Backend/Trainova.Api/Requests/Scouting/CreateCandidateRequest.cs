@@ -1,7 +1,7 @@
 using System;
 using Trainova.Application.Scouting.Candidates.Commands.CreateCandidate;
 
-namespace Trainova.Api.Requests.Profiles
+namespace Trainova.Api.Requests.Scouting
 {
     public class CreateCandidateRequest
     {

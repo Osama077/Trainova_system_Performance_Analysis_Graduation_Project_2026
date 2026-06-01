@@ -1,12 +1,13 @@
 using System;
 using Trainova.Application.Scouting.Candidates.Commands.SetCandidateStatus;
+using Trainova.Domain.Common.Enums;
 
-namespace Trainova.Api.Requests.Profiles
+namespace Trainova.Api.Requests.Scouting
 {
     public class SetCandidateStatusRequest
     {
-        public int Flags { get; set; }
-        public bool Add { get; set; }
+        public CandidateStatus Flags { get; set; }
+        public bool Add { get; set; } = true;
         public string? Note { get; set; }
 
         public SetCandidateStatusCommand ToCommand(Guid candidateId) => new SetCandidateStatusCommand(candidateId, (Trainova.Domain.Common.Enums.CandidateStatus)Flags, Add, Note);

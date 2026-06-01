@@ -1,6 +1,10 @@
+using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Trainova.Api.Requests.Profiles;
+using Trainova.Api.Requests.Scouting;
 using Trainova.Application.Scouting.Candidates.Queries.GetCandidates;
 using Trainova.Application.Scouting.Candidates.Commands.CreateCandidate;
 using Trainova.Application.Scouting.Candidates.Commands.UpdateCandidate;
@@ -8,6 +12,7 @@ using Trainova.Application.Scouting.Candidates.Commands.SetCandidateStatus;
 using Trainova.Application.Common.Models;
 using Trainova.Api.Models;
 using Trainova.Application.Scouting.Candidates;
+using Trainova.Common.ResultOf;
 
 namespace Trainova.Api.Controllers.Scouting
 {
@@ -26,10 +31,7 @@ namespace Trainova.Api.Controllers.Scouting
         {
             var query = request.ToQuery(null);
             var result = await _sender.Send(query);
-            var list = result.ToList();
-
-            var response = new ApiResponse<IEnumerable<CandidateListItemResponse>>(list, "Candidates retrieved successfully", 200, default, default, null, list.Count, null);
-            return Ok(response);
+            return MapResult(result);
         }
 
         [HttpPost]
@@ -37,10 +39,7 @@ namespace Trainova.Api.Controllers.Scouting
         {
             var command = request.ToCommand();
             var result = await _sender.Send(command);
-
-            // Return a structured API response with message and the created candidate id
-            var response = new ApiResponse<Guid?>(result, "Scouting candidate created successfully", 201);
-            return Created(string.Empty, response);
+            return MapResult(result);
         }
 
         [HttpPut("{id:guid}")]
@@ -48,10 +47,7 @@ namespace Trainova.Api.Controllers.Scouting
         {
             var command = request.ToCommand(id);
             var result = await _sender.Send(command);
-            if (result == null) return NotFound();
-
-            var response = new ApiResponse<string?>(result, "Candidate updated successfully", 200);
-            return Ok(response);
+            return MapResult(result);
         }
 
         [HttpPost("{id:guid}/status")]
@@ -59,10 +55,7 @@ namespace Trainova.Api.Controllers.Scouting
         {
             var command = request.ToCommand(id);
             var result = await _sender.Send(command);
-            if (!result) return NotFound();
-
-            var response = new ApiResponse<bool>(true, "Candidate status updated successfully", 200);
-            return Ok(response);
+            return MapResult(result);
         }
 
     }

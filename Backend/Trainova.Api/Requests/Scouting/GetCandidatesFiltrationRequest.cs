@@ -2,7 +2,7 @@ using Trainova.Application.Scouting.Candidates.Queries.GetCandidates;
 using Trainova.Domain.Common.Enums;
 using System;
 
-namespace Trainova.Api.Requests.Profiles
+namespace Trainova.Api.Requests.Scouting
 {
     public class GetCandidatesFiltrationRequest
     {

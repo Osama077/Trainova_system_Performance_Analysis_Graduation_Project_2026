@@ -1,5 +1,6 @@
 using MediatR;
 using System;
+using Trainova.Common.ResultOf;
 
 namespace Trainova.Application.Scouting.Candidates.Commands.CreateCandidate
 {
@@ -12,5 +13,5 @@ namespace Trainova.Application.Scouting.Candidates.Commands.CreateCandidate
         int CurrentMainPosition,
         int OtherAvailablePositions,
         decimal PerformanceLevel,
-        Guid? CurrentTeamId) : IRequest<Guid>;
+        Guid? CurrentTeamId) : IRequest<ResultOf<Guid>>;
 }
