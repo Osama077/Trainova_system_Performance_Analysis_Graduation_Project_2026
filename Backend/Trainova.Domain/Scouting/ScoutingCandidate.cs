@@ -120,6 +120,15 @@ namespace Trainova.Domain.Scouting
         }
 
         /// <summary>
+        /// Overwrite the candidate's status with the given value (replace all flags).
+        /// </summary>
+        public void SetStatus(CandidateStatus status)
+        {
+            Status = status;
+            MarkUpdatedNow();
+        }
+
+        /// <summary>
         /// Checks whether candidate has the specified status flag(s) (any).
         /// </summary>
         public bool HasStatus(CandidateStatus flags)

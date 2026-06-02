@@ -22,15 +22,18 @@ namespace Trainova.Application.Scouting.Candidates.Commands.SetCandidateStatus
             if (candidate == null)
                 return Error.NotFound("Candidate.NotFound", $"Candidate {request.CandidateId} not found").AsError<bool>();
 
+            // Apply status change: add or remove selected flags
+            // Apply status change: when Add=true we now REPLACE the existing flags with the provided status
+            // (i.e. the new flag erases the old). When Add=false we remove the provided flags as before.
             if (request.Add)
-                candidate.AddStatus(request.Flags);
+                candidate.SetStatus(request.Status);
             else
-                candidate.RemoveStatus(request.Flags);
+                candidate.RemoveStatus(request.Status);
 
-            // Business rule example: if Rejected was added, clear Shortlisted and OnTrial
-            if (request.Add && (request.Flags & CandidateStatus.Rejected) != 0)
+            // Persist note changes if provided (replace existing notes)
+            if (!string.IsNullOrWhiteSpace(request.Note))
             {
-                candidate.RemoveStatus(CandidateStatus.Shortlisted | CandidateStatus.OnTrial);
+                candidate.Update(notes: request.Note);
             }
 
             try

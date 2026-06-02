@@ -58,5 +58,13 @@ namespace Trainova.Api.Controllers.Scouting
             return MapResult(result);
         }
 
+        [HttpGet("overview")]
+        public async Task<IActionResult> GetCandidatesOverview([FromQuery] GetCandidatesFiltrationRequest request)
+        {
+            var query = request.ToOverviewQuery();
+            var result = await _sender.Send(query);
+            return MapResult(result);
+        }
+
     }
 }

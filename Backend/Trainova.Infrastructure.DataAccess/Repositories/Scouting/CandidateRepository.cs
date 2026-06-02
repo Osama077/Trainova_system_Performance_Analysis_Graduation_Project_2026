@@ -149,4 +149,135 @@ public class CandidateRepository : ICandidateRepository
             throw new InvalidOperationException("Unexpected error while fetching scouting candidates.", ex);
         }
     }
+
+    public async Task<CandidatesOverviewResponse> GetCandidatesOverviewAsync(Guid? candidateId = null, string? searchTerm = null, int? mainPositionFilter = null, CandidateStatus? statusFilter = null, Guid? currentTeamId = null, int? minAge = null, int? maxAge = null, DateTime? dateFrom = null, DateTime? dateTo = null, int pageNumber = 0, int pageSize = 12, string sortColumn = "CreatedAt", string sortDirection = "DESC", CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var baseQuery = _dbContext.ScoutingCandidates.AsQueryable();
+
+            if (candidateId.HasValue)
+                baseQuery = baseQuery.Where(c => c.Id == candidateId.Value);
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                var s = searchTerm.Trim();
+                baseQuery = baseQuery.Where(c => c.FullName.Contains(s) || c.CurrentTeamId.ToString().Contains(s));
+            }
+
+            if (mainPositionFilter.HasValue)
+                baseQuery = baseQuery.Where(c => (int)c.CurrentMainPosition == mainPositionFilter.Value);
+
+            if (statusFilter.HasValue)
+                baseQuery = baseQuery.Where(c => ((int)c.Status & (int)statusFilter.Value) != 0);
+
+            if (currentTeamId.HasValue)
+                baseQuery = baseQuery.Where(c => c.CurrentTeamId == currentTeamId);
+
+            if (minAge.HasValue)
+                baseQuery = baseQuery.Where(c => c.Age >= minAge.Value);
+
+            if (maxAge.HasValue)
+                baseQuery = baseQuery.Where(c => c.Age <= maxAge.Value);
+
+            if (dateFrom.HasValue)
+                baseQuery = baseQuery.Where(c => c.CreatedAt >= dateFrom.Value);
+
+            if (dateTo.HasValue)
+                baseQuery = baseQuery.Where(c => c.CreatedAt <= dateTo.Value);
+
+            // Use AsNoTracking for read-only
+            var query = baseQuery.AsNoTracking();
+
+            // Execute count queries sequentially to avoid concurrent use of the same DbContext
+            var totalCount = await query.CountAsync(cancellationToken);
+            var shortlisted = await query.Where(c => ((int)c.Status & (int)CandidateStatus.Shortlisted) != 0).CountAsync(cancellationToken);
+            var signed = await query.Where(c => ((int)c.Status & (int)CandidateStatus.Signed) != 0).CountAsync(cancellationToken);
+
+            // Ordering - simple default by CreatedAt desc
+            var itemsQuery = query.OrderByDescending(c => c.CreatedAt)
+                                  .Skip(pageNumber * pageSize)
+                                  .Take(pageSize);
+
+            var items = await itemsQuery.ToListAsync(cancellationToken);
+
+            // Materialize team names similar to GetCandidatesAsync
+            var teamIds = items.Where(i => i.CurrentTeamId.HasValue).Select(i => i.CurrentTeamId!.Value).Distinct().ToList();
+            var teams = new Dictionary<Guid, string>();
+            if (teamIds.Any())
+            {
+                try
+                {
+                    var teamSet = _dbContext.Set<Trainova.Domain.SeasonsAnalyses.Team>();
+                    var teamList = await teamSet.Where(t => teamIds.Contains(t.Id)).ToListAsync(cancellationToken);
+                    teams = teamList.ToDictionary(t => t.Id, t => t.TeamName ?? string.Empty);
+                }
+                catch
+                {
+                    // ignore
+                }
+            }
+
+            var mappedItems = items.Select(i => new CandidateListItemResponse
+            {
+                Id = i.Id,
+                FullName = i.FullName,
+                Age = i.Age,
+                Position = (int)i.CurrentMainPosition,
+                CurrentTeamId = i.CurrentTeamId,
+                CurrentTeamName = i.CurrentTeamId.HasValue && teams.ContainsKey(i.CurrentTeamId.Value) ? teams[i.CurrentTeamId.Value] : null,
+                Nationality = i.Nationality,
+                PerformanceScore = i.PerformanceScore,
+                ScoutRating = i.ScoutRating,
+                PerformanceLevel = i.PerformanceLevel,
+                Status = (int)i.Status,
+                Pace = i.Pace,
+                Shooting = i.Shooting,
+                Dribbling = i.Dribbling,
+                Passing = i.Passing,
+                Physicality = i.Physicality,
+                Positioning = i.Positioning,
+                Defending = i.Defending,
+                Vision = i.Vision,
+                ShortlistRank = i.ShortlistRank,
+                IsOnTrial = ((int)i.Status & (int)CandidateStatus.OnTrial) != 0,
+                ContractEnd = i.ContractEnd,
+                MarketValue = i.MarketValue,
+                Agent = i.Agent,
+                MatchesWatchedCount = i.MatchesWatchedCount,
+                NotesSnippet = i.Notes
+            }).ToList();
+
+            return new CandidatesOverviewResponse
+            {
+                Counts = new OverviewCounts
+                {
+                    TotalCandidates = totalCount,
+                    Shortlisted = shortlisted,
+                    PlayersSigned = signed
+                },
+                Items = mappedItems,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                TotalCount = totalCount
+            };
+        }
+        catch (SqlException sqlEx)
+        {
+            var message = $"Database error while fetching scouting candidates overview: {sqlEx.Message}";
+            if (sqlEx.Errors != null && sqlEx.Errors.Count > 0)
+            {
+                var columns = sqlEx.Errors.Cast<SqlError>()
+                    .Select(e => e.Message)
+                    .Distinct();
+                message += "; Details: " + string.Join(" | ", columns);
+            }
+
+            throw new InvalidOperationException(message, sqlEx);
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException("Unexpected error while fetching scouting candidates overview.", ex);
+        }
+    }
 }

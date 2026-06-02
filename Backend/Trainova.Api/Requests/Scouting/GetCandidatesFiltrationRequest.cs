@@ -35,5 +35,22 @@ namespace Trainova.Api.Requests.Scouting
             SortColumn: SortColumn,
             SortDirection: SortDirection
             );
+
+        public Trainova.Application.Scouting.Candidates.Queries.GetCandidatesOverview.GetCandidatesOverviewQuery ToOverviewQuery()
+            => new Trainova.Application.Scouting.Candidates.Queries.GetCandidatesOverview.GetCandidatesOverviewQuery(
+                CandidateId: CandidateId,
+                CurrentTeamId: CurrentTeamId,
+                MinAge: MinAge,
+                MaxAge: MaxAge,
+                SearchTerm: SearchTerm,
+                Position: Position,
+                Status: Status,
+                DateFrom: DateFrom,
+                DateTo: DateTo,
+                PageNumber: PageNumber,
+                PageSize: PageSize,
+                SortColumn: SortColumn,
+                SortDirection: SortDirection
+            );
     }
 }
