@@ -39,5 +39,13 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.FitnessStatus
         {
             return await _dbContext.SessionMovements.FirstOrDefaultAsync(m => m.UserAccessPolicyId == userAccessPolicyId);
         }
+
+        public async Task<SessionMovement?> GetLastByUserAccessPolicyIdAsync(Guid playerId)
+        {
+            return await _dbContext.SessionMovements
+                .Where(m => m.UserAccessPolicy.UserId == playerId)
+                .OrderByDescending(m => m.CreatedAt)
+                .FirstOrDefaultAsync();
+        }
     }
 }

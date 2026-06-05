@@ -2,108 +2,99 @@
 using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Application.Common.Models;
 
-namespace Trainova.Api.Services
+namespace Trainova.Api.Services;
+
+public class CurrentUserProvider(
+    IHttpContextAccessor _httpContextAccessor)
+    : ICurrentUserProvider
 {
-    public class CurrentUserProvider(
-        IHttpContextAccessor _httpContextAccessor)
-        : ICurrentUserProvider
+    public CurrentUser GetCurrentUser()
     {
-        public CurrentUser GetCurrentUser()
+        var httpContext = _httpContextAccessor.HttpContext;
+        if (httpContext is null)
         {
-            var httpContext = _httpContextAccessor.HttpContext;
-            var user = httpContext?.User;
-
-            // =========================
-            // Get User IP
-            // =========================
-
-            string? ipString = null;
-
-            // 1) Try X-Forwarded-For (proxy / load balancer)
-            var forwardedFor = httpContext?
-                .Request
-                .Headers["X-Forwarded-For"]
-                .FirstOrDefault();
-
-            if (!string.IsNullOrWhiteSpace(forwardedFor))
-            {
-                ipString = forwardedFor.Split(',')[0].Trim();
-            }
-            else
-            {
-                ipString = httpContext?
-                    .Connection
-                    .RemoteIpAddress?
-                    .ToString();
-            }
-
-            UserIP? userIP = null;
-
-            if (!string.IsNullOrWhiteSpace(ipString))
-            {
-                try
-                {
-                    userIP = UserIP.FromString(ipString);
-                }
-                catch
-                {
-                }
-            }
-
-            // =========================
-            // Not Authenticated
-            // =========================
-
-            if (user?.Identity?.IsAuthenticated != true)
-                return new CurrentUser(
-                    Id: null,
-                    FullName: null,
-                    Email: null,
-                    UserIP: userIP,
-                    Role: null,
-                    Claims: Array.Empty<Claim>()
-                );
-
-            // =========================
-            // Get User Id
-            // =========================
-
-            Guid? id = null;
-
-            var idClaim = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            if (!string.IsNullOrEmpty(idClaim) &&
-                Guid.TryParse(idClaim, out var parsedId))
-            {
-                id = parsedId;
-            }
-
-            // =========================
-            // =========================
-
-            var fullName = user.FindFirst(ClaimTypes.Name)?.Value;
-
-            var email = user.FindFirst(ClaimTypes.Email)?.Value;
-
-            var role = user
-                .FindAll(ClaimTypes.Role)
-                .Select(r => r.Value)
-                .FirstOrDefault();
-
-            var claims = user.Claims.ToArray();
-
-
-
-            return new CurrentUser(
-                Id: id,
-                FullName: fullName,
-                Email: email,
-                UserIP: userIP,
-                Role: role,
-                Claims: claims
-            );
+            return CurrentUser.Anonymous();
         }
 
+        var user = httpContext.User;
+        var userIP = ExtractUserIP(httpContext);
 
+        if (user is null || !user.Identity?.IsAuthenticated == true)
+        {
+            return CurrentUser.Anonymous(userIP);
+        }
+
+        var actorId = ReadGuidClaim(user, "actor_id");
+        var userId = ReadGuidClaim(user, "user_id");
+
+        if (actorId is null)
+        {
+            return CurrentUser.Anonymous(userIP);
+        }
+
+        var currentUserType = Enum.TryParse<CurrentUserType>(user.FindFirst("user_type")?.Value, true, out var parsedType)
+            ? parsedType
+            : (CurrentUserType?)null;
+
+        if (userId is null && currentUserType == CurrentUserType.User)
+        {
+            userId = actorId;
+        }
+
+        var name = user.FindFirst(ClaimTypes.Name)?.Value;
+        var email = user.FindFirst(ClaimTypes.Email)?.Value;
+        var role = user.FindFirst(ClaimTypes.Role)?.Value;
+
+        bool? isEmailConfirmed = bool.TryParse(user.FindFirst("isEmailConfirmed")?.Value, out var parsedEmailConfirmed)
+            ? parsedEmailConfirmed
+            : null;
+
+        bool? isTFAEnabled = bool.TryParse(user.FindFirst("isTFAEnabled")?.Value, out var parsedTFA)
+            ? parsedTFA
+            : null;
+
+        return new CurrentUser(
+            Id: userId,
+            ActorId: actorId.Value,
+            UserType: currentUserType,
+            Name: name,
+            Email: email,
+            UserIP: userIP,
+            Role: role,
+            Claims: user.Claims.ToList(),
+            IsEmailConfirmed: isEmailConfirmed,
+            IsTFAEnabled: isTFAEnabled
+        );
+    }
+
+    private static UserIP? ExtractUserIP(HttpContext httpContext)
+    {
+        var forwardedFor = httpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
+
+        string? ipString = !string.IsNullOrWhiteSpace(forwardedFor)
+            ? forwardedFor.Split(',')[0].Trim()
+            : httpContext.Connection.RemoteIpAddress?.ToString();
+
+        if (string.IsNullOrWhiteSpace(ipString))
+        {
+            return null;
+        }
+
+        try
+        {
+            return UserIP.FromString(ipString);
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    private static Guid? ReadGuidClaim(ClaimsPrincipal? principal, string claimType)
+    {
+        if (principal is null) return null;
+
+        var value = principal.FindFirst(claimType)?.Value;
+        return Guid.TryParse(value, out var id) ? id : null;
     }
 }

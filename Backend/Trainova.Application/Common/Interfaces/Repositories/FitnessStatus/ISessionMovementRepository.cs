@@ -9,5 +9,6 @@ namespace Trainova.Application.Common.Interfaces.Repositories.FitnessStatus
         Task<SessionMovement?> GetByIdAsync(Guid id);
         Task UpdateAsync(SessionMovement movement);
         Task<SessionMovement?> GetByUserAccessPolicyIdAsync(Guid userAccessPolicyId);
+        Task<SessionMovement?> GetLastByUserAccessPolicyIdAsync(Guid playerId);
     }
 }

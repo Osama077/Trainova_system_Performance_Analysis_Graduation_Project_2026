@@ -250,11 +250,14 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.ToTable("FitnessSessionExercises", (string)null);
                 });
 
-            modelBuilder.Entity("Trainova.Domain.FitnessStatus.PhysicalCapacityTests.PhysicalCapacityTest", b =>
+            modelBuilder.Entity("Trainova.Domain.FitnessStatus.PhysicalCapacityTest", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("CalculatedCapacity")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -262,8 +265,17 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("CreationType")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("OverriddenCapacity")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<Guid>("PlayerId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("ProgressFromLastTest")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -282,10 +294,27 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("DurationInMinutes")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("FootageLoadToCapacityRatio")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("FootageStatus")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal?>("PlayerLoad")
+                    b.Property<decimal>("LoadRatioFromLastSession")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("OverriddenLoad")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("PlayerCalculatedLoad")
                         .HasPrecision(10, 2)
                         .HasColumnType("decimal(10,2)");
 
@@ -1500,9 +1529,9 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.Navigation("Session");
                 });
 
-            modelBuilder.Entity("Trainova.Domain.FitnessStatus.PhysicalCapacityTests.PhysicalCapacityTest", b =>
+            modelBuilder.Entity("Trainova.Domain.FitnessStatus.PhysicalCapacityTest", b =>
                 {
-                    b.OwnsOne("Trainova.Domain.FitnessStatus.PhysicalCapacityTests.AerobicCapacityTest", "AerobicCapacityTest", b1 =>
+                    b.OwnsOne("Trainova.Domain.FitnessStatus.AerobicCapacityTest", "AerobicCapacityTest", b1 =>
                         {
                             b1.Property<Guid>("PhysicalCapacityTestId")
                                 .HasColumnType("uniqueidentifier");
@@ -1528,7 +1557,7 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                                 .HasForeignKey("PhysicalCapacityTestId");
                         });
 
-                    b.OwnsOne("Trainova.Domain.FitnessStatus.PhysicalCapacityTests.ExplosivePowerTest", "ExplosivePowerTest", b1 =>
+                    b.OwnsOne("Trainova.Domain.FitnessStatus.ExplosivePowerTest", "ExplosivePowerTest", b1 =>
                         {
                             b1.Property<Guid>("PhysicalCapacityTestId")
                                 .HasColumnType("uniqueidentifier");
@@ -1551,7 +1580,7 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                                 .HasForeignKey("PhysicalCapacityTestId");
                         });
 
-                    b.OwnsOne("Trainova.Domain.FitnessStatus.PhysicalCapacityTests.SprintTest", "SprintTest", b1 =>
+                    b.OwnsOne("Trainova.Domain.FitnessStatus.SprintTest", "SprintTest", b1 =>
                         {
                             b1.Property<Guid>("PhysicalCapacityTestId")
                                 .HasColumnType("uniqueidentifier");

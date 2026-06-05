@@ -24,7 +24,7 @@ BEGIN
                 ELSE (DATEDIFF(SECOND, pp.[From], GETUTCDATE()) * 100.0) / 
                      NULLIF(DATEDIFF(SECOND, pp.[From], pp.[To]), 0)
             END) AS AvgProgress
-        FROM PlanPhases pp
+        FROM RecoveryPlanPhases pp
         WHERE pp.PlayerInjuryId = pi.Id
     ) AS PhasesData 
     WHERE 

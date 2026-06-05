@@ -35,9 +35,9 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.FitnessStatus
                 .IsRequired(false);
 
             builder
-                .Property(sm => sm.PlayerLoad)
+                .Property(sm => sm.PlayerCalculatedLoad)
                 .HasPrecision(10, 2)
-                .IsRequired(false);
+                .IsRequired();
 
             // =========================
             // Distance (Owned)
@@ -90,6 +90,8 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.FitnessStatus
             builder
                 .Navigation(sm => sm.Speed)
                 .IsRequired(false);
+            builder.Property(sm => sm.FootageStatus)
+                .HasMaxLength(50);
         }
     }
 

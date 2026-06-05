@@ -1,11 +1,11 @@
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Trainova.Application.Authentication.Common;
-using Trainova.Common.ResultOf;
-using Trainova.Domain.Common.Services;
 using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
 using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Common.Errors;
-using Microsoft.AspNetCore.Http;
+using Trainova.Common.ResultOf;
+using Trainova.Domain.Common.Services;
 
 namespace Trainova.Application.Authentication.Queries.Login;
 
@@ -33,7 +33,7 @@ public class LoginQueryHandler(
             }
 
 
-            var token = _tokenGenerator.GenerateJwtToken(user);
+            var token = _tokenGenerator.GenerateUserJwtToken(user);
 
             _contextAccessor.HttpContext.Response.Cookies.Append("access_token", token);
 

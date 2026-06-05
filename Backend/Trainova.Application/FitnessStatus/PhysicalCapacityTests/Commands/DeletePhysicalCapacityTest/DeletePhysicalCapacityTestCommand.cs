@@ -1,7 +1,4 @@
 using MediatR;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Trainova.Application.Common.Authorization;
 using Trainova.Application.Common.Interfaces.Repositories.FitnessStatus;
 using Trainova.Application.Common.Interfaces.Services;
@@ -11,7 +8,7 @@ using Trainova.Domain.Common.Helpers;
 
 namespace Trainova.Application.FitnessStatus.PhysicalCapacityTests.Commands.DeletePhysicalCapacityTest
 {
-    [Authorize(Roles = "Coach")]
+    [Authorize(Roles = "FitnessCoach")]
     public record DeletePhysicalCapacityTestCommand(Guid Id) : IRequest<ResultOf<Done>>;
 
     public class DeletePhysicalCapacityTestCommandHandler : IRequestHandler<DeletePhysicalCapacityTestCommand, ResultOf<Done>>

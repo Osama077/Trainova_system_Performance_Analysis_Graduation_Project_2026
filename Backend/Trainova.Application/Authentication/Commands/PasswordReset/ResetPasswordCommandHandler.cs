@@ -11,7 +11,7 @@ using Trainova.Domain.UserAuth;
 
 namespace Trainova.Application.Authentication.Commands.PasswordReset
 {
-    public class ResetPasswordCommandHandler (
+    public class ResetPasswordCommandHandler(
         IUsersRepository _usersRepository,
         ITokenGenerator _tokenGenerator,
         IUserTokensRepository _tokenRepsitory,
@@ -24,12 +24,12 @@ namespace Trainova.Application.Authentication.Commands.PasswordReset
         {
             try
             {
-                var user = await _usersRepository.GetByEmailAsync( request.Email );
+                var user = await _usersRepository.GetByEmailAsync(request.Email);
                 if (user is null)
                 {
                     return Error.NotFound(code: "UserNotFound", description: $"No user found with email {request.Email}");
                 }
-                var token = await _tokenRepsitory.GetTokenAsync(request.Token,TokenType.PasswordReset, user.Id);
+                var token = await _tokenRepsitory.GetTokenAsync(request.Token, TokenType.PasswordReset, user.Id);
                 if (token is null)
                 {
                     return Error.NotFound(code: "UserTokenNotFound", description: $"No Token found with this data {request.Email}");
@@ -46,7 +46,7 @@ namespace Trainova.Application.Authentication.Commands.PasswordReset
 
 
 
-                var jwt = _tokenGenerator.GenerateJwtToken(user);
+                var jwt = _tokenGenerator.GenerateUserJwtToken(user);
 
                 _contextAccessor.HttpContext.Response.Cookies.Append("access_token", jwt);
 
@@ -59,7 +59,7 @@ namespace Trainova.Application.Authentication.Commands.PasswordReset
 
                 await _unitOfWork.CommitTransactionAsync();
 
-                return new FullAuthenticationResult(user,jwt);
+                return new FullAuthenticationResult(user, jwt);
 
             }
             catch (DomainException ex)

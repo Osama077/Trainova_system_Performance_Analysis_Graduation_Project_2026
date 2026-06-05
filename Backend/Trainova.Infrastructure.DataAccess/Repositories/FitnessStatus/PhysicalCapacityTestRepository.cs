@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Trainova.Application.Common.Interfaces.Repositories.FitnessStatus;
-using Trainova.Domain.FitnessStatus.PhysicalCapacityTests;
+using Trainova.Domain.FitnessStatus;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.FitnessStatus
 {
@@ -38,6 +38,14 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.FitnessStatus
         public async Task<PhysicalCapacityTest?> GetByPlayerIdAsync(Guid playerId)
         {
             return await _dbContext.CapacityTests.FirstOrDefaultAsync(t => t.PlayerId == playerId);
+        }
+
+        public async Task<PhysicalCapacityTest?> GetLatestByPlayerIdAsync(Guid playerId)
+        {
+            return await _dbContext.CapacityTests
+                .Where(m => m.PlayerId == playerId)
+                .OrderByDescending(m => m.CreatedAt)
+                .FirstOrDefaultAsync();
         }
     }
 }

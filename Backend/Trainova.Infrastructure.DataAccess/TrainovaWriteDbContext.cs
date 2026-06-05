@@ -8,7 +8,6 @@ using Trainova.Domain.Common.AuditLogs;
 using Trainova.Domain.Common.BaseEntity;
 using Trainova.Domain.Common.Outbox;
 using Trainova.Domain.FitnessStatus;
-using Trainova.Domain.FitnessStatus.PhysicalCapacityTests;
 using Trainova.Domain.MedicalStatus;
 using Trainova.Domain.Profiles;
 using Trainova.Domain.Scouting;

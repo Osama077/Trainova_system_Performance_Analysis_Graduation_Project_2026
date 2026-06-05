@@ -1,9 +1,10 @@
+using MediatR;
 using System.Reflection;
 using Trainova.Application.Common.Authorization;
-using MediatR;
-using Trainova.Common.ResultOf;
-using Trainova.Common.Errors;
 using Trainova.Application.Common.Models;
+using Trainova.Common.Errors;
+using Trainova.Common.ResultOf;
+using Trainova.Domain.Common.BaseEntity;
 using Trainova.Domain.UserAuth;
 
 namespace Trainova.Application.Common.Behaviors;
@@ -32,15 +33,21 @@ public class AuthorizationBehavior<TRequest, TResponse>(CurrentUser? _currentUse
             return (dynamic)Error.Unauthorized(description: "User is not loged Id");
         }
 
+        if (request is IPhysicalMachineAuthraizedRequest multiWayCreatableRequest)
+        {
+            MapCreatorType(multiWayCreatableRequest);
+        }
 
         if (request is IPlayerAuthraizedRequest playerAuthraizedRequest)
             MatchPlayerId(playerAuthraizedRequest);
 
-        if(request is ICreatorAuthraizedRequest creatorAuthraizedRequest)
+        if (request is ICreatorAuthraizedRequest creatorAuthraizedRequest)
             MatchCreatorId(creatorAuthraizedRequest);
 
+
+
         if (_currentUser.IsAuthenticated
-            && (_currentUser.Role.Contains(Role.SystemAdmin.Name) || _currentUser.Role.Contains(Role.SystemOwner.Name)))
+            && (_currentUser.Role == UserRole.SystemAdmin.Name || _currentUser.Role == UserRole.SystemOwner.Name))
             return await next();
 
 
@@ -55,14 +62,31 @@ public class AuthorizationBehavior<TRequest, TResponse>(CurrentUser? _currentUse
         return (dynamic)Error.Unauthorized(description: "User is forbidden from taking this action");
     }
 
+    private void MapCreatorType(IPhysicalMachineAuthraizedRequest multiWayCreatableRequest)
+    {
+        switch (_currentUser.UserType)
+        {
+            case CurrentUserType.SmartWatch:
+            case CurrentUserType.FitnessTracingDevice:
+                multiWayCreatableRequest.CreationType = CreationType.FromDevice;
+                break;
+            case CurrentUserType.MlModelService:
+                multiWayCreatableRequest.CreationType = CreationType.FromService;
+                break;
+            case CurrentUserType.User:
+                multiWayCreatableRequest.CreationType = CreationType.Manual;
+                break;
+
+        }
+    }
     private void MatchPlayerId(IPlayerAuthraizedRequest playerAuthraizedRequest)
     {
-        if(_currentUser.Role==Role.Player.Name)
+        if (_currentUser.Role == UserRole.Player.Name)
             playerAuthraizedRequest.PlayerId = _currentUser.Id;
     }
     private void MatchCreatorId(ICreatorAuthraizedRequest creatorAuthraizedRequest)
     {
-        if(_currentUser.Role!=Role.Player.Name && creatorAuthraizedRequest.IncludeCreateror)
+        if (_currentUser.Role != UserRole.Player.Name && creatorAuthraizedRequest.IncludeCreateror)
             creatorAuthraizedRequest.CreatorId = _currentUser.Id;
     }
 

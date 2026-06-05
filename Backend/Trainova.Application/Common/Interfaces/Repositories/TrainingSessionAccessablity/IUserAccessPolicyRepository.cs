@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Trainova.Application.TrainingSessionsAccessibility.UserAccessPolicies.Quereis.GetUserAccessPolicy;
+﻿using Trainova.Application.TrainingSessionsAccessibility.UserAccessPolicies.Quereis.GetUserAccessPolicy;
 using Trainova.Domain.TrainingSessionsAccessibility;
 
 namespace Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAccessablity

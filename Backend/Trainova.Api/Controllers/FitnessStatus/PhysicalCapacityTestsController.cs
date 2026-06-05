@@ -2,9 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Trainova.Api.Requests.FitnessStatus;
 using Trainova.Application.Common.Models;
-using Trainova.Application.FitnessStatus.PhysicalCapacityTests.Commands.CreatePhysicalCapacityTest;
 using Trainova.Application.FitnessStatus.PhysicalCapacityTests.Commands.DeletePhysicalCapacityTest;
-using Trainova.Application.FitnessStatus.PhysicalCapacityTests.Commands.UpdatePhysicalCapacityTest;
 
 namespace Trainova.Api.Controllers.FitnessStatus
 {
@@ -23,15 +21,7 @@ namespace Trainova.Api.Controllers.FitnessStatus
             return MapResult(result);
         }
 
-        [HttpPut("{id:guid}")]
-        public async Task<IActionResult> Update(
-            [FromRoute] Guid id,
-            [FromBody] UpdatePhysicalCapacityTestRequest request)
-        {
-            var command = request.ToCommand(id);
-            var result = await _mediator.Send(command);
-            return MapResult(result);
-        }
+
 
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(

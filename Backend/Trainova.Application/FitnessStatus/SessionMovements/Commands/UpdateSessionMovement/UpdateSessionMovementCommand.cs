@@ -1,7 +1,4 @@
 using MediatR;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Trainova.Application.Common.Authorization;
 using Trainova.Application.Common.Interfaces.Repositories.FitnessStatus;
 using Trainova.Application.Common.Interfaces.Services;
@@ -16,6 +13,7 @@ namespace Trainova.Application.FitnessStatus.SessionMovements.Commands.UpdateSes
     public record UpdateSessionMovementCommand(
         Guid Id,
         int? SprintsCount = null,
+        int? DurationInMinutes = null,
         decimal? WalkDistance = null,
         decimal? RunDistance = null,
         decimal? HighSpeedRunDistance = null,
@@ -68,9 +66,9 @@ namespace Trainova.Application.FitnessStatus.SessionMovements.Commands.UpdateSes
 
                 movement.Update(
                     request.SprintsCount,
+                    request.DurationInMinutes,
                     distance,
-                    speed,
-                    request.PlayerLoad
+                    speed
                 );
 
                 await _unitOfWork.StartTransactionAsync();

@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Trainova.Domain.FitnessStatus.PhysicalCapacityTests;
+using Trainova.Domain.FitnessStatus;
 using Trainova.Infrastructure.DataAccess.Configuration.Common;
 
 namespace Trainova.Infrastructure.DataAccess.Configuration.FitnessStatus

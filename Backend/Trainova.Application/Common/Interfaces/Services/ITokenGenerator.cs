@@ -4,6 +4,8 @@ namespace Trainova.Application.Common.Interfaces.Services;
 
 public interface ITokenGenerator
 {
-    string GenerateJwtToken(User? user);
+    string GenerateUserJwtToken(User? user);
+    string GenerateDeviceJwtToken(Device device);
+
 
 }

@@ -1,6 +1,7 @@
 ﻿using Trainova.Domain.Common.BaseEntity;
 using Trainova.Domain.Common.Enums;
 using Trainova.Domain.Common.Helpers;
+using Trainova.Domain.FitnessStatus;
 using Trainova.Domain.MedicalStatus;
 using Trainova.Domain.UserAuth;
 
@@ -19,7 +20,6 @@ namespace Trainova.Domain.Profiles
         public DateOnly DateOfEnrolment { get; set; } = DateOnly.FromDateTime(DateTime.Now);
 
         public ICollection<PlayerInjury> PlayerInjuries { get; private set; } = [];
-
 
 
         private Player() : base()
@@ -70,9 +70,9 @@ namespace Trainova.Domain.Profiles
                         "DomainError_MainPositionDontFit");
             }
 
-            PlayerNumber = playerNumber?? PlayerNumber;
+            PlayerNumber = playerNumber ?? PlayerNumber;
             TShirtName = tShirtName ?? TShirtName;
-            MedicalStatus = medecalStatus?? MedicalStatus;
+            MedicalStatus = medecalStatus ?? MedicalStatus;
             CurrentMainPosition = currentMainPosition ?? CurrentMainPosition;
             OtherAvailablePositions = otherAvailablePositions ?? OtherAvailablePositions;
             PerformanceLevel = performanceLevel ?? PerformanceLevel;
@@ -83,5 +83,32 @@ namespace Trainova.Domain.Profiles
             MarkUpdatedNow();
             MedicalStatus = PlayerMedicalStatus.Injured;
         }
+        public void TriggereMedicalStatusChange(PlayerMedicalStatus newStatus)
+        {
+            if (MedicalStatus == newStatus)
+                throw new DomainException("Medical status is already set to the specified value.", "DomainError_MedicalStatusUnchanged");
+            MarkUpdatedNow();
+            MedicalStatus = newStatus;
+        }
+
+        public PhysicalCapacityTest GenreteNewPhysicalTest(
+            ExplosivePowerTest explosivePowerTest,
+            AerobicCapacityTest aerobicCapacityTest,
+            SprintTest sprintTest,
+            PhysicalCapacityTest? lastPhysicalCapacityTest = null,
+            CreationType creationType = CreationType.Manual,
+            Guid? createdBy = null)
+        {
+            return new PhysicalCapacityTest(
+                playerId: Id,
+                aerobicCapacityTest: aerobicCapacityTest,
+                sprintTest: sprintTest,
+                explosivePowerTest: explosivePowerTest,
+                lastPhysicalCapacityTest: lastPhysicalCapacityTest,
+                creationType: creationType,
+                createdBy: createdBy);
+        }
+
+
     }
 }

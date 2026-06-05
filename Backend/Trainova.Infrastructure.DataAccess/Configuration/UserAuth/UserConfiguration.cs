@@ -29,7 +29,7 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.UserAuth
             builder.Property(p => p.Role)
                 .HasConversion(
                     r => r.Name,
-                    value => Role.FromName(value.Trim(), false))
+                    value => UserRole.FromName(value.Trim(), false))
                 .HasMaxLength(50)
                 .IsRequired();
             builder.HasIndex(p => p.Role);

@@ -1,4 +1,4 @@
-using Trainova.Domain.FitnessStatus.PhysicalCapacityTests;
+using Trainova.Domain.FitnessStatus;
 
 namespace Trainova.Application.Common.Interfaces.Repositories.FitnessStatus
 {
@@ -9,5 +9,6 @@ namespace Trainova.Application.Common.Interfaces.Repositories.FitnessStatus
         Task<PhysicalCapacityTest?> GetByIdAsync(Guid id);
         Task UpdateAsync(PhysicalCapacityTest test);
         Task<PhysicalCapacityTest?> GetByPlayerIdAsync(Guid playerId);
+        Task<PhysicalCapacityTest?> GetLatestByPlayerIdAsync(Guid playerId);
     }
 }

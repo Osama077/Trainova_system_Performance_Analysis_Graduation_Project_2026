@@ -9,7 +9,7 @@ using Trainova.Domain.UserAuth.DomainEvents;
 
 namespace Trainova.Domain.UserAuth
 {
-    public class User :AuditableEntity<Guid>
+    public class User : AuditableEntity<Guid>
     {
         public Guid? TeamId { get; private set; }
         public Team Team { get; private set; } = null!;
@@ -17,7 +17,7 @@ namespace Trainova.Domain.UserAuth
         public string FullName { get; private set; } = null!;
         public string? PhotoPath { get; private set; } = null!;
         public bool IsTFAEnabled { get; private set; } = false;
-        public DateTime? TFAEnabledAt {  get; private set; }
+        public DateTime? TFAEnabledAt { get; private set; }
         public string Email { get; private set; } = null!;
         public bool IsEmailConfirmed { get; private set; } = false;
         public DateTime? ConfirmedAt { get; private set; }
@@ -25,7 +25,7 @@ namespace Trainova.Domain.UserAuth
         private string _passwordHash;
         public bool IsActive { get; private set; }
 
-        public Role Role { get; private set; } = null!;
+        public UserRole Role { get; private set; } = null!;
         public Player? Player { get; private set; } = null!;
         public TeamStaff? TeamStaff { get; private set; } = null!;
         public User(
@@ -34,7 +34,7 @@ namespace Trainova.Domain.UserAuth
             string email,
             string? photoPath = null,
             Guid? teamId = null,
-            Role role = null) : base(Guid.NewGuid())
+            UserRole role = null) : base(Guid.NewGuid())
         {
             ShowName = showName;
             FullName = fullName;
@@ -42,11 +42,11 @@ namespace Trainova.Domain.UserAuth
             Email = email;
             IsActive = true;
             TeamId = teamId;
-            Role = role ?? Role.Player;
+            Role = role ?? UserRole.Player;
         }
 
 
-        private User() :base() { }
+        private User() : base() { }
 
 
         public bool IsCorrectPasswordHash(string password, IPasswordHasher passwordHasher)
@@ -59,7 +59,7 @@ namespace Trainova.Domain.UserAuth
             MarkUpdatedNow();
             if (string.IsNullOrWhiteSpace(password))
             {
-                return Error.Conflict(description:"can't change password to nothing");
+                return Error.Conflict(description: "can't change password to nothing");
             }
             var PasswordHashresult = passwordHasher.HashPassword(password);
             if (PasswordHashresult.IsFailure)
@@ -87,9 +87,9 @@ namespace Trainova.Domain.UserAuth
             string? email = null)
         {
             MarkUpdatedNow();
-            ShowName = showName?? ShowName;
-            FullName = fullName?? FullName;
-            PhotoPath = photoPath?? PhotoPath;
+            ShowName = showName ?? ShowName;
+            FullName = fullName ?? FullName;
+            PhotoPath = photoPath ?? PhotoPath;
             if (email is not null)
             {
                 Email = email;

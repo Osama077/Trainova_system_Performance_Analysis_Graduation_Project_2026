@@ -1,7 +1,7 @@
 
 namespace Trainova.Domain.Common.BaseEntity
 {
-    public abstract class Entity<TId> : IEntity<TId>
+    public abstract class Entity<TId> : IEntity<TId>, ICreatorLogable
     {
         public TId Id { get; protected set; } = default!;
         public Guid? CreatedBy { get; protected set; }
@@ -43,7 +43,7 @@ namespace Trainova.Domain.Common.BaseEntity
             AddDomainEvent(domainEvent);
         }
     }
-    public interface IEntity<TId>: IHasId<TId>,ICreatorLogable
+    public interface IEntity<TId> : IHasId<TId>
     {
         IReadOnlyCollection<IDomainEvent> DomainEvents { get; }
         void AddDomainEvent(IDomainEvent domainEvent);
