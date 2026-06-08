@@ -41,10 +41,12 @@ public class CandidateRepository : ICandidateRepository
 
     public async Task<ScoutingCandidate?> GetByIdAsync(Guid candidateId, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.ScoutingCandidates.FirstOrDefaultAsync(c => c.Id == candidateId, cancellationToken);
+        return await _dbContext.ScoutingCandidates
+            .Include(c => c.NotesList)
+            .FirstOrDefaultAsync(c => c.Id == candidateId, cancellationToken);
     }
 
-    public async Task<IEnumerable<CandidateListItemResponse>> GetCandidatesAsync(Guid? candidateId = null, string? searchTerm = null, int? mainPositionFilter = null, CandidateStatus? statusFilter = null, Guid? currentTeamId = null, int? minAge = null, int? maxAge = null, DateTime? dateFrom = null, DateTime? dateTo = null, int pageNumber = 0, int pageSize = 12, string sortColumn = "CreatedAt", string sortDirection = "DESC", CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<CandidateListItemResponse>> GetCandidatesAsync(Guid? candidateId = null, string? searchTerm = null, int? mainPositionFilter = null, CandidateStatus? statusFilter = null, string? currentTeamName = null, int? minAge = null, int? maxAge = null, DateTime? dateFrom = null, DateTime? dateTo = null, int pageNumber = 0, int pageSize = 12, string sortColumn = "CreatedAt", string sortDirection = "DESC", CancellationToken cancellationToken = default)
     {
         try
         {
@@ -56,17 +58,17 @@ public class CandidateRepository : ICandidateRepository
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
                 var s = searchTerm.Trim();
-                q = q.Where(c => c.FullName.Contains(s) || c.CurrentTeamId.ToString().Contains(s));
+                q = q.Where(c => c.FullName.Contains(s) || (c.CurrentTeamName != null && c.CurrentTeamName.Contains(s)));
             }
 
             if (mainPositionFilter.HasValue)
-                q = q.Where(c => (int)c.CurrentMainPosition == mainPositionFilter.Value);
+                q = q.Where(c => (int)c.Position == mainPositionFilter.Value);
 
             if (statusFilter.HasValue)
                 q = q.Where(c => ((int)c.Status & (int)statusFilter.Value) != 0);
 
-            if (currentTeamId.HasValue)
-                q = q.Where(c => c.CurrentTeamId == currentTeamId);
+            if (!string.IsNullOrWhiteSpace(currentTeamName))
+                q = q.Where(c => c.CurrentTeamName == currentTeamName);
 
             if (minAge.HasValue)
                 q = q.Where(c => c.Age >= minAge.Value);
@@ -78,52 +80,32 @@ public class CandidateRepository : ICandidateRepository
 
             var items = await q.Skip(pageNumber * pageSize).Take(pageSize).ToListAsync(cancellationToken);
 
-            // Try to materialize team names if Teams exist in the model
-            var teamIds = items.Where(i => i.CurrentTeamId.HasValue).Select(i => i.CurrentTeamId!.Value).Distinct().ToList();
-            var teams = new Dictionary<Guid, string>();
-            if (teamIds.Any())
-            {
-                // Teams may live in a different namespace; try to fetch by EF set
-                try
-                {
-                    var teamSet = _dbContext.Set<Trainova.Domain.SeasonsAnalyses.Team>();
-                    var teamList = await teamSet.Where(t => teamIds.Contains(t.Id)).ToListAsync(cancellationToken);
-                    teams = teamList.ToDictionary(t => t.Id, t => t.TeamName ?? string.Empty);
-                }
-                catch
-                {
-                    // ignore if Team entity not mapped; leave team names null
-                }
-            }
-
             return items.Select(i => new CandidateListItemResponse
             {
                 Id = i.Id,
                 FullName = i.FullName,
                 Age = i.Age,
-                Position = (int)i.CurrentMainPosition,
-                CurrentTeamId = i.CurrentTeamId,
-                CurrentTeamName = i.CurrentTeamId.HasValue && teams.ContainsKey(i.CurrentTeamId.Value) ? teams[i.CurrentTeamId.Value] : null,
-                Nationality = i.Nationality,
-                PerformanceScore = i.PerformanceScore,
+                Position = (int)i.Position,
+                CurrentTeamId = null,  // No longer needed
+                CurrentTeamName = i.CurrentTeamName,
+                Nationality = i.ContractInfo.Nationality,
                 ScoutRating = i.ScoutRating,
-                PerformanceLevel = i.PerformanceLevel,
                 Status = (int)i.Status,
                 // skills
-                Pace = i.Pace,
-                Shooting = i.Shooting,
-                Dribbling = i.Dribbling,
-                Passing = i.Passing,
-                Physicality = i.Physicality,
-                Positioning = i.Positioning,
-                Defending = i.Defending,
-                Vision = i.Vision,
+                Pace = i.SkillAssessment.Pace,
+                Shooting = i.SkillAssessment.Shooting,
+                Dribbling = i.SkillAssessment.Dribbling,
+                Passing = i.SkillAssessment.Passing,
+                Physicality = i.SkillAssessment.Physicality,
+                Positioning = i.SkillAssessment.Positioning,
+                Defending = i.SkillAssessment.Defending,
+                Vision = i.SkillAssessment.Vision,
 
                 ShortlistRank = i.ShortlistRank,
                 IsOnTrial = ((int)i.Status & (int)CandidateStatus.OnTrial) != 0,
-                ContractEnd = i.ContractEnd,
-                MarketValue = i.MarketValue,
-                Agent = i.Agent,
+                ContractEnd = i.ContractInfo.ContractEnd,
+                MarketValue = i.ContractInfo.MarketValue,
+                Agent = i.ContractInfo.Agent,
                 MatchesWatchedCount = i.MatchesWatchedCount,
 
                 // Use Notes property stored on the candidate for snippet
@@ -150,7 +132,7 @@ public class CandidateRepository : ICandidateRepository
         }
     }
 
-    public async Task<CandidatesOverviewResponse> GetCandidatesOverviewAsync(Guid? candidateId = null, string? searchTerm = null, int? mainPositionFilter = null, CandidateStatus? statusFilter = null, Guid? currentTeamId = null, int? minAge = null, int? maxAge = null, DateTime? dateFrom = null, DateTime? dateTo = null, int pageNumber = 0, int pageSize = 12, string sortColumn = "CreatedAt", string sortDirection = "DESC", CancellationToken cancellationToken = default)
+    public async Task<CandidatesOverviewResponse> GetCandidatesOverviewAsync(Guid? candidateId = null, string? searchTerm = null, int? mainPositionFilter = null, CandidateStatus? statusFilter = null, string? currentTeamName = null, int? minAge = null, int? maxAge = null, DateTime? dateFrom = null, DateTime? dateTo = null, int pageNumber = 0, int pageSize = 12, string sortColumn = "CreatedAt", string sortDirection = "DESC", CancellationToken cancellationToken = default)
     {
         try
         {
@@ -162,17 +144,17 @@ public class CandidateRepository : ICandidateRepository
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
                 var s = searchTerm.Trim();
-                baseQuery = baseQuery.Where(c => c.FullName.Contains(s) || c.CurrentTeamId.ToString().Contains(s));
+                baseQuery = baseQuery.Where(c => c.FullName.Contains(s) || (c.CurrentTeamName != null && c.CurrentTeamName.Contains(s)));
             }
 
             if (mainPositionFilter.HasValue)
-                baseQuery = baseQuery.Where(c => (int)c.CurrentMainPosition == mainPositionFilter.Value);
+                baseQuery = baseQuery.Where(c => (int)c.Position == mainPositionFilter.Value);
 
             if (statusFilter.HasValue)
                 baseQuery = baseQuery.Where(c => ((int)c.Status & (int)statusFilter.Value) != 0);
 
-            if (currentTeamId.HasValue)
-                baseQuery = baseQuery.Where(c => c.CurrentTeamId == currentTeamId);
+            if (!string.IsNullOrWhiteSpace(currentTeamName))
+                baseQuery = baseQuery.Where(c => c.CurrentTeamName == currentTeamName);
 
             if (minAge.HasValue)
                 baseQuery = baseQuery.Where(c => c.Age >= minAge.Value);
@@ -201,49 +183,30 @@ public class CandidateRepository : ICandidateRepository
 
             var items = await itemsQuery.ToListAsync(cancellationToken);
 
-            // Materialize team names similar to GetCandidatesAsync
-            var teamIds = items.Where(i => i.CurrentTeamId.HasValue).Select(i => i.CurrentTeamId!.Value).Distinct().ToList();
-            var teams = new Dictionary<Guid, string>();
-            if (teamIds.Any())
-            {
-                try
-                {
-                    var teamSet = _dbContext.Set<Trainova.Domain.SeasonsAnalyses.Team>();
-                    var teamList = await teamSet.Where(t => teamIds.Contains(t.Id)).ToListAsync(cancellationToken);
-                    teams = teamList.ToDictionary(t => t.Id, t => t.TeamName ?? string.Empty);
-                }
-                catch
-                {
-                    // ignore
-                }
-            }
-
             var mappedItems = items.Select(i => new CandidateListItemResponse
             {
                 Id = i.Id,
                 FullName = i.FullName,
                 Age = i.Age,
-                Position = (int)i.CurrentMainPosition,
-                CurrentTeamId = i.CurrentTeamId,
-                CurrentTeamName = i.CurrentTeamId.HasValue && teams.ContainsKey(i.CurrentTeamId.Value) ? teams[i.CurrentTeamId.Value] : null,
-                Nationality = i.Nationality,
-                PerformanceScore = i.PerformanceScore,
+                Position = (int)i.Position,
+                CurrentTeamId = null,  // No longer needed
+                CurrentTeamName = i.CurrentTeamName,
+                Nationality = i.ContractInfo.Nationality,
                 ScoutRating = i.ScoutRating,
-                PerformanceLevel = i.PerformanceLevel,
                 Status = (int)i.Status,
-                Pace = i.Pace,
-                Shooting = i.Shooting,
-                Dribbling = i.Dribbling,
-                Passing = i.Passing,
-                Physicality = i.Physicality,
-                Positioning = i.Positioning,
-                Defending = i.Defending,
-                Vision = i.Vision,
+                Pace = i.SkillAssessment.Pace,
+                Shooting = i.SkillAssessment.Shooting,
+                Dribbling = i.SkillAssessment.Dribbling,
+                Passing = i.SkillAssessment.Passing,
+                Physicality = i.SkillAssessment.Physicality,
+                Positioning = i.SkillAssessment.Positioning,
+                Defending = i.SkillAssessment.Defending,
+                Vision = i.SkillAssessment.Vision,
                 ShortlistRank = i.ShortlistRank,
                 IsOnTrial = ((int)i.Status & (int)CandidateStatus.OnTrial) != 0,
-                ContractEnd = i.ContractEnd,
-                MarketValue = i.MarketValue,
-                Agent = i.Agent,
+                ContractEnd = i.ContractInfo.ContractEnd,
+                MarketValue = i.ContractInfo.MarketValue,
+                Agent = i.ContractInfo.Agent,
                 MatchesWatchedCount = i.MatchesWatchedCount,
                 NotesSnippet = i.Notes
             }).ToList();

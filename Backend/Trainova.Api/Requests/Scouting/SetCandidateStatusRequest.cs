@@ -9,8 +9,7 @@ namespace Trainova.Api.Requests.Scouting
        
         public CandidateStatus Status { get; set; }
         public bool Add { get; set; } = true;
-        public string? Note { get; set; }
 
-        public SetCandidateStatusCommand ToCommand(Guid candidateId) => new SetCandidateStatusCommand(candidateId, (Trainova.Domain.Common.Enums.CandidateStatus)Status, Add, Note);
+        public SetCandidateStatusCommand ToCommand(Guid candidateId) => new SetCandidateStatusCommand(candidateId, (Trainova.Domain.Common.Enums.CandidateStatus)Status, Add);
     }
 }

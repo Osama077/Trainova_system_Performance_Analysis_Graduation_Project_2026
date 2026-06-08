@@ -13,6 +13,9 @@ using Trainova.Application.Common.Models;
 using Trainova.Api.Models;
 using Trainova.Application.Scouting.Candidates;
 using Trainova.Common.ResultOf;
+using Trainova.Application.Scouting.Candidates.Commands.AddCandidateNote;
+using Trainova.Application.Scouting.Candidates.Queries.GetCandidateNotes;
+using Trainova.Application.Scouting.Candidates.Commands.DeleteCandidateNote;
 
 namespace Trainova.Api.Controllers.Scouting
 {
@@ -42,13 +45,7 @@ namespace Trainova.Api.Controllers.Scouting
             return MapResult(result);
         }
 
-        [HttpPut("{id:guid}")]
-        public async Task<IActionResult> UpdateCandidate(Guid id, [FromBody] UpdateCandidateRequest request)
-        {
-            var command = request.ToCommand(id);
-            var result = await _sender.Send(command);
-            return MapResult(result);
-        }
+        // UpdateCandidate endpoint removed - candidate edits are no longer supported via PUT. Use specific endpoints (status, notes) instead.
 
         [HttpPost("{id:guid}/status")]
         public async Task<IActionResult> SetCandidateStatus(Guid id, [FromBody] SetCandidateStatusRequest request)
@@ -63,6 +60,30 @@ namespace Trainova.Api.Controllers.Scouting
         {
             var query = request.ToOverviewQuery();
             var result = await _sender.Send(query);
+            return MapResult(result);
+        }
+
+        [HttpPost("{id:guid}/notes")]
+        public async Task<IActionResult> AddCandidateNote(Guid id, [FromBody] AddCandidateNoteRequest request)
+        {
+            var command = new AddCandidateNoteCommand(id, request.Text);
+            var result = await _sender.Send(command);
+            return MapResult(result);
+        }
+
+        [HttpGet("{id:guid}/notes")]
+        public async Task<IActionResult> GetCandidateNotes(Guid id, [FromQuery] int pageNumber = 0, [FromQuery] int pageSize = 50)
+        {
+            var query = new GetCandidateNotesQuery(id, pageNumber, pageSize);
+            var result = await _sender.Send(query);
+            return MapResult(result);
+        }
+
+        [HttpDelete("{id:guid}/notes/{noteId:guid}")]
+        public async Task<IActionResult> DeleteCandidateNote(Guid id, Guid noteId)
+        {
+            var command = new DeleteCandidateNoteCommand(id, noteId);
+            var result = await _sender.Send(command);
             return MapResult(result);
         }
 

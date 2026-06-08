@@ -7,7 +7,7 @@ namespace Trainova.Api.Requests.Scouting
     public class GetCandidatesFiltrationRequest
     {
         public Guid? CandidateId { get; init; }
-        public Guid? CurrentTeamId { get; init; }
+        public string? CurrentTeamName { get; init; }
         public int? MinAge { get; init; }
         public int? MaxAge { get; init; }
         public string? SearchTerm { get; init; }
@@ -22,7 +22,7 @@ namespace Trainova.Api.Requests.Scouting
 
         public GetCandidatesQuery ToQuery(Guid? candidateId) => new GetCandidatesQuery(
             CandidateId: candidateId ?? CandidateId,
-            CurrentTeamId: CurrentTeamId,
+            CurrentTeamName: CurrentTeamName,
             MinAge: MinAge,
             MaxAge: MaxAge,
             SearchTerm: SearchTerm,
@@ -39,7 +39,7 @@ namespace Trainova.Api.Requests.Scouting
         public Trainova.Application.Scouting.Candidates.Queries.GetCandidatesOverview.GetCandidatesOverviewQuery ToOverviewQuery()
             => new Trainova.Application.Scouting.Candidates.Queries.GetCandidatesOverview.GetCandidatesOverviewQuery(
                 CandidateId: CandidateId,
-                CurrentTeamId: CurrentTeamId,
+                CurrentTeamName: CurrentTeamName,
                 MinAge: MinAge,
                 MaxAge: MaxAge,
                 SearchTerm: SearchTerm,

@@ -11,7 +11,7 @@ namespace Trainova.Application.Scouting.Candidates.Queries.GetCandidatesOverview
         string? SearchTerm = null,
         int? Position = null,
         CandidateStatus? Status = null,
-        Guid? CurrentTeamId = null,
+        string? CurrentTeamName = null,
         int? MinAge = null,
         int? MaxAge = null,
         DateTime? DateFrom = null,

@@ -4,16 +4,19 @@ using Trainova.Domain.Common.Enums;
 using System.Threading;
 using Trainova.Common.ResultOf;
 using Trainova.Common.Errors;
+using Trainova.Application.Common.Models;
 
 namespace Trainova.Application.Scouting.Candidates.Commands.SetCandidateStatus
 {
     public class SetCandidateStatusCommandHandler : IRequestHandler<SetCandidateStatusCommand, ResultOf<bool>>
     {
         private readonly ICandidateRepository _candidateRepository;
+        private readonly CurrentUser? _currentUser;
 
-        public SetCandidateStatusCommandHandler(ICandidateRepository candidateRepository)
+        public SetCandidateStatusCommandHandler(ICandidateRepository candidateRepository, CurrentUser? currentUser = null)
         {
             _candidateRepository = candidateRepository;
+            _currentUser = currentUser;
         }
 
         public async Task<ResultOf<bool>> Handle(SetCandidateStatusCommand request, CancellationToken cancellationToken)
@@ -23,18 +26,10 @@ namespace Trainova.Application.Scouting.Candidates.Commands.SetCandidateStatus
                 return Error.NotFound("Candidate.NotFound", $"Candidate {request.CandidateId} not found").AsError<bool>();
 
             // Apply status change: add or remove selected flags
-            // Apply status change: when Add=true we now REPLACE the existing flags with the provided status
-            // (i.e. the new flag erases the old). When Add=false we remove the provided flags as before.
             if (request.Add)
-                candidate.SetStatus(request.Status);
+                candidate.AddStatus(request.Status);
             else
                 candidate.RemoveStatus(request.Status);
-
-            // Persist note changes if provided (replace existing notes)
-            if (!string.IsNullOrWhiteSpace(request.Note))
-            {
-                candidate.Update(notes: request.Note);
-            }
 
             try
             {

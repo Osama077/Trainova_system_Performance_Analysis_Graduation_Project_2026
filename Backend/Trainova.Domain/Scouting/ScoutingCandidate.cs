@@ -1,6 +1,7 @@
 ﻿using Trainova.Domain.Common.BaseEntity;
 using Trainova.Domain.Common.Enums;
 using Trainova.Domain.Common.Helpers;
+using Trainova.Domain.Scouting.ValueObjects;
 
 namespace Trainova.Domain.Scouting
 {
@@ -9,45 +10,37 @@ namespace Trainova.Domain.Scouting
         public string FullName { get; private set; } = string.Empty;
         public int Age { get; private set; }
         public Position Position { get; private set; }
-        public float PerformanceScore { get; private set; }
-        public float InjuryRisk { get; private set; }
-        public PlayerMedicalStatus MedecalStatus { get; private set; } = PlayerMedicalStatus.Fit;
-        public Position CurrentMainPosition { get; private set; }
-        public Position OtherAvailablePositions { get; private set; }
-        public decimal PerformanceLevel { get; private set; }
-        public Guid? CurrentTeamId { get; private set; }
-        public string? Nationality { get; private set; }
-        public DateTime? ContractEnd { get; private set; }
-        public decimal? MarketValue { get; private set; }
-        public string? Agent { get; private set; }
+        // public float PerformanceScore { get; private set; }
+        // public float InjuryRisk { get; private set; }
+        // public PlayerMedicalStatus MedecalStatus { get; private set; } = PlayerMedicalStatus.Fit;
+        // public Position CurrentMainPosition { get; private set; }
+        // public Position OtherAvailablePositions { get; private set; }
+        // public decimal PerformanceLevel { get; private set; }
+        public string? CurrentTeamName { get; private set; }
         public float ScoutRating { get; private set; }
         public int? ShortlistRank { get; private set; }
         public int MatchesWatchedCount { get; private set; }
-        // Skills (0-100)
-        public int Pace { get; private set; }
-        public int Shooting { get; private set; }
-        public int Dribbling { get; private set; }
-        public int Passing { get; private set; }
-        public int Physicality { get; private set; }
-        public int Positioning { get; private set; }
-        public int Defending { get; private set; }
-        public int Vision { get; private set; }
         // Free-form scout notes / summary (stored on candidate)
         public string? Notes { get; private set; }
         // Candidate status flags (shortlisted, on-trial, watched, rejected, etc.)
         public CandidateStatus Status { get; private set; } = CandidateStatus.None;
+
+        // Value Objects
+        public PersonalDetails PersonalDetails { get; private set; } = null!;
+        public SkillAssessment SkillAssessment { get; private set; } = null!;
+        public ContractInfo ContractInfo { get; private set; } = null!;
         private ScoutingCandidate() : base() { }
         public ScoutingCandidate(
             string fullName,
             int age,
             Position position,
-            float performanceScore,
-            float injuryRisk,
-            PlayerMedicalStatus medecalStatus,
-            Position currentMainPosition,
-            Position otherAvailablePositions,
-            decimal performanceLevel,
-            Guid? currentTeamId,
+            // float performanceScore,
+            // float injuryRisk,
+            // PlayerMedicalStatus medecalStatus,
+            // Position currentMainPosition,
+            // Position otherAvailablePositions,
+            // decimal performanceLevel,
+            string? currentTeamName,
             string? nationality = null,
             DateTime? contractEnd = null,
             decimal? marketValue = null,
@@ -64,40 +57,36 @@ namespace Trainova.Domain.Scouting
             int defending = 0,
             int vision = 0,
             string? notes = null,
+            DateTime? dateOfBirth = null,
+            int? height = null,
+            int? weight = null,
+            string preferredFoot = "Right",
             Guid? createdBy = null)
             : base(Guid.NewGuid(), createdBy)
         {
-            if (!currentMainPosition.HasSingleFlag())
-                throw new DomainException(
-                    "Player must have exactly one main position.",
-                    "DomainError_MainPositionDontFit");
+            // if (!currentMainPosition.HasSingleFlag())
+            //     throw new DomainException(
+            //         "Player must have exactly one main position.",
+            //         "DomainError_MainPositionDontFit");
             FullName = fullName;
             Age = age;
             Position = position;
-            PerformanceScore = performanceScore;
-            InjuryRisk = injuryRisk;
-            MedecalStatus = medecalStatus;
-            CurrentMainPosition = currentMainPosition;
-            OtherAvailablePositions = otherAvailablePositions;
-            PerformanceLevel = performanceLevel;
-            CurrentTeamId = currentTeamId;
-            Nationality = nationality;
-            ContractEnd = contractEnd;
-            MarketValue = marketValue;
-            Agent = agent;
+            // PerformanceScore = performanceScore;
+            // InjuryRisk = injuryRisk;
+            // MedecalStatus = medecalStatus;
+            // CurrentMainPosition = currentMainPosition;
+            // OtherAvailablePositions = otherAvailablePositions;
+            // PerformanceLevel = performanceLevel;
+            CurrentTeamName = currentTeamName;
             ScoutRating = scoutRating;
             ShortlistRank = shortlistRank;
             MatchesWatchedCount = matchesWatchedCount;
-            // skills
-            Pace = pace;
-            Shooting = shooting;
-            Dribbling = dribbling;
-            Passing = passing;
-            Physicality = physicality;
-            Positioning = positioning;
-            Defending = defending;
-            Vision = vision;
             Notes = notes;
+            
+            // Initialize Value Objects
+            PersonalDetails = new PersonalDetails(dateOfBirth, height, weight, preferredFoot);
+            SkillAssessment = new SkillAssessment(pace, shooting, dribbling, passing, physicality, positioning, defending, vision);
+            ContractInfo = new ContractInfo(nationality, contractEnd, marketValue, agent);
         }
         /// <summary>
         /// Add one or more status flags to the candidate.
@@ -139,10 +128,7 @@ namespace Trainova.Domain.Scouting
         public void Update(
             string? fullName= null,
             int? age= null,
-            PlayerMedicalStatus? medecalStatus = null,
-            Position? currentMainPosition = null,
-            Position? otherAvailablePositions = null,
-            decimal? performanceLevel = null,
+            string? currentTeamName = null,
             string? nationality = null,
             DateTime? contractEnd = null,
             decimal? marketValue = null,
@@ -158,40 +144,61 @@ namespace Trainova.Domain.Scouting
             int? positioning = null,
             int? defending = null,
             int? vision = null,
-            string? notes = null)
+            string? notes = null,
+            DateTime? dateOfBirth = null,
+            int? height = null,
+            int? weight = null,
+            string? preferredFoot = null)
         {
             MarkUpdatedNow();
 
-            if (currentMainPosition.HasValue)
-            {
-                if (!currentMainPosition.Value.HasSingleFlag())
-                    throw new DomainException(
-                        "Player must have exactly one main position.",
-                        "DomainError_MainPositionDontFit");
-            }
-
             FullName = fullName?? FullName;
             Age = age?? Age;
-            MedecalStatus = medecalStatus ?? MedecalStatus;
-            CurrentMainPosition = currentMainPosition ?? CurrentMainPosition;
-            OtherAvailablePositions = otherAvailablePositions ?? OtherAvailablePositions;
-            PerformanceLevel = performanceLevel ?? PerformanceLevel;
-            Nationality = nationality ?? Nationality;
-            ContractEnd = contractEnd ?? ContractEnd;
-            MarketValue = marketValue ?? MarketValue;
-            Agent = agent ?? Agent;
+            CurrentTeamName = currentTeamName ?? CurrentTeamName;
             ScoutRating = scoutRating ?? ScoutRating;
             ShortlistRank = shortlistRank ?? ShortlistRank;
             MatchesWatchedCount = matchesWatchedCount ?? MatchesWatchedCount;
-            Pace = pace ?? Pace;
-            Shooting = shooting ?? Shooting;
-            Dribbling = dribbling ?? Dribbling;
-            Passing = passing ?? Passing;
-            Physicality = physicality ?? Physicality;
-            Positioning = positioning ?? Positioning;
-            Defending = defending ?? Defending;
-            Vision = vision ?? Vision;
             Notes = notes ?? Notes;
+
+            // Update Value Objects
+            ContractInfo.Update(nationality, contractEnd, marketValue, agent);
+            SkillAssessment.Update(pace, shooting, dribbling, passing, physicality, positioning, defending, vision);
+            PersonalDetails.Update(dateOfBirth, height, weight, preferredFoot);
+        }
+
+        public ICollection<ScoutingCandidateNote> NotesList { get; private set; } = new List<ScoutingCandidateNote>();
+
+        public ICollection<CandidateMatch> MatchesList { get; private set; } = new List<CandidateMatch>();
+
+        public Guid AddNote(string text, Guid? createdBy)
+        {
+            if (string.IsNullOrWhiteSpace(text)) return Guid.Empty;
+            var note = new ScoutingCandidateNote(this.Id, text, createdBy);
+            NotesList.Add(note);
+            // keep Notes snippet for legacy UI
+            Notes = text;
+            MarkUpdatedNow();
+            return note.Id;
+        }
+        public bool RemoveNote(Guid noteId)
+        {
+            var note = NotesList.FirstOrDefault(n => n.Id == noteId);
+            if (note == null) return false;
+            NotesList.Remove(note);
+            // update snippet if removed note was the last stored snippet
+            if (Notes == note.Text)
+                Notes = NotesList.OrderByDescending(n => n.CreatedAt).FirstOrDefault()?.Text;
+            MarkUpdatedNow();
+            return true;
+        }
+
+        public Guid AddMatch(DateTime matchDate, string matchName, int goals, int assists, float rating, string? scoutNotes, Guid? createdBy)
+        {
+            if (string.IsNullOrWhiteSpace(matchName)) return Guid.Empty;
+            var match = new CandidateMatch(this.Id, matchDate, matchName, goals, assists, rating, scoutNotes, createdBy);
+            MatchesList.Add(match);
+            MarkUpdatedNow();
+            return match.Id;
         }
 
     }

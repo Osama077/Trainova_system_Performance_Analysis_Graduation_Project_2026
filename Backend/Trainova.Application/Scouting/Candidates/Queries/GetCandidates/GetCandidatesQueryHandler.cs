@@ -25,7 +25,7 @@ namespace Trainova.Application.Scouting.Candidates.Queries.GetCandidates
                     searchTerm: request.SearchTerm,
                     mainPositionFilter: request.Position,
                     statusFilter: request.Status,
-                    currentTeamId: request.CurrentTeamId,
+                    currentTeamName: request.CurrentTeamName,
                     minAge: request.MinAge,
                     maxAge: request.MaxAge,
                     dateFrom: request.DateFrom,

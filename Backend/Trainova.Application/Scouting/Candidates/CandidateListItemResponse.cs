@@ -13,9 +13,7 @@ namespace Trainova.Application.Scouting.Candidates
         public string? CurrentTeamName { get; set; }
         public string? Nationality { get; set; }
         public string? CountryFlag { get; set; }
-        public float PerformanceScore { get; set; }
         public float ScoutRating { get; set; }
-        public decimal PerformanceLevel { get; set; }
         public int Status { get; set; }
 
         // Season stats shown on cards / list

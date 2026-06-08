@@ -11,5 +11,7 @@ namespace Trainova.Domain.Common.Enums
         Watched = 4,
         Rejected = 8,
         Signed = 16
+        
+
     }
 }
