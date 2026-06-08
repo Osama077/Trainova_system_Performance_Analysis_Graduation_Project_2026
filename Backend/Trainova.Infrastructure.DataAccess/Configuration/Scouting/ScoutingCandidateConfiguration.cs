@@ -1,4 +1,4 @@
-﻿﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Trainova.Domain.Common.Enums;
 using Trainova.Domain.Scouting;
@@ -124,11 +124,22 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.Scouting
 
             builder.HasIndex(sc => sc.CurrentTeamName);
 
-            // Map NotesList as a separate table with FK to ScoutingCandidates
-            builder.HasMany(sc => sc.NotesList)
-                .WithOne()
-                .HasForeignKey("ScoutingCandidateId")
-                .OnDelete(DeleteBehavior.Cascade);
+            // Map NotesList as a separate table owned by ScoutingCandidate.
+            // Using OwnsMany (not HasMany) so EF treats these as owned entities.
+            // IMPORTANT: ValueGeneratedNever() on the Id is critical — without it, EF Core
+            // sees a non-empty Guid and incorrectly marks new notes as Modified (instead of
+            // Added), causing an UPDATE that hits 0 rows → DbUpdateConcurrencyException.
+            builder.OwnsMany(sc => sc.NotesList, noteBuilder =>
+            {
+                noteBuilder.ToTable("ScoutingCandidateNote");
+                noteBuilder.WithOwner().HasForeignKey("ScoutingCandidateId");
+                noteBuilder.HasKey("Id");
+                noteBuilder.Property<Guid>("Id").ValueGeneratedNever();
+                noteBuilder.Property(n => n.Text).HasMaxLength(1200).IsRequired();
+                noteBuilder.Property(n => n.CreatedByName).HasMaxLength(200).IsRequired(false);
+                noteBuilder.Property(n => n.CreatedAt);
+                noteBuilder.Property(n => n.CreatedBy);
+            });
         }
     }
 

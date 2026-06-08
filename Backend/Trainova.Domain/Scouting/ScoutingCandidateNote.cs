@@ -8,16 +8,18 @@ namespace Trainova.Domain.Scouting
         public Guid ScoutingCandidateId { get; private set; }
         public string Text { get; private set; } = string.Empty;
         public Guid? CreatedBy { get; private set; }
+        public string? CreatedByName { get; private set; }
         public DateTime CreatedAt { get; private set; }
 
         private ScoutingCandidateNote() { }
 
-        public ScoutingCandidateNote(Guid scoutingCandidateId, string text, Guid? createdBy)
+        public ScoutingCandidateNote(Guid scoutingCandidateId, string text, Guid? createdBy, string? createdByName = null)
         {
             Id = Guid.NewGuid();
             ScoutingCandidateId = scoutingCandidateId;
             Text = text ?? string.Empty;
             CreatedBy = createdBy;
+            CreatedByName = createdByName;
             CreatedAt = DateTime.UtcNow;
         }
     }

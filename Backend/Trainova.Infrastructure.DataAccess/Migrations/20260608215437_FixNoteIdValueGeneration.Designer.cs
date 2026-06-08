@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Trainova.Infrastructure.DataAccess;
 
@@ -11,9 +12,11 @@ using Trainova.Infrastructure.DataAccess;
 namespace Trainova.Infrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(TrainovaWriteDbContext))]
-    partial class TrainovaWriteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260608215437_FixNoteIdValueGeneration")]
+    partial class FixNoteIdValueGeneration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1800,10 +1803,6 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
 
                             b1.Property<Guid?>("CreatedBy")
                                 .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("CreatedByName")
-                                .HasMaxLength(200)
-                                .HasColumnType("nvarchar(200)");
 
                             b1.Property<Guid>("ScoutingCandidateId")
                                 .HasColumnType("uniqueidentifier");

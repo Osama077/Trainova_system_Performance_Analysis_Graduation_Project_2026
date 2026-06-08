@@ -25,7 +25,7 @@ namespace Trainova.Application.Scouting.Candidates.Queries.GetCandidateNotes
                 .OrderByDescending(n => n.CreatedAt)
                 .Skip(request.PageNumber * request.PageSize)
                 .Take(request.PageSize)
-                .Select(n => new CandidateNoteResponse { Id = n.Id, Text = n.Text, CreatedBy = n.CreatedBy, CreatedAt = n.CreatedAt });
+                .Select(n => new CandidateNoteResponse { Id = n.Id, Text = n.Text, CreatedBy = n.CreatedBy, CreatedByName = n.CreatedByName, CreatedAt = n.CreatedAt });
 
             return notes.AsDone();
         }

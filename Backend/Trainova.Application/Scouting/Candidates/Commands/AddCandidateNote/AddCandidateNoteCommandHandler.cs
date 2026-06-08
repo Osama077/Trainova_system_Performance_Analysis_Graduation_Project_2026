@@ -23,7 +23,7 @@ namespace Trainova.Application.Scouting.Candidates.Commands.AddCandidateNote
             if (candidate == null)
                 return Error.NotFound("Candidate.NotFound", $"Candidate {request.CandidateId} not found").AsError<Guid>();
 
-            var noteId = candidate.AddNote(request.Text, _currentUser?.Id);
+            var noteId = candidate.AddNote(request.Text, _currentUser?.Id, _currentUser?.Name);
 
             try
             {

@@ -1,4 +1,4 @@
-﻿using Trainova.Domain.Common.BaseEntity;
+using Trainova.Domain.Common.BaseEntity;
 using Trainova.Domain.Common.Enums;
 using Trainova.Domain.Common.Helpers;
 using Trainova.Domain.Scouting.ValueObjects;
@@ -170,10 +170,10 @@ namespace Trainova.Domain.Scouting
 
         public ICollection<CandidateMatch> MatchesList { get; private set; } = new List<CandidateMatch>();
 
-        public Guid AddNote(string text, Guid? createdBy)
+        public Guid AddNote(string text, Guid? createdBy, string? createdByName = null)
         {
             if (string.IsNullOrWhiteSpace(text)) return Guid.Empty;
-            var note = new ScoutingCandidateNote(this.Id, text, createdBy);
+            var note = new ScoutingCandidateNote(this.Id, text, createdBy, createdByName);
             NotesList.Add(note);
             // keep Notes snippet for legacy UI
             Notes = text;

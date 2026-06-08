@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Trainova.Infrastructure.DataAccess;
 
@@ -11,9 +12,11 @@ using Trainova.Infrastructure.DataAccess;
 namespace Trainova.Infrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(TrainovaWriteDbContext))]
-    partial class TrainovaWriteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260608213434_UpdateScoutingCandidate")]
+    partial class UpdateScoutingCandidate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1012,6 +1015,32 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.ToTable("ScoutingCandidates", (string)null);
                 });
 
+            modelBuilder.Entity("Trainova.Domain.Scouting.ScoutingCandidateNote", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ScoutingCandidateId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ScoutingCandidateId");
+
+                    b.ToTable("ScoutingCandidateNote");
+                });
+
             modelBuilder.Entity("Trainova.Domain.SeasonsAnalyses.Competition", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1790,39 +1819,6 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
 
             modelBuilder.Entity("Trainova.Domain.Scouting.ScoutingCandidate", b =>
                 {
-                    b.OwnsMany("Trainova.Domain.Scouting.ScoutingCandidateNote", "NotesList", b1 =>
-                        {
-                            b1.Property<Guid>("Id")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<DateTime>("CreatedAt")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<Guid?>("CreatedBy")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("CreatedByName")
-                                .HasMaxLength(200)
-                                .HasColumnType("nvarchar(200)");
-
-                            b1.Property<Guid>("ScoutingCandidateId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("Text")
-                                .IsRequired()
-                                .HasMaxLength(1200)
-                                .HasColumnType("nvarchar(1200)");
-
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("ScoutingCandidateId");
-
-                            b1.ToTable("ScoutingCandidateNote", (string)null);
-
-                            b1.WithOwner()
-                                .HasForeignKey("ScoutingCandidateId");
-                        });
-
                     b.OwnsOne("Trainova.Domain.Scouting.ValueObjects.ContractInfo", "ContractInfo", b1 =>
                         {
                             b1.Property<Guid>("ScoutingCandidateId")
@@ -1949,12 +1945,19 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.Navigation("ContractInfo")
                         .IsRequired();
 
-                    b.Navigation("NotesList");
-
                     b.Navigation("PersonalDetails")
                         .IsRequired();
 
                     b.Navigation("SkillAssessment")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Trainova.Domain.Scouting.ScoutingCandidateNote", b =>
+                {
+                    b.HasOne("Trainova.Domain.Scouting.ScoutingCandidate", null)
+                        .WithMany("NotesList")
+                        .HasForeignKey("ScoutingCandidateId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -2043,6 +2046,8 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
             modelBuilder.Entity("Trainova.Domain.Scouting.ScoutingCandidate", b =>
                 {
                     b.Navigation("MatchesList");
+
+                    b.Navigation("NotesList");
                 });
 
             modelBuilder.Entity("Trainova.Domain.TrainingSessionsAccessibility.AccessPolicy", b =>

@@ -30,7 +30,30 @@ public class CandidateRepository : ICandidateRepository
 
     public Task UpdateAsync(ScoutingCandidate candidate, CancellationToken cancellationToken = default)
     {
-        _dbContext.Update(candidate);
+        var entry = _dbContext.Entry(candidate);
+        if (entry.State == EntityState.Detached)
+        {
+            // Entity came from outside the current DbContext scope.
+            // Attach it and mark as modified, but ensure any genuinely new
+            // child entities (those with no matching row in the DB yet) are
+            // explicitly marked as Added so EF issues INSERT, not UPDATE.
+            _dbContext.Attach(candidate);
+            entry.State = EntityState.Modified;
+
+            // Fix child collections: new notes/matches should be Added, not Modified
+            foreach (var note in candidate.NotesList)
+            {
+                var noteEntry = _dbContext.Entry(note);
+                if (noteEntry.State == EntityState.Modified)
+                    noteEntry.State = EntityState.Added;
+            }
+        }
+        // If the entity is already tracked (the normal case after GetByIdAsync),
+        // EF change-tracking will automatically detect:
+        //   - scalar changes on the candidate → Modified
+        //   - new child objects added to collections → Added
+        // No explicit call to Update() is needed (and calling it would incorrectly
+        // mark new children as Modified, causing a 0-rows-affected concurrency error).
         return Task.CompletedTask;
     }
 
