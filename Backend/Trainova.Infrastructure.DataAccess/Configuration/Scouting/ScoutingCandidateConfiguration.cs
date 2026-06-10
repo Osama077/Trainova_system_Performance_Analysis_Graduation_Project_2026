@@ -140,6 +140,18 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.Scouting
                 noteBuilder.Property(n => n.CreatedAt);
                 noteBuilder.Property(n => n.CreatedBy);
             });
+
+            // Map MatchesList — CandidateMatch has its own IEntityTypeConfiguration class
+            // (CandidateMatchConfiguration) that sets FK, max lengths, and other constraints.
+            builder.HasMany(sc => sc.MatchesList)
+                .WithOne()
+                .HasForeignKey(m => m.CandidateId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(sc => sc.SeasonsList)
+                .WithOne()
+                .HasForeignKey(m => m.CandidateId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 

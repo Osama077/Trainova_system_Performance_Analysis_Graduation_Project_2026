@@ -47,6 +47,13 @@ public class CandidateRepository : ICandidateRepository
                 if (noteEntry.State == EntityState.Modified)
                     noteEntry.State = EntityState.Added;
             }
+
+            foreach (var match in candidate.MatchesList)
+            {
+                var matchEntry = _dbContext.Entry(match);
+                if (matchEntry.State == EntityState.Modified)
+                    matchEntry.State = EntityState.Added;
+            }
         }
         // If the entity is already tracked (the normal case after GetByIdAsync),
         // EF change-tracking will automatically detect:
@@ -66,6 +73,7 @@ public class CandidateRepository : ICandidateRepository
     {
         return await _dbContext.ScoutingCandidates
             .Include(c => c.NotesList)
+            .Include(c => c.MatchesList)
             .FirstOrDefaultAsync(c => c.Id == candidateId, cancellationToken);
     }
 

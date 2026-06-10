@@ -170,6 +170,8 @@ namespace Trainova.Domain.Scouting
 
         public ICollection<CandidateMatch> MatchesList { get; private set; } = new List<CandidateMatch>();
 
+        public ICollection<SeasonStatistics> SeasonsList { get; private set; } = new List<SeasonStatistics>();
+
         public Guid AddNote(string text, Guid? createdBy, string? createdByName = null)
         {
             if (string.IsNullOrWhiteSpace(text)) return Guid.Empty;
@@ -192,13 +194,42 @@ namespace Trainova.Domain.Scouting
             return true;
         }
 
-        public Guid AddMatch(DateTime matchDate, string matchName, int goals, int assists, float rating, string? scoutNotes, Guid? createdBy)
+        public Guid AddMatch(DateTime matchDate, string matchName, int goals, int assists, float rating, string? scoutNotes)
         {
             if (string.IsNullOrWhiteSpace(matchName)) return Guid.Empty;
-            var match = new CandidateMatch(this.Id, matchDate, matchName, goals, assists, rating, scoutNotes, createdBy);
+            var match = new CandidateMatch(this.Id, matchDate, matchName, goals, assists, rating, scoutNotes);
             MatchesList.Add(match);
+            MatchesWatchedCount = MatchesList.Count;
             MarkUpdatedNow();
             return match.Id;
+        }
+
+        public bool RemoveMatch(Guid matchId)
+        {
+            var match = MatchesList.FirstOrDefault(m => m.Id == matchId);
+            if (match == null) return false;
+            MatchesList.Remove(match);
+            MatchesWatchedCount = MatchesList.Count;
+            MarkUpdatedNow();
+            return true;
+        }
+
+        public Guid AddSeason(string season, string league, int goals, int assists, int matches, float passAccuracy, float shotsPer90, float xgPer90)
+        {
+            if (string.IsNullOrWhiteSpace(season)) return Guid.Empty;
+            var seasonStats = new SeasonStatistics(this.Id, season, league, goals, assists, matches, passAccuracy, shotsPer90, xgPer90);
+            SeasonsList.Add(seasonStats);
+            MarkUpdatedNow();
+            return seasonStats.Id;
+        }
+
+        public bool RemoveSeason(Guid seasonId)
+        {
+            var season = SeasonsList.FirstOrDefault(s => s.Id == seasonId);
+            if (season == null) return false;
+            SeasonsList.Remove(season);
+            MarkUpdatedNow();
+            return true;
         }
 
     }
