@@ -41,13 +41,14 @@ namespace Trainova.Api.Requests.Scouting
         // Additional Information
         public int? ShortlistRank { get; set; }
         public int MatchesWatchedCount { get; set; }
+        public int Position { get; set; }
 
         public CreateCandidateCommand ToCommand()
         {
             return new CreateCandidateCommand(
                 FullName, 
                 Age, 
-                0,  // Position - default to 0 (Striker)
+                Position,
                 CurrentTeamName,
                 Nationality,
                 ContractEnd,
