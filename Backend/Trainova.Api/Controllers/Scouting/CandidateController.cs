@@ -16,6 +16,7 @@ using Trainova.Common.ResultOf;
 using Trainova.Application.Scouting.Candidates.Commands.AddCandidateNote;
 using Trainova.Application.Scouting.Candidates.Queries.GetCandidateNotes;
 using Trainova.Application.Scouting.Candidates.Commands.DeleteCandidateNote;
+using Trainova.Application.Scouting.Candidates.Commands.DeleteCandidate;
 
 namespace Trainova.Api.Controllers.Scouting
 {
@@ -83,6 +84,14 @@ namespace Trainova.Api.Controllers.Scouting
         public async Task<IActionResult> DeleteCandidateNote(Guid id, Guid noteId)
         {
             var command = new DeleteCandidateNoteCommand(id, noteId);
+            var result = await _sender.Send(command);
+            return MapResult(result);
+        }
+
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> DeleteCandidate(Guid id)
+        {
+            var command = new DeleteCandidateCommand(id);
             var result = await _sender.Send(command);
             return MapResult(result);
         }

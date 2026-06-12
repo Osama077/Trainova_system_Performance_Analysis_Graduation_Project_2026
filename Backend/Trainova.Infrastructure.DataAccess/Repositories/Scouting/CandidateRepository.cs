@@ -64,6 +64,12 @@ public class CandidateRepository : ICandidateRepository
         return Task.CompletedTask;
     }
 
+    public Task DeleteAsync(ScoutingCandidate candidate, CancellationToken cancellationToken = default)
+    {
+        _dbContext.Remove(candidate);
+        return Task.CompletedTask;
+    }
+
     public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         await _dbContext.SaveChangesAsync(cancellationToken);
