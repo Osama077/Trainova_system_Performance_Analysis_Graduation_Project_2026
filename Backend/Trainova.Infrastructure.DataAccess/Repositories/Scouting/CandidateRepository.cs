@@ -117,7 +117,6 @@ public class CandidateRepository : ICandidateRepository
                 FullName = i.FullName,
                 Age = i.Age,
                 Position = (int)i.Position,
-                CurrentTeamId = null,  // No longer needed
                 CurrentTeamName = i.CurrentTeamName,
                 Nationality = i.ContractInfo.Nationality,
                 ScoutRating = i.ScoutRating,
@@ -220,7 +219,6 @@ public class CandidateRepository : ICandidateRepository
                 FullName = i.FullName,
                 Age = i.Age,
                 Position = (int)i.Position,
-                CurrentTeamId = null,  // No longer needed
                 CurrentTeamName = i.CurrentTeamName,
                 Nationality = i.ContractInfo.Nationality,
                 ScoutRating = i.ScoutRating,
