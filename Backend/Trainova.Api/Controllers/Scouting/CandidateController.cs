@@ -76,5 +76,13 @@ namespace Trainova.Api.Controllers.Scouting
             return MapResult(result);
         }
 
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> DeleteCandidate(Guid id)
+        {
+            var command = new DeleteCandidateCommand(id);
+            var result = await _sender.Send(command);
+            return MapResult(result);
+        }
+
     }
 }

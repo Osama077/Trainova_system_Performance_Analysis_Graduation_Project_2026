@@ -13,6 +13,7 @@ namespace Trainova.Application.Common.Interfaces.Repositories.Scouting.Candidate
         Task AddAsync(ScoutingCandidate candidate, CancellationToken cancellationToken = default);
         Task UpdateAsync(ScoutingCandidate candidate, CancellationToken cancellationToken = default);
         Task<ScoutingCandidate?> GetByIdAsync(Guid candidateId, CancellationToken cancellationToken = default);
+        Task DeleteAsync(ScoutingCandidate candidate, CancellationToken cancellationToken = default);
         Task<IEnumerable<CandidateListItemResponse>> GetCandidatesAsync(
             Guid? candidateId = null,
             string? searchTerm = null,
