@@ -10,7 +10,6 @@ namespace Trainova.Application.MedicalStatus.PlayerInjuries.Commands.CreatePlaye
     public record CreatePlayerInjuryCommand(
         Guid InjuryId,
         Guid PlayerId,
-        InjuryStatus Status,
         DateTime? HappendAt = null,
         InjuryCause Cause = default,
         SeverityGrade SevertiyGrade = default,

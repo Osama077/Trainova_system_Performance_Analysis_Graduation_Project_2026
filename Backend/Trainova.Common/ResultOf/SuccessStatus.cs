@@ -8,7 +8,7 @@
         Accepted = 3,
         Partial = 4,
         PartialZeroCount = 5,
-
+        Cached = 6,
     }
 
 }

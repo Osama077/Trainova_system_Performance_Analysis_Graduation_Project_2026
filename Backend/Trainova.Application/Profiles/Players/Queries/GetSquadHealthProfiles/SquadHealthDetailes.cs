@@ -4,7 +4,7 @@ namespace Trainova.Application.Profiles.Players.Queries.GetSquadHealthProfiles
 {
     public class SquadHealthDetailes
     {
-        public IEnumerable<PlayerHealthProfileModel> SquadHealthProfiles { get; set; }
+        public IEnumerable<PlyersForPosition> SquadHealthProfiles { get; set; }
 
         public GeneralStats General { get; set; } = new();
         public SeverityStats Severity { get; set; } = new();
@@ -20,7 +20,8 @@ namespace Trainova.Application.Profiles.Players.Queries.GetSquadHealthProfiles
 
             var groupedPlayers = rawProfiles
                 .GroupBy(p => p.PlayerId)
-                .Select(group => {
+                .Select(group =>
+                {
                     var firstRow = group.First();
 
                     var injuriesList = group
@@ -61,8 +62,6 @@ namespace Trainova.Application.Profiles.Players.Queries.GetSquadHealthProfiles
                     );
                 }).ToList();
 
-            SquadHealthProfiles = groupedPlayers;
-
             foreach (var player in groupedPlayers)
             {
                 if (player.Injuries.Any())
@@ -81,8 +80,8 @@ namespace Trainova.Application.Profiles.Players.Queries.GetSquadHealthProfiles
                         {
                             switch ((SeverityGrade)injury.SevertiyGrade.Value)
                             {
-                                case SeverityGrade.Mild: Severity.Mild++; break;
-                                case SeverityGrade.Medium: Severity.Medium++; break;
+                                case SeverityGrade.Mild: Severity.Minor++; break;
+                                case SeverityGrade.Medium: Severity.Moderate++; break;
                                 case SeverityGrade.Severe: Severity.Severe++; break;
                             }
                         }
@@ -117,11 +116,16 @@ namespace Trainova.Application.Profiles.Players.Queries.GetSquadHealthProfiles
                     General.TotalHealthy++;
                 }
             }
+
+            SquadHealthProfiles = groupedPlayers
+                .GroupBy(p => p.CurrentMainPosition)
+                .Select(posGroup => new PlyersForPosition(
+                    posGroup.Key,
+                    posGroup.ToList(),
+                    posGroup.Count()
+                )).ToList();
         }
 
-        // =========================================================================
-        // SubClasses (Nested)
-        // =========================================================================
         public record GeneralStats
         {
             public int TotalPlayers { get; set; }
@@ -133,8 +137,8 @@ namespace Trainova.Application.Profiles.Players.Queries.GetSquadHealthProfiles
 
         public record SeverityStats
         {
-            public int Mild { get; set; }
-            public int Medium { get; set; }
+            public int Minor { get; set; }
+            public int Moderate { get; set; }
             public int Severe { get; set; }
         }
 
@@ -164,8 +168,8 @@ namespace Trainova.Application.Profiles.Players.Queries.GetSquadHealthProfiles
         }
     }
 
-    // =========================================================================
-    // =========================================================================
+    public record PlyersForPosition(int Position, List<PlayerHealthProfileModel> Players, int Count);
+
     public record PlayerHealthProfileModel(
         Guid PlayerId,
         string ShowName,

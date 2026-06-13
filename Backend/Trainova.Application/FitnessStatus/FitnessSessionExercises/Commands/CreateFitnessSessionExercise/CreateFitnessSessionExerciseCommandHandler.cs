@@ -10,28 +10,15 @@ using Trainova.Domain.FitnessStatus;
 
 namespace Trainova.Application.FitnessStatus.FitnessSessionExercises.Commands.CreateFitnessSessionExercise
 {
-    public class CreateFitnessSessionExerciseCommandHandler : IRequestHandler<CreateFitnessSessionExerciseCommand, ResultOf<FitnessSessionExercise>>
+
+    public class CreateFitnessSessionExerciseCommandHandler(
+        IFitnessSessionExerciseRepository _sessionExerciseRepository,
+        IFitnessExerciseRepository _exerciseRepository,
+        ITrainingSessionRepository _trainingSessionRepository,
+        IUnitOfWork _unitOfWork,
+        CurrentUser _currentUser)
+        : IRequestHandler<CreateFitnessSessionExerciseCommand, ResultOf<FitnessSessionExercise>>
     {
-        private readonly IFitnessSessionExerciseRepository _sessionExerciseRepository;
-        private readonly IFitnessExerciseRepository _exerciseRepository;
-        private readonly ITrainingSessionRepository _trainingSessionRepository;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly CurrentUser _currentUser;
-
-        public CreateFitnessSessionExerciseCommandHandler(
-            IFitnessSessionExerciseRepository sessionExerciseRepository,
-            IFitnessExerciseRepository exerciseRepository,
-            ITrainingSessionRepository trainingSessionRepository,
-            IUnitOfWork unitOfWork,
-            CurrentUser currentUser)
-        {
-            _sessionExerciseRepository = sessionExerciseRepository;
-            _exerciseRepository = exerciseRepository;
-            _trainingSessionRepository = trainingSessionRepository;
-            _unitOfWork = unitOfWork;
-            _currentUser = currentUser;
-        }
-
         public async Task<ResultOf<FitnessSessionExercise>> Handle(CreateFitnessSessionExerciseCommand request, CancellationToken cancellationToken)
         {
             try
@@ -49,21 +36,23 @@ namespace Trainova.Application.FitnessStatus.FitnessSessionExercises.Commands.Cr
                     return Error.Conflict(description: "Exercise is already added to this training session.");
 
                 var fitnessSessionExercise = new FitnessSessionExercise(
-                    request.SessionId,
-                    exercise,
-                    request.Intensity,
-                    _currentUser.Id,
-                    request.Sets,
-                    request.Reps,
-                    request.Rounds,
-                    request.ActiveTimeSec,
-                    request.RestTimeSec,
-                    request.LoadDetails
+                    sessionId: request.SessionId,
+                    exercise: exercise,
+                    intensity: request.Intensity,
+                    sets: request.Sets,
+                    repsOrDuration: request.RepsOrDuration,
+                    restTimeSec: request.RestTimeSec,
+                    loadDetails: request.LoadDetails,
+                    rounds: request.Rounds,
+                    activeTimeSec: request.ActiveTimeSec,
+                    createdBy: _currentUser.Id
                 );
 
                 await _unitOfWork.StartTransactionAsync();
+
                 await _sessionExerciseRepository.AddAsync(fitnessSessionExercise);
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
+
                 await _unitOfWork.CommitTransactionAsync();
 
                 return fitnessSessionExercise.AsCreated();
@@ -80,4 +69,7 @@ namespace Trainova.Application.FitnessStatus.FitnessSessionExercises.Commands.Cr
             }
         }
     }
+
+
+
 }

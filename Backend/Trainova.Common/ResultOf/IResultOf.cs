@@ -2,7 +2,7 @@
 
 namespace Trainova.Common.ResultOf
 {
-    public interface IResultOf<out TValue>
+    public interface IResultOf<out TValue> : IResultOf
     {
         TValue Value { get; }
     }

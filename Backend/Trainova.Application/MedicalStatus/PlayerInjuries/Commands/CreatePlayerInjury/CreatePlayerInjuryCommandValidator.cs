@@ -9,7 +9,6 @@ namespace Trainova.Application.MedicalStatus.PlayerInjuries.Commands.CreatePlaye
         {
             RuleFor(x => x.InjuryId).NotEmpty();
             RuleFor(x => x.PlayerId).NotEmpty();
-            RuleFor(x => x.Status).IsInEnum();
             RuleFor(x => x.Notes).MaximumLength(1200);
         }
     }

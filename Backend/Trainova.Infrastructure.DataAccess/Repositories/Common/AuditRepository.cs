@@ -1,8 +1,7 @@
-﻿using Dapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Trainova.Application.Common.Interfaces.Repositories;
 using Trainova.Application.Common.Interfaces.Repositories.CommonRepos;
 using Trainova.Domain.Common.AuditLogs;
-using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.Common
 {

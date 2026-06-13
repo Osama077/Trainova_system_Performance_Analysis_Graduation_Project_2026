@@ -2,12 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using Trainova.Application.Common.Helpers;
+using Trainova.Application.Common.Interfaces.Repositories;
 using Trainova.Application.Common.Interfaces.Repositories.MedicalStatus;
 using Trainova.Application.MedicalStatus.PlayerInjuries;
 using Trainova.Application.MedicalStatus.PlayerInjuries.Queries;
 using Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetCasesCount;
 using Trainova.Domain.MedicalStatus;
-using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus
 {
@@ -92,6 +92,14 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus
         public async Task UpdateAsync(PlayerInjury playerInjury)
         {
             _dbContext.PlayerInjuries.Update(playerInjury);
+            foreach (var phase in playerInjury.Phases)
+            {
+                if (!phase.IsAdded)
+                    _dbContext.Entry(phase).State = EntityState.Added;
+                else
+                    _dbContext.Entry(phase).State = EntityState.Modified;
+            }
+
             await _dbContext.SaveChangesAsync();
         }
 

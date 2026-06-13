@@ -1,9 +1,10 @@
-﻿namespace Trainova.Domain.FitnessStatus
+﻿namespace Trainova.Domain.FitnessStatus.Enums
 {
     public enum ExerciseIntensity
     {
         Low,
         Med,
-        High
+        High,
+        Max
     }
 }

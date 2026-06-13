@@ -8,12 +8,20 @@ namespace Trainova.Application.Scouting.Candidates
     {
         public Guid Id { get; set; }
         public string FullName { get; set; } = string.Empty;
+        public string? Avatar { get; set; }
         public int Age { get; set; }
         public int Position { get; set; }
+        public Guid? CurrentTeamId { get; set; }
         public string? CurrentTeamName { get; set; }
         public string? Nationality { get; set; }
+        public string? CountryFlag { get; set; }
         public float ScoutRating { get; set; }
         public int Status { get; set; }
+
+        // Season stats shown on cards / list
+        public int? Goals { get; set; }
+        public int? Assists { get; set; }
+        public int? Matches { get; set; }
 
         // Shortlist / ranking
         public int? ShortlistRank { get; set; }

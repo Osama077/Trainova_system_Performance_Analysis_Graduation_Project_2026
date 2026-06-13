@@ -181,12 +181,31 @@ namespace Trainova.Infrastructure.DataAccess.Migrations
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("DefaultExerciseIntensity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DefaultRepetitions")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DefaultSets")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EquipmentRequired")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ExerciseCatagory")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TargetMuscleGroup")
+                        .HasColumnType("int");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");

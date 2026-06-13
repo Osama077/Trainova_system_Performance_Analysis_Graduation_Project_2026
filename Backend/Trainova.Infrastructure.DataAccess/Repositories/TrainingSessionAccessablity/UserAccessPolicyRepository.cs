@@ -1,10 +1,10 @@
 ﻿using Dapper;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using Trainova.Application.Common.Interfaces.Repositories;
 using Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAccessablity;
 using Trainova.Application.TrainingSessionsAccessibility.UserAccessPolicies.Quereis.GetUserAccessPolicy;
 using Trainova.Domain.TrainingSessionsAccessibility;
-using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.TrainingSessionAccessablity
 {

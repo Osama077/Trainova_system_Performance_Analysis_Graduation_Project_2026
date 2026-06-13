@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Data;
+using Trainova.Application.Common.Interfaces.Repositories;
 
 namespace Trainova.Infrastructure.DataAccess.DbSettingsObjects
 {

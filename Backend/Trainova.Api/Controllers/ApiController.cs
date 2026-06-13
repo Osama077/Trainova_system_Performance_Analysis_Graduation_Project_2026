@@ -120,7 +120,7 @@ public class ApiController
             StatusCode: statusCode,
             ResponseTime: responseTime,
             ArriveAt: _requestArrive,
-            ValueType: data?.GetType().Name,
+            ValueType: typeof(T).Name,
             Count: count,
             TotalCount: totalCount,
             UserId: _currentUser?.Id,

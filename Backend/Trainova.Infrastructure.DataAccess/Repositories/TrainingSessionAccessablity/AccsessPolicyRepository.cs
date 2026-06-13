@@ -1,10 +1,10 @@
-﻿using Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAccessablity;
-using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
+﻿using Dapper;
 using Microsoft.EntityFrameworkCore;
-using Trainova.Domain.TrainingSessionsAccessibility;
-using Trainova.Application.TrainingSessionsAccessibility.AccessPolicies.Common;
-using Dapper;
 using System.Data;
+using Trainova.Application.Common.Interfaces.Repositories;
+using Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAccessablity;
+using Trainova.Application.TrainingSessionsAccessibility.AccessPolicies.Common;
+using Trainova.Domain.TrainingSessionsAccessibility;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.TrainingSessionAccessablity
 {
@@ -66,7 +66,7 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.TrainingSessionAccessa
                 PageSize = pageSize
             };
             var conn = _dbSettings.CreateReadingConnection();
-            return await conn.QueryAsync<AccessPolicyReadModel>(sql, paramerters,commandType:CommandType.StoredProcedure);
+            return await conn.QueryAsync<AccessPolicyReadModel>(sql, paramerters, commandType: CommandType.StoredProcedure);
 
         }
 
@@ -74,7 +74,7 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.TrainingSessionAccessa
         {
             return await _dbContext.AccessPolicies
                 .Include(x => x.PolicyUsers)
-                .FirstOrDefaultAsync(p=>p.Id == id);
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
     }
 }

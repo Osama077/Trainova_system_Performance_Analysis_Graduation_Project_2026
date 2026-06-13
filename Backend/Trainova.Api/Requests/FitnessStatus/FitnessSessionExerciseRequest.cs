@@ -1,7 +1,6 @@
-using System;
 using Trainova.Application.FitnessStatus.FitnessSessionExercises.Commands.CreateFitnessSessionExercise;
 using Trainova.Application.FitnessStatus.FitnessSessionExercises.Commands.UpdateFitnessSessionExercise;
-using Trainova.Domain.FitnessStatus;
+using Trainova.Domain.FitnessStatus.Enums;
 
 namespace Trainova.Api.Requests.FitnessStatus
 {
@@ -9,9 +8,9 @@ namespace Trainova.Api.Requests.FitnessStatus
     {
         public Guid SessionId { get; set; }
         public Guid ExerciseId { get; set; }
-        public ExerciseIntensity Intensity { get; set; }
+        public ExerciseIntensity? Intensity { get; set; }
         public int? Sets { get; set; }
-        public int? Reps { get; set; }
+        public string? RepsOrDuration { get; set; }
         public int? Rounds { get; set; }
         public int? ActiveTimeSec { get; set; }
         public int? RestTimeSec { get; set; }
@@ -24,7 +23,7 @@ namespace Trainova.Api.Requests.FitnessStatus
                 ExerciseId: ExerciseId,
                 Intensity: Intensity,
                 Sets: Sets,
-                Reps: Reps,
+                RepsOrDuration: RepsOrDuration,
                 Rounds: Rounds,
                 ActiveTimeSec: ActiveTimeSec,
                 RestTimeSec: RestTimeSec,
@@ -37,7 +36,7 @@ namespace Trainova.Api.Requests.FitnessStatus
     {
         public ExerciseIntensity? Intensity { get; set; }
         public int? Sets { get; set; }
-        public int? Reps { get; set; }
+        public string? RepsOrDuration { get; set; }
         public int? Rounds { get; set; }
         public int? ActiveTimeSec { get; set; }
         public int? RestTimeSec { get; set; }
@@ -49,7 +48,7 @@ namespace Trainova.Api.Requests.FitnessStatus
                 Id: id,
                 Intensity: Intensity,
                 Sets: Sets,
-                Reps: Reps,
+                RepsOrDuration: RepsOrDuration,
                 Rounds: Rounds,
                 ActiveTimeSec: ActiveTimeSec,
                 RestTimeSec: RestTimeSec,

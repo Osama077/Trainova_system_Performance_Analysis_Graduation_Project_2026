@@ -1,13 +1,10 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.OpenApi;
-using System.Text;
+using Trainova.Api.Filters;
 using Trainova.Api.Services;
 using Trainova.Application.Common.Interfaces.Services;
 using Trainova.Application.Common.Models;
 using Trainova.Domain.Common.DataConvrters;
-using Trainova.Infrastructure.Authorization.TokenGenerators;
 
 namespace Trainova.Api;
 
@@ -18,6 +15,7 @@ public static class DependencyInjection
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
         services.AddScoped<CurrentUser>(sp => sp.GetRequiredService<ICurrentUserProvider>().GetCurrentUser());
+
         services.AddCors(options =>
         {
             options.AddPolicy("DefaultCorsPolicy", policy =>
@@ -29,11 +27,15 @@ public static class DependencyInjection
                     .AllowCredentials();
             });
         });
+
         services.AddControllers()
             .AddJsonOptions(options =>
                     options.JsonSerializerOptions.Converters.Add(new NonFlagsEnumConverterFactory())
             );
+
         services.AddEndpointsApiExplorer();
+
+        services.AddScoped<IdempotencyFilter>();
 
         services.AddSwaggerGen(options =>
         {
@@ -42,6 +44,12 @@ public static class DependencyInjection
                 Title = "Trainova API",
                 Version = "v2"
             });
+
+
+            options.OperationFilter<IdempotencyHeaderFilter>();
+
+
+
 
             options.AddSecurityDefinition("Bearer",
                 new OpenApiSecurityScheme
@@ -69,7 +77,7 @@ public static class DependencyInjection
             });
         });
 
-
+        services.AddMemoryCache();
         services.Configure<ForwardedHeadersOptions>(options =>
         {
             options.ForwardedHeaders =

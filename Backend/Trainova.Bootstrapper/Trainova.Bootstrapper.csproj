@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Trainova.Infrastructure.Authorization\Trainova.Infrastructure.Authorization.csproj" />
+    <ProjectReference Include="..\Trainova.Infrastructure.Cacheing\Trainova.Infrastructure.Cacheing.csproj" />
     <ProjectReference Include="..\Trainova.Infrastructure.DataAccess\Trainova.Infrastructure.DataAccess.csproj" />
   </ItemGroup>
 

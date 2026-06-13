@@ -1,15 +1,9 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Trainova.Application.Common.Interfaces.Repositories.Scouting.Candidates;
 using Trainova.Application.Scouting.Candidates;
-using Trainova.Domain.Scouting;
 using Trainova.Domain.Common.Enums;
-using Trainova.Infrastructure.DataAccess;
+using Trainova.Domain.Scouting;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.Scouting;
 
@@ -61,12 +55,6 @@ public class CandidateRepository : ICandidateRepository
         //   - new child objects added to collections → Added
         // No explicit call to Update() is needed (and calling it would incorrectly
         // mark new children as Modified, causing a 0-rows-affected concurrency error).
-        return Task.CompletedTask;
-    }
-
-    public Task DeleteAsync(ScoutingCandidate candidate, CancellationToken cancellationToken = default)
-    {
-        _dbContext.Remove(candidate);
         return Task.CompletedTask;
     }
 
@@ -125,6 +113,7 @@ public class CandidateRepository : ICandidateRepository
                 FullName = i.FullName,
                 Age = i.Age,
                 Position = (int)i.Position,
+                CurrentTeamId = null,  // No longer needed
                 CurrentTeamName = i.CurrentTeamName,
                 Nationality = i.ContractInfo.Nationality,
                 ScoutRating = i.ScoutRating,
@@ -228,6 +217,7 @@ public class CandidateRepository : ICandidateRepository
                 FullName = i.FullName,
                 Age = i.Age,
                 Position = (int)i.Position,
+                CurrentTeamId = null,  // No longer needed
                 CurrentTeamName = i.CurrentTeamName,
                 Nationality = i.ContractInfo.Nationality,
                 ScoutRating = i.ScoutRating,

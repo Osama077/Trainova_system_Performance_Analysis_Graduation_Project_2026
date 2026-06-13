@@ -32,6 +32,7 @@ namespace Trainova.Application.MedicalStatus.PlanPhases.Commands.CreatePlanPhase
                     );
 
                 await _unitOfWork.StartTransactionAsync();
+                await _playerInjuryRepository.UpdateAsync(playerInjury);
 
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
 

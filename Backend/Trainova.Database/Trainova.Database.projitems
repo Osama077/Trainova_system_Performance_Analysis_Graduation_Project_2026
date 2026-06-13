@@ -9,6 +9,8 @@
     <Import_RootNamespace>Trainova.Database</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)FitnessData\Procedures\" />
+    <Folder Include="$(MSBuildThisFileDirectory)FitnessData\Views\" />
     <Folder Include="$(MSBuildThisFileDirectory)Profiles\Procedures\" />
     <Folder Include="$(MSBuildThisFileDirectory)Profiles\Views\" />
     <Folder Include="$(MSBuildThisFileDirectory)MedicalStats\Procedures\" />
@@ -35,6 +37,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)fitnessdata\procedures\GetExercises_FilteredAndPaged.sql" />
+    <None Include="$(MSBuildThisFileDirectory)fitnessdata\procedures\GetFitnessSessionExercises.sql" />
+    <None Include="$(MSBuildThisFileDirectory)fitnessdata\views\FitnessSessionExercises.sql" />
     <None Include="$(MSBuildThisFileDirectory)medicalstats\procedures\GetInjuries.sql" />
     <None Include="$(MSBuildThisFileDirectory)medicalstats\procedures\GetInjuriesCount.sql" />
     <None Include="$(MSBuildThisFileDirectory)medicalstats\procedures\GetInjuryDetailesById.sql" />

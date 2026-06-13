@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.EntityFrameworkCore;
+using Trainova.Application.Common.Interfaces.Repositories;
 using Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAccessablity;
-using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
-using Microsoft.EntityFrameworkCore;
 using Trainova.Domain.TrainingSessionsAccessibility;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.TrainingSessionAccessablity

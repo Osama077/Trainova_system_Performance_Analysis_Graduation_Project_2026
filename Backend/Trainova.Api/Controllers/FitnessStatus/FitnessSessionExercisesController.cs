@@ -2,9 +2,8 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Trainova.Api.Requests.FitnessStatus;
 using Trainova.Application.Common.Models;
-using Trainova.Application.FitnessStatus.FitnessSessionExercises.Commands.CreateFitnessSessionExercise;
 using Trainova.Application.FitnessStatus.FitnessSessionExercises.Commands.DeleteFitnessSessionExercise;
-using Trainova.Application.FitnessStatus.FitnessSessionExercises.Commands.UpdateFitnessSessionExercise;
+using Trainova.Application.FitnessStatus.FitnessSessionExercises.Queries.GetExercisesBySessionId;
 
 namespace Trainova.Api.Controllers.FitnessStatus
 {
@@ -38,6 +37,22 @@ namespace Trainova.Api.Controllers.FitnessStatus
             [FromRoute] Guid id)
         {
             var result = await _mediator.Send(new DeleteFitnessSessionExerciseCommand(id));
+            return MapResult(result);
+        }
+        [HttpGet("session/{sessionId:guid}")]
+        public async Task<IActionResult> GetBySessionId(
+            [FromRoute] Guid? sessionId = null)
+        {
+            var command = new GetFitnessSessionExercisesQuery(sessionId: sessionId);
+            var result = await _mediator.Send(command);
+            return MapResult(result);
+        }
+        [HttpGet("exercise/{exerciseId:guid}")]
+        public async Task<IActionResult> GetByexerciseId(
+            [FromRoute] Guid? exerciseId = null)
+        {
+            var command = new GetFitnessSessionExercisesQuery(exerciseId: exerciseId);
+            var result = await _mediator.Send(command);
             return MapResult(result);
         }
     }
