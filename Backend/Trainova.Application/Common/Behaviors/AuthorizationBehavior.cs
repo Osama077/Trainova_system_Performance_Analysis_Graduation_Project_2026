@@ -1,5 +1,6 @@
 using MediatR;
 using System.Reflection;
+using System.Text.Json;
 using Trainova.Application.Common.Authorization;
 using Trainova.Application.Common.Models;
 using Trainova.Common.Errors;
@@ -9,7 +10,9 @@ using Trainova.Domain.UserAuth;
 
 namespace Trainova.Application.Common.Behaviors;
 
-public class AuthorizationBehavior<TRequest, TResponse>(CurrentUser? _currentUser)
+public class AuthorizationBehavior<TRequest, TResponse>(
+    CurrentUser? _currentUser,
+    LoggingOptions _loggingOptions)
     : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
         where TResponse : IResultOf
@@ -19,6 +22,7 @@ public class AuthorizationBehavior<TRequest, TResponse>(CurrentUser? _currentUse
         RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
+        LogTheUser();
         var authorizationAttributes = request.GetType()
             .GetCustomAttributes<AuthorizeAttribute>()
             .ToHashSet();
@@ -89,6 +93,46 @@ public class AuthorizationBehavior<TRequest, TResponse>(CurrentUser? _currentUse
         if (_currentUser.Role != UserRole.Player.Name && creatorAuthraizedRequest.IncludeCreateror)
             creatorAuthraizedRequest.CreatorId = _currentUser.Id;
     }
+    private async Task LogTheUser()
+    {
+        try
+        {
+            var logEntry = new
+            {
+                Timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
+                Service = nameof(AuthorizationBehavior<,>),
+                Message = (string?)null,
+                StackTrace = (string?)null,
+                Id = _currentUser.Id,
+                ActorId = _currentUser.ActorId,
+                InnerException = (string?)null,
+                FullUserData = _currentUser?.ToString()
+            };
+
+            var jsonLog = JsonSerializer.Serialize(logEntry, new JsonSerializerOptions { WriteIndented = true });
+
+            var directory = Path.GetDirectoryName(_loggingOptions.AuthorizationLogFilePath);
+            if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            var txt = jsonLog
+                + Environment.NewLine
+                + "=================================================================="
+                + Environment.NewLine
+                + (_currentUser.Id.HasValue ? $"UserId: {_currentUser.Id}" : "UserId: N/A")
+                + Environment.NewLine
+                + "=================================================================="
+                + Environment.NewLine;
+
+            await File.AppendAllTextAsync(_loggingOptions.AuthorizationLogFilePath, txt);
+        }
+        catch
+        {
+        }
+    }
 
 }
+
 

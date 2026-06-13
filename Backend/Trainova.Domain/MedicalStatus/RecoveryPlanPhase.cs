@@ -12,6 +12,7 @@ namespace Trainova.Domain.MedicalStatus
         public DateTime From { get; private set; } = DateTime.UtcNow;
         public DateTime To { get; private set; }
         public List<string> Activities { get; private set; } = new List<string>();
+        public bool IsAdded = true;
         public RecoveryPlanPhase(
             Guid playerInjuryId,
             string name,
@@ -30,10 +31,10 @@ namespace Trainova.Domain.MedicalStatus
             Activities = new List<string>();
             if (activties != null)
                 Activities.AddRange(activties);
+            IsAdded = false;
         }
         public void SetOrder(int order)
         {
-            MarkUpdatedNow();
             Order = order;
         }
         public RecoveryPlanPhase Update(
@@ -65,7 +66,10 @@ namespace Trainova.Domain.MedicalStatus
             From = newStartDate;
             To = newEndDate;
         }
-
+        public void AvailableUpdate()
+        {
+            MarkUpdatedNow();
+        }
         private RecoveryPlanPhase() { }
     }
 }

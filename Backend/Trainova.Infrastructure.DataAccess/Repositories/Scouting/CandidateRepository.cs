@@ -1,15 +1,9 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Trainova.Application.Common.Interfaces.Repositories.Scouting.Candidates;
 using Trainova.Application.Scouting.Candidates;
-using Trainova.Domain.Scouting;
 using Trainova.Domain.Common.Enums;
-using Trainova.Infrastructure.DataAccess;
+using Trainova.Domain.Scouting;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.Scouting;
 

@@ -102,6 +102,8 @@ namespace Trainova.Bootstrapper.BackgroundServises
                     Service = nameof(DomainEventOutboxProcessorBackgroundService),
                     Message = ex.Message,
                     StackTrace = ex.StackTrace,
+                    Id = (Guid?)null,
+                    ActorId = (Guid?)null,
                     InnerException = ex.InnerException?.Message
                 };
 
@@ -122,7 +124,7 @@ namespace Trainova.Bootstrapper.BackgroundServises
                     + "=================================================================="
                     + Environment.NewLine;
 
-                await File.AppendAllTextAsync(_logPath,txt);
+                await File.AppendAllTextAsync(_logPath, txt);
             }
             catch
             {

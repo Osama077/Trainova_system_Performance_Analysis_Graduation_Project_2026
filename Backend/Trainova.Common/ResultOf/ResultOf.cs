@@ -3,7 +3,7 @@
 namespace Trainova.Common.ResultOf
 {
 
-    public class ResultOf<TValue> : IResultOf<TValue>, IResultOf
+    public class ResultOf<TValue> : IResultOf<TValue>
     {
         private TValue? _value { get; }
         private DoneStatus _status { get; }
@@ -46,7 +46,7 @@ namespace Trainova.Common.ResultOf
             _errors = errors;
         }
 
-        private ResultOf(TValue value,DoneStatus status)
+        private ResultOf(TValue value, DoneStatus status)
         {
             _value = value;
             _status = status;
@@ -82,16 +82,16 @@ namespace Trainova.Common.ResultOf
             return new ResultOf<TValue>(error);
         }
 
-        public TNextValue Match<TNextValue>(Func<TValue, DoneStatus, TNextValue> onValue, Func<List<Error>,TNextValue> onError)
+        public TNextValue Match<TNextValue>(Func<TValue, DoneStatus, TNextValue> onValue, Func<List<Error>, TNextValue> onError)
         {
             if (IsFailure)
             {
                 return onError(_errors);
             }
 
-            return onValue(_value,_status);
+            return onValue(_value, _status);
         }
-        public TNextValue Match<TNextValue>(Func<TValue, TNextValue> onValue, Func<List<Error>,TNextValue> onError)
+        public TNextValue Match<TNextValue>(Func<TValue, TNextValue> onValue, Func<List<Error>, TNextValue> onError)
         {
             if (IsFailure)
             {
@@ -101,6 +101,14 @@ namespace Trainova.Common.ResultOf
             return onValue(_value);
         }
 
+        public static IResultOf<TValue> Success(object cachedValue)
+        {
+            return new ResultOf<TValue>((TValue)cachedValue, DoneStatus.Done);
+        }
+        public static IResultOf<TValue> Cached(TValue cachedValue)
+        {
+            return new ResultOf<TValue>((TValue)cachedValue, DoneStatus.Cached);
+        }
     }
 }
 

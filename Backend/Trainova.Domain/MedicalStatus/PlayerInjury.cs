@@ -175,6 +175,8 @@ namespace Trainova.Domain.MedicalStatus
 
             newPhase.SetOrder(targetOrder);
 
+            Phases.ForEach(ph => ph.AvailableUpdate());
+
             if (targetOrder < Phases.Count)
             {
                 var phasesToShift = Phases.Where(p => p.Order >= targetOrder).OrderBy(p => p.Order);

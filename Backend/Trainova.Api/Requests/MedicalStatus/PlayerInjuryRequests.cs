@@ -8,7 +8,6 @@ namespace Trainova.Api.Requests.MedicalStatus
     {
         public Guid InjuryId { get; set; }
         public Guid PlayerId { get; set; }
-        public InjuryStatus Status { get; set; } = InjuryStatus.InHealing;
         public DateTime? HappendAt { get; set; }
         public InjuryCause Cause { get; set; } = InjuryCause.Unknown;
         public SeverityGrade SevertiyGrade { get; set; } = SeverityGrade.Mild;
@@ -24,7 +23,6 @@ namespace Trainova.Api.Requests.MedicalStatus
             return new CreatePlayerInjuryCommand(
                 InjuryId,
                 PlayerId,
-                Status,
                 HappendAt,
                 Cause,
                 SevertiyGrade,

@@ -1,11 +1,11 @@
-﻿using Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAccessablity;
-using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Trainova.Application.Common.Interfaces.Repositories;
+using Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAccessablity;
 using Trainova.Domain.TrainingSessionsAccessibility;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.TrainingSessionAccessablity
 {
-    public class TrainingSessionRepository: ITrainingSessionRepository
+    public class TrainingSessionRepository : ITrainingSessionRepository
     {
         public TrainingSessionRepository(IDbSettings dbSettings, TrainovaWriteDbContext dbContext)
         {
@@ -59,8 +59,8 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.TrainingSessionAccessa
         {
             return await _dbContext.TrainingSessions
                 .Where(x => (x.HappenedAt >= from && x.HappenedAt <= to)
-                 &&(( userAccsessPolicyId == null || x.AccessPolicyId == userAccsessPolicyId)
-                 || ( creatorId == null || x.CreatedBy == creatorId)))
+                 && ((userAccsessPolicyId == null || x.AccessPolicyId == userAccsessPolicyId)
+                 || (creatorId == null || x.CreatedBy == creatorId)))
                 .ToListAsync();
         }
 

@@ -47,7 +47,7 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.MedicalStatus
                 phaseBuilder.HasKey(pp => pp.Id);
 
                 phaseBuilder.HasIndex(pp => new { pp.PlayerInjuryId, pp.Order });
-
+                phaseBuilder.Ignore(p => p.IsAdded);
                 phaseBuilder.Property(pp => pp.Activities)
                     .HasConversion(
                         value => JsonSerializer.Serialize(value, JsonSerializerOptions.Default),

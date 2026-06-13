@@ -1,4 +1,4 @@
-﻿namespace Trainova.Domain.FitnessStatus
+﻿namespace Trainova.Domain.FitnessStatus.Enums
 {
     public enum ExerciseType
     {

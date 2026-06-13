@@ -1,11 +1,10 @@
-﻿using Trainova.Application.Common.Interfaces.Repositories.MedicalStatus;
+﻿using Dapper;
 using Microsoft.EntityFrameworkCore;
-using Trainova.Application.MedicalStatus.Injuries.Queries.GetInjuryDetailes;
-using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
-using Dapper;
 using System.Data;
+using Trainova.Application.Common.Interfaces.Repositories;
+using Trainova.Application.Common.Interfaces.Repositories.MedicalStatus;
+using Trainova.Application.MedicalStatus.Injuries.Queries.GetInjuryDetailes;
 using Trainova.Domain.MedicalStatus;
-using Trainova.Application.MedicalStatus.PlayerInjuries.Queries.GetCasesCount;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus
 {
@@ -33,23 +32,23 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.MedicalStatus
 
         public async Task<Injury?> GetByIdAsync(Guid id)
         {
-            return await _db.Injuries.FirstOrDefaultAsync(i=>i.Id==id);
+            return await _db.Injuries.FirstOrDefaultAsync(i => i.Id == id);
         }
 
-    /*
-        public async Task<IEnumerable<Injury>> GetInjuriesAsync(Guid? id = null, string? injuryType = null, string? searchTerm = null)
-        {
-            var query = _db.Injuries.AsQueryable();
+        /*
+            public async Task<IEnumerable<Injury>> GetInjuriesAsync(Guid? id = null, string? injuryType = null, string? searchTerm = null)
+            {
+                var query = _db.Injuries.AsQueryable();
 
-            if (id.HasValue)
-                query = query.Where(i => i.Id == id.Value);
+                if (id.HasValue)
+                    query = query.Where(i => i.Id == id.Value);
 
-            if (!string.IsNullOrWhiteSpace(injuryType))
-                query = query.Where(i => i.InjuryType != null && i.InjuryType.ToString() == injuryType);
+                if (!string.IsNullOrWhiteSpace(injuryType))
+                    query = query.Where(i => i.InjuryType != null && i.InjuryType.ToString() == injuryType);
 
-            return await query.ToListAsync();
-        }
-    */
+                return await query.ToListAsync();
+            }
+        */
         public async Task<IEnumerable<Injury>> GetInjuriesAsync(Guid? id = null, string? injuryType = null, string? searchTerm = null)
         {
             const string sql = "InjuriesData.sp_GetInjuries";

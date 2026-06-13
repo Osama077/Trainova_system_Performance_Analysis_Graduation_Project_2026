@@ -5,6 +5,7 @@ using Trainova.Bootstrapper.BackgroundServises;
 using Trainova.Bootstrapper.Helpers;
 using Trainova.Bootstrapper.Services;
 using Trainova.Infrastructure.Authorization;
+using Trainova.Infrastructure.Cacheing;
 using Trainova.Infrastructure.DataAccess;
 
 namespace Trainova.Bootstrapper;
@@ -17,7 +18,8 @@ public static class DependencyInjection
         return services
             .AddPersistence(configuration)
             .AddMailService(configuration)
-            .AddAuthentication(configuration);
+            .AddAuthentication(configuration)
+            .AddCaching(configuration);
     }
 
     private static IServiceCollection AddMailService(this IServiceCollection services, IConfiguration configuration)

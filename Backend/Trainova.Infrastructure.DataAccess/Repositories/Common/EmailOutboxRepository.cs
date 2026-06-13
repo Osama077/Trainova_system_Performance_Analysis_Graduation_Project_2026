@@ -1,9 +1,8 @@
-﻿using Dapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Data;
+using Trainova.Application.Common.Interfaces.Repositories;
 using Trainova.Application.Common.Interfaces.Repositories.CommonRepos;
 using Trainova.Domain.Common.Outbox;
-using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.Common
 {
@@ -39,9 +38,9 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.Common
                     EmailType = e.EmailType,
                     CreatedAt = e.CreatedAt,
                 })
-                .Where(p => !p.IsSent && p.RetryCount <6)
+                .Where(p => !p.IsSent && p.RetryCount < 6)
                 .Take(take)
-                .OrderByDescending(p=>p.CreatedAt)
+                .OrderByDescending(p => p.CreatedAt)
                 .ToListAsync();
         }
 

@@ -1,13 +1,11 @@
 using MediatR;
 using Trainova.Application.Common.Interfaces.Repositories.MedicalStatus;
-using Trainova.Application.Common.Models;
-using Trainova.Common.ResultOf;
-using Trainova.Common.Errors;
+using Trainova.Application.Common.Interfaces.Repositories.Profiles.Players;
 using Trainova.Application.Common.Interfaces.Services;
+using Trainova.Common.Errors;
+using Trainova.Common.ResultOf;
 using Trainova.Domain.Common.Helpers;
 using Trainova.Domain.MedicalStatus;
-using Trainova.Application.Common.Interfaces.Repositories.Profiles.Players;
-using Trainova.Domain.Profiles;
 
 namespace Trainova.Application.MedicalStatus.PlayerInjuries.Commands.CreatePlayerInjury
 {
@@ -43,7 +41,7 @@ namespace Trainova.Application.MedicalStatus.PlayerInjuries.Commands.CreatePlaye
                 var playerInjury = new PlayerInjury(
                     player,
                     injury,
-                    request.Status,
+                    InjuryStatus.InHealing,
                     request.HappendAt,
                     request.Cause,
                     request.SevertiyGrade,

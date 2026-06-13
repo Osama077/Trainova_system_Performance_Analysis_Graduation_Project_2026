@@ -8,43 +8,38 @@ using Trainova.Domain.FitnessStatus;
 
 namespace Trainova.Application.FitnessStatus.FitnessSessionExercises.Commands.UpdateFitnessSessionExercise
 {
-    public class UpdateFitnessSessionExerciseCommandHandler : IRequestHandler<UpdateFitnessSessionExerciseCommand, ResultOf<FitnessSessionExercise>>
+
+    public class UpdateFitnessSessionExerciseCommandHandler(
+        IFitnessSessionExerciseRepository _sessionExerciseRepository,
+        IUnitOfWork _unitOfWork)
+        : IRequestHandler<UpdateFitnessSessionExerciseCommand, ResultOf<FitnessSessionExercise>>
     {
-        private readonly IFitnessSessionExerciseRepository _sessionExerciseRepository;
-        private readonly IUnitOfWork _unitOfWork;
-
-        public UpdateFitnessSessionExerciseCommandHandler(
-            IFitnessSessionExerciseRepository sessionExerciseRepository,
-            IUnitOfWork unitOfWork)
-        {
-            _sessionExerciseRepository = sessionExerciseRepository;
-            _unitOfWork = unitOfWork;
-        }
-
         public async Task<ResultOf<FitnessSessionExercise>> Handle(UpdateFitnessSessionExerciseCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                var fitnessSessionExercise = await _sessionExerciseRepository.GetByIdAsync(request.Id);
-                if (fitnessSessionExercise == null)
-                    return Error.NotFound(description: "Fitness session exercise mapping not found.");
+                var sessionExercise = await _sessionExerciseRepository.GetByIdAsync(request.Id);
+                if (sessionExercise == null)
+                    return Error.NotFound(description: "Exercise not found in this training session.");
 
-                fitnessSessionExercise.Update(
-                    request.Intensity,
-                    request.Sets,
-                    request.Reps,
-                    request.Rounds,
-                    request.ActiveTimeSec,
-                    request.RestTimeSec,
-                    request.LoadDetails
+                sessionExercise.Update(
+                    intensity: request.Intensity,
+                    sets: request.Sets,
+                    repsOrDuration: request.RepsOrDuration,
+                    restTimeSec: request.RestTimeSec,
+                    loadDetails: request.LoadDetails,
+                    rounds: request.Rounds,
+                    activeTimeSec: request.ActiveTimeSec
                 );
 
                 await _unitOfWork.StartTransactionAsync();
-                await _sessionExerciseRepository.UpdateAsync(fitnessSessionExercise);
+
+                await _sessionExerciseRepository.UpdateAsync(sessionExercise);
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
+
                 await _unitOfWork.CommitTransactionAsync();
 
-                return fitnessSessionExercise.AsDone();
+                return sessionExercise.AsDone();
             }
             catch (DomainException ex)
             {

@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace Trainova.Infrastructure.DataAccess.DbSettingsObjects
+namespace Trainova.Application.Common.Interfaces.Repositories
 {
     public interface IDbSettings
     {

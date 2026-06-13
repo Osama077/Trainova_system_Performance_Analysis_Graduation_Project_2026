@@ -2,14 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using Trainova.Application.Common.Helpers;
+using Trainova.Application.Common.Interfaces.Repositories;
 using Trainova.Application.Common.Interfaces.Repositories.Profiles.Players;
 using Trainova.Application.Profiles.Players;
 using Trainova.Application.Profiles.Players.Queries.GetSquadHealthProfiles;
 using Trainova.Domain.Common.Enums;
 using Trainova.Domain.MedicalStatus;
 using Trainova.Domain.Profiles;
-using Trainova.Infrastructure.DataAccess.DbSettingsObjects;
-using static System.Net.WebRequestMethods;
 
 namespace Trainova.Infrastructure.DataAccess.Repositories.Profiles
 {

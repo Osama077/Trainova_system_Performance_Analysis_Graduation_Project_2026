@@ -1,11 +1,9 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Trainova.Api.Filters;
 using Trainova.Api.Requests.FitnessStatus;
 using Trainova.Application.Common.Models;
-using Trainova.Application.FitnessStatus.Exercises.Commands.CreateExercise;
 using Trainova.Application.FitnessStatus.Exercises.Commands.DeleteExercise;
-using Trainova.Application.FitnessStatus.Exercises.Commands.UpdateExercise;
 
 namespace Trainova.Api.Controllers.FitnessStatus
 {
@@ -17,13 +15,16 @@ namespace Trainova.Api.Controllers.FitnessStatus
         : ApiController(_currentUser)
     {
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateExerciseCommand command)
+        [ServiceFilter(typeof(IdempotencyFilter))]
+        public async Task<IActionResult> Create([FromBody] CreateExerciseRequest request)
         {
+            var command = request.ToCommand();
             var result = await _mediator.Send(command);
             return MapResult(result);
         }
 
         [HttpPut("{id:guid}")]
+        [ServiceFilter(typeof(IdempotencyFilter))]
         public async Task<IActionResult> Update(
             [FromRoute] Guid id,
             [FromBody] UpdateExerciseRequest request)
@@ -40,5 +41,17 @@ namespace Trainova.Api.Controllers.FitnessStatus
             var result = await _mediator.Send(new DeleteExerciseCommand(id));
             return MapResult(result);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetExercises(
+            [FromQuery] GetExercisesFiltrationRequest request)
+        {
+            var query = request.ToQuery();
+            var result = await _mediator.Send(query);
+            return MapResult(result);
+        }
+
+
+
     }
 }

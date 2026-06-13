@@ -37,4 +37,17 @@ namespace Trainova.Infrastructure.DataAccess.Configuration.FitnessStatus
                 .HasMaxLength(50);
         }
     }
+    public class FitnessExerciseConfiguration
+        : BaseEntityConfiguration<FitnessExercise>
+    {
+        protected override void ConfigureEntity(EntityTypeBuilder<FitnessExercise> builder, bool valueGeneratedOnAdd = true)
+        {
+            base.ConfigureEntity(builder, valueGeneratedOnAdd);
+            builder.Property(e => e.EquipmentRequired)
+                .HasConversion<int>();
+
+            builder.Property(e => e.TargetMuscleGroup)
+                .HasConversion<int>();
+        }
+    }
 }

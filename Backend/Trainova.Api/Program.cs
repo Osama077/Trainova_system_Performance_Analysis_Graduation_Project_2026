@@ -27,6 +27,7 @@ app.UseForwardedHeaders();
 app.UseHttpsRedirection();
 app.UseCors("DefaultCorsPolicy");
 app.UseAuthorization();
+//app.UseIdempotency();
 
 app.MapControllers();
 

@@ -1,21 +1,10 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Trainova.Api.Requests.Scouting;
-using Trainova.Application.Scouting.Candidates.Queries.GetCandidates;
-using Trainova.Application.Scouting.Candidates.Commands.CreateCandidate;
-using Trainova.Application.Scouting.Candidates.Commands.UpdateCandidate;
-using Trainova.Application.Scouting.Candidates.Commands.SetCandidateStatus;
 using Trainova.Application.Common.Models;
-using Trainova.Api.Models;
-using Trainova.Application.Scouting.Candidates;
-using Trainova.Common.ResultOf;
 using Trainova.Application.Scouting.Candidates.Commands.AddCandidateNote;
-using Trainova.Application.Scouting.Candidates.Queries.GetCandidateNotes;
 using Trainova.Application.Scouting.Candidates.Commands.DeleteCandidateNote;
+using Trainova.Application.Scouting.Candidates.Queries.GetCandidateNotes;
 
 namespace Trainova.Api.Controllers.Scouting
 {
