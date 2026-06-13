@@ -36,7 +36,7 @@ namespace Trainova.Application.Scouting.Candidates.Queries.GetCandidates
                     sortDirection: request.SortDirection
                     );
 
-                return list.AsDone();
+                return list.AsPartial();
             }
             catch (System.Exception ex)
             {

@@ -1,8 +1,10 @@
 using System;
+using System.Text.Json.Serialization;
+using Trainova.Application.Common.Interfaces.MarkUps;
 
 namespace Trainova.Application.Scouting.Candidates
 {
-    public class CandidateListItemResponse
+    public class CandidateListItemResponse : ITotalCountIncluded
     {
         public Guid Id { get; set; }
         public string FullName { get; set; } = string.Empty;
@@ -35,5 +37,7 @@ namespace Trainova.Application.Scouting.Candidates
         // Misc
         public int? MatchesWatchedCount { get; set; }
         public string? NotesSnippet { get; set; }
+        [JsonIgnore]
+        public int TotalCount { get; set; }
     }
 }

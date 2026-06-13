@@ -113,6 +113,8 @@ public class CandidateRepository : ICandidateRepository
             if (maxAge.HasValue)
                 q = q.Where(c => c.Age <= maxAge.Value);
 
+            var totalCount = await q.CountAsync(cancellationToken);
+
             q = q.OrderByDescending(c => c.CreatedAt);
 
             var items = await q.Skip(pageNumber * pageSize).Take(pageSize).ToListAsync(cancellationToken);
@@ -145,7 +147,8 @@ public class CandidateRepository : ICandidateRepository
                 MatchesWatchedCount = i.MatchesWatchedCount,
 
                 // Use Notes property stored on the candidate for snippet
-                NotesSnippet = i.Notes
+                NotesSnippet = i.Notes,
+                TotalCount = totalCount
             });
         }
         catch (SqlException sqlEx)
