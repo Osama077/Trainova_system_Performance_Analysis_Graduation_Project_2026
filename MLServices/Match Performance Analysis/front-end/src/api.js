@@ -30,9 +30,12 @@ apiClient.interceptors.response.use(
  */
 export const PlayerAPI = {
   // Get list of all players
-  getPlayerList: async () => {
+  getPlayerList: async (season = null) => {
     try {
-      const response = await apiClient.get('/player/list');
+      const params = new URLSearchParams();
+      if (season) params.set('season', season);
+      const qs = params.toString();
+      const response = await apiClient.get(`/player/list${qs ? '?' + qs : ''}`);
       return response.data;
     } catch (error) {
       throw new Error(`Failed to fetch player list: ${error.message}`);
@@ -40,11 +43,14 @@ export const PlayerAPI = {
   },
 
   // Get player dashboard with 9 charts
-  getPlayerDashboard: async (playerName, matchId = null) => {
+  getPlayerDashboard: async (playerName, matchId = null, season = null) => {
     try {
-      const query = matchId ? `?match_id=${encodeURIComponent(matchId)}` : '';
+      const params = new URLSearchParams();
+      if (matchId) params.set('match_id', matchId);
+      if (season) params.set('season', season);
+      const qs = params.toString();
       const response = await apiClient.get(
-        `/player/dashboard/${encodeURIComponent(playerName)}${query}`,
+        `/player/dashboard/${encodeURIComponent(playerName)}${qs ? '?' + qs : ''}`,
         { timeout: 180000 }
       );
       return response.data;
@@ -54,11 +60,14 @@ export const PlayerAPI = {
   },
 
   // Get player dashboard raw data for frontend rendering with animation
-  getPlayerDashboardData: async (playerName, matchId = null) => {
+  getPlayerDashboardData: async (playerName, matchId = null, season = null) => {
     try {
-      const query = matchId ? `?match_id=${encodeURIComponent(matchId)}` : '';
+      const params = new URLSearchParams();
+      if (matchId) params.set('match_id', matchId);
+      if (season) params.set('season', season);
+      const qs = params.toString();
       const response = await apiClient.get(
-        `/player/dashboard-data/${encodeURIComponent(playerName)}${query}`,
+        `/player/dashboard-data/${encodeURIComponent(playerName)}${qs ? '?' + qs : ''}`,
         { timeout: 180000 }
       );
       return response.data;
@@ -210,8 +219,273 @@ export const BenchmarkAPI = {
 };
 
 /**
+ * ADVANCED ANALYSIS ENDPOINTS
+ */
+export const AdvancedAnalysisAPI = {
+  getAdvancedAnalysis: async (playerId, season = null) => {
+    try {
+      const params = season ? `?season=${encodeURIComponent(season)}` : '';
+      const response = await apiClient.get(`/player/${playerId}/advanced${params}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch advanced analysis: ${error.message}`);
+    }
+  },
+
+  getForecast: async (playerId, season = null) => {
+    try {
+      const params = season ? `?season=${encodeURIComponent(season)}` : '';
+      const response = await apiClient.get(`/player/${playerId}/forecast${params}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch forecast: ${error.message}`);
+    }
+  },
+
+  getAnomalies: async (playerId, season = null) => {
+    try {
+      const params = season ? `?season=${encodeURIComponent(season)}` : '';
+      const response = await apiClient.get(`/player/${playerId}/anomalies${params}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch anomalies: ${error.message}`);
+    }
+  },
+
+  getSimilarPlayers: async (playerId, topN = 8, season = null) => {
+    try {
+      const params = new URLSearchParams({ top_n: topN });
+      if (season) params.set('season', season);
+      const response = await apiClient.get(`/player/${playerId}/similar?${params.toString()}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch similar players: ${error.message}`);
+    }
+  },
+
+  getConsistency: async (playerId, season = null) => {
+    try {
+      const params = season ? `?season=${encodeURIComponent(season)}` : '';
+      const response = await apiClient.get(`/player/${playerId}/consistency${params}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch consistency: ${error.message}`);
+    }
+  },
+
+  getMomentum: async (playerId, season = null) => {
+    try {
+      const params = season ? `?season=${encodeURIComponent(season)}` : '';
+      const response = await apiClient.get(`/player/${playerId}/momentum${params}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch momentum: ${error.message}`);
+    }
+  },
+
+  getInjuryRisk: async (playerId, season = null) => {
+    try {
+      const params = season ? `?season=${encodeURIComponent(season)}` : '';
+      const response = await apiClient.get(`/player/${playerId}/injury-risk${params}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch injury risk: ${error.message}`);
+    }
+  },
+
+  getTopPerformers: async (sortBy = 'score', position = null, minMatches = 5, season = null) => {
+    try {
+      const params = new URLSearchParams({ sort_by: sortBy, min_matches: minMatches });
+      if (position) params.set('position', position);
+      if (season) params.set('season', season);
+      const response = await apiClient.get(`/analysis/top-performers?${params.toString()}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch top performers: ${error.message}`);
+    }
+  },
+};
+
+/**
+ * SQUAD ENDPOINTS
+ */
+export const ScoreStatsAPI = {
+  getPositionStats: async (season, position) => {
+    try {
+      const params = new URLSearchParams({ season, position });
+      const response = await apiClient.get(`/player/position-stats?${params.toString()}`, { timeout: 60000 });
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch position stats: ${error.message}`);
+    }
+  },
+};
+
+export const SquadAPI = {
+  getSquadOverview: async (matchId = null, season = null) => {
+    try {
+      const params = new URLSearchParams();
+      if (matchId) params.set('match_id', matchId);
+      if (season) params.set('season', season);
+      const qs = params.toString();
+      const response = await apiClient.get(`/player/squad-scores${qs ? '?' + qs : ''}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch squad overview: ${error.message}`);
+    }
+  },
+  getSeasonPlayers: async (season, position = null) => {
+    try {
+      const params = new URLSearchParams({ season });
+      if (position) params.set('position', position);
+      const response = await apiClient.get(`/player/season-players?${params.toString()}`, { timeout: 120000 });
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch season players: ${error.message}`);
+    }
+  },
+};
+
+/**
+ * HEAD-TO-HEAD COMPARISON ENDPOINT
+ */
+export const CompareAPI = {
+  getHeadToHead: async (p1Id, p2Id, context = 'season', matchId = null, season = null) => {
+    try {
+      const params = new URLSearchParams({ p1: p1Id, p2: p2Id, context });
+      if (matchId) params.set('match_id', matchId);
+      if (season) params.set('season', season);
+      const response = await apiClient.get(`/player/head-to-head?${params.toString()}`, { timeout: 120000 });
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch comparison: ${error.message}`);
+    }
+  },
+};
+
+/**
+ * PLAYER PROFILE ENDPOINT
+ */
+export const PlayerProfileAPI = {
+  getPlayerProfile: async (playerName, matchId = null, season = null) => {
+    try {
+      const params = new URLSearchParams();
+      if (matchId) params.set('match_id', matchId);
+      if (season) params.set('season', season);
+      const qs = params.toString();
+      const response = await apiClient.get(`/player/profile/${encodeURIComponent(playerName)}${qs ? '?' + qs : ''}`, { timeout: 180000 });
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch player profile: ${error.message}`);
+    }
+  },
+};
+
+/**
+ * SEASON TRENDS ENDPOINT
+ */
+export const SeasonTrendsAPI = {
+  getSeasonTrends: async (season = null) => {
+    try {
+      const params = season ? `?season=${encodeURIComponent(season)}` : '';
+      const response = await apiClient.get(`/player/season-trends${params}`, { timeout: 120000 });
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch season trends: ${error.message}`);
+    }
+  },
+};
+
+/**
+ * MATCH LOG ENDPOINT
+ */
+export const MatchLogAPI = {
+  getMatchLog: async (matchId = null, season = null) => {
+    try {
+      const params = new URLSearchParams();
+      if (matchId) params.set('match_id', matchId);
+      if (season) params.set('season', season);
+      const qs = params.toString();
+      const response = await apiClient.get(`/player/match-log${qs ? '?' + qs : ''}`, { timeout: 120000 });
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch match log: ${error.message}`);
+    }
+  },
+};
+
+/**
+ * MATCH ANALYSIS (Combined: Tactical Board + Team Stats + Timeline)
+ */
+export const MatchAnalysisAPI = {
+  getAnalysis: async (matchId, season = null) => {
+    try {
+      const params = season ? `?season=${encodeURIComponent(season)}` : '';
+      const response = await apiClient.get(`/match/${matchId}/analysis-complete${params}`, { timeout: 120000 });
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch match analysis: ${error.message}`);
+    }
+  },
+};
+
+/**
  * Health Check
  */
+/**
+ * NEW FEATURES ENDPOINTS
+ */
+export const MetadataAPI = {
+  listPlayers: async (season) => {
+    try {
+      const query = season ? `?season=${encodeURIComponent(season)}` : '';
+      const response = await apiClient.get(`/metadata/players${query}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch metadata: ${error.message}`);
+    }
+  },
+  getPlayer: async (playerId) => {
+    try {
+      const response = await apiClient.get(`/metadata/players/${playerId}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch player metadata: ${error.message}`);
+    }
+  },
+  searchPlayers: async (query) => {
+    try {
+      const response = await apiClient.get(`/metadata/player/search?query=${encodeURIComponent(query)}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to search metadata: ${error.message}`);
+    }
+  },
+};
+
+export const SeasonAPI = {
+  listSeasons: async () => {
+    try {
+      const response = await apiClient.get('/player/season/list');
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch seasons: ${error.message}`);
+    }
+  },
+};
+
+export const EvolutionAPI = {
+  getEvolution: async (playerId, season) => {
+    try {
+      const query = season ? `?season=${encodeURIComponent(season)}` : '';
+      const response = await apiClient.get(`/player/${playerId}/evolution${query}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch evolution: ${error.message}`);
+    }
+  },
+};
+
 export const HealthAPI = {
   checkHealth: async () => {
     try {
@@ -220,6 +494,87 @@ export const HealthAPI = {
     } catch (error) {
       console.error('API health check failed:', error.message);
       return null;
+    }
+  },
+};
+
+/**
+ * COACHING INSIGHTS ENDPOINTS
+ */
+export const CoachingAPI = {
+  getSquadInsights: async () => {
+    try {
+      const response = await apiClient.get('/coaching/squad', { timeout: 120000 });
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch squad coaching insights: ${error.message}`);
+    }
+  },
+
+  getPlayerCoaching: async (playerId, season = null) => {
+    try {
+      const params = season ? `?season=${encodeURIComponent(season)}` : '';
+      const response = await apiClient.get(`/coaching/player/${playerId}${params}`, { timeout: 120000 });
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch player coaching advice: ${error.message}`);
+    }
+  },
+
+  getPlayerComprehensive: async (playerId, season = null) => {
+    try {
+      const params = season ? `?season=${encodeURIComponent(season)}` : '';
+      const response = await apiClient.get(`/coaching/player/${playerId}/comprehensive${params}`, { timeout: 120000 });
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch comprehensive player insights: ${error.message}`);
+    }
+  },
+};
+
+/**
+ * MATCH PREDICTION ENDPOINTS
+ */
+export const PredictionAPI = {
+  getPlayerPrediction: async (playerId, season = null) => {
+    try {
+      const params = season ? `?season=${encodeURIComponent(season)}` : '';
+      const response = await apiClient.get(`/predict/player/${playerId}${params}`, { timeout: 120000 });
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch player prediction: ${error.message}`);
+    }
+  },
+
+  getSquadPrediction: async () => {
+    try {
+      const response = await apiClient.get('/predict/squad', { timeout: 120000 });
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch squad prediction: ${error.message}`);
+    }
+  },
+};
+
+/**
+ * DATA VALIDATION ENDPOINTS
+ */
+export const ValidationAPI = {
+  getMetricsValidation: async () => {
+    try {
+      const response = await apiClient.get('/validate/metrics', { timeout: 120000 });
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch validation findings: ${error.message}`);
+    }
+  },
+
+  getFormulasValidation: async () => {
+    try {
+      const response = await apiClient.get('/validate/formulas', { timeout: 120000 });
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch formula validation: ${error.message}`);
     }
   },
 };

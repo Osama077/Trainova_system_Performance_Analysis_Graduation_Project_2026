@@ -140,7 +140,7 @@ Stop-Process -Id (Get-NetTCPConnection -LocalPort 3000).OwningProcess -Force
 
 **Solution**:
 - Backend not running!
-- Start backend: `python run_pipeline.py --mode api`
+- Start backend: `py run_pipeline.py --mode api`
 - Verify on `http://localhost:8000/docs`
 
 ### Issue: Player dashboard shows empty charts
@@ -148,7 +148,7 @@ Stop-Process -Id (Get-NetTCPConnection -LocalPort 3000).OwningProcess -Force
 **Solutions**:
 1. Check player name spelling (case-sensitive)
 2. Verify backend has processed data
-3. Run: `python run_pipeline.py --mode pipeline`
+3. Run: `py run_pipeline.py --mode pipeline`
 4. Try a known player: "Messi"
 
 ### Issue: CORS errors in console

@@ -1,11 +1,13 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { ArrowRight, Search, Users } from 'lucide-react';
 import { PlayerAPI } from '../api';
+import { useAppContext } from '../context/AppContext';
 import LoadingSpinner from './LoadingSpinner';
 import ErrorAlert from './ErrorAlert';
 import useDebouncedValue from '../hooks/useDebouncedValue';
 
 const PlayerList = ({ onSelectPlayer }) => {
+  const { selectedSeason } = useAppContext();
   const [playerItems, setPlayerItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -19,7 +21,7 @@ const PlayerList = ({ onSelectPlayer }) => {
       try {
         setLoading(true);
         setError(null);
-        const response = await PlayerAPI.getPlayerList();
+        const response = await PlayerAPI.getPlayerList(selectedSeason);
         setPlayerItems(response.player_items || []);
       } catch (err) {
         setError(err.message);
@@ -29,7 +31,7 @@ const PlayerList = ({ onSelectPlayer }) => {
     };
 
     fetchPlayers();
-  }, []);
+  }, [selectedSeason]);
 
   const teamOptions = useMemo(() => {
     const source = playerItems.map((item) => item.team_name || 'Unknown');
@@ -125,7 +127,7 @@ const PlayerList = ({ onSelectPlayer }) => {
                 <button
                   key={`${player.player_id}-${player.player_name}`}
                   type="button"
-                  onClick={() => onSelectPlayer(player.player_name)}
+                  onClick={() => onSelectPlayer(player.player_name, player.player_id)}
                   className={`surface group p-4 text-left transition hover:-translate-y-0.5 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 ${
                     visiblePlayers.indexOf(player) < 6 ? 'metric-active' : ''
                   }`}
