@@ -58,6 +58,12 @@ public class CandidateRepository : ICandidateRepository
         return Task.CompletedTask;
     }
 
+    public Task DeleteAsync(ScoutingCandidate candidate, CancellationToken cancellationToken = default)
+    {
+        _dbContext.Remove(candidate);
+        return Task.CompletedTask;
+    }
+
     public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         await _dbContext.SaveChangesAsync(cancellationToken);
@@ -113,7 +119,6 @@ public class CandidateRepository : ICandidateRepository
                 FullName = i.FullName,
                 Age = i.Age,
                 Position = (int)i.Position,
-                CurrentTeamId = null,  // No longer needed
                 CurrentTeamName = i.CurrentTeamName,
                 Nationality = i.ContractInfo.Nationality,
                 ScoutRating = i.ScoutRating,
@@ -217,7 +222,6 @@ public class CandidateRepository : ICandidateRepository
                 FullName = i.FullName,
                 Age = i.Age,
                 Position = (int)i.Position,
-                CurrentTeamId = null,  // No longer needed
                 CurrentTeamName = i.CurrentTeamName,
                 Nationality = i.ContractInfo.Nationality,
                 ScoutRating = i.ScoutRating,

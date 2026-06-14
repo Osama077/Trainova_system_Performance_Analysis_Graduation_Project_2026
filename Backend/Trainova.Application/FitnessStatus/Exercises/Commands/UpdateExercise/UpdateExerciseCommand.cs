@@ -9,15 +9,15 @@ namespace Trainova.Application.FitnessStatus.Exercises.Commands.UpdateExercise
     [Authorize(Roles = "FitnessCoach")]
     public record UpdateExerciseCommand(
         Guid Id,
-        string Name,
-        ExerciseType Type,
-        ExerciseCatagory Category,
-        EquipmentRequired EquipmentRequired,
-        MuscleGroup TargetMuscleGroups,
-        ExerciseIntensity DefaultIntensity,
-        int DefaultSets,
-        string DefaultRepsOrDuration,
-        int? DefaultRestBetweenSetsSec,
-        string Description,
-        string Contraindications) : IRequest<ResultOf<FitnessExercise>>;
+        string? Name = null,
+        ExerciseType? Type = null,
+        ExerciseCatagory? Category = null,
+        EquipmentRequired? EquipmentRequired = null,
+        MuscleGroup? TargetMuscleGroups = null,
+        ExerciseIntensity? DefaultIntensity = null,
+        int? DefaultSets = null,
+        string? DefaultRepsOrDuration = null,
+        int? DefaultRestBetweenSetsSec = null,
+        string? Description = null,
+        string? Contraindications = null) : IRequest<ResultOf<FitnessExercise>>;
 }

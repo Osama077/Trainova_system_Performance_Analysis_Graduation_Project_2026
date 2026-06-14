@@ -58,30 +58,30 @@ namespace Trainova.Domain.FitnessStatus
         private FitnessExercise() : base() { }
 
         public void Update(
-            string name,
-            ExerciseType type,
-            ExerciseCatagory category,
-            EquipmentRequired equipmentRequired,
-            MuscleGroup targetMuscleGroup,
-            ExerciseIntensity defaultIntensity,
-            int defaultSets,
-            string defaultRepsOrDuration,
-            int? defaultRestBetweenSetsSec,
-            string description,
-            string contraindications)
+            string? name = null,
+            ExerciseType? type = null,
+            ExerciseCatagory? category = null,
+            EquipmentRequired? equipmentRequired = null,
+            MuscleGroup? targetMuscleGroup = null,
+            ExerciseIntensity? defaultIntensity = null,
+            int? defaultSets = null,
+            string? defaultRepsOrDuration = null,
+            int? defaultRestBetweenSetsSec = null,
+            string? description = null,
+            string? contraindications = null)
         {
             MarkUpdatedNow();
-            Name = name;
-            Type = type;
-            Category = category;
-            EquipmentRequired = equipmentRequired;
-            TargetMuscleGroup = targetMuscleGroup;
-            DefaultIntensity = defaultIntensity;
-            DefaultSets = defaultSets;
-            DefaultRepsOrDuration = defaultRepsOrDuration;
-            DefaultRestBetweenSetsSec = defaultRestBetweenSetsSec;
-            Description = description;
-            Contraindications = contraindications;
+            Name = name ?? Name;
+            Type = type ?? Type;
+            Category = category ?? Category;
+            EquipmentRequired = equipmentRequired ?? EquipmentRequired;
+            TargetMuscleGroup = targetMuscleGroup ?? TargetMuscleGroup;
+            DefaultIntensity = defaultIntensity ?? DefaultIntensity;
+            DefaultSets = defaultSets ?? DefaultSets;
+            DefaultRepsOrDuration = defaultRepsOrDuration ?? DefaultRepsOrDuration;
+            DefaultRestBetweenSetsSec = defaultRestBetweenSetsSec ?? DefaultRestBetweenSetsSec;
+            Description = description ?? Description;
+            Contraindications = contraindications ?? Contraindications;
         }
     }
 
