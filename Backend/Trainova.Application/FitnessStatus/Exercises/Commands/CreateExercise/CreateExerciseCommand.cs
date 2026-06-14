@@ -9,7 +9,6 @@ namespace Trainova.Application.FitnessStatus.Exercises.Commands.CreateExercise
     [Authorize(Roles = "FitnessCoach")]
     public record CreateExerciseCommand(
         string Name,
-        string Code,
         ExerciseType Type,
         ExerciseCatagory Category,
         EquipmentRequired EquipmentRequired,

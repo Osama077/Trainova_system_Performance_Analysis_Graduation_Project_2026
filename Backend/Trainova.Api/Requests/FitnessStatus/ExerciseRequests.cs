@@ -7,7 +7,6 @@ namespace Trainova.Api.Requests.FitnessStatus
     public class CreateExerciseRequest
     {
         public string Name { get; set; }
-        public string Code { get; set; }
         public ExerciseType Type { get; set; }
         public ExerciseCatagory Category { get; set; }
         public EquipmentRequired EquipmentRequired { get; set; }
@@ -25,7 +24,6 @@ namespace Trainova.Api.Requests.FitnessStatus
         {
             return new CreateExerciseCommand(
                 Name: Name,
-                Code: Code,
                 Type: Type,
                 Category: Category,
                 EquipmentRequired: EquipmentRequired,
