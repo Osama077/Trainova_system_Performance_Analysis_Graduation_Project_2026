@@ -25,18 +25,18 @@ namespace Trainova.Application.FitnessStatus.FitnessSessionExercises.Queries.Get
         }
         public string CacheKeyPrefix => null;
 
-        public TimeSpan? Expiration
-        {
-            get
-            {
-                if (SessionId.HasValue && !ExerciseId.HasValue)
-                    return TimeSpan.FromHours(1);
-                else if (!SessionId.HasValue && ExerciseId.HasValue)
-                    return TimeSpan.FromHours(6);
-                else
-                    return null;
-            }
-        }
+        public TimeSpan? Expiration => TimeSpan.FromSeconds(5);
+        //{
+        //    get
+        //    {
+        //        if (SessionId.HasValue && !ExerciseId.HasValue)
+        //            return TimeSpan.FromHours(1);
+        //        else if (!SessionId.HasValue && ExerciseId.HasValue)
+        //            return TimeSpan.FromHours(6);
+        //        else
+        //            return null;
+        //    }
+        //}
     }
     public class GetFitnessSessionExercisesBySessionIdQueryHandler(IDbSettings _dbSettings)
         : IRequestHandler<GetFitnessSessionExercisesQuery, ResultOf<IEnumerable<FitnessSessionExercisesReadModel>>>

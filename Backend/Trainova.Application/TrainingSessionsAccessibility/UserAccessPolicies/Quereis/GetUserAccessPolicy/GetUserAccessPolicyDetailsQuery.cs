@@ -1,9 +1,11 @@
 ﻿using MediatR;
+using Trainova.Application.Common.Authorization;
 using Trainova.Common.ResultOf;
 using Trainova.Domain.TrainingSessionsAccessibility;
 
 namespace Trainova.Application.TrainingSessionsAccessibility.UserAccessPolicies.Quereis.GetUserAccessPolicy
 {
+    [Authorize]
     public record GetUserAccessPolicyDetailsQuery(Guid PolicyId) : IRequest<ResultOf<IEnumerable<UserAccessDetailes>>>;
 
     public class UserAccessDetailes

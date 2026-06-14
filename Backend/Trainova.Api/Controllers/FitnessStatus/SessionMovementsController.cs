@@ -2,9 +2,8 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Trainova.Api.Requests.FitnessStatus;
 using Trainova.Application.Common.Models;
-using Trainova.Application.FitnessStatus.SessionMovements.Commands.CreateSessionMovement;
 using Trainova.Application.FitnessStatus.SessionMovements.Commands.DeleteSessionMovement;
-using Trainova.Application.FitnessStatus.SessionMovements.Commands.UpdateSessionMovement;
+using Trainova.Application.FitnessStatus.SessionMovements.Queries.PlayerLoadVsCapacityTimeline;
 
 namespace Trainova.Api.Controllers.FitnessStatus
 {
@@ -38,6 +37,15 @@ namespace Trainova.Api.Controllers.FitnessStatus
             [FromRoute] Guid id)
         {
             var result = await _mediator.Send(new DeleteSessionMovementCommand(id));
+            return MapResult(result);
+        }
+        [HttpGet("{playerId:guid}/PlayerLoadVsCapacityTimeline")]
+        public async Task<IActionResult> GetPlayerLoadVsCapacityTimeline(
+            [FromRoute] Guid playerId,
+            [FromQuery] DateTime? fromDate = null,
+            [FromQuery] DateTime? toDate = null)
+        {
+            var result = await _mediator.Send(new GetPlayerLoadVsCapacityTimelineQuery(playerId, fromDate, toDate));
             return MapResult(result);
         }
     }

@@ -198,7 +198,7 @@ UI Render
 **Solutions**:
 1. Verify player name spelling (case-sensitive)
 2. Check backend has processed all player data
-3. Run `python run_pipeline.py --mode pipeline` on backend
+3. Run `py run_pipeline.py --mode pipeline` on backend
 4. Check browser console for errors (F12)
 
 ### Comparison Not Working

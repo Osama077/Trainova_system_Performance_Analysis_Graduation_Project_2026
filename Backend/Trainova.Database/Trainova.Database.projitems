@@ -39,11 +39,19 @@
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)fitnessdata\procedures\GetExercises_FilteredAndPaged.sql" />
     <None Include="$(MSBuildThisFileDirectory)fitnessdata\procedures\GetFitnessSessionExercises.sql" />
+    <None Include="$(MSBuildThisFileDirectory)fitnessdata\procedures\GetPhysicalCapacityHistoryByPlayerId.sql" />
+    <None Include="$(MSBuildThisFileDirectory)fitnessdata\procedures\GetPlayerFitnessMetricsSummary.sql" />
+    <None Include="$(MSBuildThisFileDirectory)fitnessdata\procedures\GetPlayerLoadVsCapacityTimeline.sql" />
+    <None Include="$(MSBuildThisFileDirectory)fitnessdata\procedures\GetRecentPhysicalCapacityTests.sql" />
+    <None Include="$(MSBuildThisFileDirectory)fitnessdata\procedures\GetTeamPlayersFitnessGrid.sql" />
     <None Include="$(MSBuildThisFileDirectory)fitnessdata\views\FitnessSessionExercises.sql" />
+    <None Include="$(MSBuildThisFileDirectory)fitnessdata\views\PlayerSessionsSummary.sql" />
+    <None Include="$(MSBuildThisFileDirectory)fitnessdata\views\PlayerTestsSummary.sql" />
     <None Include="$(MSBuildThisFileDirectory)medicalstats\procedures\GetInjuries.sql" />
     <None Include="$(MSBuildThisFileDirectory)medicalstats\procedures\GetInjuriesCount.sql" />
     <None Include="$(MSBuildThisFileDirectory)medicalstats\procedures\GetInjuryDetailesById.sql" />
     <None Include="$(MSBuildThisFileDirectory)medicalstats\procedures\GetSquadHealthDashboard.sql" />
+    <None Include="$(MSBuildThisFileDirectory)tsa\procedures\GetPlayerAdherenceOverTime.sql" />
     <None Include="$(MSBuildThisFileDirectory)tsa\procedures\GetUserAccessPolicyDetails.sql" />
     <None Include="$(MSBuildThisFileDirectory)tsa\procedures\SearchForAccessPolicy.sql" />
   </ItemGroup>

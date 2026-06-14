@@ -1,13 +1,13 @@
 """api/routes/team.py"""
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Path, Query
 from typing import Optional
-from api.routes._shared import _load_data, _sf, _si, _to_records
+from api.routes._shared import _load, _sf, _si, _to_records
 
 router = APIRouter()
 
 @router.get("/team/{team_id}/summary")
-def team_summary(team_id: str, match_id: Optional[int] = Query(None)):
-    d = _load_data()
+def team_summary(team_id: str = Path(..., min_length=1, description="Team name (e.g. Barcelona)"), match_id: Optional[int] = Query(None), season: Optional[str] = Query(None)):
+    d = _load(season=season)
     sc = d["scores"]
     mask = sc["team_name"].astype(str).str.contains(str(team_id), case=False, na=False) if "team_name" in sc.columns \
            else sc["team"].astype(str).str.contains(str(team_id), case=False, na=False)
@@ -21,24 +21,23 @@ def team_summary(team_id: str, match_id: Optional[int] = Query(None)):
     return {
         "team_id": str(team_id), "match_id": match_id,
         "team_stats": {
-            "avg_overall_score": _sf(ts["overall_score"].mean()),
             "total_xg":          _sf(tf["total_xg"].sum()) if "total_xg" in tf.columns else None,
             "pass_accuracy":     _sf(tf["pass_accuracy"].mean()) if "pass_accuracy" in tf.columns else None,
             "total_pressures":   _si(tf["total_pressures"].sum()) if "total_pressures" in tf.columns else 0,
         },
         "top_performer": {"player_id":_si(top["player_id"]),"player_name":str(top["player_name"]),
-                           "overall_score":_sf(top["overall_score"])},
-        "players": _to_records(ts[["player_id","player_name","overall_score",
-                                    "position_group","performance_trend"]
-                                   if all(c in ts.columns for c in ["position_group","performance_trend"])
-                                   else ["player_id","player_name","overall_score"]]
+                           "score": _sf(top["score"])},
+        "players": _to_records(ts[["player_id","player_name","score",
+                                     "position_group","performance_trend"]
+                                    if all(c in ts.columns for c in ["position_group","performance_trend"])
+                                    else ["player_id","player_name","score"]]
                                 .sort_values("overall_score", ascending=False)),
     }
 
 
 @router.get("/team/{team_id}/heatmap")
-def team_heatmap(team_id: str, match_id: int = Query(...), player_id: Optional[int] = Query(None)):
-    d = _load_data()
+def team_heatmap(team_id: str, match_id: int = Query(...), player_id: Optional[int] = Query(None), season: Optional[str] = Query(None)):
+    d = _load(season=season)
     ev = d["events"][(d["events"]["match_id"] == match_id) & d["events"]["location_x"].notna()]
     if player_id:
         ev = ev[ev["player_id"] == player_id]

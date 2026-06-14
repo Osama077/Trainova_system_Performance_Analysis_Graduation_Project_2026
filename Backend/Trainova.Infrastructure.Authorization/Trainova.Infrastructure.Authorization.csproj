@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Trainova.Application\Trainova.Application.csproj" />
+    <ProjectReference Include="..\Trainova.Domain\Trainova.Domain.csproj" />
   </ItemGroup>
 
 </Project>

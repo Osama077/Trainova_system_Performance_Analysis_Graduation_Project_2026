@@ -4,15 +4,15 @@ import { PlayerAPI } from '../api';
 import LoadingSpinner from './LoadingSpinner';
 import ErrorAlert from './ErrorAlert';
 
-const PlayerDashboard = ({ playerName }) => {
+const PlayerDashboard = ({ playerName, initialMatchId }) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedMatchId, setSelectedMatchId] = useState(null);
+  const [selectedMatchId, setSelectedMatchId] = useState(initialMatchId || null);
 
   useEffect(() => {
-    setSelectedMatchId(null);
-  }, [playerName]);
+    setSelectedMatchId(initialMatchId || null);
+  }, [playerName, initialMatchId]);
 
   useEffect(() => {
     const fetchDashboard = async () => {
@@ -104,12 +104,6 @@ const PlayerDashboard = ({ playerName }) => {
                   Backend image dashboard with unified sizing for all charts and maps.
                 </p>
               </div>
-            </div>
-            <div className="metric-card metric-active animate-shimmer px-4 py-3 text-right">
-              <p className="text-xs uppercase tracking-wide text-brand-700">Season score</p>
-              <p className="text-2xl font-semibold text-brand-800">
-                {typeof playerInfo.avg_overall === 'number' ? playerInfo.avg_overall.toFixed(1) : 'N/A'}/10
-              </p>
             </div>
           </div>
 

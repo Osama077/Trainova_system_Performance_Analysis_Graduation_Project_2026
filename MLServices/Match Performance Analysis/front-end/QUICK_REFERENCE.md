@@ -11,7 +11,7 @@ npm install
 cp .env.example .env
 
 # 3. Verify backend is running on http://localhost:8000
-# (In another terminal: python run_pipeline.py --mode api)
+# (In another terminal: py run_pipeline.py --mode api)
 
 # 4. Start the frontend
 npm start

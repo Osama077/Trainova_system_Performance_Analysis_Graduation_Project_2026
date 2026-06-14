@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Trainova.Api.Requsts.Profiles;
 using Trainova.Application.Common.Models;
 using Trainova.Application.Profiles.Players.Queries.GetSquadHealthProfiles;
+using Trainova.Application.Profiles.Players.Queries.GetTeamPlayersFitness;
 
 namespace Trainova.Api.Controllers.Profiles
 {
@@ -27,6 +28,13 @@ namespace Trainova.Api.Controllers.Profiles
         [HttpGet("MedicalAnalytics")]
         public async Task<IActionResult> GetMedicalStatus(
             [FromQuery] GetSquadHealthProfilesQuery request)
+        {
+            var result = await _sender.Send(request);
+            return MapResult(result);
+        }
+        [HttpGet("FitnessAnalytics")]
+        public async Task<IActionResult> GetFitnessStatus(
+            [FromQuery] GetTeamPlayersFitnessGridQuery request)
         {
             var result = await _sender.Send(request);
             return MapResult(result);

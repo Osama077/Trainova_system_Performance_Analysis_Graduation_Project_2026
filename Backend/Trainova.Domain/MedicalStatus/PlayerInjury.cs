@@ -151,12 +151,16 @@ namespace Trainova.Domain.MedicalStatus
             {
                 newPhaseStart = HappendAt ?? CreatedAt;
             }
-            else
+            else if (Phases.First(p => p.Order == targetOrder - 1).To < DateTime.UtcNow)
             {
                 newPhaseStart = Phases.First(p => p.Order == targetOrder - 1).To;
             }
+            else
+            {
+                newPhaseStart = DateTime.UtcNow + TimeSpan.FromHours(1);
+            }
 
-            if (newPhaseStart < DateTime.UtcNow)
+            if (newPhaseStart < DateTime.UtcNow && Phases.Count() != 0)
             {
                 throw new DomainException("Cannot insert or append a phase in a past timeframe.", "CannotInsertInPastTime");
             }

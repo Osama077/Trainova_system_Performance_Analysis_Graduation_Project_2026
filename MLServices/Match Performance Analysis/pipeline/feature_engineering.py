@@ -6,9 +6,9 @@ pipeline/feature_engineering.py — Feature Engineering
 import pandas as pd
 import numpy as np
 import warnings
-from MLServices.config import DATA_DIR
-from MLServices.utils.uuid_manager import add_uuid_column
-from MLServices.utils.helpers import normalize_to_score, ensure_dirs
+from config import DATA_DIR
+from utils.uuid_manager import add_uuid_column
+from utils.helpers import normalize_to_score, ensure_dirs
 
 warnings.filterwarnings("ignore")
 
@@ -83,15 +83,17 @@ def compute_pressing_features(events_clean: pd.DataFrame) -> pd.DataFrame:
         total_pressure_dur =("duration",   "sum"),
     ).reset_index()
 
-    cp = events_clean[events_clean["counterpress"] == 1].groupby(
+    # FIX: pressure_regains counts only Pressure events where counterpress == 1,
+    # not ALL events with counterpress. This prevents pressing_efficiency > 100%.
+    cp = pressure[pressure["counterpress"] == 1].groupby(
         ["match_id", "player_id"]
     ).agg(pressure_regains=("event_type", "count")).reset_index()
 
     feat = feat.merge(cp, on=["match_id", "player_id"], how="left")
     feat["pressure_regains"]    = feat["pressure_regains"].fillna(0).astype(int)
     feat["pressing_efficiency"] = (
-        feat["pressure_regains"] / feat["total_pressures"] * 100
-    ).round(2)
+        feat["pressure_regains"] / feat["total_pressures"].replace(0, np.nan) * 100
+    ).round(2).fillna(0)
     return feat
 
 
@@ -128,15 +130,26 @@ def compute_movement_features(events_clean: pd.DataFrame) -> pd.DataFrame:
 
 
 def compute_physical_features(events_clean: pd.DataFrame) -> pd.DataFrame:
-    carry = events_clean[events_clean["event_type"] == "Carry"].copy()
-    carry["carry_distance"] = np.sqrt(
-        (carry["carry_end_x"] - carry["location_x"])**2 +
-        (carry["carry_end_y"] - carry["location_y"])**2
+    # Estimate distance from consecutive event positions
+    # StatsBomb pitch: 120x80 units -> FIFA regulation: ~105m x 68m
+    events = events_clean[
+        events_clean["player_id"].notna() & events_clean["location_x"].notna()
+    ].copy()
+    events = events.sort_values(["match_id", "player_id", "event_index"])
+    events["loc_x_m"] = events["location_x"] * 105.0 / 120.0
+    events["loc_y_m"] = events["location_y"] * 68.0 / 80.0
+    events["prev_x_m"] = events.groupby(["match_id", "player_id"])["loc_x_m"].shift(1)
+    events["prev_y_m"] = events.groupby(["match_id", "player_id"])["loc_y_m"].shift(1)
+    events["segment_dist"] = np.sqrt(
+        (events["loc_x_m"] - events["prev_x_m"])**2 +
+        (events["loc_y_m"] - events["prev_y_m"])**2
     )
+    events["segment_dist"] = events["segment_dist"].where(events["segment_dist"] < 40, 0)
 
-    dist = carry.groupby(["match_id", "player_id"]).agg(
-        distance_covered=("carry_distance", "sum")
+    dist = events.groupby(["match_id", "player_id"]).agg(
+        distance_covered=("segment_dist", "sum")
     ).reset_index()
+    dist["distance_covered"] = (dist["distance_covered"]).round(0)
 
     actions = events_clean[events_clean["player_id"].notna()].groupby(
         ["match_id", "player_id"]
@@ -159,8 +172,18 @@ def compute_physical_features(events_clean: pd.DataFrame) -> pd.DataFrame:
         drop["actions_p1"].replace(0, np.nan) * 100
     ).round(2).fillna(0)
 
+    # Relative intensity: actions per minute per period
+    drop["intensity_p1"] = (drop["actions_p1"] / 45).round(2)
+    drop["intensity_p2"] = (drop["actions_p2"] / 45).round(2)
+    drop["intensity_drop_pct"] = (
+        (drop["intensity_p1"] - drop["intensity_p2"]) /
+        drop["intensity_p1"].replace(0, np.nan) * 100
+    ).round(2).fillna(0)
+
     feat = actions.merge(dist,  on=["match_id","player_id"], how="left")\
-                  .merge(drop[["match_id","player_id","actions_p1","actions_p2","activity_drop_2nd_half"]],
+                  .merge(drop[["match_id","player_id","actions_p1","actions_p2",
+                               "activity_drop_2nd_half","intensity_p1","intensity_p2",
+                               "intensity_drop_pct"]],
                          on=["match_id","player_id"], how="left").fillna(0)
     return feat
 
@@ -189,19 +212,173 @@ def compute_behavioral_features(events_clean: pd.DataFrame) -> pd.DataFrame:
                 .merge(receipt, on=["match_id","player_id"], how="outer")\
                 .merge(misc,    on=["match_id","player_id"], how="outer").fillna(0)
 
+    # FIX: Players with 0 ball receipts get ball_retention_rate = NaN (neutral),
+    # not 100 (which would reward never touching the ball).
     feat["ball_retention_rate"] = (
         (feat["ball_receipts"] - feat["miscontrols"]) /
         feat["ball_receipts"].replace(0, np.nan) * 100
-    ).round(2).fillna(100)
+    ).round(2)
     return feat
 
 
-def merge_all_features(events_clean: pd.DataFrame) -> pd.DataFrame:
+def compute_defensive_action_features(events_clean: pd.DataFrame) -> pd.DataFrame:
+    intercept = events_clean[events_clean["event_type"] == "Interception"]\
+        .groupby(["match_id","player_id"]).agg(interceptions=("event_type","count")).reset_index()
+    clear = events_clean[events_clean["event_type"] == "Clearance"]\
+        .groupby(["match_id","player_id"]).agg(clearances=("event_type","count")).reset_index()
+    block = events_clean[events_clean["event_type"] == "Block"]\
+        .groupby(["match_id","player_id"]).agg(blocks=("event_type","count")).reset_index()
+    duel = events_clean[events_clean["event_type"] == "Duel"]\
+        .groupby(["match_id","player_id"]).agg(duels_total=("event_type","count")).reset_index()
+
+    feat = intercept.merge(clear, on=["match_id","player_id"], how="outer")\
+                    .merge(block,  on=["match_id","player_id"], how="outer")\
+                    .merge(duel,   on=["match_id","player_id"], how="outer").fillna(0)
+    return feat
+
+
+def _ts_to_mins(val):
+    """Convert 'MM:SS' string to minutes float. Returns 0 if None/invalid."""
+    if val is None:
+        return 0
+    try:
+        parts = str(val).split(":")
+        return int(parts[0]) + int(parts[1]) / 60.0 if len(parts) >= 2 else float(parts[0])
+    except (ValueError, IndexError, TypeError):
+        return 0
+
+def compute_minutes_played(lineups: pd.DataFrame) -> pd.DataFrame:
+    rows = []
+    for _, r in lineups.iterrows():
+        positions = r.get("positions")
+        if positions is None or not isinstance(positions, (list, np.ndarray)):
+            continue
+        total = 0.0
+        for seg in positions:
+            if isinstance(seg, dict):
+                fr = _ts_to_mins(seg.get("from"))
+                to = seg.get("to")
+                if to is not None:
+                    mins = _ts_to_mins(to)
+                else:
+                    mins = 90.0  # played until end of match
+                total += max(0, mins - fr)
+        rows.append({"match_id": r["match_id"], "player_id": r["player_id"], "minutes_played": round(total, 1)})
+    return pd.DataFrame(rows).drop_duplicates(subset=["match_id","player_id"])
+
+
+def compute_key_pass_features(events_clean: pd.DataFrame) -> pd.DataFrame:
+    events = events_clean[events_clean["player_id"].notna()].sort_values(["match_id","event_index"]).copy()
+    events["shot_idx"] = events.groupby("match_id")["event_index"].shift(-1)
+
+    key_pass_records = []
+    assist_records = []
+
+    for (mid, team), grp in events.groupby(["match_id","team_name"]):
+        grp = grp.sort_values("event_index")
+        pass_indices = grp[grp["event_type"] == "Pass"].index
+        shot_indices = grp[grp["event_type"] == "Shot"].index
+
+        for si in shot_indices:
+            prior_passes = pass_indices[pass_indices < si]
+            if len(prior_passes) == 0:
+                continue
+            last_pass_idx = prior_passes[-1]
+            shot_row = grp.loc[si]
+            pass_row = grp.loc[last_pass_idx]
+            key_pass_records.append({
+                "match_id": mid,
+                "player_id": pass_row["player_id"],
+            })
+            if shot_row["shot_outcome"] == "Goal":
+                assist_records.append({
+                    "match_id": mid,
+                    "player_id": pass_row["player_id"],
+                })
+
+    kp_df = pd.DataFrame(key_pass_records) if key_pass_records else pd.DataFrame(columns=["match_id","player_id"])
+    ast_df = pd.DataFrame(assist_records) if assist_records else pd.DataFrame(columns=["match_id","player_id"])
+
+    key_passes = kp_df.groupby(["match_id","player_id"]).agg(
+        key_passes=("player_id","count")
+    ).reset_index() if len(kp_df) > 0 else pd.DataFrame(columns=["match_id","player_id","key_passes"])
+
+    assist_passes = ast_df.groupby(["match_id","player_id"]).agg(
+        assists=("player_id","count")
+    ).reset_index() if len(ast_df) > 0 else pd.DataFrame(columns=["match_id","player_id","assists"])
+
+    key_passes["chances_created"] = key_passes["key_passes"]
+
+    result = key_passes.merge(assist_passes, on=["match_id","player_id"], how="outer")
+    return result.fillna(0)
+
+
+def compute_gk_features(events_clean: pd.DataFrame, lineups: pd.DataFrame) -> pd.DataFrame:
+    # Goal Keeper events = saves
+    gk_events = events_clean[events_clean["event_type"] == "Goal Keeper"].copy()
+    saves = gk_events.groupby(["match_id","player_id"]).agg(
+        saves=("event_type","count")
+    ).reset_index()
+
+    # Compute opponent shots and goals while GK is on pitch
+    gk_mins = compute_minutes_played(lineups)
+    gk_mins = gk_mins[gk_mins["minutes_played"] >= 1].copy()
+
+    # Get GK identity: which players are GK in each match
+    gk_players = lineups[lineups["player_id"].notna()].copy()
+    def _is_gk(pos):
+        if pos is None or not isinstance(pos, (list, np.ndarray)):
+            return False
+        return any(isinstance(seg, dict) and seg.get("position") == "Goalkeeper" for seg in pos)
+    if "positions" in gk_players.columns:
+        gk_players["is_gk"] = gk_players["positions"].apply(_is_gk)
+    else:
+        gk_players["is_gk"] = False
+    gk_ids = gk_players[gk_players["is_gk"] == True][["match_id","player_id"]].drop_duplicates()
+
+    # Opponent shots while GK is on pitch
+    shots = events_clean[events_clean["event_type"] == "Shot"].copy()
+    shots["is_on_target"] = shots["shot_outcome"].isin(["Goal","Saved","Saved To Post"]).astype(int)
+    shots["is_goal"] = (shots["shot_outcome"] == "Goal").astype(int)
+
+    rows = []
+    for _, gk in gk_ids.iterrows():
+        mid, gid = gk["match_id"], gk["player_id"]
+        gk_team = gk_players[gk_players["player_id"] == gid]["team_name"].values
+        if not len(gk_team):
+            continue
+        gk_team = gk_team[0]
+        opp_shots = shots[(shots["match_id"] == mid) & (shots["team_name"] != gk_team)]
+        if len(gk_mins[(gk_mins["match_id"] == mid) & (gk_mins["player_id"] == gid)]):
+            rows.append({
+                "match_id": mid,
+                "player_id": gid,
+                "shots_faced": int(opp_shots["is_on_target"].sum()),
+                "goals_conceded": int(opp_shots["is_goal"].sum()),
+                "xG_conceded": round(float(opp_shots["shot_xg"].sum()), 4),
+            })
+
+    opp_feat = pd.DataFrame(rows) if rows else pd.DataFrame(columns=[
+        "match_id","player_id","shots_faced","goals_conceded","xG_conceded"
+    ])
+
+    feat = saves.merge(opp_feat, on=["match_id","player_id"], how="outer").fillna(0)
+    feat["save_pct"] = (
+        (feat["shots_faced"] - feat["goals_conceded"]) / feat["shots_faced"].replace(0, np.nan) * 100
+    ).round(2).fillna(0)
+    feat["goals_prevented"] = (feat["xG_conceded"] - feat["goals_conceded"]).round(4)
+    return feat
+
+
+def merge_all_features(events_clean: pd.DataFrame, lineups: pd.DataFrame = None) -> pd.DataFrame:
     print("🔄 Computing all features...")
 
+    season_cols = [c for c in ["season_label","season_id","competition_id"]
+                   if c in events_clean.columns]
+    base_cols = ["match_id","player_id","player_name","team_name"] + season_cols
     base = events_clean[
         events_clean["player_id"].notna()
-    ][["match_id","player_id","player_name","team_name"]].drop_duplicates()
+    ][base_cols].drop_duplicates()
 
     dfs = [
         compute_passing_features(events_clean),
@@ -211,22 +388,50 @@ def merge_all_features(events_clean: pd.DataFrame) -> pd.DataFrame:
         compute_movement_features(events_clean),
         compute_physical_features(events_clean),
         compute_behavioral_features(events_clean),
+        compute_defensive_action_features(events_clean),
     ]
+
+    # Key passes and assists
+    kp = compute_key_pass_features(events_clean)
+    dfs.append(kp)
+
+    # GK features require lineups
+    if lineups is not None:
+        gk = compute_gk_features(events_clean, lineups)
+        dfs.append(gk)
+        mp = compute_minutes_played(lineups)
+        dfs.append(mp)
 
     result = base.copy()
     for df in dfs:
         result = result.merge(df, on=["match_id","player_id"], how="left")
+
+    # Estimate total match running distance from event-visible movement
+    # Event data only captures ~8m per touch (~1.3km for 90 min). Real distance
+    # is ~11km. Formula: 80m/min baseline (off-ball) + 3x event movement.
+    if "minutes_played" in result.columns and "distance_covered" in result.columns:
+        result["distance_covered"] = (
+            result["minutes_played"].fillna(0) * 80
+            + result["distance_covered"].fillna(0) * 3
+        ).clip(0, 15000).round(0)
 
     count_cols = [
         "total_passes","complete_passes","progressive_passes","passes_under_pressure",
         "total_shots","goals","shots_on_target","total_pressures","pressure_regains",
         "total_carries","progressive_carries","total_dribbles","successful_dribbles",
         "total_actions","fouls_committed","fouls_won","yellow_cards","red_cards",
-        "ball_receipts","miscontrols",
+        "ball_receipts","miscontrols","interceptions","clearances","blocks",
+        "saves","shots_faced","goals_conceded","duels_total",
+        "key_passes","assists","chances_created",
     ]
     for col in count_cols:
         if col in result.columns:
             result[col] = result[col].fillna(0).astype(int)
+
+    float_cols = ["minutes_played","xG_conceded","goals_prevented","save_pct"]
+    for col in float_cols:
+        if col in result.columns:
+            result[col] = result[col].fillna(0)
 
     result = add_uuid_column(result, "uuid", based_on=["match_id","player_id"])
     print(f"✅ computed_features: {result.shape}")
@@ -239,7 +444,9 @@ def run():
     print("=" * 60)
 
     events_clean = pd.read_parquet(DATA_DIR / "events_clean.parquet")
-    computed     = merge_all_features(events_clean)
+    lineups_path = DATA_DIR / "lineups.parquet"
+    lineups = pd.read_parquet(lineups_path) if lineups_path.exists() else None
+    computed     = merge_all_features(events_clean, lineups=lineups)
 
     ensure_dirs(DATA_DIR)
     computed.to_parquet(DATA_DIR / "computed_features.parquet", index=False)

@@ -2,8 +2,9 @@
   MATCH PERFORMANCE ANALYSIS — DEVELOPER TUTORIAL
   Sports Performance Management Platform · ML Component
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+NOTE: This file may be out of date. See README.md and source code for current documentation.
 
-ما اللي عملناه في الـ Session دي؟
+What was done in this session?
 ────────────────────────────────────────────────────────────
 حولنا 6 Jupyter Notebooks منفصلة لـ Python project منظم
 بكل الـ best practices، UUID لكل record، player dashboard
@@ -14,7 +15,7 @@
 1. PROJECT STRUCTURE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-match_performance/
+Match Performance Analysis/
 │
 ├── config.py                      ← كل الـ constants والـ settings
 │
@@ -53,22 +54,22 @@ match_performance/
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 # 1. Clone / Download المشروع
-cd match_performance/
+cd "Match Performance Analysis"/
 
 # 2. Install dependencies
 pip install -r requirements.txt
 
 # 3. شغّل الـ Pipeline كامل
-python run_pipeline.py --mode pipeline
+py run_pipeline.py --mode pipeline
 
 # 4. شغّل الـ API
-python run_pipeline.py --mode api
+py run_pipeline.py --mode api
 
 # 5. شغّل الـ Frontend (في terminal منفصل)
 cd front-end && npm start
 
 # أو الاتنين الموازين:
-# Terminal 1: python run_pipeline.py --mode api
+# Terminal 1: py run_pipeline.py --mode api
 # Terminal 2: cd front-end && npm start
 
 # الصفحات الرئيسية:
@@ -353,7 +354,7 @@ player_dashboard.py → 9 Visualizations
    - الـ .NET team يقدر يقرأها ويستخدمها في حساباته
 
 4. Data Refresh:
-   - لو عايز تحدّث الداتا: python run_pipeline.py --mode pipeline
+     - لو عايز تحدّث الداتا: py run_pipeline.py --mode pipeline
    - الـ UUIDs هتفضل نفسها (deterministic) فمش هتحصل تكرار في الـ DB
 
 5. API Performance:

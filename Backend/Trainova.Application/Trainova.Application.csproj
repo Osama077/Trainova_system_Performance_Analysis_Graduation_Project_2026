@@ -18,10 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Trainova.Domain\Trainova.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Common\Enums\" />
     <Folder Include="Common\Interfaces\Repositories\Profiles\ScoutingCandidates\" />
     <Folder Include="Common\Interfaces\Repositories\Profiles\TeamsStaff\" />
@@ -30,6 +26,11 @@
     <Folder Include="TrainingSessionsAccessibility\AccessPolicies\Queries\" />
     <Folder Include="TrainingSessionsAccessibility\Plans\Commands\" />
     <Folder Include="TrainingSessionsAccessibility\Plans\Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Trainova.Common\Trainova.Common.csproj" />
+    <ProjectReference Include="..\Trainova.Domain\Trainova.Domain.csproj" />
   </ItemGroup>
 
 </Project>
