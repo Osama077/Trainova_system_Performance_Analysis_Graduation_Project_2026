@@ -1,4 +1,5 @@
 # 🎯 Match Performance Analysis — Frontend Integration Guide
+# NOTE: This document may be out of date. Refer to front-end/src/ for current implementation.
 
 ## 📦 Project Summary
 
@@ -15,8 +16,8 @@
 
 ```bash
 # Terminal 1: Start Backend API
-cd match_performance
-python run_pipeline.py --mode api
+cd "Match Performance Analysis"
+py run_pipeline.py --mode api
 
 # Terminal 2: Start Frontend
 cd front-end

@@ -102,7 +102,7 @@ npm start
 **Make sure backend is running:**
 ```bash
 # In another terminal
-python run_pipeline.py --mode api
+py run_pipeline.py --mode api
 ```
 
 ## 🧪 Testing the Frontend

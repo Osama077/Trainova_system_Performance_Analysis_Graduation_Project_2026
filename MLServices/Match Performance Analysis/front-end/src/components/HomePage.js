@@ -1,5 +1,9 @@
 import React from 'react';
-import { ArrowRight, Bot, ChartArea, Compass, GitCompareArrows, ListChecks, Sparkles } from 'lucide-react';
+import {
+  ArrowRight, Bot, ChartArea, Compass, GitCompareArrows,
+  ListChecks, Sparkles, TrendingUp, Target, AlertTriangle,
+  Activity, Award, Shield
+} from 'lucide-react';
 import { PAGES } from '../context/AppContext';
 
 const HomePage = ({ onNavigate }) => {
@@ -23,6 +27,48 @@ const HomePage = ({ onNavigate }) => {
       icon: GitCompareArrows,
     },
     {
+      title: 'ML Performance Forecast',
+      description: 'Predict future performance with confidence intervals and trend analysis.',
+      target: PAGES.FORECAST,
+      icon: TrendingUp,
+    },
+    {
+      title: 'Position Dashboards',
+      description: 'Role-specific Score views with per-position metrics and player rankings.',
+      target: PAGES.POSITION,
+      icon: Shield,
+    },
+    {
+      title: 'Player Similarity',
+      description: 'Find similar players using cosine similarity on dimension scores.',
+      target: PAGES.SIMILARITY,
+      icon: GitCompareArrows,
+    },
+    {
+      title: 'Momentum Analysis',
+      description: 'EWMA-based form analysis with streak detection and dimension breakdown.',
+      target: PAGES.MOMENTUM,
+      icon: Target,
+    },
+    {
+      title: 'Anomaly Detection',
+      description: 'Z-score outliers and Isolation Forest contextual anomaly detection.',
+      target: PAGES.ANOMALIES,
+      icon: AlertTriangle,
+    },
+    {
+      title: 'Consistency Scoring',
+      description: 'Coefficient of variation analysis across all performance dimensions.',
+      target: PAGES.CONSISTENCY,
+      icon: Activity,
+    },
+    {
+      title: 'Top Performers',
+      description: 'League-wide rankings sorted by score, momentum, or consistency.',
+      target: PAGES.TOP_PERFORMERS,
+      icon: Award,
+    },
+    {
       title: 'API Validation',
       description: 'Verify endpoint health, payload shape, and latency for robust integration.',
       target: PAGES.API_TESTER,
@@ -43,7 +89,8 @@ const HomePage = ({ onNavigate }) => {
               Production-grade performance intelligence for squads, analysts, and coaches
             </h2>
             <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">
-              Unified interface for xG, VAEP, role-based benchmarking, and player-level recommendations.
+              Unified interface for xG, VAEP, role-based benchmarking, ML-driven forecasting,
+              anomaly detection, player similarity, momentum analysis, and consistency scoring.
               Built for fast iteration, reliable API integration, and adaptable AI-enhanced modules.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
@@ -51,8 +98,8 @@ const HomePage = ({ onNavigate }) => {
                 Open Player Workspace
                 <ArrowRight className="ml-2 h-4 w-4" />
               </button>
-              <button className="btn-secondary" onClick={() => onNavigate(PAGES.COMPARISON)}>
-                Open Comparison
+              <button className="btn-secondary" onClick={() => onNavigate(PAGES.TOP_PERFORMERS)}>
+                View Top Performers
               </button>
             </div>
           </div>
@@ -63,10 +110,12 @@ const HomePage = ({ onNavigate }) => {
                 <Bot className="h-5 w-5" />
               </div>
               <div>
-                <h3 className="text-sm font-semibold text-slate-900">AI-ready content zone</h3>
+                <h3 className="text-sm font-semibold text-slate-900">ML-Powered Analysis Suite</h3>
                 <p className="mt-2 text-sm text-slate-600">
-                  This area is intentionally structured for future recommendation feeds, player suggestions,
-                  and conversational insights connected to model outputs.
+                  6 new ML modules: Performance Forecasting (Ridge regression + EWMA),
+                  Anomaly Detection (Z-score + Isolation Forest), Player Similarity (cosine),
+                  Consistency Scoring (CV analysis), Momentum Analysis (EWMA + streaks),
+                  and Injury Risk Estimation (multi-factor proxy).
                 </p>
               </div>
             </div>
@@ -74,7 +123,7 @@ const HomePage = ({ onNavigate }) => {
         </div>
       </section>
 
-      <section className="grid gap-4 sm:grid-cols-2">
+      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {cards.map((card) => (
           <button
             key={card.title}
@@ -98,6 +147,7 @@ const HomePage = ({ onNavigate }) => {
           <li>Tailwind-first responsive architecture</li>
           <li>Accessible focus states and contrast-aware surfaces</li>
           <li>Stable loading, error, and empty-state handling</li>
+          <li>ML predictions with confidence intervals and explainability</li>
         </ul>
       </section>
     </div>
