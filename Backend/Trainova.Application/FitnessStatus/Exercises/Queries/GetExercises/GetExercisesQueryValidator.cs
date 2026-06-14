@@ -2,9 +2,9 @@
 
 namespace Trainova.Application.FitnessStatus.Exercises.Queries.GetExercises
 {
-    public class GetExerciesesQueryValidator : AbstractValidator<GetExercisesQuery>
+    public class GetExercisesQueryValidator : AbstractValidator<GetExercisesQuery>
     {
-        public GetExerciesesQueryValidator()
+        public GetExercisesQueryValidator()
         {
             RuleFor(x => x.Page)
                 .GreaterThanOrEqualTo(0)

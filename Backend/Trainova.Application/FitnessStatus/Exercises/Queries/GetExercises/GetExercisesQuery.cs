@@ -32,6 +32,6 @@ namespace Trainova.Application.FitnessStatus.Exercises.Queries.GetExercises
         }
         public string? CacheKeyPrefix => null;
 
-        public TimeSpan? Expiration => null;
+        public TimeSpan? Expiration => TimeSpan.FromSeconds(5);
     }
 }

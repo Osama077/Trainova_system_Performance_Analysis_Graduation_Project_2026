@@ -14,7 +14,7 @@ namespace Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Qu
         {
             try
             {
-                 var sessions = await _trainingSessionRepository.GetTrainingSessionsAsync(
+                var sessions = await _trainingSessionRepository.GetTrainingSessionsAsync(
                     from: request.From,
                     to: request.To,
                     userAccsessPolicyId: request.PlayerId,

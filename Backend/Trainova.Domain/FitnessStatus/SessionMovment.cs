@@ -75,42 +75,6 @@ namespace Trainova.Domain.FitnessStatus
             CalculateFootageAndTrends(lastSessionMovement, currentTest);
         }
 
-        public static SessionMovement CreateFromRawData(
-            Guid userAccessPolicyId,
-            int sprintsCount,
-            int durationInMinutes,
-            decimal? averageSpeed,
-            decimal? maxSpeed,
-            decimal? peakAcceleration,
-            decimal? walkDistance,
-            decimal? runDistance,
-            decimal? highSpeedRunDistance,
-            PhysicalCapacityTest? currentTest = null,
-            SessionMovement? lastSessionMovement = null)
-        {
-            var distance = walkDistance.HasValue
-                ? new Distance(
-                    walkDistance ?? 0,
-                    runDistance ?? 0,
-                    highSpeedRunDistance ?? 0)
-                : null;
-
-            var speed = averageSpeed.HasValue
-                ? new Speed(
-                    averageSpeed.Value,
-                    maxSpeed ?? averageSpeed.Value,
-                    peakAcceleration ?? 0)
-                : null;
-
-            return new SessionMovement(
-                userAccessPolicyId,
-                sprintsCount,
-                durationInMinutes,
-                distance,
-                speed,
-                currentTest,
-                lastSessionMovement);
-        }
 
         private void CalculateLoad(PhysicalCapacityTest? lastTest)
         {
