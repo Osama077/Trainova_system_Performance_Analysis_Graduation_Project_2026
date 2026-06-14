@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Trainova.Api.Requests.Scouting;
 using Trainova.Application.Common.Models;
 using Trainova.Application.Scouting.Candidates.Commands.AddCandidateNote;
+using Trainova.Application.Scouting.Candidates.Commands.DeleteCandidate;
 using Trainova.Application.Scouting.Candidates.Commands.DeleteCandidateNote;
 using Trainova.Application.Scouting.Candidates.Queries.GetCandidateNotes;
 
