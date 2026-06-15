@@ -6,7 +6,6 @@ namespace Trainova.Application.TrainingSessionsAccessibility.AccessPolicies.Quer
 
 public record SearchAccessPoliciesQuery(
     string? SearchTerm = null,
-    bool? IsSesion = null,
     int PageNumber = 0,
     int PageSize = 12
     ) : IRequest<ResultOf<IEnumerable<AccessPolicyReadModel>>>;

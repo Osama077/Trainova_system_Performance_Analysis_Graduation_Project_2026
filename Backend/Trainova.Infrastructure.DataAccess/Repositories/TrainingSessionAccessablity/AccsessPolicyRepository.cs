@@ -53,7 +53,6 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.TrainingSessionAccessa
 
         public async Task<IEnumerable<AccessPolicyReadModel>> SearchWithUsageAsync(
             string? searchTerm = null,
-            bool? isSession = null,
             int pageNumber = 0,
             int pageSize = 12)
         {
@@ -61,7 +60,6 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.TrainingSessionAccessa
             var paramerters = new
             {
                 SearchTerm = searchTerm,
-                IsSession = isSession,
                 PageNumber = pageNumber,
                 PageSize = pageSize
             };

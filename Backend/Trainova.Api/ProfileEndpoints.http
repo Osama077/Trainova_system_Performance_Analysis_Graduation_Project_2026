@@ -1,0 +1,35 @@
+@HostAddress = http://localhost:5000
+
+### Create Player Profile
+POST {{HostAddress}}/api/Profile/PlayerProfiles
+Content-Type: application/json
+Authorization: Bearer <Your_Token_Here>
+
+{
+  "showName": "JohnD",
+  "fullName": "John Doe",
+  "photoPath": "path/to/photo.jpg",
+  "password": "StrongPassword123!",
+  "playerNumber": 10,
+  "tShirtName": "DOE",
+  "medicalStatus": 0,
+  "currentMainPosition": 1,
+  "otherAvailablePositions": 2,
+  "performanceLevel": 8.5,
+  "dateOfEnrolment": "2026-06-15"
+}
+
+### Create Team Staff Profile
+POST {{HostAddress}}/api/Profile/TeamStaffProfiles
+Content-Type: application/json
+Authorization: Bearer <Your_Token_Here>
+
+{
+  "showName": "CoachJane",
+  "fullName": "Jane Smith",
+  "photoPath": "path/to/photo2.jpg",
+  "password": "StrongPassword123!",
+  "insuranceFilesLink": "path/to/insurance.pdf",
+  "contractFilesLink": "path/to/contract.pdf",
+  "role": 0
+}

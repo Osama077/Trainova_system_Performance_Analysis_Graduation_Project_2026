@@ -19,7 +19,6 @@ public class SearchAccessPoliciesQueryHandler(
 
             var policies = await accessPolicyRepository.SearchWithUsageAsync(
                 searchTerm: searchTerm,
-                isSession: request.IsSesion,
                 pageNumber: request.PageNumber,
                 pageSize: request.PageSize);
 
