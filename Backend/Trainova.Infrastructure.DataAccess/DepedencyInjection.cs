@@ -6,6 +6,7 @@ using Trainova.Application.Common.Interfaces.Repositories.CommonRepos;
 using Trainova.Application.Common.Interfaces.Repositories.FitnessStatus;
 using Trainova.Application.Common.Interfaces.Repositories.MedicalStatus;
 using Trainova.Application.Common.Interfaces.Repositories.Profiles.Players;
+using Trainova.Application.Common.Interfaces.Repositories.Profiles.TeamStaffs;
 using Trainova.Application.Common.Interfaces.Repositories.Scouting.Candidates;
 using Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAccessablity;
 using Trainova.Application.Common.Interfaces.Repositories.UserAuth;
@@ -75,6 +76,7 @@ public static class DependencyInjection
 
         // Profiles
         services.AddScoped<IPlayerRepository, PlayerRepository>();
+        services.AddScoped<ITeamStaffRepository, TeamStaffRepository>();
         // Candidates repository
         services.AddScoped<ICandidateRepository, CandidateRepository>();
         // Register Dapper type handlers for enums

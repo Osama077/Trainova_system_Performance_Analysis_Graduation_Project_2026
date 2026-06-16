@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Trainova.Api.Requests.Profiles;
 using Trainova.Api.Requsts.Profiles;
 using Trainova.Application.Common.Models;
 using Trainova.Application.Profiles.Players.Queries.GetSquadHealthProfiles;
@@ -39,6 +40,17 @@ namespace Trainova.Api.Controllers.Profiles
             var result = await _sender.Send(request);
             return MapResult(result);
         }
-
+        [HttpPost("PlayerProfiles")]
+        public async Task<IActionResult> GetPlayerProfilesByIds([FromBody] CreatePlayerProfilesRequest request)
+        {
+            var result = await _sender.Send(request.ToCommand());
+            return MapResult(result);
+        }
+        [HttpPost("TeamStaffProfiles")]
+        public async Task<IActionResult> GetTeamStaffProfilesByIds([FromBody] CreateTeamStaffProfilesRequest request)
+        {
+            var result = await _sender.Send(request.ToCommand());
+            return MapResult(result);
+        }
     }
 }

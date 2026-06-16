@@ -8,7 +8,6 @@ GO
 
 CREATE OR ALTER PROCEDURE tsa.sp_SearchForAccessPolicy
     @SearchTerm NVARCHAR(150) = NULL,
-    @IsSession BIT = NULL,
     @PageNumber INT = 0,
     @PageSize INT = 12
 AS
@@ -20,7 +19,7 @@ BEGIN
     SELECT 
         ap.Id,
         ap.PolicyName,
-        ap.IsSession,
+        ap.TYPE,
         ap.CreatedAt,
         ap.LastUpdate,
         COUNT(uap.UserId) AS AccessPolicyUsersCount 
@@ -30,16 +29,15 @@ BEGIN
         dbo.UserAccessPolicies uap ON ap.Id = uap.AccessPoliciesId 
     WHERE 
         (@SearchTerm = '' OR ap.PolicyName LIKE '%' + @SearchTerm + '%')
-        AND (@IsSession IS NULL OR ap.IsSession = @IsSession) 
     GROUP BY 
         ap.Id, 
         ap.PolicyName,
-        ap.IsSession,
+        ap.Type,
         ap.CreatedAt,
         ap.LastUpdate
     ORDER BY 
         ap.CreatedAt DESC 
     OFFSET (@PageNumber * @PageSize) ROWS
-    FETCH NEXT @PageSize ROWS ONLY;
+    FETCH NEXT (@PageSize) ROWS ONLY;
 END
 GO
