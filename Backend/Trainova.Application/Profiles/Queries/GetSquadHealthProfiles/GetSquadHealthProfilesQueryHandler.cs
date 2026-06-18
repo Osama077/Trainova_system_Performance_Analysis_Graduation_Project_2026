@@ -3,7 +3,7 @@ using Trainova.Application.Common.Interfaces.Repositories.Profiles.Players;
 using Trainova.Common.Errors;
 using Trainova.Common.ResultOf;
 
-namespace Trainova.Application.Profiles.Players.Queries.GetSquadHealthProfiles
+namespace Trainova.Application.Profiles.Queries.GetSquadHealthProfiles
 {
     public class GetSquadHealthProfilesQueryHandler(IPlayerRepository _playerRepository)
         : IRequestHandler<GetSquadHealthProfilesQuery, ResultOf<SquadHealthDetailes>>

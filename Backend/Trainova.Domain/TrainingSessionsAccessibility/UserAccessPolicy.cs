@@ -1,27 +1,30 @@
+using System.Text.Json.Serialization;
 using Trainova.Domain.Common.BaseEntity;
 using Trainova.Domain.Common.Helpers;
 using Trainova.Domain.FitnessStatus;
-using Trainova.Domain.UserAuth;
-
 using Trainova.Domain.TrainingSessionsAccessibility.Events;
+using Trainova.Domain.UserAuth;
 
 namespace Trainova.Domain.TrainingSessionsAccessibility
 {
     public class UserAccessPolicy : AuditableEntity<Guid>
     {
         public Guid AccessPoliciesId { get; private set; }
+        [JsonIgnore]
         public AccessPolicy AccessPolicy { get; private set; }
         public Guid UserId { get; private set; }
+        [JsonIgnore]
         public User User { get; private set; }
         public AttendanceStatus AttendanceState { get; private set; }
         public decimal DoneScore { get; private set; } = 0;
+        [JsonIgnore]
         public SessionMovement? SessionMovement { get; private set; }
 
         public UserAccessPolicy(
             Guid accessPoliciesId,
             Guid userId,
             AttendanceStatus hasAttended = AttendanceStatus.Waiting,
-            Guid? createdBy = null) :base(Guid.NewGuid(), createdBy)
+            Guid? createdBy = null) : base(Guid.NewGuid(), createdBy)
         {
             AccessPoliciesId = accessPoliciesId;
             UserId = userId;
@@ -86,7 +89,7 @@ namespace Trainova.Domain.TrainingSessionsAccessibility
         */
 
 
-        private UserAccessPolicy() :base() { }
+        private UserAccessPolicy() : base() { }
         public void UpdateState(AttendanceStatus hasAttended, decimal doneScore = 100)
         {
             if (doneScore > 100 || doneScore < 0)

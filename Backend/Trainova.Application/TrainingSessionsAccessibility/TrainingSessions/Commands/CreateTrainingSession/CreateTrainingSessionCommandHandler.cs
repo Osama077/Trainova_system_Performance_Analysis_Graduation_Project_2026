@@ -35,14 +35,6 @@ namespace Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Co
                 if (creatingNewPolicy && !(request.UserIds?.Any() ?? false))
                     return Error.Validation("CreateTrainingSession.EmptyUsers", "Users are required when creating a new policy");
 
-                if (request.PlanId.HasValue)
-                {
-                    var exists = await _planRepository.ExistsAsync(request.PlanId.Value);
-                    if (!exists)
-                        return Error.NotFound("CreateTrainingSession.PlanNotFound", "Plan not found");
-                }
-
-
 
                 AccessPolicy accessPolicy;
                 List<UserAccessPolicy> userAccessPolicies;
@@ -71,7 +63,7 @@ namespace Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Co
                 }
                 var session = CreateTrainingSessionAsWithNeededType(request, accessPolicy);
 
-                userAccessPolicies.ForEach(u=>u.AddNotification(session));
+                userAccessPolicies.ForEach(u => u.AddNotification(session));
 
 
                 await _unitOfWork.StartTransactionAsync();
@@ -115,8 +107,8 @@ namespace Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Co
                     sessionType,
                     request.Place,
                     request.WillHappenAt,
-                    request.PlanId,
-                    _currentUser.Id);
+                    null,
+                    createdBy: _currentUser.Id);
         }
 
     }

@@ -14,20 +14,18 @@ namespace Trainova.Api.Requests.FitnessStatus
         public decimal AverageSpeed { get; set; }
         public decimal MaxSpeed { get; set; }
         public decimal PeakAcceleration { get; set; }
-        public decimal PlayerLoad { get; set; }
 
         public CreateSessionMovementCommand ToCommand()
         {
             return new CreateSessionMovementCommand(
-                UserAccessPolicyId: UserAccessPolicyId,
-                SprintsCount: SprintsCount,
-                DurationInMinutes: DurationInMinutes,
-                WalkDistance: WalkDistance,
-                RunDistance: RunDistance,
-                HighSpeedRunDistance: HighSpeedRunDistance,
-                AverageSpeed: AverageSpeed,
-                MaxSpeed: MaxSpeed,
-                PeakAcceleration: PeakAcceleration
+                userAccessPolicyId: UserAccessPolicyId,
+                sprintsCount: SprintsCount,
+                walkDistance: WalkDistance,
+                runDistance: RunDistance,
+                highSpeedRunDistance: HighSpeedRunDistance,
+                averageSpeed: AverageSpeed,
+                maxSpeed: MaxSpeed,
+                peakAcceleration: PeakAcceleration
             );
         }
     }

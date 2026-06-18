@@ -1,9 +1,10 @@
 ﻿using MediatR;
 using Trainova.Application.Common.Interfaces.Repositories.Profiles.Players;
+using Trainova.Application.Profiles.Players;
 using Trainova.Common.Errors;
 using Trainova.Common.ResultOf;
 
-namespace Trainova.Application.Profiles.Players.Queries.GetPlayersProfiles
+namespace Trainova.Application.Profiles.Queries.GetPlayersProfiles
 {
     public class GetPlayersProfileQueryHandler(
         IPlayerRepository _playerRepository)

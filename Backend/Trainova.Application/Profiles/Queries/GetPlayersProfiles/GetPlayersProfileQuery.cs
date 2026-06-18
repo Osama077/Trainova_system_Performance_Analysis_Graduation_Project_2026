@@ -1,9 +1,10 @@
 ﻿using MediatR;
 using Trainova.Application.Common.Authorization;
+using Trainova.Application.Profiles.Players;
 using Trainova.Application.Profiles.Players.Common;
 using Trainova.Common.ResultOf;
 
-namespace Trainova.Application.Profiles.Players.Queries.GetPlayersProfiles
+namespace Trainova.Application.Profiles.Queries.GetPlayersProfiles
 {
     [Authorize]
     public record GetPlayersProfileQuery : IRequest<ResultOf<IEnumerable<PlayerDetailResponse>>>,IPlayerAuthraizedRequest

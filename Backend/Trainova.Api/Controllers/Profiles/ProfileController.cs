@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Trainova.Api.Requests.Profiles;
 using Trainova.Api.Requsts.Profiles;
 using Trainova.Application.Common.Models;
-using Trainova.Application.Profiles.Players.Queries.GetSquadHealthProfiles;
-using Trainova.Application.Profiles.Players.Queries.GetTeamPlayersFitness;
+using Trainova.Application.Profiles.Queries.GetSquadHealthProfiles;
+using Trainova.Application.Profiles.Queries.GetTeamPlayersFitness;
 
 namespace Trainova.Api.Controllers.Profiles
 {

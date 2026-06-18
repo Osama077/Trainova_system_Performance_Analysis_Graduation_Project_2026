@@ -56,7 +56,7 @@ namespace Trainova.Application.FitnessStatus.SessionMovements.Commands.CreateSes
                 var movement = new SessionMovement(
                     request.UserAccessPolicyId,
                     request.SprintsCount,
-                    request.DurationInMinutes,
+                    (int)request.HighSpeedRunDistance,
                     distance,
                     speed,
                     lasttest,

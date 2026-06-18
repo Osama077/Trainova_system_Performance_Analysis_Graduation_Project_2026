@@ -13,7 +13,6 @@ namespace Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Co
         PlanState PlanState,
         string? Place,
         DateTime? WillHappenAt,
-        Guid? PlanId,
         List<Guid> UserIds)
         : IRequest<ResultOf<TrainingSession>>;
 

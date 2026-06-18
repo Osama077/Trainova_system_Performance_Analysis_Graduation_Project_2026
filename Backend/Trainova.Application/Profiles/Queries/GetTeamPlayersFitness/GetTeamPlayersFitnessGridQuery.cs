@@ -2,7 +2,7 @@
 using Trainova.Common.ResultOf;
 using Trainova.Domain.Common.Enums;
 
-namespace Trainova.Application.Profiles.Players.Queries.GetTeamPlayersFitness
+namespace Trainova.Application.Profiles.Queries.GetTeamPlayersFitness
 {
     public record GetTeamPlayersFitnessGridQuery(
         string? SearchName = null,

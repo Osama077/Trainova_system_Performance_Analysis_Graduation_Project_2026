@@ -1,4 +1,6 @@
 
+using System.Text.Json.Serialization;
+
 namespace Trainova.Domain.Common.BaseEntity
 {
     public abstract class Entity<TId> : IEntity<TId>, ICreatorLogable
@@ -6,7 +8,9 @@ namespace Trainova.Domain.Common.BaseEntity
         public TId Id { get; protected set; } = default!;
         public Guid? CreatedBy { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
+        [JsonIgnore]
         private List<IDomainEvent> _domainEvents = new List<IDomainEvent>();
+        [JsonIgnore]
         public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
         protected Entity(Guid? createdBy = null)

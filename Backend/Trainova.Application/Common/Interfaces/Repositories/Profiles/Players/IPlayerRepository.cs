@@ -1,6 +1,6 @@
 ﻿using Trainova.Application.Profiles.Players;
 using Trainova.Application.Profiles.Players.Common;
-using Trainova.Application.Profiles.Players.Queries.GetSquadHealthProfiles;
+using Trainova.Application.Profiles.Queries.GetSquadHealthProfiles;
 using Trainova.Domain.Common.Enums;
 using Trainova.Domain.MedicalStatus;
 using Trainova.Domain.Profiles;

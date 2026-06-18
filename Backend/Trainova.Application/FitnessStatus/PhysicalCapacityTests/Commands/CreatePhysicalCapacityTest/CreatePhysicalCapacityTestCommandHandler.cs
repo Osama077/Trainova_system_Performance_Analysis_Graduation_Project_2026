@@ -29,9 +29,7 @@ namespace Trainova.Application.FitnessStatus.PhysicalCapacityTests.Commands.Crea
                 if (player == null)
                     return Error.NotFound(description: "Player not found.");
 
-                var existing = await _capacityTestRepository.GetByPlayerIdAsync(request.PlayerId);
-                if (existing != null)
-                    return Error.Conflict(description: "Physical capacity test already exists for this player. Use Update instead.");
+
                 var lastTest = await _capacityTestRepository.GetLatestByPlayerIdAsync(request.PlayerId);
 
                 var aerobic = new AerobicCapacityTest(

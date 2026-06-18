@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 using Trainova.Domain.Common.BaseEntity;
 using Trainova.Domain.Common.Helpers;
 using Trainova.Domain.TrainingSessionsAccessibility;
@@ -8,6 +9,7 @@ namespace Trainova.Domain.FitnessStatus
     public class SessionMovement : AuditableEntity<Guid>
     {
         public Guid UserAccessPolicyId { get; private set; }
+        [JsonIgnore]
         public UserAccessPolicy UserAccessPolicy { get; private set; }
         public int? SprintsCount { get; private set; }
         public int DurationInMinutes { get; private set; }

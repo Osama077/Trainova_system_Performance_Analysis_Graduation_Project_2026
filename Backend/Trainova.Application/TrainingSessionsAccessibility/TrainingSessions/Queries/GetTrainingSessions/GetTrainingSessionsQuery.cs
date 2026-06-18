@@ -17,21 +17,21 @@ namespace Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Qu
         public DateTime To { get; init; }
         public Guid? CreatorId { get; private set; } = null;
 
-        Guid? IPlayerAuthraizedRequest.PlayerId 
+        Guid? IPlayerAuthraizedRequest.PlayerId
         {
             get => PlayerId;
             set => PlayerId = value;
         }
-        Guid? ICreatorAuthraizedRequest.CreatorId 
+        Guid? ICreatorAuthraizedRequest.CreatorId
         {
             get => CreatorId;
             set => CreatorId = value;
         }
 
-        public GetTrainingSessionsQuery(DateTime from, DateTime to, Guid? playerId, bool includeCreateror)
+        public GetTrainingSessionsQuery(DateTime? from = null, DateTime? to = null, Guid? playerId = null, bool includeCreateror = false)
         {
-            From = from;
-            To = to;
+            From = from ?? DateTime.MinValue;
+            To = to ?? DateTime.MaxValue;
             PlayerId = playerId;
             IncludeCreateror = includeCreateror;
         }

@@ -5,7 +5,7 @@ using Trainova.Application.Common.Interfaces.Repositories;
 using Trainova.Common.Errors;
 using Trainova.Common.ResultOf;
 
-namespace Trainova.Application.Profiles.Players.Queries.GetTeamPlayersFitness
+namespace Trainova.Application.Profiles.Queries.GetTeamPlayersFitness
 {
     public class GetTeamPlayersFitnessGridQueryHandler(IDbSettings _dbSettings)
     : IRequestHandler<GetTeamPlayersFitnessGridQuery, ResultOf<IEnumerable<TeamPlayersFitnessResponse>>>

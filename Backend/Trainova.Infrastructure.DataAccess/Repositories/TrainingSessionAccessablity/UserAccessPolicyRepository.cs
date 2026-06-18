@@ -30,7 +30,9 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.TrainingSessionAccessa
 
         public async Task<UserAccessPolicy?> GetByIdAsync(Guid id)
         {
-            return await _dbContext.UserAccessPolicies.FirstOrDefaultAsync(x => x.Id == id);
+            Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n\n" + _dbContext.Database.GetConnectionString() + "\n\n\n\n\n\n\n\n\n\n\n\n");
+
+            return await _dbContext.UserAccessPolicies.IgnoreQueryFilters().FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task UpdateAsync(UserAccessPolicy userAccessPolicy)

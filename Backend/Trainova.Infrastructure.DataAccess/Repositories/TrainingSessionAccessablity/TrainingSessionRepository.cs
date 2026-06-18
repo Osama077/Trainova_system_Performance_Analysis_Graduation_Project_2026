@@ -55,18 +55,46 @@ namespace Trainova.Infrastructure.DataAccess.Repositories.TrainingSessionAccessa
             return await _dbContext.TrainingSessions.CountAsync(x => x.AccessPolicyId == accessPolicyId);
         }
 
-        public async Task<IEnumerable<TrainingSession>> GetTrainingSessionsAsync(DateTime from, DateTime to, Guid? userAccsessPolicyId = null, Guid? creatorId = null)
+        public async Task<IEnumerable<TrainingSession>> GetTrainingSessionsAsync(
+            DateTime? from,
+            DateTime? to,
+            Guid? userId = null,
+            Guid? userAccsessPolicyId = null,
+            Guid? creatorId = null)
         {
-            return await _dbContext.TrainingSessions
-                .Where(x => (x.HappenedAt >= from && x.HappenedAt <= to)
-                 && ((userAccsessPolicyId == null || x.AccessPolicyId == userAccsessPolicyId)
-                 || (creatorId == null || x.CreatedBy == creatorId)))
-                .ToListAsync();
+            // 1. Base Query with required date filters
+            var query = _dbContext.TrainingSessions
+                .Where(x => (!from.HasValue || x.HappenedAt >= from) && (!to.HasValue || x.HappenedAt <= to));
+
+            // 2. Filter by Access Policy if provided
+            if (userAccsessPolicyId.HasValue)
+            {
+                query = query.Where(x => x.AccessPolicy.PolicyUsers.Any(ua => ua.Id == userAccsessPolicyId.Value));
+            }
+
+            // 3. Filter by Creator if provided
+            if (creatorId.HasValue)
+            {
+                query = query.Where(x => x.CreatedBy == creatorId.Value);
+            }
+
+            // 4. Filter by Specific User if provided
+            if (userId.HasValue)
+            {
+                query = query.Where(x => x.AccessPolicy.PolicyUsers.Any(up => up.UserId == userId.Value));
+            }
+
+            return await query.ToListAsync();
         }
 
         public async Task<TrainingSession> GetByPlanidAsync(Guid policyId)
         {
             return await _dbContext.TrainingSessions.FirstOrDefaultAsync(x => x.AccessPolicyId == policyId);
+        }
+
+        public Task<IEnumerable<TrainingSession>> GetTrainingSessionsAsync(DateTime from, DateTime to, Guid? userId = null, Guid? userAccsessPolicyId = null, Guid? creatorId = null)
+        {
+            throw new NotImplementedException();
         }
     }
 }

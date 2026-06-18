@@ -2,9 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Trainova.Api.Requests.TrainingSessionAccessablity.TrainingSessions;
 using Trainova.Application.Common.Models;
-using Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Commands.CreateTrainingSession;
 using Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Commands.DeleteTrainingSession;
-using Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Commands.UpdateTrainingSession;
 using Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Queries.GetTrainingSessions;
 
 namespace Trainova.Api.Controllers.TrainingSessionAccessablity
@@ -45,8 +43,8 @@ namespace Trainova.Api.Controllers.TrainingSessionAccessablity
         }
         [HttpGet]
         public async Task<IActionResult> GetTrainingSessions(
-            [FromQuery] DateTime from,
-            [FromQuery] DateTime to,
+            [FromQuery] DateTime? from = null,
+            [FromQuery] DateTime? to = null,
             [FromQuery] Guid? playerId = null,
             [FromQuery] bool includeCreateror = false)
         {

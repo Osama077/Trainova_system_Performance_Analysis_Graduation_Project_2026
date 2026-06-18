@@ -1,4 +1,5 @@
-﻿using Trainova.Domain.Common.BaseEntity;
+﻿using System.Text.Json.Serialization;
+using Trainova.Domain.Common.BaseEntity;
 using Trainova.Domain.Common.Enums;
 using Trainova.Domain.MatchsManagement.Matches;
 
@@ -8,12 +9,15 @@ namespace Trainova.Domain.TrainingSessionsAccessibility
     {
         public string TrainingSessionName { get; private set; }
         public Guid? PlanId { get; private set; }
+        [JsonIgnore]
         public Plan? Plan { get; private set; }
         public Guid AccessPolicyId { get; private set; }
+        [JsonIgnore]
         public AccessPolicy? AccessPolicy { get; private set; }
         public SessionType SessionType { get; private set; }
         public PlanState SessionState { get; private set; }
         public string? Place { get; private set; }
+        [JsonIgnore]
         public Match? Match { get; private set; }
         public DateTime? HappenedAt { get; private set; }
         public TrainingSession(
@@ -24,7 +28,7 @@ namespace Trainova.Domain.TrainingSessionsAccessibility
             string? place = null,
             DateTime? happenedAt = null,
             Guid? planId = null,
-            Guid? createdBy = null) :base(Guid.NewGuid(),createdBy)
+            Guid? createdBy = null) : base(accessPolicyId, createdBy)
         {
             TrainingSessionName = trainingSessionName;
             PlanId = planId;
@@ -35,7 +39,7 @@ namespace Trainova.Domain.TrainingSessionsAccessibility
             HappenedAt = happenedAt;
         }
         // ...existing code...
-        private TrainingSession() :base() { }
+        private TrainingSession() : base() { }
 
 
         public void Update(
@@ -52,7 +56,7 @@ namespace Trainova.Domain.TrainingSessionsAccessibility
             if (!string.IsNullOrWhiteSpace(place))
                 Place = place;
 
-            if(planState.HasValue)
+            if (planState.HasValue)
                 SessionState = planState.Value;
 
 

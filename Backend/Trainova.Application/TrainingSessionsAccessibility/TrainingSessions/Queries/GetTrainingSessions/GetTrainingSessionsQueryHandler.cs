@@ -14,11 +14,12 @@ namespace Trainova.Application.TrainingSessionsAccessibility.TrainingSessions.Qu
         {
             try
             {
+                var creatorId = request.IncludeCreateror ? request.CreatorId : null;
                 var sessions = await _trainingSessionRepository.GetTrainingSessionsAsync(
                     from: request.From,
                     to: request.To,
-                    userAccsessPolicyId: request.PlayerId,
-                    creatorId: request.CreatorId
+                    userId: request.PlayerId,
+                    creatorId: creatorId
                     );
 
                 return sessions.AsPartial();

@@ -1,6 +1,6 @@
 ﻿using Trainova.Domain.MedicalStatus;
 
-namespace Trainova.Application.Profiles.Players.Queries.GetSquadHealthProfiles
+namespace Trainova.Application.Profiles.Queries.GetSquadHealthProfiles
 {
     public class SquadHealthDetailes
     {

@@ -1,5 +1,4 @@
-﻿using Trainova.Domain.Common.AuditLogs;
-using Trainova.Domain.Common.BaseEntity;
+﻿using Trainova.Domain.Common.BaseEntity;
 using Trainova.Domain.Common.Enums;
 
 namespace Trainova.Domain.TrainingSessionsAccessibility
@@ -19,7 +18,7 @@ namespace Trainova.Domain.TrainingSessionsAccessibility
 
 
         public ICollection<TrainingSession> TrainingSessions { get; private set; } = new List<TrainingSession>();
-        private Plan():base(){}
+        private Plan() : base() { }
         public Plan(
             string planName,
             string planGoul,
@@ -28,7 +27,7 @@ namespace Trainova.Domain.TrainingSessionsAccessibility
             DateTime? startDate,
             DateTime? endDate,
             SessionType planType,
-            Guid? createdBy = null) : base(Guid.NewGuid(), createdBy)
+            Guid? createdBy = null) : base(accessPolicyId, createdBy)
         // ...existing code...
         {
             PlanName = planName;

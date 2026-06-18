@@ -10,7 +10,6 @@ namespace Trainova.Api.Requests.TrainingSessionAccessablity
         public PlanState PlanState { get; set; } = PlanState.Active;
         public string? Place { get; set; } = null;
         public DateTime? WillHappenAt { get; set; } = null;
-        public Guid? PlanId { get; set; } = null;
 
         public List<Guid> UserIds { get; set; } = new List<Guid>();
 
@@ -23,7 +22,6 @@ namespace Trainova.Api.Requests.TrainingSessionAccessablity
                 PlanState,
                 Place,
                 WillHappenAt,
-                PlanId,
                 UserIds
                 );
         }

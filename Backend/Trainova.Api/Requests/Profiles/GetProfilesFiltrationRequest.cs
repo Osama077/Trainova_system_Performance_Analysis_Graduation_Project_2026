@@ -1,5 +1,5 @@
 ﻿using Trainova.Application.Profiles.Players.Common;
-using Trainova.Application.Profiles.Players.Queries.GetPlayersProfiles;
+using Trainova.Application.Profiles.Queries.GetPlayersProfiles;
 
 namespace Trainova.Api.Requsts.Profiles
 {

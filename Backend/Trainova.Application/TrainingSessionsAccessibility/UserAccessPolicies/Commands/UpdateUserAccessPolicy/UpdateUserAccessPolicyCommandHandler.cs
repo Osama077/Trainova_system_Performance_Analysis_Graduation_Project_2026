@@ -1,7 +1,6 @@
 using MediatR;
 using Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAccessablity;
 using Trainova.Application.Common.Interfaces.Services;
-using Trainova.Application.Common.Models;
 using Trainova.Common.Errors;
 using Trainova.Common.ResultOf;
 using Trainova.Domain.Common.Helpers;
@@ -18,11 +17,8 @@ namespace Trainova.Application.TrainingSessionsAccessibility.UserAccessPolicies.
         {
             try
             {
-
-
                 if (request.DoneScore.HasValue && (request.DoneScore < 0 || request.DoneScore > 100))
                     return Error.Validation(code: "UpdateUserAccessPolicyCommandHandler.Handle_InvalidScore", description: "Done score must be between 0 and 100");
-
 
                 // Get existing user access policy
                 var userAccessPolicy = await _userAccessPolicyRepository.GetByIdAsync(request.Id);

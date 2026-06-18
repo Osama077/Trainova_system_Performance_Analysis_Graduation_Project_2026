@@ -3,7 +3,7 @@ using Trainova.Common.ResultOf;
 using Trainova.Domain.Common.Enums;
 using Trainova.Domain.MedicalStatus;
 
-namespace Trainova.Application.Profiles.Players.Queries.GetSquadHealthProfiles
+namespace Trainova.Application.Profiles.Queries.GetSquadHealthProfiles
 {
     public record GetSquadHealthProfilesQuery(
         Position? Position = null,

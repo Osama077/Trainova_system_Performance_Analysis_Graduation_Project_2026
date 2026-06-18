@@ -10,7 +10,7 @@ namespace Trainova.Application.Common.Interfaces.Repositories.TrainingSessionAcc
         Task DeleteAsync(TrainingSession session);
         Task<bool> ExistsAsync(Guid? planId = null, Guid? accessPolicyId = null);
         Task<int> CountByAccessPolicyIdAsync(Guid accessPolicyId);
-        Task<IEnumerable<TrainingSession>> GetTrainingSessionsAsync(DateTime from, DateTime to, Guid? userAccsessPolicyId = null, Guid? creatorId = null);
+        Task<IEnumerable<TrainingSession>> GetTrainingSessionsAsync(DateTime? from, DateTime? to, Guid? userId = null, Guid? userAccsessPolicyId = null, Guid? creatorId = null);
         Task<TrainingSession> GetByPlanidAsync(Guid policyId);
     }
 }

@@ -11,7 +11,6 @@ namespace Trainova.Api.Requests.TrainingSessionAccessablity.TrainingSessions
         public string? Place { get; set; }
         public DateTime? WillHappenAt { get; set; }
         public PlanState PlanState { get; set; } = PlanState.Active;
-        public Guid? PlanId { get; set; }
         public List<Guid> UserIds { get; set; } = new();
 
         public CreateTrainingSessionCommand ToCommand()
@@ -22,7 +21,6 @@ namespace Trainova.Api.Requests.TrainingSessionAccessablity.TrainingSessions
                 PlanState,
                 Place,
                 WillHappenAt,
-                PlanId,
                 UserIds);
         }
     }

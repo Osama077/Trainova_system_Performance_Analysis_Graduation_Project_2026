@@ -2,7 +2,7 @@
 using Trainova.Application.Common.Helpers;
 using Trainova.Application.Profiles.Players.Common;
 
-namespace Trainova.Application.Profiles.Players.Queries.GetPlayersProfiles
+namespace Trainova.Application.Profiles.Queries.GetPlayersProfiles
 {
     public class GetPlayersProfilesQueryValidator
         : AbstractValidator<GetPlayersProfileQuery>
