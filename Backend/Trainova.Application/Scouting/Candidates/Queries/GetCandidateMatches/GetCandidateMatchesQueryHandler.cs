@@ -24,6 +24,8 @@ namespace Trainova.Application.Scouting.Candidates.Queries.GetCandidateMatches
             if (candidate == null)
                 return Error.NotFound("Candidate.NotFound", $"Candidate {request.CandidateId} not found").AsError<IEnumerable<CandidateMatchResponse>>();
 
+            var totalCount = candidate.MatchesList.Count;
+
             var matches = candidate.MatchesList
                 .OrderByDescending(m => m.MatchDate)
                 .Skip(request.PageNumber * request.PageSize)
@@ -37,10 +39,11 @@ namespace Trainova.Application.Scouting.Candidates.Queries.GetCandidateMatches
                     Goals = m.Goals,
                     Assists = m.Assists,
                     Rating = m.Rating,
-                    ScoutNotes = m.ScoutNotes
+                    ScoutNotes = m.ScoutNotes,
+                    TotalCount = totalCount
                 });
 
-            return matches.AsDone();
+            return matches.AsPartial();
         }
     }
 }

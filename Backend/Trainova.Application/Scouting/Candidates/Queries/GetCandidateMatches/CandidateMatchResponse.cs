@@ -12,5 +12,6 @@ namespace Trainova.Application.Scouting.Candidates.Queries.GetCandidateMatches
         public int Assists { get; set; }
         public float Rating { get; set; }
         public string? ScoutNotes { get; set; }
+        public int TotalCount { get; set; }
     }
 }

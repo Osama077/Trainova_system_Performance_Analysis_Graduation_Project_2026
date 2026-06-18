@@ -24,6 +24,8 @@ namespace Trainova.Application.Scouting.Candidates.Queries.GetSeasonStatistics
             if (candidate == null)
                 return Error.NotFound("Candidate.NotFound", $"Candidate {request.CandidateId} not found").AsError<IEnumerable<SeasonStatisticsResponse>>();
 
+            var totalCount = candidate.SeasonsList.Count;
+
             var seasons = candidate.SeasonsList
                 .Select(s => new SeasonStatisticsResponse
                 {
@@ -36,10 +38,11 @@ namespace Trainova.Application.Scouting.Candidates.Queries.GetSeasonStatistics
                     Matches = s.Matches,
                     PassAccuracy = s.PassAccuracy,
                     ShotsPer90 = s.ShotsPer90,
-                    XgPer90 = s.XgPer90
+                    XgPer90 = s.XgPer90,
+                    TotalCount = totalCount
                 });
 
-            return seasons.AsDone();
+            return seasons.AsPartial();
         }
     }
 }

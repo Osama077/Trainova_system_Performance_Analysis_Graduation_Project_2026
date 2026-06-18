@@ -74,6 +74,7 @@ public class CandidateRepository : ICandidateRepository
         return await _dbContext.ScoutingCandidates
             .Include(c => c.NotesList)
             .Include(c => c.MatchesList)
+            .Include(c => c.SeasonsList)
             .FirstOrDefaultAsync(c => c.Id == candidateId, cancellationToken);
     }
 

@@ -21,13 +21,23 @@ namespace Trainova.Application.Scouting.Candidates.Queries.GetCandidateNotes
             if (candidate == null)
                 return Error.NotFound("Candidate.NotFound", $"Candidate {request.CandidateId} not found").AsError<IEnumerable<CandidateNoteResponse>>();
 
+            var totalCount = candidate.NotesList.Count;
+
             var notes = candidate.NotesList
                 .OrderByDescending(n => n.CreatedAt)
                 .Skip(request.PageNumber * request.PageSize)
                 .Take(request.PageSize)
-                .Select(n => new CandidateNoteResponse { Id = n.Id, Text = n.Text, CreatedBy = n.CreatedBy, CreatedByName = n.CreatedByName, CreatedAt = n.CreatedAt });
+                .Select(n => new CandidateNoteResponse
+                {
+                    Id = n.Id,
+                    Text = n.Text,
+                    CreatedBy = n.CreatedBy,
+                    CreatedByName = n.CreatedByName,
+                    CreatedAt = n.CreatedAt,
+                    TotalCount = totalCount
+                });
 
-            return notes.AsDone();
+            return notes.AsPartial();
         }
     }
 }

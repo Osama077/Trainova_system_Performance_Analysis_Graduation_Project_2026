@@ -236,3 +236,406 @@ UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
 ==================================================================
 UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
 ==================================================================
+{
+  "Timestamp": "2026-06-18 03:09:15",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": null,
+  "ActorId": null,
+  "InnerException": null,
+  "FullUserData": "[Unknown Type] Actor ID: , Name: \nActor ID: \nFrom IP: 127.0.0.1\nRole: \nClaims: []"
+}
+==================================================================
+UserId: N/A
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:10:18",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "ActorId": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "InnerException": null,
+  "FullUserData": "[User] User ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea, Name: System Owner Zezo, Email: zeyadahmed20042020@gmail.com\nEmail Confirmed: Active\nTFA Status: Not Active\nActor ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea\nFrom IP: 127.0.0.1\nRole: SystemAdmin\nClaims: [actor_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, user_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: zeyadahmed20042020@gmail.com, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: System Owner Zezo, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: SystemAdmin, isTFAEnabled: False, isEmailConfirmed: True, user_type: User, exp: 2092789994, iss: Trainova, aud: TrainovaUsers]"
+}
+==================================================================
+UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:10:26",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "ActorId": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "InnerException": null,
+  "FullUserData": "[User] User ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea, Name: System Owner Zezo, Email: zeyadahmed20042020@gmail.com\nEmail Confirmed: Active\nTFA Status: Not Active\nActor ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea\nFrom IP: 127.0.0.1\nRole: SystemAdmin\nClaims: [actor_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, user_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: zeyadahmed20042020@gmail.com, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: System Owner Zezo, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: SystemAdmin, isTFAEnabled: False, isEmailConfirmed: True, user_type: User, exp: 2092789994, iss: Trainova, aud: TrainovaUsers]"
+}
+==================================================================
+UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:10:51",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "ActorId": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "InnerException": null,
+  "FullUserData": "[User] User ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea, Name: System Owner Zezo, Email: zeyadahmed20042020@gmail.com\nEmail Confirmed: Active\nTFA Status: Not Active\nActor ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea\nFrom IP: 127.0.0.1\nRole: SystemAdmin\nClaims: [actor_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, user_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: zeyadahmed20042020@gmail.com, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: System Owner Zezo, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: SystemAdmin, isTFAEnabled: False, isEmailConfirmed: True, user_type: User, exp: 2092792227, iss: Trainova, aud: TrainovaUsers]"
+}
+==================================================================
+UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:11:47",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "ActorId": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "InnerException": null,
+  "FullUserData": "[User] User ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea, Name: System Owner Zezo, Email: zeyadahmed20042020@gmail.com\nEmail Confirmed: Active\nTFA Status: Not Active\nActor ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea\nFrom IP: 127.0.0.1\nRole: SystemAdmin\nClaims: [actor_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, user_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: zeyadahmed20042020@gmail.com, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: System Owner Zezo, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: SystemAdmin, isTFAEnabled: False, isEmailConfirmed: True, user_type: User, exp: 2092792227, iss: Trainova, aud: TrainovaUsers]"
+}
+==================================================================
+UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:12:07",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "ActorId": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "InnerException": null,
+  "FullUserData": "[User] User ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea, Name: System Owner Zezo, Email: zeyadahmed20042020@gmail.com\nEmail Confirmed: Active\nTFA Status: Not Active\nActor ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea\nFrom IP: 127.0.0.1\nRole: SystemAdmin\nClaims: [actor_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, user_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: zeyadahmed20042020@gmail.com, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: System Owner Zezo, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: SystemAdmin, isTFAEnabled: False, isEmailConfirmed: True, user_type: User, exp: 2092792227, iss: Trainova, aud: TrainovaUsers]"
+}
+==================================================================
+UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:12:21",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "ActorId": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "InnerException": null,
+  "FullUserData": "[User] User ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea, Name: System Owner Zezo, Email: zeyadahmed20042020@gmail.com\nEmail Confirmed: Active\nTFA Status: Not Active\nActor ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea\nFrom IP: 127.0.0.1\nRole: SystemAdmin\nClaims: [actor_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, user_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: zeyadahmed20042020@gmail.com, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: System Owner Zezo, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: SystemAdmin, isTFAEnabled: False, isEmailConfirmed: True, user_type: User, exp: 2092792227, iss: Trainova, aud: TrainovaUsers]"
+}
+==================================================================
+UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:12:24",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "ActorId": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "InnerException": null,
+  "FullUserData": "[User] User ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea, Name: System Owner Zezo, Email: zeyadahmed20042020@gmail.com\nEmail Confirmed: Active\nTFA Status: Not Active\nActor ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea\nFrom IP: 127.0.0.1\nRole: SystemAdmin\nClaims: [actor_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, user_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: zeyadahmed20042020@gmail.com, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: System Owner Zezo, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: SystemAdmin, isTFAEnabled: False, isEmailConfirmed: True, user_type: User, exp: 2092792227, iss: Trainova, aud: TrainovaUsers]"
+}
+==================================================================
+UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:12:33",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "ActorId": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "InnerException": null,
+  "FullUserData": "[User] User ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea, Name: System Owner Zezo, Email: zeyadahmed20042020@gmail.com\nEmail Confirmed: Active\nTFA Status: Not Active\nActor ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea\nFrom IP: 127.0.0.1\nRole: SystemAdmin\nClaims: [actor_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, user_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: zeyadahmed20042020@gmail.com, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: System Owner Zezo, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: SystemAdmin, isTFAEnabled: False, isEmailConfirmed: True, user_type: User, exp: 2092792227, iss: Trainova, aud: TrainovaUsers]"
+}
+==================================================================
+UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:12:59",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "ActorId": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "InnerException": null,
+  "FullUserData": "[User] User ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea, Name: System Owner Zezo, Email: zeyadahmed20042020@gmail.com\nEmail Confirmed: Active\nTFA Status: Not Active\nActor ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea\nFrom IP: 127.0.0.1\nRole: SystemAdmin\nClaims: [actor_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, user_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: zeyadahmed20042020@gmail.com, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: System Owner Zezo, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: SystemAdmin, isTFAEnabled: False, isEmailConfirmed: True, user_type: User, exp: 2092792227, iss: Trainova, aud: TrainovaUsers]"
+}
+==================================================================
+UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:13:27",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "ActorId": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "InnerException": null,
+  "FullUserData": "[User] User ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea, Name: System Owner Zezo, Email: zeyadahmed20042020@gmail.com\nEmail Confirmed: Active\nTFA Status: Not Active\nActor ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea\nFrom IP: 127.0.0.1\nRole: SystemAdmin\nClaims: [actor_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, user_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: zeyadahmed20042020@gmail.com, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: System Owner Zezo, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: SystemAdmin, isTFAEnabled: False, isEmailConfirmed: True, user_type: User, exp: 2092792227, iss: Trainova, aud: TrainovaUsers]"
+}
+==================================================================
+UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:13:32",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "ActorId": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "InnerException": null,
+  "FullUserData": "[User] User ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea, Name: System Owner Zezo, Email: zeyadahmed20042020@gmail.com\nEmail Confirmed: Active\nTFA Status: Not Active\nActor ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea\nFrom IP: 127.0.0.1\nRole: SystemAdmin\nClaims: [actor_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, user_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: zeyadahmed20042020@gmail.com, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: System Owner Zezo, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: SystemAdmin, isTFAEnabled: False, isEmailConfirmed: True, user_type: User, exp: 2092792227, iss: Trainova, aud: TrainovaUsers]"
+}
+==================================================================
+UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:14:43",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "ActorId": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "InnerException": null,
+  "FullUserData": "[User] User ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea, Name: System Owner Zezo, Email: zeyadahmed20042020@gmail.com\nEmail Confirmed: Active\nTFA Status: Not Active\nActor ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea\nFrom IP: 127.0.0.1\nRole: SystemAdmin\nClaims: [actor_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, user_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: zeyadahmed20042020@gmail.com, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: System Owner Zezo, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: SystemAdmin, isTFAEnabled: False, isEmailConfirmed: True, user_type: User, exp: 2092792227, iss: Trainova, aud: TrainovaUsers]"
+}
+==================================================================
+UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:14:43",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "ActorId": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "InnerException": null,
+  "FullUserData": "[User] User ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea, Name: System Owner Zezo, Email: zeyadahmed20042020@gmail.com\nEmail Confirmed: Active\nTFA Status: Not Active\nActor ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea\nFrom IP: 127.0.0.1\nRole: SystemAdmin\nClaims: [actor_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, user_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: zeyadahmed20042020@gmail.com, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: System Owner Zezo, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: SystemAdmin, isTFAEnabled: False, isEmailConfirmed: True, user_type: User, exp: 2092792227, iss: Trainova, aud: TrainovaUsers]"
+}
+==================================================================
+UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:14:56",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "ActorId": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "InnerException": null,
+  "FullUserData": "[User] User ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea, Name: System Owner Zezo, Email: zeyadahmed20042020@gmail.com\nEmail Confirmed: Active\nTFA Status: Not Active\nActor ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea\nFrom IP: 127.0.0.1\nRole: SystemAdmin\nClaims: [actor_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, user_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: zeyadahmed20042020@gmail.com, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: System Owner Zezo, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: SystemAdmin, isTFAEnabled: False, isEmailConfirmed: True, user_type: User, exp: 2092792227, iss: Trainova, aud: TrainovaUsers]"
+}
+==================================================================
+UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:20:18",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": null,
+  "ActorId": null,
+  "InnerException": null,
+  "FullUserData": "[Unknown Type] Actor ID: , Name: \nActor ID: \nFrom IP: 0:0:0:0:0:0:0:1\nRole: \nClaims: []"
+}
+==================================================================
+UserId: N/A
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:20:34",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": null,
+  "ActorId": null,
+  "InnerException": null,
+  "FullUserData": "[Unknown Type] Actor ID: , Name: \nActor ID: \nFrom IP: 0:0:0:0:0:0:0:1\nRole: \nClaims: []"
+}
+==================================================================
+UserId: N/A
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:21:14",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": null,
+  "ActorId": null,
+  "InnerException": null,
+  "FullUserData": "[Unknown Type] Actor ID: , Name: \nActor ID: \nFrom IP: 0:0:0:0:0:0:0:1\nRole: \nClaims: []"
+}
+==================================================================
+UserId: N/A
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:21:26",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": null,
+  "ActorId": null,
+  "InnerException": null,
+  "FullUserData": "[Unknown Type] Actor ID: , Name: \nActor ID: \nFrom IP: 0:0:0:0:0:0:0:1\nRole: \nClaims: []"
+}
+==================================================================
+UserId: N/A
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:21:39",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": null,
+  "ActorId": null,
+  "InnerException": null,
+  "FullUserData": "[Unknown Type] Actor ID: , Name: \nActor ID: \nFrom IP: 0:0:0:0:0:0:0:1\nRole: \nClaims: []"
+}
+==================================================================
+UserId: N/A
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:21:43",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": null,
+  "ActorId": null,
+  "InnerException": null,
+  "FullUserData": "[Unknown Type] Actor ID: , Name: \nActor ID: \nFrom IP: 0:0:0:0:0:0:0:1\nRole: \nClaims: []"
+}
+==================================================================
+UserId: N/A
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:21:44",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": null,
+  "ActorId": null,
+  "InnerException": null,
+  "FullUserData": "[Unknown Type] Actor ID: , Name: \nActor ID: \nFrom IP: 0:0:0:0:0:0:0:1\nRole: \nClaims: []"
+}
+==================================================================
+UserId: N/A
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:21:45",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": null,
+  "ActorId": null,
+  "InnerException": null,
+  "FullUserData": "[Unknown Type] Actor ID: , Name: \nActor ID: \nFrom IP: 0:0:0:0:0:0:0:1\nRole: \nClaims: []"
+}
+==================================================================
+UserId: N/A
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:21:45",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": null,
+  "ActorId": null,
+  "InnerException": null,
+  "FullUserData": "[Unknown Type] Actor ID: , Name: \nActor ID: \nFrom IP: 0:0:0:0:0:0:0:1\nRole: \nClaims: []"
+}
+==================================================================
+UserId: N/A
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:22:28",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "ActorId": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "InnerException": null,
+  "FullUserData": "[User] User ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea, Name: System Owner Zezo, Email: zeyadahmed20042020@gmail.com\nEmail Confirmed: Active\nTFA Status: Not Active\nActor ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea\nFrom IP: 0:0:0:0:0:0:0:1\nRole: SystemAdmin\nClaims: [actor_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, user_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: zeyadahmed20042020@gmail.com, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: System Owner Zezo, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: SystemAdmin, isTFAEnabled: False, isEmailConfirmed: True, user_type: User, exp: 2092792875, iss: Trainova, aud: TrainovaUsers]"
+}
+==================================================================
+UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:23:14",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "ActorId": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "InnerException": null,
+  "FullUserData": "[User] User ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea, Name: System Owner Zezo, Email: zeyadahmed20042020@gmail.com\nEmail Confirmed: Active\nTFA Status: Not Active\nActor ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea\nFrom IP: 0:0:0:0:0:0:0:1\nRole: SystemAdmin\nClaims: [actor_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, user_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: zeyadahmed20042020@gmail.com, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: System Owner Zezo, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: SystemAdmin, isTFAEnabled: False, isEmailConfirmed: True, user_type: User, exp: 2092792875, iss: Trainova, aud: TrainovaUsers]"
+}
+==================================================================
+UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:23:25",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "ActorId": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "InnerException": null,
+  "FullUserData": "[User] User ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea, Name: System Owner Zezo, Email: zeyadahmed20042020@gmail.com\nEmail Confirmed: Active\nTFA Status: Not Active\nActor ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea\nFrom IP: 0:0:0:0:0:0:0:1\nRole: SystemAdmin\nClaims: [actor_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, user_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: zeyadahmed20042020@gmail.com, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: System Owner Zezo, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: SystemAdmin, isTFAEnabled: False, isEmailConfirmed: True, user_type: User, exp: 2092792875, iss: Trainova, aud: TrainovaUsers]"
+}
+==================================================================
+UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:26:43",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": null,
+  "ActorId": null,
+  "InnerException": null,
+  "FullUserData": "[Unknown Type] Actor ID: , Name: \nActor ID: \nFrom IP: 0:0:0:0:0:0:0:1\nRole: \nClaims: []"
+}
+==================================================================
+UserId: N/A
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:26:55",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "ActorId": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "InnerException": null,
+  "FullUserData": "[User] User ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea, Name: System Owner Zezo, Email: zeyadahmed20042020@gmail.com\nEmail Confirmed: Active\nTFA Status: Not Active\nActor ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea\nFrom IP: 0:0:0:0:0:0:0:1\nRole: SystemAdmin\nClaims: [actor_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, user_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: zeyadahmed20042020@gmail.com, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: System Owner Zezo, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: SystemAdmin, isTFAEnabled: False, isEmailConfirmed: True, user_type: User, exp: 2092792875, iss: Trainova, aud: TrainovaUsers]"
+}
+==================================================================
+UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:27:20",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "ActorId": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "InnerException": null,
+  "FullUserData": "[User] User ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea, Name: System Owner Zezo, Email: zeyadahmed20042020@gmail.com\nEmail Confirmed: Active\nTFA Status: Not Active\nActor ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea\nFrom IP: 0:0:0:0:0:0:0:1\nRole: SystemAdmin\nClaims: [actor_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, user_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: zeyadahmed20042020@gmail.com, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: System Owner Zezo, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: SystemAdmin, isTFAEnabled: False, isEmailConfirmed: True, user_type: User, exp: 2092792875, iss: Trainova, aud: TrainovaUsers]"
+}
+==================================================================
+UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
+==================================================================
+{
+  "Timestamp": "2026-06-18 03:27:33",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "ActorId": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "InnerException": null,
+  "FullUserData": "[User] User ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea, Name: System Owner Zezo, Email: zeyadahmed20042020@gmail.com\nEmail Confirmed: Active\nTFA Status: Not Active\nActor ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea\nFrom IP: 0:0:0:0:0:0:0:1\nRole: SystemAdmin\nClaims: [actor_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, user_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: zeyadahmed20042020@gmail.com, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: System Owner Zezo, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: SystemAdmin, isTFAEnabled: False, isEmailConfirmed: True, user_type: User, exp: 2092792875, iss: Trainova, aud: TrainovaUsers]"
+}
+==================================================================
+UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
+==================================================================

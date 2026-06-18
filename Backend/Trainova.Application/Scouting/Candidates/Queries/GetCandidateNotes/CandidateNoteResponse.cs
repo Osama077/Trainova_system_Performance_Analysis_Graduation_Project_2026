@@ -9,5 +9,6 @@ namespace Trainova.Application.Scouting.Candidates.Queries.GetCandidateNotes
         public Guid? CreatedBy { get; set; }
         public string? CreatedByName { get; set; }
         public DateTime CreatedAt { get; set; }
+        public int TotalCount { get; set; }
     }
 }
