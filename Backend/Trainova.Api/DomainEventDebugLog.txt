@@ -28,3 +28,211 @@ EventId: N/A
 ==================================================================
 EventId: N/A
 ==================================================================
+{
+  "Timestamp": "2026-06-14 10:13:36",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": null,
+  "ActorId": null,
+  "InnerException": null,
+  "FullUserData": "[Unknown Type] Actor ID: , Name: \nActor ID: \nFrom IP: 0:0:0:0:0:0:0:1\nRole: \nClaims: []"
+}
+==================================================================
+UserId: N/A
+==================================================================
+{
+  "Timestamp": "2026-06-14 19:15:28",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": null,
+  "ActorId": null,
+  "InnerException": null,
+  "FullUserData": "[Unknown Type] Actor ID: , Name: \nActor ID: \nFrom IP: 0:0:0:0:0:0:0:1\nRole: \nClaims: []"
+}
+==================================================================
+UserId: N/A
+==================================================================
+{
+  "Timestamp": "2026-06-14 19:17:44",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": null,
+  "ActorId": null,
+  "InnerException": null,
+  "FullUserData": "[Unknown Type] Actor ID: , Name: \nActor ID: \nFrom IP: 0:0:0:0:0:0:0:1\nRole: \nClaims: []"
+}
+==================================================================
+UserId: N/A
+==================================================================
+{
+  "Timestamp": "2026-06-14 19:18:21",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": null,
+  "ActorId": null,
+  "InnerException": null,
+  "FullUserData": "[Unknown Type] Actor ID: , Name: \nActor ID: \nFrom IP: 0:0:0:0:0:0:0:1\nRole: \nClaims: []"
+}
+==================================================================
+UserId: N/A
+==================================================================
+{
+  "Timestamp": "2026-06-14 19:18:30",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": null,
+  "ActorId": null,
+  "InnerException": null,
+  "FullUserData": "[Unknown Type] Actor ID: , Name: \nActor ID: \nFrom IP: 0:0:0:0:0:0:0:1\nRole: \nClaims: []"
+}
+==================================================================
+UserId: N/A
+==================================================================
+{
+  "Timestamp": "2026-06-14 19:19:39",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": null,
+  "ActorId": null,
+  "InnerException": null,
+  "FullUserData": "[Unknown Type] Actor ID: , Name: \nActor ID: \nFrom IP: 0:0:0:0:0:0:0:1\nRole: \nClaims: []"
+}
+==================================================================
+UserId: N/A
+==================================================================
+{
+  "Timestamp": "2026-06-16 18:15:38",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": null,
+  "ActorId": null,
+  "InnerException": null,
+  "FullUserData": "[Unknown Type] Actor ID: , Name: \nActor ID: \nFrom IP: 127.0.0.1\nRole: \nClaims: []"
+}
+==================================================================
+UserId: N/A
+==================================================================
+{
+  "Timestamp": "2026-06-16 18:26:40",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": null,
+  "ActorId": null,
+  "InnerException": null,
+  "FullUserData": "[Unknown Type] Actor ID: , Name: \nActor ID: \nFrom IP: 0:0:0:0:0:0:0:1\nRole: \nClaims: []"
+}
+==================================================================
+UserId: N/A
+==================================================================
+{
+  "Timestamp": "2026-06-18 02:26:27",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": null,
+  "ActorId": null,
+  "InnerException": null,
+  "FullUserData": "[Unknown Type] Actor ID: , Name: \nActor ID: \nFrom IP: 0:0:0:0:0:0:0:1\nRole: \nClaims: []"
+}
+==================================================================
+UserId: N/A
+==================================================================
+{
+  "Timestamp": "2026-06-18 02:27:08",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": null,
+  "ActorId": null,
+  "InnerException": null,
+  "FullUserData": "[Unknown Type] Actor ID: , Name: \nActor ID: \nFrom IP: 0:0:0:0:0:0:0:1\nRole: \nClaims: []"
+}
+==================================================================
+UserId: N/A
+==================================================================
+{
+  "Timestamp": "2026-06-18 02:33:03",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": null,
+  "ActorId": null,
+  "InnerException": null,
+  "FullUserData": "[Unknown Type] Actor ID: , Name: \nActor ID: \nFrom IP: 0:0:0:0:0:0:0:1\nRole: \nClaims: []"
+}
+==================================================================
+UserId: N/A
+==================================================================
+{
+  "Timestamp": "2026-06-18 02:33:13",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": null,
+  "ActorId": null,
+  "InnerException": null,
+  "FullUserData": "[Unknown Type] Actor ID: , Name: \nActor ID: \nFrom IP: 0:0:0:0:0:0:0:1\nRole: \nClaims: []"
+}
+==================================================================
+UserId: N/A
+==================================================================
+{
+  "Timestamp": "2026-06-18 02:33:45",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "ActorId": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "InnerException": null,
+  "FullUserData": "[User] User ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea, Name: System Owner Zezo, Email: zeyadahmed20042020@gmail.com\nEmail Confirmed: Active\nTFA Status: Not Active\nActor ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea\nFrom IP: 0:0:0:0:0:0:0:1\nRole: SystemAdmin\nClaims: [actor_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, user_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: zeyadahmed20042020@gmail.com, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: System Owner Zezo, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: SystemAdmin, isTFAEnabled: False, isEmailConfirmed: True, user_type: User, exp: 2092789994, iss: Trainova, aud: TrainovaUsers]"
+}
+==================================================================
+UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
+==================================================================
+{
+  "Timestamp": "2026-06-18 02:34:44",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "ActorId": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "InnerException": null,
+  "FullUserData": "[User] User ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea, Name: System Owner Zezo, Email: zeyadahmed20042020@gmail.com\nEmail Confirmed: Active\nTFA Status: Not Active\nActor ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea\nFrom IP: 0:0:0:0:0:0:0:1\nRole: SystemAdmin\nClaims: [actor_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, user_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: zeyadahmed20042020@gmail.com, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: System Owner Zezo, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: SystemAdmin, isTFAEnabled: False, isEmailConfirmed: True, user_type: User, exp: 2092789994, iss: Trainova, aud: TrainovaUsers]"
+}
+==================================================================
+UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
+==================================================================
+{
+  "Timestamp": "2026-06-18 02:35:30",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "ActorId": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "InnerException": null,
+  "FullUserData": "[User] User ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea, Name: System Owner Zezo, Email: zeyadahmed20042020@gmail.com\nEmail Confirmed: Active\nTFA Status: Not Active\nActor ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea\nFrom IP: 0:0:0:0:0:0:0:1\nRole: SystemAdmin\nClaims: [actor_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, user_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: zeyadahmed20042020@gmail.com, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: System Owner Zezo, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: SystemAdmin, isTFAEnabled: False, isEmailConfirmed: True, user_type: User, exp: 2092789994, iss: Trainova, aud: TrainovaUsers]"
+}
+==================================================================
+UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
+==================================================================
+{
+  "Timestamp": "2026-06-18 02:35:49",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "ActorId": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "InnerException": null,
+  "FullUserData": "[User] User ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea, Name: System Owner Zezo, Email: zeyadahmed20042020@gmail.com\nEmail Confirmed: Active\nTFA Status: Not Active\nActor ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea\nFrom IP: 0:0:0:0:0:0:0:1\nRole: SystemAdmin\nClaims: [actor_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, user_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: zeyadahmed20042020@gmail.com, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: System Owner Zezo, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: SystemAdmin, isTFAEnabled: False, isEmailConfirmed: True, user_type: User, exp: 2092789994, iss: Trainova, aud: TrainovaUsers]"
+}
+==================================================================
+UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
+==================================================================
