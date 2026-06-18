@@ -124,6 +124,7 @@ public class CandidateRepository : ICandidateRepository
                 Nationality = i.ContractInfo.Nationality,
                 ScoutRating = i.ScoutRating,
                 Status = (int)i.Status,
+                DateOfBirth = i.PersonalDetails.DateOfBirth,
                 // skills
                 Pace = i.SkillAssessment.Pace,
                 Shooting = i.SkillAssessment.Shooting,
@@ -227,6 +228,7 @@ public class CandidateRepository : ICandidateRepository
                 Nationality = i.ContractInfo.Nationality,
                 ScoutRating = i.ScoutRating,
                 Status = (int)i.Status,
+                DateOfBirth = i.PersonalDetails.DateOfBirth,
                 Pace = i.SkillAssessment.Pace,
                 Shooting = i.SkillAssessment.Shooting,
                 Dribbling = i.SkillAssessment.Dribbling,

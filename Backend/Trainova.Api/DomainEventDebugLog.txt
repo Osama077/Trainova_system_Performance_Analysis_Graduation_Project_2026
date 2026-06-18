@@ -639,3 +639,16 @@ UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
 ==================================================================
 UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
 ==================================================================
+{
+  "Timestamp": "2026-06-18 18:24:53",
+  "Service": "AuthorizationBehavior",
+  "Message": null,
+  "StackTrace": null,
+  "Id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "ActorId": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea",
+  "InnerException": null,
+  "FullUserData": "[User] User ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea, Name: System Owner Zezo, Email: zeyadahmed20042020@gmail.com\nEmail Confirmed: Active\nTFA Status: Not Active\nActor ID: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea\nFrom IP: 127.0.0.1\nRole: SystemAdmin\nClaims: [actor_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, user_id: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: zeyadahmed20042020@gmail.com, http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: System Owner Zezo, http://schemas.microsoft.com/ws/2008/06/identity/claims/role: SystemAdmin, isTFAEnabled: False, isEmailConfirmed: True, user_type: User, exp: 2092793711, iss: Trainova, aud: TrainovaUsers]"
+}
+==================================================================
+UserId: eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeea
+==================================================================

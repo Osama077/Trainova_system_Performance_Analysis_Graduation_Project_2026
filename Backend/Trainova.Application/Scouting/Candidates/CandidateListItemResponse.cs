@@ -29,6 +29,9 @@ namespace Trainova.Application.Scouting.Candidates
         public int? Defending { get; set; }
         public int? Vision { get; set; }
 
+        // Personal details
+        public DateTime? DateOfBirth { get; set; }
+
         // Contract / market
         public DateTime? ContractEnd { get; set; }
         public decimal? MarketValue { get; set; }
